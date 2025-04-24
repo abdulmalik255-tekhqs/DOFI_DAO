@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { Close as CloseIcon } from '@/components/icons/close';
+import Listbox, { ListboxOption } from '@/components/ui/list-box';
 import { Transition } from '@/components/ui/transition';
-import { Listbox } from '@/components/ui/listbox';
 import Image from '@/components/ui/image';
 import Button from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -39,6 +40,232 @@ const BlockchainOptions = [
     icon: <Flow />,
   },
 ];
+const actionOptions = [
+  {
+    name: 'Custom Contact',
+    value: 'custom_contact',
+  },
+  {
+    name: 'CRIPTIC Token',
+    value: 'criptic_token',
+  },
+  {
+    name: 'Reserve',
+    value: 'reserve',
+  },
+];
+const cripticTokenOptions = [
+  {
+    name: 'Approve',
+    value: 'approve',
+  },
+  {
+    name: 'Delegated',
+    value: 'delegated',
+  },
+  {
+    name: 'Mint',
+    value: 'mint',
+  },
+  {
+    name: 'Set Minter',
+    value: 'setMinter',
+  },
+  {
+    name: 'Transfer',
+    value: 'transfer',
+  },
+  {
+    name: 'Transfer From',
+    value: 'transferFrom',
+  },
+];
+const reserveOptions = [
+  {
+    name: 'Renounce Ownership',
+    value: 'renounceOwnership',
+  },
+  {
+    name: 'Set Rate Mantissa',
+    value: 'setRateMantissa',
+  },
+  {
+    name: 'Transfer Ownership',
+    value: 'transferOwnership',
+  },
+  {
+    name: 'Withdraw Reverse',
+    value: 'withdrawReverse',
+  },
+];
+function CripticTokenAction({
+  selectedOption,
+  onChange,
+}: {
+  selectedOption: ListboxOption;
+  onChange: React.Dispatch<React.SetStateAction<ListboxOption>>;
+}) {
+  return (
+    <>
+      <Listbox
+        className="w-full sm:w-80"
+        options={cripticTokenOptions}
+        selectedOption={selectedOption}
+        onChange={onChange}
+      />
+      {selectedOption.value === 'approve' && (
+        <>
+          <Input
+            label="Spender address"
+            useUppercaseLabel={false}
+            placeholder="Enter spender address"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+          <Input
+            label="Raw amount unit256"
+            useUppercaseLabel={false}
+            placeholder="Enter rawAmount in unit256"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+        </>
+      )}
+      {selectedOption.value === 'delegated' && (
+        <Input
+          label="Delegated address"
+          useUppercaseLabel={false}
+          placeholder="Enter delegated address"
+          className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+        />
+      )}
+      {selectedOption.value === 'mint' && (
+        <>
+          <Input
+            label="Dst address"
+            useUppercaseLabel={false}
+            placeholder="Enter dst address"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+          <Input
+            label="Raw amount unit256"
+            useUppercaseLabel={false}
+            placeholder="Enter rawAmount in unit256"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+        </>
+      )}
+      {selectedOption.value === 'setMinter' && (
+        <Input
+          label="Minter address"
+          useUppercaseLabel={false}
+          placeholder="Enter minter address"
+          className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+        />
+      )}
+      {selectedOption.value === 'transfer' && (
+        <>
+          <Input
+            label="Dst address"
+            useUppercaseLabel={false}
+            placeholder="Enter dst address"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+          <Input
+            label="Raw amount unit256"
+            useUppercaseLabel={false}
+            placeholder="Enter rawAmount in unit256"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+        </>
+      )}
+      {selectedOption.value === 'transferFrom' && (
+        <>
+          <Input
+            label="Src address"
+            useUppercaseLabel={false}
+            placeholder="Enter src address"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+          <Input
+            label="Dst address"
+            useUppercaseLabel={false}
+            placeholder="Enter dst address"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+          <Input
+            label="Raw amount unit256"
+            useUppercaseLabel={false}
+            placeholder="Enter rawAmount in unit256"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+          />
+        </>
+      )}
+    </>
+  );
+}
+
+function ActionFields() {
+  let [actionType, setActionType] = useState(actionOptions[0]);
+  let [reserveAction, setReserveAction] = useState(reserveOptions[0]);
+  let [cripticTokenAction, setCripticTokenAction] = useState(
+    cripticTokenOptions[0],
+  );
+  return (
+    <div className="">
+      <div className="group mb-4 rounded-md bg-gray-100/90 p-5 pt-3 dark:bg-dark/60 xs:p-6 xs:pb-8">
+        <div className="-mr-2 mb-3 flex items-center justify-between">
+          <h3 className="text-base font-medium dark:text-gray-100">
+            Action #1
+          </h3>
+          <Button
+            type="button"
+            size="mini"
+            shape="circle"
+            variant="transparent"
+            className="opacity-0 group-hover:opacity-100 dark:text-gray-300"
+          >
+            <CloseIcon className="h-auto w-[11px] xs:w-3" />
+          </Button>
+        </div>
+        <>
+          <Listbox
+            className="w-full sm:w-80"
+            options={actionOptions}
+            selectedOption={actionType}
+            onChange={setActionType}
+          />
+          {actionType.value === 'custom_contact' && (
+            <Input
+              className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
+              useUppercaseLabel={false}
+              placeholder="Enter contact address 0x1f9840a85..."
+            />
+          )}
+          {actionType.value === 'criptic_token' && (
+            <div className="rtl:xs:mlr6 rtl:sm:mlr12 mt-4 ltr:xs:ml-6 ltr:sm:ml-12">
+              <CripticTokenAction
+                selectedOption={cripticTokenAction}
+                onChange={setCripticTokenAction}
+              />
+            </div>
+          )}
+          {actionType.value === 'reserve' && (
+            <div className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12">
+              <Listbox
+                className="w-full sm:w-80"
+                options={reserveOptions}
+                selectedOption={reserveAction}
+                onChange={setReserveAction}
+              />
+            </div>
+          )}
+        </>
+      </div>
+      <Button variant="ghost" className="mt-2 dark:text-white xs:mt-3">
+        Add another action
+      </Button>
+    </div>
+  );
+}
 
 export default function CreateNFT() {
   let [publish, setPublish] = useState(true);
@@ -51,7 +278,7 @@ export default function CreateNFT() {
       <div className="mx-auto w-full sm:pt-0 lg:px-8 xl:px-10 2xl:px-0">
         <div className="mb-6 grid grid-cols-3 gap-12 sm:mb-10">
           <div className="col-span-3 flex items-center justify-between lg:col-span-2">
-            <h2 className="text-lg font-medium uppercase tracking-wider text-gray-900 dark:text-white  sm:text-2xl">
+            <h2 className="text-lg font-medium uppercase tracking-wider text-gray-900 dark:text-white sm:text-2xl">
               Create New Item
             </h2>
             <Preview />
@@ -84,8 +311,8 @@ export default function CreateNFT() {
                     <span
                       className={cn(
                         publish
-                          ? 'bg-white ltr:translate-x-5 rtl:-translate-x-5 dark:bg-light-dark'
-                          : 'bg-white ltr:translate-x-0.5 rtl:-translate-x-0.5 dark:bg-light-dark',
+                          ? 'bg-white dark:bg-light-dark ltr:translate-x-5 rtl:-translate-x-5'
+                          : 'bg-white dark:bg-light-dark ltr:translate-x-0.5 rtl:-translate-x-0.5',
                         'inline-block h-[18px] w-[18px] transform rounded-full bg-white transition-transform duration-200',
                       )}
                     />
@@ -104,7 +331,7 @@ export default function CreateNFT() {
                   size="sm"
                   image={AuthorImage}
                   alt="Cameronwilliamson"
-                  className="border-white bg-gray-300 ltr:mr-3 rtl:ml-3 dark:bg-gray-400"
+                  className="border-white bg-gray-300 dark:bg-gray-400 ltr:mr-3 rtl:ml-3"
                 />
                 @Cameronwilliamson
               </div>
@@ -131,41 +358,75 @@ export default function CreateNFT() {
 
         {/* Price */}
         <div className="mb-8">
-          <InputLabel title="Price" important />
+          <InputLabel title="Total Investment" important />
           <Input
             min={0}
             type="number"
-            placeholder="Enter your price"
+            placeholder="Enter your investment"
             inputClassName="spin-button-hidden"
           />
         </div>
-
+        <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
+          <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
+            Actions
+          </h3>
+          <p className="mb-5 leading-[1.8] dark:text-gray-300">
+            Enter the on-chain actions this proposal should take. Actions are
+            executed in the order laid out here (ie. Action #1 fires, then
+            Action #2, etc.)
+          </p>
+          <ActionFields />
+        </div>
+        <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
+          <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
+            Title
+          </h3>
+          <p className="mb-5 leading-[1.8] dark:text-gray-300">
+            Your title introduces your proposal to the voters. Make sure it is
+            clear and to the point.
+          </p>
+          <Input placeholder="Enter title of your proposal" />
+        </div>
+        <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
+          <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
+            Description
+          </h3>
+          <p className="mb-5 leading-[1.8] dark:text-gray-300">
+            Your description should present in full detail what the actions of
+            the proposal will do. This is where voters will educate themselves
+            on what they are voting on.
+          </p>
+          <Textarea
+            placeholder="Add the proposal details here"
+            inputClassName="md:h-32 xl:h-36"
+          />
+        </div>
         {/* Name */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <InputLabel title="Name" important />
           <Input type="text" placeholder="Item name" />
-        </div>
+        </div> */}
 
         {/* External link */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <InputLabel
             title="External link"
             subTitle="We will include a link to this URL on this item's detail page, so that users can click to learn more about it."
           />
           <Input type="text" placeholder="https://yoursite.io/item/123" />
-        </div>
+        </div> */}
 
         {/* Description */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <InputLabel
             title="Description"
             subTitle="The description will be included on the item's detail page underneath its image."
           />
           <Textarea placeholder="Provide a detailed description of your item" />
-        </div>
+        </div> */}
 
         {/* Unlockable content */}
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <ToggleBar
             title="Unlockable Content"
             subTitle="Include unlockable content that can only be revealed by the owner of the item."
@@ -177,10 +438,10 @@ export default function CreateNFT() {
               <Textarea placeholder="Enter content (access key, code to redeem, link to a file, etc.)" />
             )}
           </ToggleBar>
-        </div>
+        </div> */}
 
         {/* Explicit content */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <ToggleBar
             title="Explicit &amp; Sensitive Content"
             subTitle="Set this item as explicit and sensitive content"
@@ -188,19 +449,19 @@ export default function CreateNFT() {
             checked={explicit}
             onChange={() => setExplicit(!explicit)}
           />
-        </div>
+        </div> */}
 
         {/* Supply */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <InputLabel
             title="Supply"
             subTitle="The number of items that can be minted."
           />
           <Input type="number" placeholder="1" disabled />
-        </div>
+        </div> */}
 
         {/* Blockchain */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <InputLabel title="Blockchain" />
           <div className="relative">
             <Listbox value={blockchain} onChange={setBlockChain}>
@@ -221,7 +482,7 @@ export default function CreateNFT() {
                     <Listbox.Option key={option.id} value={option}>
                       {({ selected }) => (
                         <div
-                          className={`flex cursor-pointer items-center rounded-md px-3 py-2 text-sm text-gray-900 transition dark:text-gray-100  ${
+                          className={`flex cursor-pointer items-center rounded-md px-3 py-2 text-sm text-gray-900 transition dark:text-gray-100 ${
                             selected
                               ? 'bg-gray-200/70 font-medium dark:bg-gray-600/60'
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700/70'
@@ -239,7 +500,7 @@ export default function CreateNFT() {
               </Transition>
             </Listbox>
           </div>
-        </div>
+        </div> */}
 
         <Button shape="rounded">CREATE</Button>
       </div>

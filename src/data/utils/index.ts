@@ -32,10 +32,24 @@ class client {
         `${API_ENDPOINTS.PRICING}/${id}/market_chart?vs_currency=usd&days=30`
       ),
   };
-
   settings = {
     all: (params?: SettingsQueryOptions) =>
       HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
+  };
+  live_pricing= {
+    all: (params?: SettingsQueryOptions) =>
+      HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
+  };
+  findName = {
+    create: (data: any) =>
+      HttpClient.post(API_ENDPOINTS.FIND_NAME, data),
+  };
+  submitBuy = {
+    create: (data: any) =>
+      HttpClient.post(API_ENDPOINTS.BUY, data),
+  };
+  dao = {
+    getLatest: () => HttpClient.get(API_ENDPOINTS.LATEST_DAO),
   };
 }
 

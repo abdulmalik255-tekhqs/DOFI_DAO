@@ -37,6 +37,11 @@ const DCAStepper = dynamic(
 const CoinSelectView = dynamic(
   () => import('@/components/ui/coin-select-view'),
 );
+const FindNameView = dynamic(() => import('@/components/search/find-name'));
+const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'));
+const ProposalAcceptView = dynamic(
+  () => import('@/components/proposal-accept/proposal-accept'),
+);
 
 function renderModalContent(view: MODAL_VIEW | string, data?: any) {
   switch (view) {
@@ -62,6 +67,12 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <DCAOrderHistory />;
     case 'DCA_STEPPER':
       return <DCAStepper />;
+    case 'FIND_NAME':
+      return <FindNameView />;
+    case 'PROPOSAL_ACCEPT':
+      return <ProposalAcceptView data={data} />;
+    case 'CREATE_IDO':
+      return <CreateIDOView data={data} />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

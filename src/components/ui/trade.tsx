@@ -24,14 +24,14 @@ const tradeMenu = [
     name: 'Swap',
     value: routes.swap,
   },
-  {
-    name: 'Liquidity',
-    value: routes.liquidity,
-  },
-  {
-    name: 'Vote',
-    value: routes.vote,
-  },
+  // {
+  //   name: 'Liquidity',
+  //   value: routes.liquidity,
+  // },
+  // {
+  //   name: 'Vote',
+  //   value: routes.vote,
+  // },
 ];
 
 function ActiveNavLink({ href, title, isActive, className }: any) {
@@ -90,7 +90,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
               onSelect={(path) => handleRouteOnSelect(path)}
               className="w-full"
             >
-              <AnchorLink
+              {/* <AnchorLink
                 href={{
                   pathname:
                     layout === LAYOUT_OPTIONS.MODERN
@@ -101,7 +101,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
               >
                 Charts
                 <ExportIcon className="h-auto w-2.5" />
-              </AnchorLink>
+              </AnchorLink> */}
               <button className="inline-flex items-center justify-between gap-1.5 rounded-md px-3 py-2 uppercase text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-700/70">
                 Settings
                 <RangeIcon className="h-auto w-3" />

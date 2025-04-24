@@ -7,6 +7,7 @@ import { A11y, Pagination } from 'swiper/modules';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import cn from '@/utils/cn';
 import { priceFeedData } from '@/data/static/price-feed';
+import { useDao } from '@/hooks/livePricing';
 
 type Price = {
   name: number;
@@ -38,6 +39,16 @@ export function LivePricingFeed({
   prices,
   isBorder,
 }: LivePriceFeedProps) {
+  const { dao, isLoading, error } = useDao();
+  function getInitialIcon(name: string) {
+    const firstLetter = name?.charAt(0).toUpperCase() || '?';
+
+    return (
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-sm font-semibold text-white">
+        {firstLetter}
+      </div>
+    );
+  }
   return (
     <div
       className={cn(
@@ -46,8 +57,9 @@ export function LivePricingFeed({
     >
       <div className="w-full flex-col">
         <div className="mb-3 flex items-center">
-          {icon}
-          <h4 className="text-sm font-medium text-gray-900 ltr:ml-3 rtl:mr-3 dark:text-white">
+          {getInitialIcon(name)}
+          {/* {icon} */}
+          <h4 className="text-sm font-medium text-gray-900 dark:text-white ltr:ml-3 rtl:mr-3">
             {name}
           </h4>
         </div>
@@ -57,7 +69,7 @@ export function LivePricingFeed({
           <span className="ml-3">{symbol}</span>
         </div>
 
-        <div className="flex items-center text-xs font-medium 2xl:text-sm">
+        {/* <div className="flex items-center text-xs font-medium 2xl:text-sm">
           <span
             className="truncate tracking-tighter text-gray-600 ltr:mr-5 rtl:ml-5 dark:text-gray-400 2xl:w-24 3xl:w-auto"
             title={`${usdBalance} USD`}
@@ -79,7 +91,7 @@ export function LivePricingFeed({
             </span>
             {change}
           </span>
-        </div>
+        </div> */}
       </div>
 
       <div

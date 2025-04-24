@@ -23,7 +23,7 @@ export default function Profile() {
   }
   return (
     <div className="flex w-full flex-col pt-4 md:flex-row md:pt-10 lg:flex-row 3xl:pt-12">
-      <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 md:w-72 ltr:md:border-r md:ltr:pr-7 rtl:md:border-l md:rtl:pl-7 lg:ltr:pr-10 lg:rtl:pl-10 2xl:w-80 3xl:w-96 3xl:ltr:pr-14 3xl:rtl:pl-14">
+      <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 md:w-72 2xl:w-80 3xl:w-96 ltr:md:border-r md:ltr:pr-7 lg:ltr:pr-10 3xl:ltr:pr-14 rtl:md:border-l md:rtl:pl-7 lg:rtl:pl-10 3xl:rtl:pl-14">
         <div className="text-center ltr:md:text-left rtl:md:text-right">
           <h2 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
             {authorData?.name}
@@ -35,7 +35,7 @@ export default function Profile() {
             <div className="inline-flex h-full shrink-0 grow-0 items-center rounded-full bg-gray-900 px-4 text-xs text-white sm:text-sm">
               #{authorData?.id}
             </div>
-            <div className="text truncate text-ellipsis bg-center text-xs text-gray-500 ltr:pl-4 rtl:pr-4 dark:text-gray-300 sm:text-sm">
+            <div className="text truncate text-ellipsis bg-center text-xs text-gray-500 dark:text-gray-300 sm:text-sm ltr:pl-4 rtl:pr-4">
               {authorData?.wallet_key}
             </div>
             <div
@@ -51,7 +51,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 border-y border-dashed border-gray-200 py-5 text-center dark:border-gray-700 md:justify-start ltr:md:text-left rtl:md:text-right xl:mt-12 xl:gap-8 xl:py-6">
+        {/* <div className="mt-10 flex flex-wrap items-center justify-center gap-6 border-y border-dashed border-gray-200 py-5 text-center dark:border-gray-700 md:justify-start xl:mt-12 xl:gap-8 xl:py-6 ltr:md:text-left rtl:md:text-right">
           <div>
             <div className="mb-1.5 text-lg font-medium tracking-tighter text-gray-900 dark:text-white">
               {authorData?.following}
@@ -74,8 +74,8 @@ export default function Profile() {
           >
             Follow
           </Button>
-        </div>
-        <div className="border-y border-dashed border-gray-200 py-5 text-center dark:border-gray-700 ltr:md:text-left rtl:md:text-right xl:py-6">
+        </div> */}
+        {/* <div className="border-y border-dashed border-gray-200 py-5 text-center dark:border-gray-700 xl:py-6 ltr:md:text-left rtl:md:text-right">
           <div className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
             Followed by
           </div>
@@ -105,10 +105,10 @@ export default function Profile() {
               View All
             </AnchorLink>
           </div>
-        </div>
+        </div> */}
         <AuthorInformation className="hidden md:block" data={authorData} />
       </div>
-      <div className="grow pb-9 pt-6 md:-mt-2.5 md:pb-0 md:pt-1.5 md:ltr:pl-7 md:rtl:pr-7 lg:ltr:pl-10 lg:rtl:pr-10 3xl:ltr:pl-14 3xl:rtl:pr-14">
+      <div className="grow pb-9 pt-6 md:-mt-2.5 md:pb-0 md:pt-1.5 md:ltr:pl-7 lg:ltr:pl-10 3xl:ltr:pl-14 md:rtl:pr-7 lg:rtl:pr-10 3xl:rtl:pr-14">
         <ProfileTab />
       </div>
       <AuthorInformation data={authorData} />

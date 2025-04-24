@@ -15,11 +15,19 @@ import VoterTable from '@/components/vote/vote-details/voter-table';
 import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
+import { useModal } from '@/components/modal-views/context';
 
-function VoteActionButton() {
+function VoteActionButton({ vote }: any) {
+  const { openModal } = useModal();
+  console.log(vote, 'vote');
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      <Button shape="rounded" color="success" className="flex-1 xs:flex-auto">
+      <Button
+        shape="rounded"
+        color="success"
+        className="flex-1 xs:flex-auto"
+        onClick={() => openModal('PROPOSAL_ACCEPT', vote)}
+      >
         Accept
       </Button>
       <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto">
@@ -45,7 +53,7 @@ export default function VoteDetailsCard({ vote }: any) {
     >
       <motion.div
         layout
-        className={cn('flex w-full flex-col-reverse justify-between ', {
+        className={cn('flex w-full flex-col-reverse justify-between', {
           'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
           'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
         })}
@@ -73,7 +81,7 @@ export default function VoteDetailsCard({ vote }: any) {
                   Vote Now
                 </Button>
               ) : (
-                <VoteActionButton />
+                <VoteActionButton vote={vote} />
               )}
             </>
           )}
@@ -91,16 +99,16 @@ export default function VoteDetailsCard({ vote }: any) {
         {['active', 'off-chain'].indexOf(vote.status) !== -1 && (
           <div
             className={cn(
-              "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 ltr:before:left-0 rtl:before:right-0 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ",
+              "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
               {
-                'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 rtl:md:pr-5 ltr:xl:pl-3 rtl:xl:pr-3':
+                'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
                   layout !== LAYOUT_OPTIONS.RETRO,
-                'mb-5 pb-5 before:h-[1px] before:w-full ltr:pl-0 lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:lg:pl-3 rtl:lg:pr-3':
+                'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
                   layout === LAYOUT_OPTIONS.RETRO,
               },
             )}
           >
-            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg ">
+            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ends in
             </h3>
             <AuctionCountdown date={new Date(Date.now() + 172800000)} />
@@ -129,8 +137,8 @@ export default function VoteDetailsCard({ vote }: any) {
                 <span
                   className={cn(
                     isExpand
-                      ? 'bg-white ltr:translate-x-5 rtl:-translate-x-5 dark:bg-gray-700'
-                      : 'bg-white ltr:translate-x-0.5 rtl:-translate-x-0.5 dark:bg-gray-200',
+                      ? 'bg-white dark:bg-gray-700 ltr:translate-x-5 rtl:-translate-x-5'
+                      : 'bg-white dark:bg-gray-200 ltr:translate-x-0.5 rtl:-translate-x-0.5',
                     'inline-block h-[18px] w-[18px] transform rounded-full bg-white transition-transform duration-200',
                   )}
                 />
@@ -173,13 +181,13 @@ export default function VoteDetailsCard({ vote }: any) {
                 dangerouslySetInnerHTML={{ __html: vote.description }}
               />
             </RevealContent>
-            <RevealContent
+            {/* <RevealContent
               defaultHeight={320}
               className="mt-6 border-t border-dashed border-gray-200 pt-6 dark:border-gray-700"
             >
               <VoteActions title={'Actions'} action={vote?.action} />
-            </RevealContent>
-            <div className="mt-6 flex items-center justify-center border-t border-dashed border-gray-200 pt-6 dark:border-gray-700">
+            </RevealContent> */}
+            {/* <div className="mt-6 flex items-center justify-center border-t border-dashed border-gray-200 pt-6 dark:border-gray-700">
               <Button
                 shape="rounded"
                 fullWidth={true}
@@ -191,7 +199,7 @@ export default function VoteDetailsCard({ vote }: any) {
               >
                 Add POOL token to MetaMask
               </Button>
-            </div>
+            </div> */}
           </motion.div>
         )}
       </AnimatePresence>

@@ -66,7 +66,7 @@ function CryptocurrencyAccordionTable({
               }`}
             >
               <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
-                DOFI DAO
+                IDO Listing
               </h2>
             </div>
           </div>
@@ -122,7 +122,7 @@ function CryptocurrencyAccordionTable({
                   {...getTableBodyProps()}
                   className="pricing-table-body grid bg-white text-xs font-medium text-gray-900 dark:bg-light-dark dark:text-white md:px-6 3xl:text-sm"
                 >
-                  {page.map((row, idx) => {
+                  {page?.map((row, idx) => {
                     prepareRow(row);
                     return (
                       <tr

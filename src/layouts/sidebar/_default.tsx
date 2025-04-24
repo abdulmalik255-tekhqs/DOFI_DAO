@@ -15,7 +15,6 @@ import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
 import SimpleBar from '@/components/ui/simplebar';
 
-
 //images
 import AuthorImage from '@/assets/images/author.jpg';
 
@@ -91,7 +90,6 @@ export default function Sidebar({
               router.push(newPath);
             }}
           />
-
           <div className="mt-12">
             {sideBarMenus?.map((item, index) => (
               <MenuItem

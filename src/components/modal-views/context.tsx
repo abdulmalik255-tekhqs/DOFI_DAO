@@ -14,7 +14,10 @@ export type MODAL_VIEW =
   | 'PROFIT_TRANSFER_PREVIEW'
   | 'DCA_ORDER_HISTORY'
   | 'DCA_STEPPER'
-  | 'SWAP_COIN_SELECT';
+  | 'SWAP_COIN_SELECT'
+  | 'FIND_NAME'
+  | 'CREATE_IDO'
+  | 'PROPOSAL_ACCEPT';
 
 interface ModalTypes {
   isOpen: boolean;

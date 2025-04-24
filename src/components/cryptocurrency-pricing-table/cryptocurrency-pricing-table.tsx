@@ -7,6 +7,9 @@ import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import CryptocurrencyAccordionTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-accordion-table';
 import CryptocurrencyDrawerTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer-table';
 import { CoinPriceData } from '@/data/static/coin-market-data';
+import { useCoins } from '@/hooks/useCoin';
+import { log } from 'console';
+import { useLivePricing } from '@/hooks/livePricing';
 
 const COLUMNS = [
   {
@@ -30,7 +33,7 @@ const COLUMNS = [
     maxWidth: 20,
   },
   {
-    Header: () => <div className="">Coin Name</div>,
+    Header: () => <div className="">IDO Name</div>,
     accessor: 'name',
     // @ts-ignore
     Cell: ({ row }) => (
@@ -83,18 +86,18 @@ const COLUMNS = [
     ),
     maxWidth: 80,
   },
+  // {
+  //   Header: () => <div className="">Circulating Supply</div>,
+  //   accessor: 'circulating_supply',
+  //   // @ts-ignore
+  //   Cell: ({ cell: { value } }) => (
+  //     <div className="ltr:text-left rtl:text-left">${value}</div>
+  //   ),
+  //   minWidth: 200,
+  //   maxWidth: 300,
+  // },
   {
-    Header: () => <div className="">Circulating Supply</div>,
-    accessor: 'circulating_supply',
-    // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div className="ltr:text-left rtl:text-left">${value}</div>
-    ),
-    minWidth: 200,
-    maxWidth: 300,
-  },
-  {
-    Header: () => <div className="">Volume (24h)</div>,
+    Header: () => <div className="">Volume</div>,
     accessor: 'total_volume',
     // @ts-ignore
     Cell: ({ cell: { value } }) => (
@@ -107,7 +110,7 @@ const COLUMNS = [
 
 export default function CryptocurrencyPricingTable() {
   // const { coins } = useCoins();
-
+  const { liveData } = useLivePricing();
   // const data = React.useMemo(() => coins, [coins]);
   const data = React.useMemo(() => CoinPriceData, []);
   const columns = React.useMemo(() => COLUMNS, []);

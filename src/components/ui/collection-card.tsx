@@ -1,10 +1,13 @@
 import Image from '@/components/ui/image';
 import cn from '@/utils/cn';
+import { useModal } from '@/components/modal-views/context';
+import { useRouter } from 'next/navigation';
 import { StaticImageData } from 'next/image';
 import AnchorLink from '@/components/ui/links/anchor-link';
 import Avatar from '@/components/ui/avatar';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
+import routes from '@/config/routes';
 
 type ItemType = {
   id?: string | number;
@@ -29,6 +32,13 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
   const { name, slug, title, cover_image, image, number_of_artwork, user } =
     item ?? {};
   const { layout } = useLayout();
+  const router = useRouter();
+  function goToNFTDetailPage() {
+    setTimeout(() => {
+      router.push(routes.nftDetails);
+    }, 800);
+  }
+  const { openModal } = useModal();
   return (
     <div
       className={cn(
@@ -47,24 +57,27 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
         />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
-        <AnchorLink
+        {/* <AnchorLink
           href={
             '/' + (layout === LAYOUT_OPTIONS.MODERN ? '' : layout + '/') + slug
           }
           className="absolute left-0 top-0 z-10 h-full w-full"
-        />
+        /> */}
         <div className="flex justify-between gap-3">
           <div
-            className="inline-flex h-8 shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white
-          backdrop-blur-[40px]"
+            onClick={() => openModal('CREATE_IDO', item)}
+            className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
           >
-            {name}
+            create IDO
           </div>
-          {image && (
-            <Avatar image={image} alt={name} shape="rounded" width={64} />
-          )}
+          <div
+            onClick={() => goToNFTDetailPage()}
+            className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
+          >
+            Detail View
+          </div>
         </div>
-        <div className="block">
+        {/* <div className="block">
           <h2 className="mb-1.5 truncate text-lg font-medium -tracking-wider text-white">
             {title}
           </h2>
@@ -89,7 +102,7 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
               @{user?.name}
             </div>
           </AnchorLink>
-        </div>
+        </div> */}
       </div>
     </div>
   );

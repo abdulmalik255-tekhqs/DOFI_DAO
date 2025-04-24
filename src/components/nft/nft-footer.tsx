@@ -29,7 +29,7 @@ export default function NftFooter({
         className,
       )}
     >
-      <div className="-mx-4 border-t-2 border-gray-900 px-4 pt-4 pb-5 dark:border-gray-700 sm:-mx-6 sm:px-6 md:mx-2 md:px-0 md:pt-5 lg:pt-6 lg:pb-7">
+      <div className="-mx-4 border-t-2 border-gray-900 px-4 pb-5 pt-4 dark:border-gray-700 sm:-mx-6 sm:px-6 md:mx-2 md:px-0 md:pt-5 lg:pb-7 lg:pt-6">
         {isAuction && (
           <div className="flex gap-4 pb-3.5 md:pb-4 xl:gap-5">
             <div className="block w-1/2 shrink-0 md:w-2/5">

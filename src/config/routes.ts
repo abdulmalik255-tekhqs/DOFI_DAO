@@ -14,6 +14,8 @@ const routes = {
   vote: '/vote',
   proposals: '/proposals',
   createProposal: '/proposals/create',
+  domain:"/domain-dao",
+  createDomain: '/proposals/domain-dao',
   charts: '/charts',
   profile: '/profile',
   portfolio: '/profile?view=portfolio',

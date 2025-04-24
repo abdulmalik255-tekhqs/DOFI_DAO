@@ -30,7 +30,7 @@ export default function ShareView({ nftSlug = '#' }: Props) {
   };
   return (
     <div className="rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
-      <div className="text-lg font-medium uppercase -tracking-wide text-gray-900 ltr:text-left rtl:text-right dark:text-white lg:text-xl">
+      <div className="text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
         Share this NFT
       </div>
       <div className="flex flex-wrap gap-2 pt-4 md:gap-2.5 xl:pt-5">

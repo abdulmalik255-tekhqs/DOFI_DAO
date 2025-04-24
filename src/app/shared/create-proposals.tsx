@@ -97,13 +97,13 @@ function CripticTokenAction({
             label="Spender address"
             useUppercaseLabel={false}
             placeholder="Enter spender address"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
           <Input
             label="Raw amount unit256"
             useUppercaseLabel={false}
             placeholder="Enter rawAmount in unit256"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
         </>
       )}
@@ -112,7 +112,7 @@ function CripticTokenAction({
           label="Delegated address"
           useUppercaseLabel={false}
           placeholder="Enter delegated address"
-          className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+          className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
         />
       )}
       {selectedOption.value === 'mint' && (
@@ -121,13 +121,13 @@ function CripticTokenAction({
             label="Dst address"
             useUppercaseLabel={false}
             placeholder="Enter dst address"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
           <Input
             label="Raw amount unit256"
             useUppercaseLabel={false}
             placeholder="Enter rawAmount in unit256"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
         </>
       )}
@@ -136,7 +136,7 @@ function CripticTokenAction({
           label="Minter address"
           useUppercaseLabel={false}
           placeholder="Enter minter address"
-          className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+          className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
         />
       )}
       {selectedOption.value === 'transfer' && (
@@ -145,13 +145,13 @@ function CripticTokenAction({
             label="Dst address"
             useUppercaseLabel={false}
             placeholder="Enter dst address"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
           <Input
             label="Raw amount unit256"
             useUppercaseLabel={false}
             placeholder="Enter rawAmount in unit256"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
         </>
       )}
@@ -161,19 +161,19 @@ function CripticTokenAction({
             label="Src address"
             useUppercaseLabel={false}
             placeholder="Enter src address"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
           <Input
             label="Dst address"
             useUppercaseLabel={false}
             placeholder="Enter dst address"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
           <Input
             label="Raw amount unit256"
             useUppercaseLabel={false}
             placeholder="Enter rawAmount in unit256"
-            className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+            className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
           />
         </>
       )}
@@ -185,7 +185,7 @@ function ActionFields() {
   let [actionType, setActionType] = useState(actionOptions[0]);
   let [reserveAction, setReserveAction] = useState(reserveOptions[0]);
   let [cripticTokenAction, setCripticTokenAction] = useState(
-    cripticTokenOptions[0]
+    cripticTokenOptions[0],
   );
   return (
     <div className="">
@@ -213,7 +213,7 @@ function ActionFields() {
           />
           {actionType.value === 'custom_contact' && (
             <Input
-              className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12"
+              className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
               useUppercaseLabel={false}
               placeholder="Enter contact address 0x1f9840a85..."
             />
@@ -227,7 +227,7 @@ function ActionFields() {
             </div>
           )}
           {actionType.value === 'reserve' && (
-            <div className="mt-4 ltr:xs:ml-6 rtl:xs:mr-6 ltr:sm:ml-12 rtl:sm:mr-12">
+            <div className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12">
               <Listbox
                 className="w-full sm:w-80"
                 options={reserveOptions}
@@ -252,7 +252,7 @@ const CreateProposalPage = () => {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-          routes.proposals
+          routes.proposals,
       );
     }, 800);
   }
@@ -263,7 +263,7 @@ const CreateProposalPage = () => {
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-dark">
             <Image alt="Vote Pool" src={votePool} width={32} height={32} />
           </div>
-          <div>
+          {/* <div>
             <h2 className="mb-2 text-base font-medium uppercase dark:text-gray-100 xl:text-lg">
               You have 100 votes
             </h2>
@@ -280,7 +280,7 @@ const CreateProposalPage = () => {
                 Learn more <ExportIcon className="h-auto w-3" />
               </a>
             </p>
-          </div>
+          </div> */}
         </div>
         <div className="shrink-0">
           <Button

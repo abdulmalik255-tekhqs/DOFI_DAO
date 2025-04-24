@@ -15,20 +15,21 @@ import {
   authorProtocols,
 } from '@/data/static/author-profile';
 import Loader from '@/components/ui/loader';
+import FractionCard from '../ui/fraction-card';
 
 const tabMenu = [
   {
-    title: 'Collection',
+    title: 'Domain NFTS',
     path: 'collection',
   },
   {
-    title: 'Portfolio',
+    title: 'Fractions',
     path: 'portfolio',
   },
-  {
-    title: 'History',
-    path: 'history',
-  },
+  // {
+  //   title: 'History',
+  //   path: 'history',
+  // },
 ];
 
 export default function ProfileTab() {
@@ -54,17 +55,23 @@ export default function ProfileTab() {
           </div>
         </TabPanel>
         <TabPanel className="focus:outline-none">
-          <div className="space-y-8 md:space-y-10 xl:space-y-12">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
-              {authorWallets?.map((wallet) => (
-                <ListCard
-                  item={wallet}
-                  key={`wallet-key-${wallet?.id}`}
-                  variant="medium"
-                />
-              ))}
-            </div>
-            <div className="block">
+          {/* <div className="space-y-8 md:space-y-10 xl:space-y-12"> */}
+          <div
+            className={cn(
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              layout === LAYOUT_OPTIONS.RETRO
+                ? 'md:grid-cols-2'
+                : 'md:grid-cols-1',
+            )}
+          >
+            {collections?.map((collection) => (
+              <FractionCard
+                item={collection}
+                key={`collection-key-${collection?.id}`}
+              />
+            ))}
+          </div>
+          {/* <div className="block">
               <h3 className="text-heading-style mb-3 uppercase text-gray-900 dark:text-white">
                 Protocols
               </h3>
@@ -91,8 +98,8 @@ export default function ProfileTab() {
                   />
                 ))}
               </div>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </TabPanel>
         <TabPanel className="focus:outline-none">
           <div className="space-y-8 xl:space-y-9">

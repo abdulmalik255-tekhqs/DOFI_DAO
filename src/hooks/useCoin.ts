@@ -34,7 +34,6 @@ export function useCoins(
       allPageParams,
     ) => null,
   });
-
   return {
     coins: result,
     paginatorInfo: Array.isArray(result.data?.pages)

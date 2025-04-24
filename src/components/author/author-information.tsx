@@ -50,7 +50,7 @@ export default function AuthorInformation({
       {/* Links */}
       <div
         className={cn(
-          'border-y  border-dashed border-gray-200 py-5 dark:border-gray-700 xl:py-6',
+          'border-y border-dashed border-gray-200 py-5 dark:border-gray-700 xl:py-6',
         )}
       >
         <div className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
@@ -76,14 +76,14 @@ export default function AuthorInformation({
         </div>
       )}
       {/* Report button */}
-      <Button
+      {/* <Button
         color="gray"
         className="mt-5 h-8 font-normal text-gray-600 hover:text-gray-900 dark:bg-gray-600 dark:text-gray-200 dark:hover:text-white md:h-9 md:px-4 lg:mt-6"
       >
         <span className="flex items-center gap-2">
           <InfoIcon className="h-3 w-3" /> report
         </span>
-      </Button>
+      </Button> */}
     </div>
   );
 }
