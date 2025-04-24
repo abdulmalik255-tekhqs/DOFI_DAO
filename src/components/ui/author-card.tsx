@@ -30,14 +30,13 @@ export default function AuthorCard({
         alt={name ? name : ''}
         className="dark:border-gray-400"
       /> */}
-      <div className="ltr:pl-3 rtl:pr-3">
+      {/* <div className="ltr:pl-3 rtl:pr-3">
         <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-          0x26BDd80b...8b8b1
         </h3>
-        {/* <span className="mt-1 block text-xs text-gray-600 dark:text-gray-400">
+        <span className="mt-1 block text-xs text-gray-600 dark:text-gray-400">
           {role}
-        </span> */}
-      </div>
+        </span>
+      </div> */}
     </div>
   );
 }
