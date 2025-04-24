@@ -1,5 +1,5 @@
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { arbitrum, mainnet } from '@reown/appkit/networks';
+import { baseSepolia } from '@reown/appkit/networks';
 
 export const projectId = process.env.NEXT_PUBLIC_CRYPTO_PROJECT_ID || '';
 
@@ -11,6 +11,6 @@ export const wagmiMetaData = {
 };
 
 export const wagmiAdapter = new WagmiAdapter({
-  networks: [mainnet, arbitrum],
+  networks: [baseSepolia],
   projectId,
 });
