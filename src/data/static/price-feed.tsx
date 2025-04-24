@@ -34,7 +34,7 @@ export const priceFeedData = [
   },
   {
     id: '1',
-    name: 'Domain DAO1',
+    name: 'Domain1 DAO',
     symbol: 'proposals',
     balance: '2345',
     usdBalance: '1,0324',
@@ -57,7 +57,7 @@ export const priceFeedData = [
   },
   {
     id: '2',
-    name: 'Domain DAO2',
+    name: 'Domain2 DAO',
     symbol: 'proposals',
     balance: '2370',
     usdBalance: '5324',
@@ -80,7 +80,7 @@ export const priceFeedData = [
   },
   {
     id: '3',
-    name: 'Domain DAO3',
+    name: 'Domain3 DAO',
     symbol: 'proposals',
     balance: '240.55',
     usdBalance: '34024',
@@ -103,7 +103,7 @@ export const priceFeedData = [
   },
   {
     id: '4',
-    name: 'Domain DAO4',
+    name: 'Domain4 DAO',
     symbol: 'proposals',
     balance: '24089',
     usdBalance: '34024',
@@ -126,7 +126,7 @@ export const priceFeedData = [
   },
   {
     id: '5',
-    name: 'Domain DAO5',
+    name: 'Domain5 DAO',
     symbol: 'proposals',
     balance: '24055',
     usdBalance: '34024',

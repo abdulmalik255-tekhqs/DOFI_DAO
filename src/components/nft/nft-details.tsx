@@ -53,7 +53,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
   return (
     <div className="flex flex-grow">
       <div className="mx-auto flex w-full flex-grow flex-col transition-all xl:max-w-[1360px] 4xl:max-w-[1760px]">
-        <div className="relative mb-5 flex flex-grow items-center justify-center md:pb-7 md:pt-4 ltr:md:left-0 ltr:md:pl-6 rtl:md:right-0 rtl:md:pr-6 lg:fixed lg:mb-0 lg:h-[calc(100%-96px)] lg:w-[calc(100%-492px)] ltr:lg:pl-8 rtl:lg:pr-8 xl:w-[calc(100%-550px)] ltr:xl:pl-[340px] ltr:xl:pr-12 rtl:xl:pl-12 rtl:xl:pr-[340px] ltr:2xl:pl-96 rtl:2xl:pr-96 3xl:w-[calc(100%-632px)] ltr:4xl:pl-0 rtl:4xl:pr-0">
+        <div className="relative mb-5 flex flex-grow items-center justify-center md:pb-7 md:pt-4 lg:fixed lg:mb-0 lg:h-[calc(100%-96px)] lg:w-[calc(100%-492px)] xl:w-[calc(100%-550px)] 3xl:w-[calc(100%-632px)] ltr:md:left-0 ltr:md:pl-6 ltr:lg:pl-8 ltr:xl:pl-[340px] ltr:xl:pr-12 ltr:2xl:pl-96 ltr:4xl:pl-0 rtl:md:right-0 rtl:md:pr-6 rtl:lg:pr-8 rtl:xl:pl-12 rtl:xl:pr-[340px] rtl:2xl:pr-96 rtl:4xl:pr-0">
           <div className="flex h-full max-h-full w-full items-center justify-center lg:max-w-[768px]">
             <div className="relative aspect-square max-h-full overflow-hidden rounded-lg">
               <Image
@@ -67,16 +67,16 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
           </div>
         </div>
 
-        <div className="relative flex w-full flex-grow flex-col justify-between ltr:md:ml-auto ltr:md:pl-8 rtl:md:mr-auto rtl:md:pr-8 lg:min-h-[calc(100vh-96px)] lg:w-[460px] ltr:lg:pl-12 rtl:lg:pr-12 xl:w-[592px] ltr:xl:pl-20 rtl:xl:pr-20">
+        <div className="relative flex w-full flex-grow flex-col justify-between lg:min-h-[calc(100vh-96px)] lg:w-[460px] xl:w-[592px] ltr:md:ml-auto ltr:md:pl-8 ltr:lg:pl-12 ltr:xl:pl-20 rtl:md:mr-auto rtl:md:pr-8 rtl:lg:pr-12 rtl:xl:pr-20">
           <div className="block">
             <div className="block">
               <div className="flex justify-between">
                 <h2 className="text-xl font-medium leading-[1.45em] -tracking-wider text-gray-900 dark:text-white md:text-2xl xl:text-3xl">
                   {name}
                 </h2>
-                <div className="mt-1.5 shrink-0 ltr:ml-3 rtl:mr-3 xl:mt-2">
+                {/* <div className="mt-1.5 shrink-0 xl:mt-2 ltr:ml-3 rtl:mr-3">
                   <NftDropDown />
-                </div>
+                </div> */}
               </div>
               <AnchorLink
                 href={minted_slug}
@@ -88,7 +88,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
               <div className="mt-4 flex flex-wrap gap-6 pt-0.5 lg:-mx-6 lg:mt-6 lg:gap-0">
                 <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 lg:px-6 lg:ltr:border-r lg:rtl:border-l">
                   <h3 className="text-heading-style mb-2 uppercase text-gray-900 dark:text-white">
-                    Created By
+                    Minted By
                   </h3>
                   <AnchorLink href={creator?.slug} className="inline-flex">
                     <ListCard
@@ -118,10 +118,10 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                       title: 'Details',
                       path: 'details',
                     },
-                    {
-                      title: 'Bids',
-                      path: 'bids',
-                    },
+                    // {
+                    //   title: 'Bids',
+                    //   path: 'bids',
+                    // },
                     {
                       title: 'History',
                       path: 'history',
@@ -138,7 +138,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                           {description}
                         </div>
                       </div>
-                      <div className="block">
+                      {/* <div className="block">
                         <h3 className="text-heading-style mb-2 uppercase text-gray-900 dark:text-white">
                           Owner
                         </h3>
@@ -167,7 +167,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                             </AnchorLink>
                           ))}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </TabPanel>
                   <TabPanel className="focus:outline-none">

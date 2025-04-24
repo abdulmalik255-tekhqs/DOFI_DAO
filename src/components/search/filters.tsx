@@ -153,7 +153,7 @@ export function PriceRange() {
         max={1000}
         value={[range.min, range.max]}
         allowCross={false}
-        onChange={(value) => handleRangeChange(value)}
+        onChange={(value: any) => handleRangeChange(value)}
       />
     </div>
   );
@@ -180,7 +180,7 @@ export function Status() {
           </span>
         )}
       </Radio>
-      <Radio value="on-auction">
+      {/* <Radio value="on-auction">
         {({ checked }) => (
           <span
             className={`flex h-9 cursor-pointer items-center justify-center rounded-lg border border-solid text-center text-sm font-medium uppercase tracking-wide transition-all ${
@@ -218,7 +218,7 @@ export function Status() {
             Has offers
           </span>
         )}
-      </Radio>
+      </Radio> */}
     </RadioGroup>
   );
 }
@@ -229,12 +229,12 @@ export function Filters() {
       <Collapse label="Status" initialOpen>
         <Status />
       </Collapse>
-      <Collapse label="Price Range" initialOpen>
+      {/* <Collapse label="Price Range" initialOpen>
         <PriceRange />
       </Collapse>
       <Collapse label="Collection" initialOpen>
         <CollectionSelect onSelect={(value) => console.log(value)} />
-      </Collapse>
+      </Collapse> */}
     </>
   );
 }

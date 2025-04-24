@@ -46,14 +46,14 @@ export default function ListCard({
       )}
     >
       <div className="flex items-center">
-        <div className={cn('rounded-full', variants[variant])}>
+        {/* <div className={cn('rounded-full', variants[variant])}>
           <Image
             src={logo}
             alt={name}
             width={handleImageSize(variant)}
             height={handleImageSize(variant)}
           />
-        </div>
+        </div> */}
 
         <div className="ltr:ml-2 rtl:mr-2">
           {name}

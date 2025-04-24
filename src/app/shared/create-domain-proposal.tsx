@@ -253,7 +253,7 @@ function ActionFields() {
   );
 }
 
-const CreateProposalPage = () => {
+const CreateDomainProposalPage = () => {
   const router = useRouter();
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
@@ -285,7 +285,6 @@ const CreateProposalPage = () => {
           </Button>
         </div>
       </header>
-
       <h2 className="mb-5 text-lg font-medium dark:text-gray-100 sm:mb-6 lg:mb-7 xl:text-xl">
         Create a new proposal
       </h2>
@@ -417,4 +416,4 @@ const CreateProposalPage = () => {
   );
 };
 
-export default CreateProposalPage;
+export default CreateDomainProposalPage;

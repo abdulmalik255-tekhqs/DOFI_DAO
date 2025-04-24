@@ -43,15 +43,15 @@ export default function NftFooter({
                 </AnchorLink>
               </h3>
               <div className="text-lg font-medium -tracking-wider md:text-xl xl:text-2xl">
-                {currentBid?.amount} ETH
+                {currentBid?.amount} USDT
               </div>
               <AnchorLink
                 href={currentBid?.authorSlug ?? '#'}
                 className="mt-2 hidden items-center text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white md:inline-flex"
               >
-                <div className="h-6 w-6 rounded-full ltr:mr-2 rtl:ml-2">
+                {/* <div className="h-6 w-6 rounded-full ltr:mr-2 rtl:ml-2">
                   <Image src={Avatar1} alt="avatar" width={24} height={24} />
-                </div>
+                </div> */}
                 @{currentBid?.name}
               </AnchorLink>
             </div>
@@ -66,9 +66,9 @@ export default function NftFooter({
 
         <div className="grid grid-cols-2 gap-3">
           <Button shape="rounded">
-            {isAuction ? 'PLACE A BID' : `BUY FOR ${price} ETH`}
+            {isAuction ? 'Fraction Buy' : `BUY FOR ${price} USDT`}
           </Button>
-          <Button
+          {/* <Button
             shape="rounded"
             variant="solid"
             color="gray"
@@ -76,7 +76,7 @@ export default function NftFooter({
             onClick={() => openModal('SHARE_VIEW')}
           >
             SHARE
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

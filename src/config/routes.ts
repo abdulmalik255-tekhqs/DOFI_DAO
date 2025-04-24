@@ -15,7 +15,7 @@ const routes = {
   proposals: '/proposals',
   createProposal: '/proposals/create',
   domain:"/domain-dao",
-  createDomain: '/proposals/domain-dao',
+  createDomain: '/domain-dao/create',
   charts: '/charts',
   profile: '/profile',
   portfolio: '/profile?view=portfolio',

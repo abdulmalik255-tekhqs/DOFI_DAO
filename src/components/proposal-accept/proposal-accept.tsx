@@ -19,7 +19,7 @@ export default function ProposalAccpet({ data }: ProposalProps) {
           value={priceFraction || ''}
           onChange={(e) => setPricefraction(e.target.value)}
           className="w-full appearance-none rounded-lg bg-gray-100 py-1 text-sm font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 dark:border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500 rtl:pr-10"
-          placeholder="proposal"
+          placeholder="Amount of stable coin"
         />
       </label>
       <Button

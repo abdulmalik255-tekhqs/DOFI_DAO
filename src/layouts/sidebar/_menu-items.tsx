@@ -19,12 +19,12 @@ export const defaultMenuItems = [
   //   href: routes.home,
   // },
   {
-    name: 'Live Pricing',
+    name: 'Home',
     icon: <LivePricing />,
     href: routes.livePricing,
   },
   {
-    name: 'Explore NFTs',
+    name: 'Explore Domains',
     icon: <CompassIcon />,
     href: routes.search,
   },
@@ -61,11 +61,7 @@ export const defaultMenuItems = [
   //   icon: <FarmIcon />,
   //   href: routes.farms,
   // },
-  {
-    name: 'Swap',
-    icon: <ExchangeIcon />,
-    href: routes.swap,
-  },
+
   // {
   //   name: 'Liquidity',
   //   icon: <PoolIcon />,
@@ -108,12 +104,12 @@ export const defaultMenuItems = [
         name: 'Create proposal',
         href: routes.createProposal,
       },
-      {
-        name: 'Create NFT',
-        icon: <PlusCircle />,
-        href: routes.createNft,
-      },
     ],
+  },
+  {
+    name: 'Swap',
+    icon: <ExchangeIcon />,
+    href: routes.swap,
   },
   // {
   //   name: 'Authentication',

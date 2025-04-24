@@ -120,7 +120,7 @@ const ProposalsPage = () => {
             className="uppercase"
             onClick={() => goToCreateProposalPage()}
           >
-            Create DOFI DAO
+            Create Proposals
           </Button>
         </div>
       </header>

@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowUp } from '@/components/icons/arrow-up';
+import { useRouter } from 'next/navigation';
 import { ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Pagination } from 'swiper/modules';
@@ -8,6 +9,7 @@ import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import cn from '@/utils/cn';
 import { priceFeedData } from '@/data/static/price-feed';
 import { useDao } from '@/hooks/livePricing';
+import routes from '@/config/routes';
 
 type Price = {
   name: number;
@@ -39,20 +41,26 @@ export function LivePricingFeed({
   prices,
   isBorder,
 }: LivePriceFeedProps) {
+  const router = useRouter();
   const { dao, isLoading, error } = useDao();
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
-
     return (
       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-sm font-semibold text-white">
         {firstLetter}
       </div>
     );
   }
+  function goToCreateProposalPage() {
+    setTimeout(() => {
+      router.push(id === '0' ? routes.proposals : routes.domain);
+    }, 800);
+  }
   return (
     <div
+      onClick={() => goToCreateProposalPage()}
       className={cn(
-        'flex items-center gap-4 rounded-lg bg-white p-5 shadow-[0_8px_16px_rgba(17,24,39,0.05)] dark:bg-light-dark lg:flex-row',
+        'flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_8px_16px_rgba(17,24,39,0.05)] dark:bg-light-dark lg:flex-row',
       )}
     >
       <div className="w-full flex-col">
@@ -93,7 +101,6 @@ export function LivePricingFeed({
           </span>
         </div> */}
       </div>
-
       <div
         className="h-20 w-full overflow-hidden"
         data-hello={isChangePositive ? '#22c55e' : '#D6455D'}

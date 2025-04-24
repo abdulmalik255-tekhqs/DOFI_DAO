@@ -37,9 +37,9 @@ export default function FeaturedCard({ item, className }: FeaturedCardProps) {
       )}
     >
       <div className="flex w-[68%] shrink-0 items-center">
-        <div className="h-7 w-7 shrink-0 rounded-full md:h-8 md:w-8 xl:h-10 xl:w-10">
+        {/* <div className="h-7 w-7 shrink-0 rounded-full md:h-8 md:w-8 xl:h-10 xl:w-10">
           {avatar && <Image src={avatar} alt={name} width={40} height={40} />}
-        </div>
+        </div> */}
         <div className="truncate ltr:ml-2 rtl:mr-2">
           <div className="mb-0.5 truncate text-sm font-medium -tracking-wider text-gray-900 dark:text-white">
             {label} by{' '}
@@ -57,9 +57,9 @@ export default function FeaturedCard({ item, className }: FeaturedCardProps) {
         </div>
       </div>
       {(amount || transactionUrl) && (
-        <div className="flex shrink-0 items-center ltr:pl-2 ltr:pr-0.5 rtl:pr-2 rtl:pl-0.5">
+        <div className="flex shrink-0 items-center ltr:pl-2 ltr:pr-0.5 rtl:pl-0.5 rtl:pr-2">
           {amount && (
-            <div className="text-sm font-medium -tracking-wider ltr:pr-2.5 rtl:pl-2.5 sm:text-base sm:ltr:pr-3 sm:rtl:pl-3">
+            <div className="text-sm font-medium -tracking-wider sm:text-base ltr:pr-2.5 sm:ltr:pr-3 rtl:pl-2.5 sm:rtl:pl-3">
               {amount} ETH
             </div>
           )}

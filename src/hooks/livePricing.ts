@@ -1,7 +1,7 @@
 import client from '@/data/utils';
 import { API_ENDPOINTS } from '@/data/utils/endpoints';
 import { useMutation } from '@tanstack/react-query';
-import { CoinPaginator, CoinPrice, CryptoQueryOptions } from '@/types';
+import { CoinPaginator, CryptoQueryOptions } from '@/types';
 import {
   useQuery,
   useInfiniteQuery,

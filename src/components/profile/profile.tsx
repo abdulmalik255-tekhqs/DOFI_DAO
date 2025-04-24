@@ -28,9 +28,9 @@ export default function Profile() {
           <h2 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
             {authorData?.name}
           </h2>
-          <div className="mt-1 text-sm font-medium tracking-tighter text-gray-600 dark:text-gray-400 xl:mt-3">
+          {/* <div className="mt-1 text-sm font-medium tracking-tighter text-gray-600 dark:text-gray-400 xl:mt-3">
             @{authorData?.user_name}
-          </div>
+          </div> */}
           <div className="md:max-w-auto mx-auto mt-5 flex h-9 max-w-sm items-center rounded-full bg-white shadow-card dark:bg-light-dark md:mx-0 xl:mt-6">
             <div className="inline-flex h-full shrink-0 grow-0 items-center rounded-full bg-gray-900 px-4 text-xs text-white sm:text-sm">
               #{authorData?.id}

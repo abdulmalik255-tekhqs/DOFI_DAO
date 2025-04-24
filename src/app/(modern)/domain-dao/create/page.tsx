@@ -1,5 +1,5 @@
-import CreateProposalsPage from '@/app/shared/create-proposals';
+import CreateDomainProposalPage from '@/app/shared/create-domain-proposal';
 
 export default function CreateDomainPageModern() {
-  return <CreateProposalsPage />;
+  return <CreateDomainProposalPage />;
 }

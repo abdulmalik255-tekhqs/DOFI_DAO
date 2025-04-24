@@ -22,7 +22,7 @@ const DomainDAOPage = () => {
   const { totalVote: totalActiveVote } = getVotesByStatus('active');
   function goToCreateProposalPage() {
     setTimeout(() => {
-      router.push(routes.createProposal);
+      router.push(routes.createDomain);
     }, 800);
   }
   const tabMenuItems = [
@@ -81,6 +81,9 @@ const DomainDAOPage = () => {
   ];
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
+      <h2 className="font-bolder mb-2 text-base uppercase dark:text-gray-100 xl:text-[35px]">
+        Domain DAO
+      </h2>
       <header
         className={cn(
           'mb-8 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6',
@@ -96,11 +99,11 @@ const DomainDAOPage = () => {
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-dark">
             <Image alt="Vote Pool" src={votePool} width={32} height={32} />
           </div>
-          <div>
+          {/* <div>
             <h2 className="mb-2 text-base font-medium uppercase dark:text-gray-100 xl:text-lg">
               You have 100 votes
             </h2>
-          </div>
+          </div> */}
         </div>
         <div className="shrink-0">
           <Button
@@ -109,15 +112,11 @@ const DomainDAOPage = () => {
             className="uppercase"
             onClick={() => goToCreateProposalPage()}
           >
-            Create Domain DAO
+            Create Proposal
           </Button>
         </div>
       </header>
-      <div>
-        <h2 className="mb-2 text-base font-medium uppercase dark:text-gray-100 xl:text-lg">
-          Domain DAO
-        </h2>
-      </div>
+      <div></div>
       <Suspense fallback={<Loader variant="blink" />}>
         <ParamTab tabMenu={tabMenuItems}>
           <TabPanel className="focus:outline-none">

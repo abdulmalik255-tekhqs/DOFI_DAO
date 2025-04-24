@@ -1,6 +1,7 @@
 import Image from '@/components/ui/image';
 import Avatar from '@/components/ui/avatar';
 import Profile from '@/components/profile/profile';
+import { CgProfile } from 'react-icons/cg';
 // static data
 import { authorData } from '@/data/static/author';
 
@@ -17,12 +18,16 @@ const AuthorProfilePage = () => {
         />
       </div>
       <div className="mx-auto flex w-full shrink-0 flex-col md:px-4 xl:px-6 3xl:max-w-[1700px] 3xl:px-12">
-        <Avatar
+        <div className="rouned-full z-10 mx-auto -mt-12 flex w-[10%] justify-center bg-white dark:border-gray-500 sm:-mt-14 md:mx-0 md:-mt-16 xl:mx-0 3xl:-mt-20">
+          <CgProfile width={100} className="text-[100px]" />
+        </div>
+
+        {/* <Avatar
           size="xl"
           image={authorData?.avatar?.thumbnail}
           alt="Author"
           className="z-10 mx-auto -mt-12 dark:border-gray-500 sm:-mt-14 md:mx-0 md:-mt-16 xl:mx-0 3xl:-mt-20"
-        />
+        /> */}
         <Profile />
       </div>
     </>

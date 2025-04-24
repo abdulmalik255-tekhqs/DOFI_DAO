@@ -38,12 +38,12 @@ export default function NFTGrid({
           }
           className="flex items-center text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
         >
-          <Avatar
+          {/* <Avatar
             image={authorImage}
             alt={name}
             size="sm"
             className="text-ellipsis ltr:mr-3 rtl:ml-3 dark:border-gray-500"
-          />
+          /> */}
           <span className="overflow-hidden text-ellipsis">@{author}</span>
         </AnchorLink>
       </div>
@@ -74,7 +74,7 @@ export default function NFTGrid({
         >
           {name}
         </AnchorLink>
-        <div className="mt-1.5 flex">
+        {/* <div className="mt-1.5 flex">
           <AnchorLink
             href={
               (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
@@ -85,7 +85,7 @@ export default function NFTGrid({
             {collection}
             <Verified className="ltr:ml-1 rtl:mr-1" />
           </AnchorLink>
-        </div>
+        </div> */}
         <div className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
           {price}
         </div>
