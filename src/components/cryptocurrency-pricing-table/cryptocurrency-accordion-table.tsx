@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronDown } from '@/components/icons/chevron-down';
 import { LongArrowRight } from '@/components/icons/long-arrow-right';
 import Button from '@/components/ui/button';
@@ -16,6 +17,7 @@ import {
 } from 'react-table';
 import { LongArrowLeft } from '@/components/icons/long-arrow-left';
 import CryptocurrencyDrawer from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer';
+import routes from '@/config/routes';
 
 function CryptocurrencyAccordionTable({
   // @ts-ignore
@@ -53,7 +55,12 @@ function CryptocurrencyAccordionTable({
   const { pageIndex } = state;
   const { globalFilter } = state;
   const [isOpen, setIsOpen] = useState(false);
-
+  const router = useRouter();
+  function goToAllProposalPage() {
+    setTimeout(() => {
+      router.push(routes.idoDetail);
+    }, 500);
+  }
   return (
     <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg shadow-card lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
@@ -129,7 +136,8 @@ function CryptocurrencyAccordionTable({
                         {...row.getRowProps()}
                         key={idx + 1}
                         className="h-[50px] max-h-[50px] cursor-pointer items-center rounded uppercase transition-all last:mb-0 hover:bg-[#F3F4F6] dark:bg-light-dark hover:dark:bg-gray-700"
-                        onClick={() => setIsOpen(!isOpen)}
+                        // onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => goToAllProposalPage()}
                       >
                         {row.cells.map((cell, idx) => {
                           return (

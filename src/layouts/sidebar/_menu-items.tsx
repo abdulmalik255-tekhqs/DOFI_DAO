@@ -93,8 +93,8 @@ export const defaultMenuItems = [
     href: routes.vote,
     dropdownItems: [
       // {
-      //   name: 'Explore',
-      //   href: routes.vote,
+      //   name: 'IDO-detail',
+      //   href: routes.idoDetail,
       // },
       {
         name: 'Explore proposal',

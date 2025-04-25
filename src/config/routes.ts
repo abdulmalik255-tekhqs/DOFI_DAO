@@ -17,6 +17,7 @@ const routes = {
   domain:"/domain-dao",
   createDomain: '/domain-dao/create',
   charts: '/charts',
+  idoDetail:"/ido-detail",
   profile: '/profile',
   portfolio: '/profile?view=portfolio',
   history: '/profile?view=history',
