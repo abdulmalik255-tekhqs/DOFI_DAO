@@ -27,6 +27,7 @@ type LivePriceFeedProps = {
   isChangePositive: boolean;
   isBorder?: boolean;
   prices: Price[];
+  noOfProposals?: number;
 };
 
 export function LivePricingFeed({
@@ -38,11 +39,11 @@ export function LivePricingFeed({
   usdBalance,
   change,
   isChangePositive,
-  prices,
+  noOfProposals,
   isBorder,
 }: LivePriceFeedProps) {
   const router = useRouter();
-  const { dao, isLoading, error } = useDao();
+
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
     return (
@@ -56,11 +57,22 @@ export function LivePricingFeed({
       router.push(id === '0' ? routes.proposals : routes.domain);
     }, 800);
   }
+  const prices = [
+    { name: 1, value: 15187.44 },
+    { name: 2, value: 21356.99 },
+    { name: 3, value: 34698.98 },
+    { name: 4, value: 37587.55 },
+    { name: 5, value: 17577.4 },
+    { name: 6, value: 26577.4 },
+    { name: 7, value: 23577.4 },
+    { name: 8, value: 18577.4 },
+    { name: 9, value: 28577.4 },
+  ];
   return (
     <div
       onClick={() => goToCreateProposalPage()}
       className={cn(
-        'flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_8px_16px_rgba(17,24,39,0.05)] dark:bg-light-dark lg:flex-row',
+        'm-2 flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:bg-light-dark lg:flex-row',
       )}
     >
       <div className="w-full flex-col">
@@ -73,8 +85,8 @@ export function LivePricingFeed({
         </div>
 
         <div className="mb-2 text-sm font-medium tracking-tighter text-gray-900 dark:text-white lg:text-lg 2xl:text-xl 3xl:text-2xl">
-          {balance}
-          <span className="ml-3">{symbol}</span>
+          {noOfProposals}
+          <span className="ml-3">proposals</span>
         </div>
 
         {/* <div className="flex items-center text-xs font-medium 2xl:text-sm">
@@ -163,6 +175,15 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       spaceBetween: 24,
     },
   };
+  function mergeDAOs(parentDAOs: any, childDAOs: any) {
+    return [...(parentDAOs || []), ...(childDAOs || [])];
+  }
+  const { dao, isLoading, error } = useDao();
+  //@ts-ignore
+  console.log(dao?.data, 'dao');
+  //@ts-ignore
+  const mergedDAOs = mergeDAOs(dao?.data?.parentDAOs, dao?.data?.childDAOs);
+  console.log(mergedDAOs, 'mergedDAOsmergedDAOsmergedDAOs');
 
   return (
     <Swiper
@@ -175,7 +196,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       dir="ltr"
       className="w-full pb-10"
     >
-      {priceFeedData.map((item) => (
+      {mergedDAOs.map((item) => (
         <SwiperSlide key={item.id}>
           <LivePricingFeed {...item} />
         </SwiperSlide>

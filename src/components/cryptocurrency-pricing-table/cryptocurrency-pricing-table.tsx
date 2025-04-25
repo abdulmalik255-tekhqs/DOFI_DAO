@@ -9,26 +9,32 @@ import CryptocurrencyDrawerTable from '@/components/cryptocurrency-pricing-table
 import { CoinPriceData } from '@/data/static/coin-market-data';
 import { useCoins } from '@/hooks/useCoin';
 import { log } from 'console';
-import { useLivePricing } from '@/hooks/livePricing';
+import { useIDO, useLivePricing } from '@/hooks/livePricing';
 
 const COLUMNS = [
-  {
-    Header: () => <div className="px-1"></div>,
-    accessor: 'symbol',
-    // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div className="">
-        <Star />
-      </div>
-    ),
-    minWidth: 40,
-    maxWidth: 20,
-  },
+  // {
+  //   Header: () => <div className="px-1"></div>,
+  //   accessor: 'symbol',
+  //   // @ts-ignore
+  //   Cell: ({ cell: { value } }) => (
+  //     <div className="">
+  //       <Star />
+  //     </div>
+  //   ),
+  //   minWidth: 40,
+  //   maxWidth: 20,
+  // },
   {
     Header: '#',
-    accessor: 'market_cap_rank',
+    accessor: 'Token ID',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => <div>{value}</div>,
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div className="ltr:text-left rtl:text-left">
+          {row.original.nftID?.tokenId}
+        </div>
+      </div>
+    ),
     minWidth: 40,
     maxWidth: 20,
   },
@@ -38,83 +44,84 @@ const COLUMNS = [
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        {row.original.image}
         <div className="ltr:text-left rtl:text-left">{row.original.name}</div>
       </div>
     ),
     minWidth: 100,
+    maxWidth: 100,
   },
   {
     Header: () => <div className="">Price</div>,
     accessor: 'current_price',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div className="ltr:text-left rtl:text-left">${value}</div>
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div className="">{row.original.nftID?.price}</div>
+      </div>
     ),
     minWidth: 80,
-    maxWidth: 120,
+    maxWidth: 80,
   },
   {
-    Header: () => <div className="">1h%</div>,
+    Header: () => <div className="">Investors</div>,
+    accessor: 'currentw_price',
+    // @ts-ignore
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div className="flex w-auto items-center justify-center">
+          {row.original.investors?.length}
+        </div>
+      </div>
+    ),
+    minWidth: 80,
+    maxWidth: 80,
+  },
+  {
+    Header: () => <div className="">Soft Cap</div>,
     accessor: 'price_change_percentage_1h_in_currency',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div
-        className={`${
-          Math.sign(value) === 1 ? 'text-green-500' : 'text-red-500'
-        }`}
-      >
-        {Math.sign(value) === 1 ? '+' : ''}
-        {value}%
+    Cell: ({ row }) => (
+      <div className="flex items-center">
+        <div className="flex w-auto items-center justify-center">
+          {row.original.softCap}
+        </div>
       </div>
     ),
     maxWidth: 80,
   },
   {
-    Header: () => <div className="">24h%</div>,
+    Header: () => <div className="">Total Supply</div>,
     accessor: 'price_change_percentage_24h_in_currency',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div
-        className={`${
-          Math.sign(value) === 1 ? 'text-green-500' : 'text-red-500'
-        }`}
-      >
-        {Math.sign(value) === 1 ? '+' : ''}
-        {value}%
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center ltr:text-left rtl:text-left">
+          {row.original.totalSupply}
+        </div>
       </div>
     ),
     maxWidth: 80,
   },
-  // {
-  //   Header: () => <div className="">Circulating Supply</div>,
-  //   accessor: 'circulating_supply',
-  //   // @ts-ignore
-  //   Cell: ({ cell: { value } }) => (
-  //     <div className="ltr:text-left rtl:text-left">${value}</div>
-  //   ),
-  //   minWidth: 200,
-  //   maxWidth: 300,
-  // },
   {
-    Header: () => <div className="">Volume</div>,
+    Header: () => <div className="">status</div>,
     accessor: 'total_volume',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => (
-      <div className="ltr:text-left rtl:text-left">${value}</div>
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div className="flex h-auto w-auto items-center justify-center rounded-lg bg-brand p-4 text-white shadow-large ltr:text-left rtl:text-left">
+          {row.original.status}
+        </div>
+      </div>
     ),
-    minWidth: 100,
     maxWidth: 300,
   },
 ];
 
 export default function CryptocurrencyPricingTable() {
-  // const { coins } = useCoins();
-  const { liveData } = useLivePricing();
-  // const data = React.useMemo(() => coins, [coins]);
-  const data = React.useMemo(() => CoinPriceData, []);
+  const { ido } = useIDO();
+  //@ts-ignore
+  const data = React.useMemo(() => ido?.data ?? [], [ido?.data]);
   const columns = React.useMemo(() => COLUMNS, []);
-
   const isMounted = useIsMounted();
   const breakpoint = useBreakpoint();
 

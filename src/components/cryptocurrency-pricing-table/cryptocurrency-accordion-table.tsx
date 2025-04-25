@@ -64,7 +64,7 @@ function CryptocurrencyAccordionTable({
   return (
     <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg shadow-card lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
-        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        <GlobalFilter />
         <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
           <div className="rounded-tl-lg rounded-tr-lg bg-white pt-6 dark:bg-light-dark md:px-6 md:pt-8">
             <div
@@ -73,7 +73,7 @@ function CryptocurrencyAccordionTable({
               }`}
             >
               <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
-                IDO Listing
+                Domain Initial Offering
               </h2>
             </div>
           </div>
