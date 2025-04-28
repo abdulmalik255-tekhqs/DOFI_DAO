@@ -46,8 +46,11 @@ class client {
       HttpClient.get(`${API_ENDPOINTS.FIND_NAME}/${encodeURIComponent(name)}?address=${address}`),
   };
   submitBuy = {
-    create: (data: { id: string }, address: string) =>
-      HttpClient.post(`${API_ENDPOINTS.BUY}/${data.id}?address=${address}`)
+    create: async (data: { id: string }, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.BUY}/${data.id}?address=${address}`);
+      console.log('API Response:', response);  // Check the structure here
+      return response;  // Return the response directly
+    },
   };
   createido = {
     create: (data: any,address:string) =>

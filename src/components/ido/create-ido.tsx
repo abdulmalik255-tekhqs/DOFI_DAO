@@ -10,7 +10,7 @@ interface CreateIDOProps {
   data: any;
 }
 export default function CreateIDO({ data }: CreateIDOProps) {
-  console.log(data, 'test');
+  console.log(data?.data, 'test');
   const { address } = useAccount();
   const [totalFraction, setTotalfraction] = useState('');
   const [priceFraction, setPricefraction] = useState('');
@@ -19,15 +19,16 @@ export default function CreateIDO({ data }: CreateIDOProps) {
     try {
       submitCreate({
         //@ts-ignore
-        nftID: data?._id,
+        nftID: data?.data?._id,
         name: 'DAO Token',
         tokenSymbol: 'DAO NFT',
-        totalSupply: 100,
-        pricePerToken: 1,
+        totalSupply: totalFraction,
+        pricePerToken: priceFraction,
         startTime: 1745600400000,
         endTime: 1745600400000,
         creator: address,
         address: address,
+        description: 'token',
       });
     } catch (error) {
       console.log(error);
@@ -73,8 +74,8 @@ export default function CreateIDO({ data }: CreateIDOProps) {
             <FaSackDollar color="#FFFF00" /> Revenue Sharing
           </h2>
           <p className="justiy-center w-full items-start gap-2 text-[16px] font-normal text-black md:flex">
-            "Earn a share of revenue generated from domain monetization,
-            leasing, or resales."
+            Earn a share of revenue generated from domain monetization, leasing,
+            or resales.
           </p>
         </div>
         <div className="mb-4 flex w-full flex-col">
@@ -82,8 +83,8 @@ export default function CreateIDO({ data }: CreateIDOProps) {
             <AiOutlineGlobal color="#0000FF" /> Domain Utility Decisions
           </h2>
           <p className="justiy-center w-full items-start gap-2 text-[16px] font-normal text-black md:flex">
-            "Vote on how the ENS domain is used across dApps, marketplaces, or
-            DAOs."
+            Vote on how the ENS domain is used across dApps, marketplaces, or
+            DAOs.
           </p>
         </div>
         <div className="mb-4 flex w-full flex-col">
@@ -91,8 +92,8 @@ export default function CreateIDO({ data }: CreateIDOProps) {
             <GiBrain color="#FF00FF" /> Name Service Innovation
           </h2>
           <p className="justiy-center w-full items-start gap-2 text-[16px] font-normal text-black md:flex">
-            "Collaborate on experiments like subdomain leasing, identity use
-            cases, or zk integrations."
+            Collaborate on experiments like subdomain leasing, identity use
+            cases, or zk integrations.
           </p>
         </div>
         <div className="mb-4 flex w-full flex-col">
@@ -100,8 +101,8 @@ export default function CreateIDO({ data }: CreateIDOProps) {
             <FaLock color="#FFFF00" /> Token-Gated Access
           </h2>
           <p className="justiy-center w-full items-start gap-2 text-[16px] font-normal text-black md:flex">
-            "Get exclusive access to token-holder-only tools, chats, and
-            community calls."
+            Get exclusive access to token-holder-only tools, chats, and
+            community calls.
           </p>
         </div>
       </div>

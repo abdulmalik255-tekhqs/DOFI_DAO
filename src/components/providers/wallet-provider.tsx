@@ -5,7 +5,7 @@ import {
   wagmiAdapter,
   wagmiMetaData,
 } from '@/app/shared/wagmi-config';
-import { arbitrum, mainnet } from '@reown/appkit/networks';
+import { baseSepolia } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiProvider, cookieToInitialState } from 'wagmi';
 
@@ -13,7 +13,7 @@ const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig);
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks: [mainnet, arbitrum],
+  networks: [baseSepolia],
   metadata: wagmiMetaData,
   projectId,
   features: {

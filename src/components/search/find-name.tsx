@@ -6,20 +6,14 @@ import { useBuyQuery } from '@/hooks/livePricing';
 import { useModal } from '@/components/modal-views/context';
 
 export default function FindName({ data }: any) {
-  console.log(data, 'data');
-
-  const { mutate: submitBuy, isError, error } = useBuyQuery();
+  const { mutate: submitBuyAsync, isError, error } = useBuyQuery();
   const { openModal } = useModal();
   const handleBuy = async () => {
     try {
-      console.log('gfhjk');
-
-      await submitBuy({
-        id: data?._id,
-      });
-      // openModal('CREATE_IDO');
+      const result = await submitBuyAsync({ id: data?._id });
+      // openModal('CREATE_IDO', result);
     } catch (error) {
-      console.log(error);
+      console.error('Buy failed:', error);
     }
   };
 
@@ -49,7 +43,7 @@ export default function FindName({ data }: any) {
         <div className="flex w-full justify-between">
           <h3>1 years registration</h3>
           <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-            $25.01
+            ${data?.price}
           </h3>
         </div>
         <div className="flex w-full justify-between">
@@ -61,7 +55,7 @@ export default function FindName({ data }: any) {
         <div className="flex w-full justify-between">
           <h3>Estimated total</h3>
           <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-            $5.48
+            ${data?.price + 0.48}
           </h3>
         </div>
       </div>

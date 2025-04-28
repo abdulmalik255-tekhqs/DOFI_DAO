@@ -9,8 +9,11 @@ import {
   useInfiniteQuery,
   type UseInfiniteQueryOptions,
 } from '@tanstack/react-query';
-import { Router, useRouter } from 'next/router';
+
 import routes from '@/config/routes';
+import { useRouter } from 'next/navigation';
+// import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido.reducer';
 
 export function useLivePricing(
   options?: Partial<CryptoQueryOptions>,
@@ -60,7 +63,6 @@ export function useSubmitFindNameQuery() {
     //@ts-ignore
     mutationFn: (name: string) => client.findName.create(name, address),
     onSuccess: (data) => {
-      console.log('Submitted successfully:', data);
     },
     onError: (error) => {
       console.error('Submission failed:', error);
@@ -70,13 +72,16 @@ export function useSubmitFindNameQuery() {
 
 export function useBuyQuery() {
   const { address } = useAccount();
-  const { openModal } = useModal();
+  const { openModal,closeModal  } = useModal();
+  
   return useMutation({
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
-      console.log('Submitted successfully:', data);
-      // openModal('CREATE_IDO', data);
+      closeModal(); 
+      if(data){
+        openModal('CREATE_IDO', data);
+      }
     },
     onError: (error) => {
       console.error('Submission failed:', error);
@@ -88,17 +93,15 @@ export function useBuyQuery() {
   export function useCreateIDO() {
     const { address } = useAccount();
      const router = useRouter();
+    //  const dispatch= useDispatch();
     return useMutation({
       //@ts-ignore
       mutationFn: (data: any) => client.createido.create(data,address),
       onSuccess: (data) => {
-        // Optionally handle success (e.g. show toast, refetch queries, etc.)
-        console.log('Submitted successfully:', data);
-     
-      
-            router.push(routes.idoDetail);
-       
-        
+        if(data){
+          // dispatch(idoActions.saveIDOdetailData(data));
+          router.push(routes.idoDetail);
+        }
       },
       onError: (error) => {
         // Optionally handle error

@@ -1,16 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+// import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import routes from '@/config/routes';
 import Image from '@/components/ui/image';
 import NFT8 from '@/assets/images/coin/usdt.svg';
 // static data
-import votePool from '@/assets/images/vote-pool.svg';
-import discord from '@/assets/images/discord.svg';
-import forum from '@/assets/images/forum.svg';
-import bank from '@/assets/images/bank.svg';
-import mirror from '@/assets/images/mirror.svg';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import cn from '@/utils/cn';
@@ -19,6 +15,9 @@ import VotePoll from '@/components/vote/vote-details/vote-poll';
 
 const IDODetailPage = () => {
   const router = useRouter();
+  // const { idoDetailData } = useSelector((state: any) => state.ido);
+  // console.log(idoDetailData, 'idoDetailData');
+
   const { layout } = useLayout();
   const vote = [
     {
@@ -40,6 +39,7 @@ const IDODetailPage = () => {
       status: 'active',
     },
   ];
+
   return (
     <div className="mx-auto w-full max-w-[1160px] text-sm md:pt-14 4xl:pt-24">
       <div>
