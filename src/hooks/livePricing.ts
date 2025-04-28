@@ -12,8 +12,8 @@ import {
 
 import routes from '@/config/routes';
 import { useRouter } from 'next/navigation';
-// import { useDispatch } from 'react-redux';
-import { idoActions } from '@/store/reducer/ido.reducer';
+import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
 
 export function useLivePricing(
   options?: Partial<CryptoQueryOptions>,
@@ -78,7 +78,7 @@ export function useBuyQuery() {
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
-      closeModal(); 
+      // closeModal(); 
       if(data){
         openModal('CREATE_IDO', data);
       }
@@ -88,18 +88,21 @@ export function useBuyQuery() {
     },
   });
 }
-
-
   export function useCreateIDO() {
     const { address } = useAccount();
      const router = useRouter();
-    //  const dispatch= useDispatch();
+     const dispatch= useDispatch();
     return useMutation({
       //@ts-ignore
       mutationFn: (data: any) => client.createido.create(data,address),
       onSuccess: (data) => {
         if(data){
-          // dispatch(idoActions.saveIDOdetailData(data));
+          console.log(data,"data");
+          //@ts-ignore
+          console.log(data?.data,"fghklfghjk");
+          
+          //@ts-ignore
+          dispatch(idoActions.saveIDOdata(data?.data));
           router.push(routes.idoDetail);
         }
       },
@@ -133,4 +136,38 @@ export function useBuyQuery() {
     isLoading,
     error,
   };
+}
+
+
+export function useGetIDODetail() {
+  const { address } = useAccount();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (id: string) => client.idoDetail.getSingleIDO(id,address),
+    onSuccess: (data) => {
+    },
+    onError: (error) => {
+      console.error('Submission failed:', error);
+    },
+  });
+}
+
+
+export function useBuyShareIDO() {
+  const { address } = useAccount();
+  const { openModal,closeModal  } = useModal();
+  const router = useRouter();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: ({ id, data }: { id: string; data: any }) => client.shareIDOBuy.create(id, data, address),
+    onSuccess: (data) => {
+      // closeModal(); 
+      if(data){
+        router.push(routes.livePricing);
+      }
+    },
+    onError: (error) => {
+      console.error('Submission failed:', error);
+    },
+  });
 }

@@ -4,10 +4,16 @@ import { useState } from 'react';
 import Button from '@/components/ui/button';
 import { useBuyQuery } from '@/hooks/livePricing';
 import { useModal } from '@/components/modal-views/context';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import routes from '@/config/routes';
 
 export default function FindName({ data }: any) {
   const { mutate: submitBuyAsync, isError, error } = useBuyQuery();
   const { openModal } = useModal();
+  const dispatch = useDispatch();
+  const router = useRouter();
   const handleBuy = async () => {
     try {
       const result = await submitBuyAsync({ id: data?._id });

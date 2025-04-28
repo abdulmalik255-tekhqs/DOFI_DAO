@@ -62,6 +62,16 @@ class client {
   ido = {
     getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
+  idoDetail = {
+    getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address}`),
+  };
+  shareIDOBuy = {
+    create: async (id: string, data: any, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.BUY_SHARE_IDO}/${id}/invest?address=${address}`, data);
+      console.log('API Response:', response); 
+      return response;
+    },
+  };
 }
 
 export default new client();

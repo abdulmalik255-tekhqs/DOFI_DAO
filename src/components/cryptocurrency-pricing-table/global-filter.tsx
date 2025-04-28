@@ -14,7 +14,6 @@ export default function GlobalFilter() {
     isError,
     error,
   } = useSubmitFindNameQuery();
-  console.log(searchResult, 'searchResult');
 
   const [inputValue, setInputValue] = useState('');
 

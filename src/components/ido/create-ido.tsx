@@ -113,7 +113,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
         fullWidth={true}
         className="uppercase xs:tracking-widest"
       >
-        Craete IDO
+        Create IDO
       </Button>
     </div>
   );
