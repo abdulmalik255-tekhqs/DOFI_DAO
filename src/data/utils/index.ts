@@ -11,6 +11,7 @@ import type {
 import { HttpClient } from '@/data/utils/client';
 
 class client {
+  
   coins = {
     all: ({ id, name, symbol, ...query }: Partial<CryptoQueryOptions> = {}) =>
       HttpClient.get<CoinPaginator>(API_ENDPOINTS.MARKETS, {
@@ -37,19 +38,29 @@ class client {
       HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
   };
   live_pricing= {
-    all: (params?: SettingsQueryOptions) =>
-      HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
+    all: (params?: SettingsQueryOptions,address?:string) =>
+      HttpClient.get<Settings>(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`, { ...params }),
   };
   findName = {
-    create: (data: any) =>
-      HttpClient.post(API_ENDPOINTS.FIND_NAME, data),
+    create: (name: string, address: string) =>
+      HttpClient.get(`${API_ENDPOINTS.FIND_NAME}/${encodeURIComponent(name)}?address=${address}`),
   };
   submitBuy = {
-    create: (data: any) =>
-      HttpClient.post(API_ENDPOINTS.BUY, data),
+    create: async (data: { id: string }, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.BUY}/${data.id}?address=${address}`);
+      console.log('API Response:', response);  // Check the structure here
+      return response;  // Return the response directly
+    },
+  };
+  createido = {
+    create: (data: any,address:string) =>
+      HttpClient.post(`${API_ENDPOINTS.CREATE_IDO}?address=${address}`, data),
   };
   dao = {
-    getLatest: () => HttpClient.get(API_ENDPOINTS.LATEST_DAO),
+    getLatest: (address:any) => HttpClient.get(`${API_ENDPOINTS.LATEST_DAO}?address=${address}`),
+  };
+  ido = {
+    getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
 }
 

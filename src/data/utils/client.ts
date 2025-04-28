@@ -3,7 +3,7 @@ import axios, { type AxiosResponse } from 'axios';
 
 export const Axios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
-  timeout: 5000,
+  timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,7 +17,7 @@ export class HttpClient {
     return response.data;
   }
 
-  static async post<T>(url: string, data: unknown, options?: any) {
+  static async post<T>(url: string, data?: unknown, options?: any) {
     const response = await Axios.post<T>(url, data, options);
     return response.data;
   }

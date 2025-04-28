@@ -68,7 +68,7 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
     case 'DCA_STEPPER':
       return <DCAStepper />;
     case 'FIND_NAME':
-      return <FindNameView />;
+      return <FindNameView data={data} />;
     case 'PROPOSAL_ACCEPT':
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':

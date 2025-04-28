@@ -2,7 +2,15 @@ import BitcoinImage from '@/assets/images/coin/bitcoin.svg';
 import TetherImage from '@/assets/images/coin/tether.svg';
 import CardanoImage from '@/assets/images/coin/cardano.svg';
 import BinanceImage from '@/assets/images/coin/binance.svg';
-
+//Dao images
+import Dao1 from '@/assets/images/dao/01.png';
+import Dao2 from '@/assets/images/dao/02.png';
+import Dao3 from '@/assets/images/dao/03.png';
+import Dao4 from '@/assets/images/dao/04.png';
+import Dao5 from '@/assets/images/dao/05.png';
+import Dao6 from '@/assets/images/dao/06.png';
+import Dao7 from '@/assets/images/dao/07.png';
+import Dao8 from '@/assets/images/dao/08.png';
 import { Bitcoin } from '@/components/icons/bitcoin';
 import { Tether } from '@/components/icons/tether';
 import { Bnb } from '@/components/icons/bnb';
@@ -146,5 +154,40 @@ export const priceFeedData = [
       { name: 8, value: 33577.4 },
       { name: 9, value: 39577.4 },
     ],
+  },
+];
+
+export const doaImagesData = [
+  {
+    id: '0',
+    logo: Dao1,
+  },
+  {
+    id: '2',
+    logo: Dao2,
+  },
+  {
+    id: '3',
+    logo: Dao3,
+  },
+  {
+    id: '4',
+    logo: Dao4,
+  },
+  {
+    id: '5',
+    logo: Dao5,
+  },
+  {
+    id: '6',
+    logo: Dao6,
+  },
+  {
+    id: '7',
+    logo: Dao7,
+  },
+  {
+    id: '8',
+    logo: Dao8,
   },
 ];
