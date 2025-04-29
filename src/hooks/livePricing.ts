@@ -1,9 +1,10 @@
 import client from '@/data/utils';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import { API_ENDPOINTS } from '@/data/utils/endpoints';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CoinPaginator, CryptoQueryOptions } from '@/types';
 import { useModal } from '@/components/modal-views/context';
+
 import {
   useQuery,
   useInfiniteQuery,
@@ -146,4 +147,60 @@ export function useGetProposal() {
     isLoading,
     error,
   };
+}
+
+export function useGetNFTS() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['all-nfts-latest'],
+    queryFn: () => client.all_nfts.getLatestNfts(address),
+  });
+  return {
+    all_nfts: data,
+    isLoading,
+    error,
+  };
+}
+
+
+export function useCreatePropsals() {
+  const { address } = useAccount();
+  const router = useRouter();
+  //  const dispatch= useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.createPropsals.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        // dispatch(idoActions.saveIDOdetailData(data));
+        router.push(routes.proposals);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
+}
+
+export function usePostVote() {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  //  const dispatch= useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.postVote.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        // dispatch(idoActions.saveIDOdetailData(data));
+        queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
+        router.push(routes.proposals);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
 }

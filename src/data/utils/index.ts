@@ -63,7 +63,18 @@ class client {
     getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
   proposals = {
-    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address}`),
+    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}`),
+  };
+  all_nfts = {
+    getLatestNfts: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
+  };
+  createPropsals = {
+    create: (data: any,address:string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_PROPSALS}?address=${address}`, data),
+  };
+  postVote = {
+    create: (data: any,address:string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
 }
 

@@ -16,10 +16,29 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { useModal } from '@/components/modal-views/context';
+import { usePostVote } from '@/hooks/livePricing';
+import { useAccount } from 'wagmi';
+import { useQueryClient } from '@tanstack/react-query';
 
 function VoteActionButton({ vote }: any) {
-  const { openModal } = useModal();
-  console.log(vote, 'vote---------> inside button');
+
+  const { address } = useAccount();
+  const { mutate: submitCreate, isError, error } = usePostVote();
+  const handleSubmit = (isFavour: any) => {
+    try {
+      submitCreate({
+        //@ts-ignore
+        "inFavor": isFavour,
+        "amount": vote?.amount,
+        "proposalId": vote?._id,
+        "address": address?.toLowerCase()
+
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       <Button
@@ -27,11 +46,11 @@ function VoteActionButton({ vote }: any) {
         color="success"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != "active" || vote?.hasVoted}
-        onClick={() => openModal('PROPOSAL_ACCEPT', vote)}
+        onClick={() => handleSubmit("Yes")}
       >
         Accept
       </Button>
-      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted}>
+      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted} onClick={() => handleSubmit("No")}>
         Reject
       </Button>
     </div>

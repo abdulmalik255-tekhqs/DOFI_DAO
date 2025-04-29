@@ -13,7 +13,10 @@ export const API_ENDPOINTS = {
   LATEST_DAO:"/daos",
   BUY:"/nft/buy",
   CREATE_IDO:"/ido",
-  GET_PROPOSALS:"/proposals"
+  GET_PROPOSALS:"/proposals",
+  GET_NFTS:"/nft",
+  POST_PROPSALS:"/proposals",
+  POST_VOTE:"/vote"
 
   // PRICING: 'https://api.coingecko.com/api/v3/coins',
   // MARKETS: 'https://api.coingecko.com/api/v3/coins/markets',
