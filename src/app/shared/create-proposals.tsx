@@ -22,7 +22,7 @@ import cn from '@/utils/cn';
 import Avatar from '@/components/ui/avatar';
 import AuthorImage from '@/assets/images/author.jpg';
 import NFT1 from '@/assets/images/nft/nft-1.jpg';
-import { useCreatePropsals, useGetNFTS } from '@/hooks/livePricing';
+import { useCreatePropsals, useGetALLPropsalNFTS, useGetNFTS } from '@/hooks/livePricing';
 
 const actionOptions = [
   {
@@ -265,8 +265,11 @@ const CreateProposalPage = () => {
   const [motivation, setMotivation] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
+  const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const { layout } = useLayout();
-  const { all_nfts, isLoading }: any = useGetNFTS();
+  const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+
+  console.log("all_nfts---->", all_Propsal_NFTS)
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals();
   const handleSubmit = () => {
@@ -279,8 +282,8 @@ const CreateProposalPage = () => {
         "amount": amount,
         "nftId": category,
         "daoId": "680a76bce48a31fb65d162dd",
-        "leasingAddress": leasingAddress,
-        "percentageYield": percentageYield,
+        "leasingAddress": selectedNFT?.amount > 1 ? leasingAddress : "0x",
+        "percentageYield": selectedNFT?.amount > 1 ? percentageYield : 1,
         "daoType": "parent",
         // "address": "{{wallet}}",
         "expirationDate": new Date()
@@ -428,35 +431,46 @@ const CreateProposalPage = () => {
         <InputLabel title="NFT" important />
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            const selectedId = e.target.value;
+            setCategory(selectedId);
+            const nft = all_Propsal_NFTS?.data?.find((n: any) => n._id === selectedId);
+            setSelectedNFT(nft);
+          }}
           className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition-all placeholder:text-gray-400 focus:border-gray-900 focus:ring-0 dark:border-gray-700 dark:bg-light-dark dark:text-white dark:placeholder:text-gray-600"
         >
           <option value="" disabled>Select a NFT</option>
-          {all_nfts?.data?.map((nft: any) => {
-            return (
-              <option value={nft?._id} key={nft?._id}>{nft?.name}</option>
-            )
-          })}
+          {all_Propsal_NFTS?.data?.map((nft: any) => (
+            <option value={nft?._id} key={nft?._id}>
+              {nft?.name}
+            </option>
+          ))}
         </select>
       </div>
-      <div className="mb-8">
-        <InputLabel title="Leasing Address" important />
-        <Input
-          type="text"
-          placeholder="Enter leasing address"
-          value={leasingAddress}
-          onChange={(e) => setLeasingAddress(e.target.value)}
-        />
-      </div>
-      <div className="mb-8">
-        <InputLabel title="percentage yeield" important />
-        <Input
-          type="number"
-          placeholder="Enter percentage yield"
-          value={percentageYield}
-          onChange={(e) => setPercentageYield(e.target.value)}
-        />
-      </div>
+
+      {/* Conditionally show inputs based on amount */}
+      {selectedNFT?.amount > 1 && (
+        <>
+          <div className="mb-8">
+            <InputLabel title="Leasing Address" important />
+            <Input
+              type="text"
+              placeholder="Enter leasing address"
+              value={leasingAddress}
+              onChange={(e) => setLeasingAddress(e.target.value)}
+            />
+          </div>
+          <div className="mb-8">
+            <InputLabel title="Percentage Yield" important />
+            <Input
+              type="number"
+              placeholder="Enter percentage yield"
+              value={percentageYield}
+              onChange={(e) => setPercentageYield(e.target.value)}
+            />
+          </div>
+        </>
+      )}
 
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">

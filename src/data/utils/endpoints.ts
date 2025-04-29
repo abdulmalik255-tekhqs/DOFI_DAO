@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
   CREATE_IDO:"/ido",
   GET_PROPOSALS:"/proposals",
   GET_NFTS:"/nft",
+  GET_NFTS_PROPOSAL:"/nft/proposal",
   POST_PROPSALS:"/proposals",
   POST_VOTE:"/vote"
 

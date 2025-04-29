@@ -19,17 +19,20 @@ import { useModal } from '@/components/modal-views/context';
 import { usePostVote } from '@/hooks/livePricing';
 import { useAccount } from 'wagmi';
 import { useQueryClient } from '@tanstack/react-query';
+import InputLabel from '@/components/ui/input-label';
+import Input from '@/components/ui/forms/input';
 
 function VoteActionButton({ vote }: any) {
-
+  const [amount, setAmount] = useState("");
   const { address } = useAccount();
   const { mutate: submitCreate, isError, error } = usePostVote();
   const handleSubmit = (isFavour: any) => {
+    console.log("amount---->",amount)
     try {
       submitCreate({
         //@ts-ignore
         "inFavor": isFavour,
-        "amount": vote?.amount,
+        "amount": Number(amount),
         "proposalId": vote?._id,
         "address": address?.toLowerCase()
 
@@ -41,18 +44,30 @@ function VoteActionButton({ vote }: any) {
 
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
+      {(vote?.status == "active" && !vote?.hasVoted) && <div className="mb-8">
+        <InputLabel title="Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>}
+
       <Button
         shape="rounded"
         color="success"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != "active" || vote?.hasVoted}
-        onClick={() => handleSubmit("Yes")}
+        onClick={() => handleSubmit("yes")}
       >
-        Accept
+        Invest
       </Button>
-      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted} onClick={() => handleSubmit("No")}>
+      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted} onClick={() => handleSubmit("no")}>
         Reject
       </Button>
+
+
     </div>
   );
 }
@@ -139,12 +154,16 @@ export default function VoteDetailsCard({ vote }: any) {
                   : ''}
                 {/* <ExportIcon className="h-auto w-3" /> */}
               </a>
+              <div className="mt-4">
+                Amount allocated: <span className="font-medium text-gray-900">{vote?.amount}</span>
+              </div>
+
             </div>
             <VotePoll
               title={'Votes'}
               vote={vote}
             />
-            <VoterTable votes={vote?.votes ?? []} />
+            <VoterTable votes={vote?.votes || []} />
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>

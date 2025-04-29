@@ -68,6 +68,9 @@ class client {
   all_nfts = {
     getLatestNfts: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
   };
+  all_propsals_nfts = {
+    getLatestPropsalNFTS: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
+  };
   createPropsals = {
     create: (data: any,address:string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_PROPSALS}?address=${address}`, data),

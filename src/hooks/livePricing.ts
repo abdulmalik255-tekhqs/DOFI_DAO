@@ -163,6 +163,19 @@ export function useGetNFTS() {
   };
 }
 
+export function useGetALLPropsalNFTS() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['all_Propsal_NFTS-latest'],
+    queryFn: () => client.all_propsals_nfts.getLatestPropsalNFTS(address),
+  });
+  return {
+    all_Propsal_NFTS: data,
+    isLoading,
+    error,
+  };
+}
+
 
 export function useCreatePropsals() {
   const { address } = useAccount();
