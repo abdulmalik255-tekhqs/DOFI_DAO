@@ -27,7 +27,7 @@ function VoteActionButton({ vote }: any) {
   const { address } = useAccount();
   const { mutate: submitCreate, isError, error } = usePostVote();
   const handleSubmit = (isFavour: any) => {
-    console.log("amount---->",amount)
+    console.log("amount---->", amount)
     try {
       submitCreate({
         //@ts-ignore
@@ -100,7 +100,7 @@ export default function VoteDetailsCard({ vote }: any) {
             {vote?.name}
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name} {vote?.parentDAO ? "(Parent)" : "(Child)"}
+            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name} {vote?.pricePerFraction > 1 ? "(Parent)" : "(Child)"}
           </p>
           {!isExpand ? (
             <Button
@@ -114,7 +114,7 @@ export default function VoteDetailsCard({ vote }: any) {
             <VoteActionButton vote={vote} />
           )}
         </div>
-        {vote.status == "active" && (
+        {vote.status == "active" ? (
           <div
             className={cn(
               "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
@@ -131,7 +131,22 @@ export default function VoteDetailsCard({ vote }: any) {
             </h3>
             <AuctionCountdown date={new Date(vote?.expirationDate.toString())} />
           </div>
-        )}
+        ) : <div
+          className={cn(
+            "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+            {
+              'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
+                layout !== LAYOUT_OPTIONS.RETRO,
+              'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
+                layout === LAYOUT_OPTIONS.RETRO,
+            },
+          )}
+        >
+          <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            Voting ended
+          </h3>
+          <AuctionCountdown date={undefined} />
+        </div>}
 
       </motion.div>
       <AnimatePresence>
@@ -157,7 +172,21 @@ export default function VoteDetailsCard({ vote }: any) {
               <div className="mt-4">
                 Amount allocated: <span className="font-medium text-gray-900">{vote?.amount}</span>
               </div>
-
+              {vote?.leasingAddress == "0x" ? <>
+                <div className="mt-4">
+                  Price per fraction: <span className="font-medium text-gray-900">{vote?.pricePerFraction || 2}</span>
+                </div>
+                <div className="mt-4">
+                  Total fractions: <span className="font-medium text-gray-900">{vote?.totalFractions || 100}</span>
+                </div>
+              </> : <>
+                <div className="mt-4">
+                  Leasing address: <span className="font-medium text-gray-900">{vote?.leasingAddress || "0x"}</span>
+                </div>
+                <div className="mt-4">
+                  Yield percentage: <span className="font-medium text-gray-900">{vote?.yieldPercentage || 3}</span>
+                </div>
+              </>}
             </div>
             <VotePoll
               title={'Votes'}

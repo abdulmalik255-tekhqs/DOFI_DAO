@@ -149,5 +149,18 @@ export default function AuctionCountdown({
 }: {
   date: string | number | Date | undefined;
 }) {
+  const isValidDate = date && !isNaN(new Date(date).getTime());
+
+  if (!isValidDate) {
+    return (
+      <CountdownDisplayWrapper
+        days={0}
+        hours={0}
+        minutes={0}
+        seconds={0}
+      />
+    );
+  }
+
   return <Countdown date={date} renderer={renderer} />;
 }

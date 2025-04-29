@@ -265,6 +265,8 @@ const CreateProposalPage = () => {
   const [motivation, setMotivation] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
+  const [totalFractions, setTotalFractions] = useState();
+  const [pricePerFraction, setPricePerFraction] = useState();
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
@@ -284,6 +286,8 @@ const CreateProposalPage = () => {
         "daoId": "680a76bce48a31fb65d162dd",
         "leasingAddress": selectedNFT?.amount > 1 ? leasingAddress : "0x",
         "percentageYield": selectedNFT?.amount > 1 ? percentageYield : 1,
+        "totalFractions": selectedNFT?.amount == 1 ? totalFractions : 1,
+        "pricePerFraction": selectedNFT?.amount == 1 ? pricePerFraction : 1,
         "daoType": "parent",
         // "address": "{{wallet}}",
         "expirationDate": new Date()
@@ -428,7 +432,7 @@ const CreateProposalPage = () => {
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="NFT" important />
+        <InputLabel title="Domain" important />
         <select
           value={category}
           onChange={(e) => {
@@ -439,7 +443,7 @@ const CreateProposalPage = () => {
           }}
           className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition-all placeholder:text-gray-400 focus:border-gray-900 focus:ring-0 dark:border-gray-700 dark:bg-light-dark dark:text-white dark:placeholder:text-gray-600"
         >
-          <option value="" disabled>Select a NFT</option>
+          <option value="" disabled>Select a domain</option>
           {all_Propsal_NFTS?.data?.map((nft: any) => (
             <option value={nft?._id} key={nft?._id}>
               {nft?.name}
@@ -467,6 +471,29 @@ const CreateProposalPage = () => {
               placeholder="Enter percentage yield"
               value={percentageYield}
               onChange={(e) => setPercentageYield(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+
+      {selectedNFT?.amount == 1 && (
+        <>
+          <div className="mb-8">
+            <InputLabel title="Total Fractions" important />
+            <Input
+              type="number"
+              placeholder="Enter total fractions"
+              value={totalFractions}
+              onChange={(e:any) => setTotalFractions(e.target.value)}
+            />
+          </div>
+          <div className="mb-8">
+            <InputLabel title="Price Per Fraction" important />
+            <Input
+              type="number"
+              placeholder="Enter price fraction"
+              value={pricePerFraction}
+              onChange={(e:any) => setPricePerFraction(e.target.value)}
             />
           </div>
         </>
