@@ -1,12 +1,13 @@
 import client from '@/data/utils';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import { API_ENDPOINTS } from '@/data/utils/endpoints';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CoinPaginator, CryptoQueryOptions } from '@/types';
 import { useModal } from '@/components/modal-views/context';
 
 import {
   useQuery,
+  useMutation,
+  useQueryClient,
   useInfiniteQuery,
   type UseInfiniteQueryOptions,
 } from '@tanstack/react-query';

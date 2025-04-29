@@ -434,7 +434,7 @@ const CreateProposalPage = () => {
           <option value="" disabled>Select a NFT</option>
           {all_nfts?.data?.map((nft: any) => {
             return (
-              <option value={nft?._id}>{nft?.name}</option>
+              <option value={nft?._id} key={nft?._id}>{nft?.name}</option>
             )
           })}
         </select>
