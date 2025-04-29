@@ -13,7 +13,7 @@ import {
 import routes from '@/config/routes';
 import { useRouter } from 'next/navigation';
 // import { useDispatch } from 'react-redux';
-import { idoActions } from '@/store/reducer/ido.reducer';
+// import { idoActions } from '@/store/reducer/ido.reducer';
 
 export function useLivePricing(
   options?: Partial<CryptoQueryOptions>,
@@ -31,7 +31,7 @@ export function useLivePricing(
   } = useInfiniteQuery({
     queryKey: [API_ENDPOINTS.LIVE_PRICING, options],
     queryFn: ({ pageParam }) =>
-      client.live_pricing.all({ ...options, page: pageParam },address),
+      client.live_pricing.all({ ...options, page: pageParam }, address),
     initialPageParam: 1,
     ...options,
     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) =>
@@ -72,14 +72,14 @@ export function useSubmitFindNameQuery() {
 
 export function useBuyQuery() {
   const { address } = useAccount();
-  const { openModal,closeModal  } = useModal();
-  
+  const { openModal, closeModal } = useModal();
+
   return useMutation({
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
-      closeModal(); 
-      if(data){
+      closeModal();
+      if (data) {
         openModal('CREATE_IDO', data);
       }
     },
@@ -90,46 +90,59 @@ export function useBuyQuery() {
 }
 
 
-  export function useCreateIDO() {
-    const { address } = useAccount();
-     const router = useRouter();
-    //  const dispatch= useDispatch();
-    return useMutation({
-      //@ts-ignore
-      mutationFn: (data: any) => client.createido.create(data,address),
-      onSuccess: (data) => {
-        if(data){
-          // dispatch(idoActions.saveIDOdetailData(data));
-          router.push(routes.idoDetail);
-        }
-      },
-      onError: (error) => {
-        // Optionally handle error
-        console.error('Submission failed:', error);
-      },
-    });
-  }
-  export function useDao() {
-      const { address } = useAccount();
-    const { data, isLoading, error } = useQuery({
-      queryKey: ['dao-latest'],
-      queryFn: () => client.dao.getLatest(address),
-    });
-    return {
-      dao: data,
-      isLoading,
-      error,
-    };
-  }
+export function useCreateIDO() {
+  const { address } = useAccount();
+  const router = useRouter();
+  //  const dispatch= useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.createido.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        // dispatch(idoActions.saveIDOdetailData(data));
+        router.push(routes.idoDetail);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
+}
+export function useDao() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['dao-latest'],
+    queryFn: () => client.dao.getLatest(address),
+  });
+  return {
+    dao: data,
+    isLoading,
+    error,
+  };
+}
 
-  export function useIDO() {
-    const { address } = useAccount();
+export function useIDO() {
+  const { address } = useAccount();
   const { data, isLoading, error } = useQuery({
     queryKey: ['ido-latest'],
     queryFn: () => client.ido.getLatestIDO(address),
   });
   return {
     ido: data,
+    isLoading,
+    error,
+  };
+}
+
+export function useGetProposal() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['proposal-latest'],
+    queryFn: () => client.proposals.getLatestProposals(address),
+  });
+  return {
+    proposals: data,
     isLoading,
     error,
   };

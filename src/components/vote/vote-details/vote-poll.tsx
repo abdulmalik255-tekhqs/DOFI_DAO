@@ -2,29 +2,22 @@ import { motion } from 'framer-motion';
 
 interface VotePollTypes {
   title: string;
-  accepted?: {
-    vote: number;
-    percentage: number;
-  };
-  rejected?: {
-    vote: number;
-    percentage: number;
-  };
+  vote?: any
 }
 
-export default function VotePoll({ title, accepted, rejected }: VotePollTypes) {
+export default function VotePoll({ title, vote }: VotePollTypes) {
   return (
     <motion.div layout className="mb-6">
       <h4 className="mb-3 uppercase dark:text-gray-100">{title}</h4>
       <div className="mb-3">
-        <svg width="100%" height="8">
+        <svg width="100%" height="6">
           <rect x="0" y="0" width="100%" height="8" fill="#FA606A" />
           <rect
             x="0"
             y="0"
             height="8"
             fill="#28D294"
-            width={`${accepted?.percentage}%`}
+            width={`${vote?.acceptedVotesPercentage}%`}
           />
         </svg>
       </div>
@@ -34,7 +27,7 @@ export default function VotePoll({ title, accepted, rejected }: VotePollTypes) {
             Accepted
           </h5>
           <p>
-            {accepted?.vote} ({accepted?.percentage}%)
+            {vote?.acceptedVotes} ({vote?.acceptedVotesPercentage}%)
           </p>
         </div>
         <div className="text-red-500 ltr:text-right rtl:text-left">
@@ -42,7 +35,7 @@ export default function VotePoll({ title, accepted, rejected }: VotePollTypes) {
             Rejected
           </h5>
           <p>
-            {rejected?.vote} ({rejected?.percentage}%)
+            {vote?.rejectedVotes} ({vote?.rejectedVotesPercentage}%)
           </p>
         </div>
       </div>

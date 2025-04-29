@@ -84,7 +84,7 @@ export default function ParamTab({
         {isMounted && ['xs', 'sm'].indexOf(breakpoint) !== -1 ? (
           <TabSelect tabMenu={tabMenu} selectedTabIndex={selectedTabIndex} />
         ) : (
-          <div className="flex gap-6 md:gap-8 xl:gap-10 3xl:gap-12">
+          <div className="flex gap-6 md:gap-8 xl:gap-10 3xl:gap-12 px-4">
             {tabMenu.map((item) => (
               <TabItem tabItemLayoutId="activeTabIndicator-two" key={item.path}>
                 {item.title}

@@ -62,9 +62,9 @@ export default function WalletConnect({
                           Balance
                         </span>
                         <span className="rounded-lg bg-gray-100 px-2 py-1 text-sm tracking-tighter dark:bg-gray-800">
-                          {address.slice(0, 6)}
+                          {address?.slice(0, 6)}
                           {'...'}
-                          {address.slice(address.length - 6)}
+                          {address?.slice(address?.length - 6)}
                         </span>
                       </div>
                       <div className="mt-3 font-medium uppercase tracking-wider text-gray-900 dark:text-white">

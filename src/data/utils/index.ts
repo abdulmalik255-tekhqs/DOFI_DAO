@@ -62,6 +62,9 @@ class client {
   ido = {
     getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
+  proposals = {
+    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address}`),
+  };
 }
 
 export default new client();

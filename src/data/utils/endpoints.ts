@@ -12,7 +12,8 @@ export const API_ENDPOINTS = {
   FIND_NAME:"/nft/search",
   LATEST_DAO:"/daos",
   BUY:"/nft/buy",
-  CREATE_IDO:"/ido"
+  CREATE_IDO:"/ido",
+  GET_PROPOSALS:"/proposals"
 
   // PRICING: 'https://api.coingecko.com/api/v3/coins',
   // MARKETS: 'https://api.coingecko.com/api/v3/coins/markets',
