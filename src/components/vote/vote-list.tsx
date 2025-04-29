@@ -8,12 +8,12 @@ import { useGetProposal } from '@/hooks/livePricing';
 export default function VoteList({ voteStatus }: { voteStatus: string }) {
   const { votes, totalVote } = getVotesByStatus(voteStatus);
   const { proposals, isLoading }: any = useGetProposal();
-  console.log("proposals",proposals)
+  console.log("proposals", proposals)
   return (
     <LayoutGroup>
-      {isLoading ? <p>loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
+      {isLoading ? <p className="text-center">Loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
         {proposals?.count > 0 ? (
-         proposals?.data?.map((proposal: any) => (
+          proposals?.data?.map((proposal: any) => (
             <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} />
           ))
         ) : (
