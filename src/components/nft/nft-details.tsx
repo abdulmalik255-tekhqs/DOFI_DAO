@@ -1,18 +1,18 @@
 'use client';
 
 import { Suspense } from 'react';
+import { useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits, formatEther } from 'viem';
+import { tetherABI } from '@/utils/abi';
+import { config } from '@/app/shared/wagmi-config';
 import { StaticImageData } from 'next/image';
 import Button from '@/components/ui/button';
 import ParamTab, { TabPanel } from '@/components/ui/param-tab';
-import Image from '@/components/ui/image';
 import FeaturedCard from '@/components/nft/featured-card';
-import ListCard from '@/components/ui/list-card';
 import AnchorLink from '@/components/ui/links/anchor-link';
-import { ArrowLinkIcon } from '@/components/icons/arrow-link-icon';
 import { nftData } from '@/data/static/single-nft';
-import NftDropDown from '@/components/nft/nft-dropdown';
 import Avatar from '@/components/ui/avatar';
-import NftFooter from '@/components/nft/nft-footer';
 import Loader from '@/components/ui/loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { useBuyQuery } from '@/hooks/livePricing';
@@ -57,14 +57,35 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
   const { nftDetail, previousRoute, loading } = useSelector(
     (state: any) => state.ido,
   );
+  console.log(nftDetail);
+
   const dispatch = useDispatch();
   const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
+  const { writeContractAsync } = useWriteContract();
   const handleBuy = async () => {
     try {
       dispatch(idoActions.setLoading(true));
-      const result = await submitBuyAsync({ id: nftDetail?._id });
+      const priceInWei = parseUnits(nftDetail?.price?.toString() || '0', 18);
+      console.log('Transferring', formatEther(priceInWei), 'USDT');
+      const hash = await writeContractAsync({
+        //@ts-ignore
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        abi: tetherABI,
+        functionName: 'transfer',
+        args: ['0x1357331C3d6971e789CcE452fb709465351Dc0A1', priceInWei],
+      });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+      });
+      if (recipient.status === 'success') {
+        const result = await submitBuyAsync({ id: nftDetail?._id });
+      } else {
+        console.log('erer');
+      }
+
       // openModal('CREATE_IDO', result);
     } catch (error) {
+      dispatch(idoActions.setLoading(false));
       console.error('Buy failed:', error);
     }
   };

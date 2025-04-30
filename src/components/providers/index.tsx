@@ -19,16 +19,16 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
       <Provider store={store}>
         <QueryProvider>
           <ThemeProvider>
-            {/* <JotaiProvider> */}
-            <SettingsButton />
-            <SettingsDrawer />
-            <Toaster position="top-center" reverseOrder={false} />
-            {children}
-            <Suspense fallback={null}>
-              <ModalsContainer />
-              <DrawersContainer />
-            </Suspense>
-            {/* </JotaiProvider> */}
+            <JotaiProvider>
+              <SettingsButton />
+              <SettingsDrawer />
+              <Toaster position="top-center" reverseOrder={false} />
+              {children}
+              <Suspense fallback={null}>
+                <ModalsContainer />
+                <DrawersContainer />
+              </Suspense>
+            </JotaiProvider>
           </ThemeProvider>
         </QueryProvider>
       </Provider>

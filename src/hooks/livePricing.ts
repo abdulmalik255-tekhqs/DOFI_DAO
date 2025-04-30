@@ -73,13 +73,12 @@ export function useSubmitFindNameQuery() {
 
 export function useBuyQuery() {
   const { address } = useAccount();
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 const dispatch = useDispatch()
   return useMutation({
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
-      // closeModal(); 
       if(data){
         dispatch(idoActions.setLoading(false))
         //@ts-ignore

@@ -2,6 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
+import { useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits } from 'viem';
+import { tetherABI } from '@/utils/abi';
 import Button from '@/components/ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
@@ -19,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { useBuyShareIDO, useGetIDODetail } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
+import { config } from '@/app/shared/wagmi-config';
 
 const IDODetailPage = () => {
   const router = useRouter();
@@ -27,7 +32,7 @@ const IDODetailPage = () => {
   const [isExpired, setIsExpired] = useState(false);
   const { loading } = useSelector((state: any) => state.ido);
   const { idoDetaildata, isConfetti } = useSelector((state: any) => state.ido);
-
+  const { writeContractAsync } = useWriteContract();
   const {
     mutate: idodetail,
     data: searchResult,
@@ -83,12 +88,30 @@ const IDODetailPage = () => {
         return;
       }
       dispatch(idoActions.setLoading(true));
-      buyShareIDO({
+      const hash = await writeContractAsync({
         //@ts-ignore
-        id: idoDetaildata?._id,
-        data: { amount: inputValue },
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        abi: tetherABI,
+        functionName: 'transfer',
+        args: [
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          parseUnits(inputValue?.toString(), 18),
+        ],
       });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+      });
+      if (recipient.status === 'success') {
+        buyShareIDO({
+          //@ts-ignore
+          id: idoDetaildata?._id,
+          data: { amount: inputValue },
+        });
+      } else {
+        console.log('erer');
+      }
     } catch (error) {
+      dispatch(idoActions.setLoading(false));
       console.error('Buy Share failed:', error);
     }
   };

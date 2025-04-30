@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { parseUnits } from 'viem';
+import { useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { daoTokenABI } from '@/utils/abi';
 import Button from '@/components/ui/button';
 import { FaSackDollar } from 'react-icons/fa6';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
@@ -9,33 +13,54 @@ import { FaLock } from 'react-icons/fa';
 import { useCreateIDO } from '@/hooks/livePricing';
 import { useDispatch, useSelector } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
+import { config } from '@/app/shared/wagmi-config';
 interface CreateIDOProps {
   data: any;
 }
 export default function CreateIDO({ data }: CreateIDOProps) {
   const dispatch = useDispatch();
   const { address } = useAccount();
+  const { writeContractAsync } = useWriteContract();
   const { loading, isConfetti } = useSelector((state: any) => state.ido);
   const [totalFraction, setTotalfraction] = useState('');
   const [priceFraction, setPricefraction] = useState('');
   const { mutate: submitCreate, isError, error } = useCreateIDO();
-  const handleBuy = () => {
+  const handleBuy = async () => {
     try {
       dispatch(idoActions.setLoading(true));
-      submitCreate({
+      const hash = await writeContractAsync({
         //@ts-ignore
-        nftID: data?._id,
-        name: `${data?.name} DIO`,
-        tokenSymbol: 'DAO NFT',
-        totalSupply: totalFraction,
-        pricePerToken: priceFraction,
-        startTime: 1745600400000,
-        endTime: 1745600400000,
-        creator: address,
-        address: address,
-        description: 'token',
+        address: '0xdEf6C5307f479f4F0c93F682A3e6D5c6D9CB57A8',
+        abi: daoTokenABI,
+        functionName: 'transferFrom',
+        args: [
+          address,
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          data?.tokenId,
+        ],
       });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+      });
+      if (recipient.status === 'success') {
+        submitCreate({
+          //@ts-ignore
+          nftID: data?._id,
+          name: `${data?.name} DIO`,
+          tokenSymbol: 'DAO NFT',
+          totalSupply: totalFraction,
+          pricePerToken: priceFraction,
+          startTime: 1745600400000,
+          endTime: 1745600400000,
+          creator: address,
+          address: address,
+          description: 'token',
+        });
+      } else {
+        console.log('erer');
+      }
     } catch (error) {
+      dispatch(idoActions.setLoading(true));
       console.log(error);
     }
   };
