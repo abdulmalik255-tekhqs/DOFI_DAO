@@ -60,8 +60,11 @@ export default function Sidebar({
         className,
       )}
     >
-      <div className="relative flex h-24 items-center justify-between overflow-hidden px-6 py-4 2xl:px-8">
-        <Logo />
+      <div className="relative flex h-24 items-center justify-center overflow-hidden px-6 py-4 2xl:px-8">
+        {/* <Logo /> */}
+        <h3 className="flex items-center justify-center text-[30px] font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100">
+          DO.FI
+        </h3>
         <div className="md:hidden">
           <Button
             title="Close"

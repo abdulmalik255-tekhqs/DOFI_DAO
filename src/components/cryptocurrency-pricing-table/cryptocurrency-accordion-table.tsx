@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { MoonLoader } from 'react-spinners';
 import { useRouter } from 'next/navigation';
 import { ChevronDown } from '@/components/icons/chevron-down';
 import { LongArrowRight } from '@/components/icons/long-arrow-right';
@@ -18,12 +19,16 @@ import {
 import { LongArrowLeft } from '@/components/icons/long-arrow-left';
 import CryptocurrencyDrawer from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer';
 import routes from '@/config/routes';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useDispatch } from 'react-redux';
 
 function CryptocurrencyAccordionTable({
   // @ts-ignore
   columns,
   // @ts-ignore
   data,
+  // @ts-ignore
+  isLoading,
 }) {
   const {
     getTableProps,
@@ -56,8 +61,13 @@ function CryptocurrencyAccordionTable({
   const { globalFilter } = state;
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  function goToAllProposalPage() {
+  const dispatch = useDispatch();
+  function goToAllProposalPage(data: any) {
+    console.log(data, 'data');
+
     setTimeout(() => {
+      dispatch(idoActions.saveIDOdata(data?.original));
+      dispatch(idoActions.setIsConfetti(false));
       router.push(routes.idoDetail);
     }, 500);
   }
@@ -77,86 +87,94 @@ function CryptocurrencyAccordionTable({
               </h2>
             </div>
           </div>
-          <Scrollbar style={{ width: '100%' }} autoHide="never">
-            <div className="relative z-10">
-              <table
-                {...getTableProps()}
-                className="-mt-[2px] w-full border-separate border-0"
-              >
-                <thead className="pricing-table-head block bg-white px-[10px] text-sm text-gray-500 dark:bg-light-dark dark:text-gray-300 md:!px-6">
-                  {headerGroups.map((headerGroup, idx) => (
-                    <tr
-                      {...headerGroup.getHeaderGroupProps()}
-                      key={idx}
-                      className="border-b border-dashed border-gray-200 dark:border-gray-700"
-                    >
-                      {headerGroup.headers.map((column, idx) => (
-                        <th
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps(),
-                          )}
-                          key={idx}
-                          className={`group px-3 py-5 font-normal first:!w-7`}
-                        >
-                          <div className="flex items-center">
-                            {column.render('Header')}
-                            {column.canResize && (
-                              <div
-                                {...column.getResizerProps()}
-                                className={`resizer ${
-                                  column.isResizing ? 'isResizing' : ''
-                                }`}
-                              />
-                            )}
-                            <span className="ltr:ml-1 rtl:mr-1">
-                              {column.isSorted ? (
-                                column.isSortedDesc ? (
-                                  <ChevronDown />
-                                ) : (
-                                  <ChevronDown className="rotate-180" />
-                                )
-                              ) : (
-                                <ChevronDown className="rotate-180 opacity-0 transition group-hover:opacity-50" />
-                              )}
-                            </span>
-                          </div>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  {...getTableBodyProps()}
-                  className="pricing-table-body grid bg-white text-xs font-medium text-gray-900 dark:bg-light-dark dark:text-white md:px-6 3xl:text-sm"
-                >
-                  {page?.map((row, idx) => {
-                    prepareRow(row);
-                    return (
-                      <tr
-                        {...row.getRowProps()}
-                        key={idx + 1}
-                        className="h-[50px] max-h-[50px] cursor-pointer items-center rounded uppercase transition-all last:mb-0 hover:bg-[#F3F4F6] dark:bg-light-dark hover:dark:bg-gray-700"
-                        // onClick={() => setIsOpen(!isOpen)}
-                        onClick={() => goToAllProposalPage()}
-                      >
-                        {row.cells.map((cell, idx) => {
-                          return (
-                            <td
-                              {...cell.getCellProps()}
-                              key={idx}
-                              className={`flex h-[50px] items-center px-3 tracking-[1px]`}
-                            >
-                              {cell.render('Cell')}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+          {isLoading ? (
+            <div className="flex w-full items-center justify-center p-6">
+              <MoonLoader />
             </div>
-          </Scrollbar>
+          ) : (
+            <>
+              <Scrollbar style={{ width: '100%' }} autoHide="never">
+                <div className="relative z-10">
+                  <table
+                    {...getTableProps()}
+                    className="-mt-[2px] w-full border-separate border-0"
+                  >
+                    <thead className="pricing-table-head block bg-white px-[10px] text-sm text-gray-500 dark:bg-light-dark dark:text-gray-300 md:!px-6">
+                      {headerGroups.map((headerGroup, idx) => (
+                        <tr
+                          {...headerGroup.getHeaderGroupProps()}
+                          key={idx}
+                          className="border-b border-dashed border-gray-200 dark:border-gray-700"
+                        >
+                          {headerGroup.headers.map((column, idx) => (
+                            <th
+                              {...column.getHeaderProps(
+                                column.getSortByToggleProps(),
+                              )}
+                              key={idx}
+                              className={`group px-3 py-5 font-normal first:!w-7`}
+                            >
+                              <div className="flex items-center">
+                                {column.render('Header')}
+                                {column.canResize && (
+                                  <div
+                                    {...column.getResizerProps()}
+                                    className={`resizer ${
+                                      column.isResizing ? 'isResizing' : ''
+                                    }`}
+                                  />
+                                )}
+                                <span className="ltr:ml-1 rtl:mr-1">
+                                  {column.isSorted ? (
+                                    column.isSortedDesc ? (
+                                      <ChevronDown />
+                                    ) : (
+                                      <ChevronDown className="rotate-180" />
+                                    )
+                                  ) : (
+                                    <ChevronDown className="rotate-180 opacity-0 transition group-hover:opacity-50" />
+                                  )}
+                                </span>
+                              </div>
+                            </th>
+                          ))}
+                        </tr>
+                      ))}
+                    </thead>
+                    <tbody
+                      {...getTableBodyProps()}
+                      className="pricing-table-body grid bg-white text-xs font-medium text-gray-900 dark:bg-light-dark dark:text-white md:px-6 3xl:text-sm"
+                    >
+                      {page?.map((row, idx) => {
+                        prepareRow(row);
+                        return (
+                          <tr
+                            {...row.getRowProps()}
+                            key={idx + 1}
+                            className="h-[50px] max-h-[50px] cursor-pointer items-center rounded uppercase transition-all last:mb-0 hover:bg-[#F3F4F6] dark:bg-light-dark hover:dark:bg-gray-700"
+                            // onClick={() => setIsOpen(!isOpen)}
+                            onClick={() => goToAllProposalPage(row)}
+                          >
+                            {row.cells.map((cell, idx) => {
+                              return (
+                                <td
+                                  {...cell.getCellProps()}
+                                  key={idx}
+                                  className={`flex h-[50px] items-center px-3 tracking-[1px]`}
+                                >
+                                  {cell.render('Cell')}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </Scrollbar>
+            </>
+          )}
         </div>
         <div
           className={`-mt-[2px] flex items-center justify-center rounded-bl-lg rounded-br-lg bg-white px-5 py-4 text-sm shadow-card dark:bg-light-dark lg:py-6`}

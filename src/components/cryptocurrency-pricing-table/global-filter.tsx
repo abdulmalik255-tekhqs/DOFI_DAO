@@ -14,7 +14,6 @@ export default function GlobalFilter() {
     isError,
     error,
   } = useSubmitFindNameQuery();
-  console.log(searchResult, 'searchResult');
 
   const [inputValue, setInputValue] = useState('');
 
@@ -62,7 +61,7 @@ export default function GlobalFilter() {
                 //@ts-ignore
                 onClick={() => openModal('FIND_NAME', searchResult?.data)}
               >
-                .eth view
+                {!isSuccess ? 'Loading' : '.eth view'}
                 <FaLongArrowAltRight className="cursor-pointer" />
               </div>
             ) : (

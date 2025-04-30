@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import cn from '@/utils/cn';
 import ListCard from '@/components/ui/list-card';
 import ParamTab, { TabPanel } from '@/components/ui/param-tab';
@@ -32,8 +32,34 @@ const tabMenu = [
   // },
 ];
 
-export default function ProfileTab() {
+export default function ProfileTab({ data }: any) {
   const { layout } = useLayout();
+  const [domain, setDomain] = useState([]);
+  const [fraction, setFraction] = useState([]);
+  console.log(data, 'dfghjk');
+  console.log(domain, 'domain');
+  console.log(fraction, 'fraction');
+
+  useEffect(() => {
+    console.log(data, 'dfghjk'); // Your debug log
+
+    if (Array.isArray(data)) {
+      const domainArr: any = [];
+      const fractionArr: any = [];
+
+      data.forEach((item) => {
+        if (item.amount > 1) {
+          fractionArr.push(item);
+        } else {
+          domainArr.push(item);
+        }
+      });
+
+      setDomain(domainArr);
+      setFraction(fractionArr);
+    }
+  }, [data]);
+
   return (
     <Suspense fallback={<Loader variant="blink" />}>
       <ParamTab tabMenu={tabMenu}>
@@ -46,10 +72,10 @@ export default function ProfileTab() {
                 : 'md:grid-cols-1',
             )}
           >
-            {collections?.map((collection) => (
+            {domain?.map((collection: any, index: number) => (
               <CollectionCard
                 item={collection}
-                key={`collection-key-${collection?.id}`}
+                key={`collection-key-${collection?._id}`}
               />
             ))}
           </div>
@@ -64,10 +90,10 @@ export default function ProfileTab() {
                 : 'md:grid-cols-1',
             )}
           >
-            {collections?.map((collection) => (
+            {fraction?.map((fraction: any, index: number) => (
               <FractionCard
-                item={collection}
-                key={`collection-key-${collection?.id}`}
+                item={fraction}
+                key={`fraction-key-${fraction?._id}`}
               />
             ))}
           </div>

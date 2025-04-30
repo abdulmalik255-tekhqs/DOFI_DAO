@@ -5,9 +5,18 @@ import Feeds from '@/components/search/feeds';
 import { useDrawer } from '@/components/drawer-views/context';
 import { Filters, GridSwitcher, SortList } from '@/components/search/filters';
 import { OptionIcon } from '@/components/icons/option';
+import { useLatestDomain } from '@/hooks/livePricing';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
 
 export default function Search() {
   const { openDrawer } = useDrawer();
+  const dispatch = useDispatch();
+  const { domainData, isLoading } = useLatestDomain();
+  useEffect(() => {
+    dispatch(idoActions.setPreviousRoute(true));
+  }, []);
   return (
     <>
       <div className="grid 2xl:grid-cols-[280px_minmax(auto,_1fr)] 4xl:grid-cols-[320px_minmax(auto,_1fr)]">
@@ -17,9 +26,15 @@ export default function Search() {
 
         <div className="2xl:ltr:pl-8 4xl:ltr:pl-10 2xl:rtl:pr-8 4xl:rtl:pr-10">
           <div className="relative z-10 mb-6 flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-900 dark:text-white sm:text-sm">
-              5,686,066 items
-            </span>
+            {isLoading ? null : (
+              <span className="text-xs font-medium text-gray-900 dark:text-white sm:text-sm">
+                {
+                  //@ts-ignore
+                  domainData?.count
+                }{' '}
+                items
+              </span>
+            )}
 
             <div className="flex gap-6 3xl:gap-8">
               {/* <SortList /> */}
@@ -40,7 +55,13 @@ export default function Search() {
               </div> */}
             </div>
           </div>
-          <Feeds />
+          <Feeds
+            data={
+              //@ts-ignore
+              domainData?.data
+            }
+            isLoading={isLoading}
+          />
         </div>
 
         {/* <div className="fixed bottom-6 left-1/2 z-10 w-full -translate-x-1/2 px-9 sm:hidden">

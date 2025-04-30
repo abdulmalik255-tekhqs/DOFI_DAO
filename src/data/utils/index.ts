@@ -62,6 +62,16 @@ class client {
   ido = {
     getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
+  idoDetail = {
+    getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address}`),
+  };
+  shareIDOBuy = {
+    create: async (id: string, data: any, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.BUY_SHARE_IDO}/${id}/invest?address=${address}`, data);
+      console.log('API Response:', response); 
+      return response;
+    },
+  };
   proposals = {
     getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}`),
   };
@@ -78,6 +88,12 @@ class client {
   postVote = {
     create: (data: any,address:string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
+  };
+  latestDomain = {
+    getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),
+  };
+  fetchNFT = {
+    getOwnerNFT: (address:any) => HttpClient.get(`${API_ENDPOINTS.OWNER_NFT}?address=${address}`),
   };
 }
 

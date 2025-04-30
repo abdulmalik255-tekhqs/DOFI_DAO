@@ -13,8 +13,9 @@ type ItemType = {
   name: string;
   slug: string;
   title: string;
-  cover_image: StaticImageData;
+  imageUrl: any;
   image?: StaticImageData;
+  amount?: number;
   number_of_artwork: number;
   user: {
     avatar?: StaticImageData;
@@ -28,8 +29,16 @@ type CardProps = {
 };
 
 export default function FractionCard({ item, className = '' }: CardProps) {
-  const { name, slug, title, cover_image, image, number_of_artwork, user } =
-    item ?? {};
+  const {
+    name,
+    slug,
+    title,
+    imageUrl,
+    image,
+    number_of_artwork,
+    user,
+    amount,
+  } = item ?? {};
   const router = useRouter();
   const { layout } = useLayout();
   function goToNFTDetailPage() {
@@ -45,14 +54,7 @@ export default function FractionCard({ item, className = '' }: CardProps) {
       )}
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
-        <Image
-          src={cover_image}
-          placeholder="blur"
-          width={600}
-          priority
-          quality={100}
-          alt={name}
-        />
+        <img src={imageUrl} width={600} alt="no-image" />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
         {/* <AnchorLink
@@ -63,14 +65,14 @@ export default function FractionCard({ item, className = '' }: CardProps) {
         /> */}
         <div className="flex justify-between gap-3">
           <div className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]">
-            tx:0
+            amount:{amount}
           </div>
-          <div
+          {/* <div
             onClick={() => goToNFTDetailPage()}
             className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
           >
             Detail View
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
