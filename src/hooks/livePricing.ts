@@ -82,7 +82,8 @@ const dispatch = useDispatch()
       // closeModal(); 
       if(data){
         dispatch(idoActions.setLoading(false))
-        openModal('CREATE_IDO', data);
+        //@ts-ignore
+        openModal('CREATE_IDO', data?.data);
       }
     },
     onError: (error) => {

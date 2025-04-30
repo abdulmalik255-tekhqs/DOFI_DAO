@@ -1,16 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { Star } from '@/components/icons/star';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import CryptocurrencyAccordionTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-accordion-table';
 import CryptocurrencyDrawerTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer-table';
-import { CoinPriceData } from '@/data/static/coin-market-data';
-import { useCoins } from '@/hooks/useCoin';
-import { log } from 'console';
-import { useIDO, useLivePricing } from '@/hooks/livePricing';
+
+import { useIDO } from '@/hooks/livePricing';
 
 const COLUMNS = [
   // {
@@ -31,9 +27,7 @@ const COLUMNS = [
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="ltr:text-left rtl:text-left">
-          {row.original.nftID?.tokenId}
-        </div>
+        <div className="ltr:text-left rtl:text-left">{row.index + 1}</div>
       </div>
     ),
     minWidth: 40,

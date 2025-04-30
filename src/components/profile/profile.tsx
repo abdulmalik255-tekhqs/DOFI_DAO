@@ -32,7 +32,6 @@ export default function Profile() {
     dispatch(idoActions.setPreviousRoute(false));
   }, []);
   const { ownerNFT, isLoading } = useFetchOwnerAllNfts();
-  console.log(ownerNFT, 'ownerNFT');
 
   return (
     <div className="flex w-full flex-col pt-4 md:flex-row md:pt-10 lg:flex-row 3xl:pt-12">

@@ -57,7 +57,6 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
   const { nftDetail, previousRoute, loading } = useSelector(
     (state: any) => state.ido,
   );
-  console.log(nftDetail, 'nftDetail');
   const dispatch = useDispatch();
   const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
   const handleBuy = async () => {

@@ -13,8 +13,6 @@ interface CreateIDOProps {
   data: any;
 }
 export default function CreateIDO({ data }: CreateIDOProps) {
-  console.log(data, 'data from profile');
-
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { loading, isConfetti } = useSelector((state: any) => state.ido);
@@ -26,8 +24,8 @@ export default function CreateIDO({ data }: CreateIDOProps) {
       dispatch(idoActions.setLoading(true));
       submitCreate({
         //@ts-ignore
-        nftID: data?.data?._id,
-        name: `${data?.data?.name} DIO`,
+        nftID: data?._id,
+        name: `${data?.name} DIO`,
         tokenSymbol: 'DAO NFT',
         totalSupply: totalFraction,
         pricePerToken: priceFraction,
