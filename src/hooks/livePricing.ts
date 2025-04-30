@@ -150,6 +150,19 @@ export function useGetProposal() {
   };
 }
 
+export function useGetProposalDomainDao() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['proposal-domaindao-latest'],
+    queryFn: () => client.proposalsDomainDao.getLatestProposalsDomainDao(address),
+  });
+  return {
+    proposalsDomainDao: data,
+    isLoading,
+    error,
+  };
+}
+
 export function useGetNFTS() {
   const { address } = useAccount();
   const { data, isLoading, error } = useQuery({

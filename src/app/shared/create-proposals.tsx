@@ -347,7 +347,7 @@ const CreateProposalPage = () => {
 
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-semibold dark:text-white">Create New Proposal</h2>
-        <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
+        {/* <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
           <div className="absolute top-2 right-2">
             <div className="group relative">
               <svg
@@ -403,7 +403,7 @@ const CreateProposalPage = () => {
           >
             Fractions
           </span>
-        </div>
+        </div> */}
       </div>
 
       <div className="mb-8">
@@ -445,49 +445,26 @@ const CreateProposalPage = () => {
         </select>
       </div>
 
-      {isFractionMode ? (
-        <>
-          <div className="mb-8">
-            <InputLabel title="Total Fractions" important />
-            <Input
-              type="number"
-              placeholder="Enter total fractions"
-              value={totalFractions}
-              onChange={(e: any) => setTotalFractions(e.target.value)}
-            />
-          </div>
-          <div className="mb-8">
-            <InputLabel title="Price Per Fraction" important />
-            <Input
-              type="number"
-              placeholder="Enter price fraction"
-              value={pricePerFraction}
-              onChange={(e: any) => setPricePerFraction(e.target.value)}
-            />
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="mb-8">
-            <InputLabel title="Leasing Address" important />
-            <Input
-              type="text"
-              placeholder="Enter leasing address"
-              value={leasingAddress}
-              onChange={(e) => setLeasingAddress(e.target.value)}
-            />
-          </div>
-          <div className="mb-8">
-            <InputLabel title="Percentage Yield" important />
-            <Input
-              type="number"
-              placeholder="Enter percentage yield"
-              value={percentageYield}
-              onChange={(e) => setPercentageYield(e.target.value)}
-            />
-          </div>
-        </>
-      )}
+      <div className="mb-8">
+        <InputLabel title="Total Fractions" important />
+        <Input
+          type="number"
+          placeholder="Enter total fractions"
+          value={totalFractions}
+          onChange={(e: any) => setTotalFractions(e.target.value)}
+        />
+      </div>
+      <div className="mb-8">
+        <InputLabel title="Price Per Fraction" important />
+        <Input
+          type="number"
+          placeholder="Enter price fraction"
+          value={pricePerFraction}
+          onChange={(e: any) => setPricePerFraction(e.target.value)}
+        />
+      </div>
+
+
 
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">

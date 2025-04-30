@@ -100,7 +100,7 @@ export default function VoteDetailsCard({ vote }: any) {
             {vote?.name}
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name} {vote?.pricePerFraction > 1 ? "(Parent)" : "(Child)"}
+            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
           </p>
           {!isExpand ? (
             <Button
