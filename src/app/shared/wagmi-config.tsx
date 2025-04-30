@@ -14,3 +14,4 @@ export const wagmiAdapter = new WagmiAdapter({
   networks: [baseSepolia],
   projectId,
 });
+export const config = wagmiAdapter.wagmiConfig;

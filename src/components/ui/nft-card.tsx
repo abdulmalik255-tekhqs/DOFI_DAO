@@ -18,7 +18,6 @@ type NFTGridProps = {
   name: string;
   tokenID: string;
   price: string;
-  key: string;
   completeNFT: any;
 };
 
@@ -28,7 +27,6 @@ export default function NFTGrid({
   name,
   price,
   tokenID,
-  key,
   completeNFT,
 }: NFTGridProps) {
   const dispatch = useDispatch();

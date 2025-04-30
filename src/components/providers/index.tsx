@@ -1,5 +1,6 @@
 'use client';
 import { Suspense } from 'react';
+import { Toaster } from 'react-hot-toast';
 import DrawersContainer from '@/components/drawer-views/container';
 import ModalsContainer from '@/components/modal-views/container';
 import SettingsButton from '@/components/settings/settings-button';
@@ -18,16 +19,16 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
       <Provider store={store}>
         <QueryProvider>
           <ThemeProvider>
-            {/* <JotaiProvider> */}
-            <SettingsButton />
-            <SettingsDrawer />
-
-            {children}
-            <Suspense fallback={null}>
-              <ModalsContainer />
-              <DrawersContainer />
-            </Suspense>
-            {/* </JotaiProvider> */}
+            <JotaiProvider>
+              <SettingsButton />
+              <SettingsDrawer />
+              <Toaster position="top-center" reverseOrder={false} />
+              {children}
+              <Suspense fallback={null}>
+                <ModalsContainer />
+                <DrawersContainer />
+              </Suspense>
+            </JotaiProvider>
           </ThemeProvider>
         </QueryProvider>
       </Provider>

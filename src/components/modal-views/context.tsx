@@ -35,8 +35,8 @@ const modalAtom = atom<ModalTypes>({
 export function useModal() {
   const [state, setState] = useAtom(modalAtom);
   const openModal = (view: MODAL_VIEW, data?: any) =>
-    setState({ ...state, isOpen: true, view, data });
-  const closeModal = () => setState({ ...state, isOpen: false });
+    setState((prev) => ({ ...prev, isOpen: true, view, data }));
+  const closeModal = () => setState((prev) => ({ ...prev, isOpen: false }));
 
   return {
     ...state,

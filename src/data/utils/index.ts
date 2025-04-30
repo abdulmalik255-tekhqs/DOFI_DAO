@@ -48,7 +48,6 @@ class client {
   submitBuy = {
     create: async (data: { id: string }, address: string) => {
       const response = await HttpClient.post(`${API_ENDPOINTS.BUY}/${data.id}?address=${address}`);
-      console.log('API Response:', response);  // Check the structure here
       return response;  // Return the response directly
     },
   };
@@ -68,7 +67,6 @@ class client {
   shareIDOBuy = {
     create: async (id: string, data: any, address: string) => {
       const response = await HttpClient.post(`${API_ENDPOINTS.BUY_SHARE_IDO}/${id}/invest?address=${address}`, data);
-      console.log('API Response:', response); 
       return response;
     },
   };

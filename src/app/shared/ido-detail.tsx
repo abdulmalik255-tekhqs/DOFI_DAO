@@ -2,6 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
+import { useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits } from 'viem';
+import { tetherABI } from '@/utils/abi';
 import Button from '@/components/ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
@@ -18,15 +22,17 @@ import VotePoll from '@/components/vote/vote-details/vote-poll';
 import { useEffect, useState } from 'react';
 import { useBuyShareIDO, useGetIDODetail } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
+import ToastNotification from '@/components/ui/toast-notification';
+import { config } from '@/app/shared/wagmi-config';
 
 const IDODetailPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
+  const [isExpired, setIsExpired] = useState(false);
   const { loading } = useSelector((state: any) => state.ido);
   const { idoDetaildata, isConfetti } = useSelector((state: any) => state.ido);
-  console.log(idoDetaildata, 'idoDetaildata');
-
+  const { writeContractAsync } = useWriteContract();
   const {
     mutate: idodetail,
     data: searchResult,
@@ -64,24 +70,48 @@ const IDODetailPage = () => {
       idodetail(idoDetaildata._id);
     }
   }, [idoDetaildata?._id]);
+  useEffect(() => {
+    //@ts-ignore
+    const endTime = new Date(searchResult?.data?.endTime).getTime();
+    const now = Date.now();
+    setIsExpired(now > endTime);
+  }, [searchResult]);
   const handleBuyShare = async () => {
     try {
       if (!inputValue) {
-        console.error('Amount is required');
+        ToastNotification('error', 'Enter Amount');
         return;
       }
       //@ts-ignore
       if (!searchResult?.data?._id) {
-        console.error('IDO ID is missing');
+        ToastNotification('error', 'IDO ID is missing');
         return;
       }
       dispatch(idoActions.setLoading(true));
-      buyShareIDO({
+      const hash = await writeContractAsync({
         //@ts-ignore
-        id: idoDetaildata?._id,
-        data: { amount: inputValue },
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        abi: tetherABI,
+        functionName: 'transfer',
+        args: [
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          parseUnits(inputValue?.toString(), 18),
+        ],
       });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+      });
+      if (recipient.status === 'success') {
+        buyShareIDO({
+          //@ts-ignore
+          id: idoDetaildata?._id,
+          data: { amount: inputValue },
+        });
+      } else {
+        console.log('erer');
+      }
     } catch (error) {
+      dispatch(idoActions.setLoading(false));
       console.error('Buy Share failed:', error);
     }
   };
@@ -183,6 +213,7 @@ const IDODetailPage = () => {
                     </div>
                     <div className="flex gap-2">
                       <input
+                        disabled={isExpired}
                         type="number"
                         value={inputValue || ''}
                         onChange={(e) => setInputValue(e.target.value)}
@@ -194,7 +225,7 @@ const IDODetailPage = () => {
                         shape="rounded"
                         className="uppercase xs:tracking-widest"
                         onClick={() => handleBuyShare()}
-                        disabled={loading}
+                        disabled={loading || isExpired}
                       >
                         {loading ? (
                           <>
@@ -252,15 +283,23 @@ const IDODetailPage = () => {
                         }
                       </p>
                     </div>
-                    <div className="flex w-full flex-col items-start justify-start p-2">
-                      <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
-                        DIO ends in
-                      </h3>
-                      <AuctionCountdown
-                        //@ts-ignore
-                        date={new Date(searchResult?.data?.endTime?.toString())}
-                      />
-                    </div>
+                    {isExpired === false && (
+                      <>
+                        <div className="flex w-full flex-col items-start justify-start p-2">
+                          <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+                            DIO ends in
+                          </h3>
+                          <AuctionCountdown
+                            date={
+                              new Date(
+                                //@ts-ignore
+                                searchResult?.data?.endTime?.toString(),
+                              )
+                            }
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </>
               )}

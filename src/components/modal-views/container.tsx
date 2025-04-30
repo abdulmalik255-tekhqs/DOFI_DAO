@@ -37,9 +37,15 @@ const DCAStepper = dynamic(
 const CoinSelectView = dynamic(
   () => import('@/components/ui/coin-select-view'),
 );
-const FindNameView = dynamic(() => import('@/components/search/find-name'));
-const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'));
-const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'));
+const FindNameView = dynamic(() => import('@/components/search/find-name'), {
+  ssr: false,
+});
+const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'), {
+  ssr: false,
+});
+const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
+  ssr: false,
+});
 const ProposalAcceptView = dynamic(
   () => import('@/components/proposal-accept/proposal-accept'),
 );

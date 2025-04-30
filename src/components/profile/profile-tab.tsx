@@ -36,13 +36,8 @@ export default function ProfileTab({ data }: any) {
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
-  console.log(data, 'dfghjk');
-  console.log(domain, 'domain');
-  console.log(fraction, 'fraction');
 
   useEffect(() => {
-    console.log(data, 'dfghjk'); // Your debug log
-
     if (Array.isArray(data)) {
       const domainArr: any = [];
       const fractionArr: any = [];

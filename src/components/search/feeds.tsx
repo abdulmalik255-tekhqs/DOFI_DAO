@@ -27,25 +27,17 @@ export default function Feeds({
         className,
       )}
     >
-      {isLoading ? (
-        <>
-          <div className="flex h-full w-full items-center justify-center p-6">
-            <MoonLoader />
-          </div>{' '}
-        </>
-      ) : (
-        filteredData?.map((nft: any) => (
-          <NFTGrid
-            key={nft._id}
-            name={nft.name}
-            image={nft.imageUrl}
-            author={nft.owner}
-            price={nft.price}
-            tokenID={nft.tokenId}
-            completeNFT={nft}
-          />
-        ))
-      )}
+      {filteredData?.map((nft: any) => (
+        <NFTGrid
+          key={nft._id}
+          name={nft.name}
+          image={nft.imageUrl}
+          author={nft.owner}
+          price={nft.price}
+          tokenID={nft.tokenId}
+          completeNFT={nft}
+        />
+      ))}
     </div>
   );
 }
