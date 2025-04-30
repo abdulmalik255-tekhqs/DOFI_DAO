@@ -2,25 +2,32 @@ import { useState } from 'react';
 import Button from '@/components/ui/button';
 import { FaSackDollar } from 'react-icons/fa6';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { BeatLoader } from 'react-spinners';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import { GiBrain } from 'react-icons/gi';
 import { FaLock } from 'react-icons/fa';
 import { useCreateIDO } from '@/hooks/livePricing';
+import { useDispatch, useSelector } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
 interface CreateIDOProps {
   data: any;
 }
 export default function CreateIDO({ data }: CreateIDOProps) {
-  console.log(data?.data, 'test');
+  console.log(data, 'data from profile');
+
+  const dispatch = useDispatch();
   const { address } = useAccount();
+  const { loading, isConfetti } = useSelector((state: any) => state.ido);
   const [totalFraction, setTotalfraction] = useState('');
   const [priceFraction, setPricefraction] = useState('');
   const { mutate: submitCreate, isError, error } = useCreateIDO();
   const handleBuy = () => {
     try {
+      dispatch(idoActions.setLoading(true));
       submitCreate({
         //@ts-ignore
         nftID: data?.data?._id,
-        name: 'DAO Token',
+        name: `${data?.data?.name} DIO`,
         tokenSymbol: 'DAO NFT',
         totalSupply: totalFraction,
         pricePerToken: priceFraction,
@@ -112,8 +119,15 @@ export default function CreateIDO({ data }: CreateIDOProps) {
         onClick={() => handleBuy()}
         fullWidth={true}
         className="uppercase xs:tracking-widest"
+        disabled={loading}
       >
-        Create IDO
+        {loading ? (
+          <>
+            <BeatLoader color="#000" />
+          </>
+        ) : (
+          'Create DIO'
+        )}
       </Button>
     </div>
   );

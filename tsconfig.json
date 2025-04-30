@@ -32,6 +32,6 @@
     "./src/**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/trading-bot"
-  ],
+, "src/components/vote/vote-list.jsx"  ],
   "exclude": ["node_modules"]
 }

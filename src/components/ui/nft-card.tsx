@@ -8,45 +8,43 @@ import { StaticImageData } from 'next/image';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import routes from '@/config/routes';
+import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useRouter } from 'next/navigation';
 
 type NFTGridProps = {
   author: string;
-  authorImage: StaticImageData;
-  image: StaticImageData;
+  image: any;
   name: string;
-  collection: string;
+  tokenID: string;
   price: string;
+  key: string;
+  completeNFT: any;
 };
 
 export default function NFTGrid({
   author,
-  authorImage,
   image,
   name,
-  collection,
   price,
+  tokenID,
+  key,
+  completeNFT,
 }: NFTGridProps) {
+  const dispatch = useDispatch();
   const { layout } = useLayout();
+  const router = useRouter();
+  const goToDetailPage = () => {
+    dispatch(idoActions.setNFTDetail(completeNFT));
+    router.push(routes.nftDetails);
+  };
 
   return (
-    <div className="relative overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:shadow-large dark:bg-light-dark">
-      <div className="p-4">
-        <AnchorLink
-          href={
-            (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
-            routes.profile
-          }
-          className="flex items-center text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-        >
-          {/* <Avatar
-            image={authorImage}
-            alt={name}
-            size="sm"
-            className="text-ellipsis ltr:mr-3 rtl:ml-3 dark:border-gray-500"
-          /> */}
-          <span className="overflow-hidden text-ellipsis">@{author}</span>
-        </AnchorLink>
-      </div>
+    <div
+      className="relative overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:shadow-large dark:bg-light-dark"
+      onClick={() => goToDetailPage()}
+    >
+      <div className="p-4"></div>
       <AnchorLink
         href={
           (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
@@ -54,12 +52,11 @@ export default function NFTGrid({
         }
         className="relative block w-full"
       >
-        <Image
+        <img
           src={image}
-          placeholder="blur"
           width={450}
           height={450}
-          alt=""
+          alt="no-image"
           className="w-full"
         />
       </AnchorLink>
@@ -72,7 +69,7 @@ export default function NFTGrid({
           }
           className="text-sm font-medium text-black dark:text-white"
         >
-          {name}
+          {name} #{tokenID}
         </AnchorLink>
         {/* <div className="mt-1.5 flex">
           <AnchorLink
@@ -87,7 +84,7 @@ export default function NFTGrid({
           </AnchorLink>
         </div> */}
         <div className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-          {price}
+          {price} USDT
         </div>
       </div>
     </div>

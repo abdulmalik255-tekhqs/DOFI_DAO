@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import { StaticImageData } from 'next/image';
+import Button from '@/components/ui/button';
 import ParamTab, { TabPanel } from '@/components/ui/param-tab';
 import Image from '@/components/ui/image';
 import FeaturedCard from '@/components/nft/featured-card';
@@ -13,6 +14,10 @@ import NftDropDown from '@/components/nft/nft-dropdown';
 import Avatar from '@/components/ui/avatar';
 import NftFooter from '@/components/nft/nft-footer';
 import Loader from '@/components/ui/loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { useBuyQuery } from '@/hooks/livePricing';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { BeatLoader } from 'react-spinners';
 
 type Avatar = {
   id: string | number;
@@ -49,19 +54,32 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
     owner,
     block_chains,
   } = product;
-
+  const { nftDetail, previousRoute, loading } = useSelector(
+    (state: any) => state.ido,
+  );
+  console.log(nftDetail, 'nftDetail');
+  const dispatch = useDispatch();
+  const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
+  const handleBuy = async () => {
+    try {
+      dispatch(idoActions.setLoading(true));
+      const result = await submitBuyAsync({ id: nftDetail?._id });
+      // openModal('CREATE_IDO', result);
+    } catch (error) {
+      console.error('Buy failed:', error);
+    }
+  };
   return (
     <div className="flex flex-grow">
       <div className="mx-auto flex w-full flex-grow flex-col transition-all xl:max-w-[1360px] 4xl:max-w-[1760px]">
         <div className="relative mb-5 flex flex-grow items-center justify-center md:pb-7 md:pt-4 lg:fixed lg:mb-0 lg:h-[calc(100%-96px)] lg:w-[calc(100%-492px)] xl:w-[calc(100%-550px)] 3xl:w-[calc(100%-632px)] ltr:md:left-0 ltr:md:pl-6 ltr:lg:pl-8 ltr:xl:pl-[340px] ltr:xl:pr-12 ltr:2xl:pl-96 ltr:4xl:pl-0 rtl:md:right-0 rtl:md:pr-6 rtl:lg:pr-8 rtl:xl:pl-12 rtl:xl:pr-[340px] rtl:2xl:pr-96 rtl:4xl:pr-0">
           <div className="flex h-full max-h-full w-full items-center justify-center lg:max-w-[768px]">
             <div className="relative aspect-square max-h-full overflow-hidden rounded-lg">
-              <Image
-                src={image}
-                alt={name}
+              <img
+                src={nftDetail?.imageUrl}
+                alt="no-image"
                 width={768}
-                priority
-                className="h-full bg-gray-200 dark:bg-light-dark"
+                className="h-full"
               />
             </div>
           </div>
@@ -72,29 +90,37 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
             <div className="block">
               <div className="flex justify-between">
                 <h2 className="text-xl font-medium leading-[1.45em] -tracking-wider text-gray-900 dark:text-white md:text-2xl xl:text-3xl">
-                  {name}
+                  {nftDetail?.name} #{nftDetail?.tokenId}
                 </h2>
                 {/* <div className="mt-1.5 shrink-0 xl:mt-2 ltr:ml-3 rtl:mr-3">
                   <NftDropDown />
                 </div> */}
               </div>
               <AnchorLink
-                href={minted_slug}
+                href=""
                 className="mt-1.5 inline-flex items-center text-sm -tracking-wider text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white xl:mt-2.5"
               >
-                Minted on {minted_date}
-                <ArrowLinkIcon className="h-3 w-3 ltr:ml-2 rtl:mr-2" />
+                <p>
+                  Minted on{' '}
+                  {new Date(nftDetail?.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+                {/* <ArrowLinkIcon className="h-3 w-3 ltr:ml-2 rtl:mr-2" /> */}
               </AnchorLink>
               <div className="mt-4 flex flex-wrap gap-6 pt-0.5 lg:-mx-6 lg:mt-6 lg:gap-0">
                 <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 lg:px-6 lg:ltr:border-r lg:rtl:border-l">
                   <h3 className="text-heading-style mb-2 uppercase text-gray-900 dark:text-white">
-                    Minted By
+                    Owned By
                   </h3>
-                  <AnchorLink href={creator?.slug} className="inline-flex">
-                    <ListCard
-                      item={creator}
-                      className="rounded-full p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                    />
+                  <AnchorLink href="" className="inline-flex">
+                    <div className="flex items-center justify-between rounded-full bg-white p-2 text-gray-400 shadow-card dark:bg-light-dark">
+                      {nftDetail?.contractAddress?.length > 30
+                        ? nftDetail?.contractAddress.slice(0, 20) + '...'
+                        : nftDetail?.contractAddress}
+                    </div>
                   </AnchorLink>
                 </div>
                 <div className="shrink-0 lg:px-6">
@@ -102,10 +128,9 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                     Collection
                   </h3>
                   <AnchorLink href="#" className="inline-flex">
-                    <ListCard
-                      item={collection}
-                      className="rounded-full p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                    />
+                    <div className="flex items-center justify-between rounded-full bg-white p-2 text-gray-400 shadow-card dark:bg-light-dark">
+                      DAO Token
+                    </div>
                   </AnchorLink>
                 </div>
               </div>
@@ -122,10 +147,10 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                     //   title: 'Bids',
                     //   path: 'bids',
                     // },
-                    {
-                      title: 'History',
-                      path: 'history',
-                    },
+                    // {
+                    //   title: 'History',
+                    //   path: 'history',
+                    // },
                   ]}
                 >
                   <TabPanel className="focus:outline-none">
@@ -135,7 +160,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                           Description
                         </h3>
                         <div className="text-sm leading-6 -tracking-wider text-gray-600 dark:text-gray-400">
-                          {description}
+                          {nftDetail?.description}
                         </div>
                       </div>
                       {/* <div className="block">
@@ -196,20 +221,43 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
               </Suspense>
             </div>
           </div>
-          <NftFooter
+          {previousRoute && (
+            <>
+              <div className="-mx-4 border-t-2 border-gray-900 px-4 pb-5 pt-4 dark:border-gray-700 sm:-mx-6 sm:px-6 md:mx-2 md:px-0 md:pt-5 lg:pb-7 lg:pt-6">
+                <div className="w-full">
+                  <Button
+                    shape="rounded"
+                    fullWidth={true}
+                    onClick={() => handleBuy()}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <BeatLoader color="#000" />
+                      </>
+                    ) : (
+                      'BUY'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* <NftFooter
             className="hidden md:block"
             currentBid={nftData?.bids[nftData?.bids?.length - 1]}
             auctionTime={Date.now() + 4000000 * 10}
             isAuction={isAuction}
             price={price}
-          />
+          /> */}
         </div>
-        <NftFooter
+        {/* <NftFooter
           currentBid={nftData?.bids[nftData?.bids?.length - 1]}
           auctionTime={Date.now() + 4000000 * 10}
           isAuction={isAuction}
           price={price}
-        />
+        /> */}
       </div>
     </div>
   );

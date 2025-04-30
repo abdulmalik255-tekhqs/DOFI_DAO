@@ -1,7 +1,7 @@
 import client from '@/data/utils';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { API_ENDPOINTS } from '@/data/utils/endpoints';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation} from '@tanstack/react-query';
 import { CoinPaginator, CryptoQueryOptions } from '@/types';
 import { useModal } from '@/components/modal-views/context';
 import {
@@ -31,7 +31,7 @@ export function useLivePricing(
   } = useInfiniteQuery({
     queryKey: [API_ENDPOINTS.LIVE_PRICING, options],
     queryFn: ({ pageParam }) =>
-      client.live_pricing.all({ ...options, page: pageParam },address),
+      client.live_pricing.all({ ...options, page: pageParam }, address),
     initialPageParam: 1,
     ...options,
     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) =>
@@ -72,18 +72,20 @@ export function useSubmitFindNameQuery() {
 
 export function useBuyQuery() {
   const { address } = useAccount();
-  const { openModal,closeModal  } = useModal();
-  
+  const { openModal, closeModal } = useModal();
+const dispatch = useDispatch()
   return useMutation({
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
       // closeModal(); 
       if(data){
+        dispatch(idoActions.setLoading(false))
         openModal('CREATE_IDO', data);
       }
     },
     onError: (error) => {
+      dispatch(idoActions.setLoading(false))
       console.error('Submission failed:', error);
     },
   });
@@ -93,21 +95,20 @@ export function useBuyQuery() {
      const router = useRouter();
      const dispatch= useDispatch();
     return useMutation({
-      //@ts-ignore
+      //@ts-ignore 
       mutationFn: (data: any) => client.createido.create(data,address),
       onSuccess: (data) => {
         if(data){
-          console.log(data,"data");
-          //@ts-ignore
-          console.log(data?.data,"fghklfghjk");
-          
           //@ts-ignore
           dispatch(idoActions.saveIDOdata(data?.data));
+          dispatch(idoActions.setLoading(false));
+          dispatch(idoActions.setIsConfetti(false));
           router.push(routes.idoDetail);
         }
       },
       onError: (error) => {
         // Optionally handle error
+        dispatch(idoActions.setLoading(false))
         console.error('Submission failed:', error);
       },
     });
@@ -115,8 +116,9 @@ export function useBuyQuery() {
   export function useDao() {
       const { address } = useAccount();
     const { data, isLoading, error } = useQuery({
-      queryKey: ['dao-latest'],
+      queryKey: ['dao-latest',address],
       queryFn: () => client.dao.getLatest(address),
+      enabled: !!address,
     });
     return {
       dao: data,
@@ -125,16 +127,18 @@ export function useBuyQuery() {
     };
   }
 
-  export function useIDO() {
-    const { address } = useAccount();
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['ido-latest'],
+export function useIDO() {
+  const { address } = useAccount();
+  const { data, isLoading, error,refetch } = useQuery({
+    queryKey: ['ido-latest',address],
     queryFn: () => client.ido.getLatestIDO(address),
+    enabled: !!address,
   });
   return {
     ido: data,
     isLoading,
     error,
+    refetch
   };
 }
 
@@ -157,17 +161,60 @@ export function useBuyShareIDO() {
   const { address } = useAccount();
   const { openModal,closeModal  } = useModal();
   const router = useRouter();
+  const dispatch = useDispatch()
   return useMutation({
     //@ts-ignore
     mutationFn: ({ id, data }: { id: string; data: any }) => client.shareIDOBuy.create(id, data, address),
     onSuccess: (data) => {
       // closeModal(); 
       if(data){
-        router.push(routes.livePricing);
+        openModal('SUCCESSFULLY_BUY_DIO');
+        dispatch(idoActions.setIsConfetti(true));
+        dispatch(idoActions.setLoading(false));
       }
     },
-    onError: (error) => {
+    onError: (error) => { 
+      dispatch(idoActions.setLoading(false));
       console.error('Submission failed:', error);
     },
   });
+}
+
+export function useGetProposal() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['proposal-latest'],
+    queryFn: () => client.proposals.getLatestProposals(address),
+  });
+  return {
+    proposals: data,
+    isLoading,
+    error,
+  };
+}
+
+export function useLatestDomain() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['domain-latest'],
+    queryFn: () => client.latestDomain.getLatestDomain(address),
+  });
+  return {
+    domainData: data,
+    isLoading,
+    error,
+  };
+}
+
+export function useFetchOwnerAllNfts() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['all-nft-latest'],
+    queryFn: () => client.fetchNFT.getOwnerNFT(address),
+  });
+  return {
+    ownerNFT: data,
+    isLoading,
+    error,
+  };
 }

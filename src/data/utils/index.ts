@@ -72,6 +72,15 @@ class client {
       return response;
     },
   };
+  proposals = {
+    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address}`),
+  };
+  latestDomain = {
+    getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),
+  };
+  fetchNFT = {
+    getOwnerNFT: (address:any) => HttpClient.get(`${API_ENDPOINTS.OWNER_NFT}?address=${address}`),
+  };
 }
 
 export default new client();

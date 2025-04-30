@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Button from '@/components/ui/button';
 import { useBuyQuery } from '@/hooks/livePricing';
 import { useModal } from '@/components/modal-views/context';
@@ -8,14 +9,17 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import routes from '@/config/routes';
+import { BeatLoader } from 'react-spinners';
 
 export default function FindName({ data }: any) {
-  const { mutate: submitBuyAsync, isError, error } = useBuyQuery();
+  const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
+  const { loading } = useSelector((state: any) => state.ido);
   const { openModal } = useModal();
   const dispatch = useDispatch();
   const router = useRouter();
   const handleBuy = async () => {
     try {
+      dispatch(idoActions.setLoading(true));
       const result = await submitBuyAsync({ id: data?._id });
       // openModal('CREATE_IDO', result);
     } catch (error) {
@@ -37,8 +41,15 @@ export default function FindName({ data }: any) {
           shape="rounded"
           className="uppercase xs:tracking-widest"
           onClick={() => handleBuy()}
+          disabled={loading}
         >
-          BUY
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'BUY'
+          )}
         </Button>
       </div>
       <div

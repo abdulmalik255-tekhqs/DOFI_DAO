@@ -10,37 +10,31 @@ import { ExportIcon } from '@/components/icons/export-icon';
 const COLUMNS = [
   {
     Header: 'Voter',
-    accessor: 'voter',
+    accessor: 'user.wallet',
     // @ts-ignore
     Cell: ({ cell: { value } }) => (
-      <a
-        href={value.link}
-        className="inline-flex items-center gap-2 hover:underline hover:opacity-90 focus:underline focus:opacity-90"
-      >
-        {value.id}
-        <ExportIcon className="h-auto w-3" />
-      </a>
+      <div>
+        {value ? `${value?.slice(0, 8)}...${value?.slice(-8)}` : ''}
+      </div>
     ),
   },
   {
     Header: 'Voting weight',
-    accessor: 'voting_weight',
+    accessor: 'amount',
   },
   {
     Header: 'Decision',
-    accessor: 'status',
+    accessor: 'inFavor',
     // @ts-ignore
     Cell: ({ cell: { value } }) => (
-      <div
+      <span
         className={cn(
-          'text-[13px] uppercase sm:text-inherit ltr:sm:text-right rtl:sm:text-left',
-          value.toLowerCase() === 'accepted'
-            ? 'text-green-600 dark:text-green-600'
-            : 'text-red-600 dark:text-red-600',
+          'text-[13px] uppercase sm:text-inherit font-medium',
+          value ? 'text-green-600' : 'text-red-600',
         )}
       >
-        {value}
-      </div>
+        {value ? 'Approved' : 'Rejected'}
+      </span>
     ),
   },
 ];
@@ -120,16 +114,22 @@ export default function VoterTable({ votes }: VoterTableTypes) {
           {...getTableBodyProps()}
           className="text-sm text-gray-900 dark:text-gray-100"
         >
-          {page.map((row, idx) => {
-            prepareRow(row);
-            return (
-              <tr
-                {...row.getRowProps()}
-                key={idx}
-                className="mb-3 grid border-b border-gray-200 pb-3 dark:border-gray-700 sm:mb-0 sm:table-row sm:border-b-0 sm:pb-0"
-              >
-                {row.cells.map((cell, idx) => {
-                  return (
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={COLUMNS.length} className="py-4 text-center text-gray-500 dark:text-gray-400">
+                No records found.
+              </td>
+            </tr>
+          ) : (
+            page.map((row, idx) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  key={idx}
+                  className="mb-3 grid border-b border-gray-200 pb-3 dark:border-gray-700 sm:mb-0 sm:table-row sm:border-b-0 sm:pb-0"
+                >
+                  {row.cells.map((cell, idx) => (
                     <td
                       {...cell.getCellProps()}
                       key={idx}
@@ -137,13 +137,14 @@ export default function VoterTable({ votes }: VoterTableTypes) {
                     >
                       {cell.render('Cell')}
                     </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+                  ))}
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
+
       <div className="flex w-full items-center justify-center text-sm xs:justify-end sm:mt-3">
         <div className="flex items-center gap-4">
           <Button

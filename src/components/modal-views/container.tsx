@@ -39,6 +39,7 @@ const CoinSelectView = dynamic(
 );
 const FindNameView = dynamic(() => import('@/components/search/find-name'));
 const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'));
+const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'));
 const ProposalAcceptView = dynamic(
   () => import('@/components/proposal-accept/proposal-accept'),
 );
@@ -73,6 +74,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':
       return <CreateIDOView data={data} />;
+    case 'SUCCESSFULLY_BUY_DIO':
+      return <SuccessBuyView />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

@@ -15,6 +15,7 @@ import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import Loader from '@/components/ui/loader';
 import cn from '@/utils/cn';
+import { useGetProposal } from '@/hooks/livePricing';
 
 const ProposalsPage = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const ProposalsPage = () => {
   const { totalVote: totalOffChainVote } = getVotesByStatus('off-chain');
   const { totalVote: totalExecutableVote } = getVotesByStatus('executable');
   const { totalVote: totalPastVote } = getVotesByStatus('past');
+    const { proposals, isLoading }: any = useGetProposal();
   function goToCreateProposalPage() {
     setTimeout(() => {
       router.push(routes.createProposal);
@@ -32,10 +34,10 @@ const ProposalsPage = () => {
     {
       title: (
         <>
-          Active{' '}
-          {totalActiveVote > 0 && (
+          All Proposals{' '}
+          {proposals?.count > 0 && (
             <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-              {totalActiveVote}
+              {(proposals?.count)}
             </span>
           )}
         </>
@@ -85,7 +87,7 @@ const ProposalsPage = () => {
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div>
-        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
+        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] py-4">
           DOFI DAO
         </h2>
       </div>

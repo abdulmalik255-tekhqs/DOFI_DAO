@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import { Star } from '@/components/icons/star';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
@@ -118,7 +119,7 @@ const COLUMNS = [
 ];
 
 export default function CryptocurrencyPricingTable() {
-  const { ido } = useIDO();
+  const { ido, isLoading } = useIDO();
   //@ts-ignore
   const data = React.useMemo(() => ido?.data ?? [], [ido?.data]);
   const columns = React.useMemo(() => COLUMNS, []);
@@ -129,6 +130,10 @@ export default function CryptocurrencyPricingTable() {
     ['xs', 'sm', 'md', 'lg', 'xl'].indexOf(breakpoint) !== -1 ? (
     <CryptocurrencyDrawerTable columns={columns} data={data} />
   ) : (
-    <CryptocurrencyAccordionTable columns={columns} data={data} />
+    <CryptocurrencyAccordionTable
+      columns={columns}
+      data={data}
+      isLoading={isLoading}
+    />
   );
 }

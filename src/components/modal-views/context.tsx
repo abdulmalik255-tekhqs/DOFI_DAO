@@ -17,7 +17,8 @@ export type MODAL_VIEW =
   | 'SWAP_COIN_SELECT'
   | 'FIND_NAME'
   | 'CREATE_IDO'
-  | 'PROPOSAL_ACCEPT';
+  | 'PROPOSAL_ACCEPT'
+  | 'SUCCESSFULLY_BUY_DIO';
 
 interface ModalTypes {
   isOpen: boolean;
