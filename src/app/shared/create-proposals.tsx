@@ -22,6 +22,7 @@ import cn from '@/utils/cn';
 import Avatar from '@/components/ui/avatar';
 import AuthorImage from '@/assets/images/author.jpg';
 import NFT1 from '@/assets/images/nft/nft-1.jpg';
+import { useCreatePropsals, useGetALLPropsalNFTS, useGetNFTS } from '@/hooks/livePricing';
 
 const actionOptions = [
   {
@@ -257,15 +258,69 @@ const CreateProposalPage = () => {
   const router = useRouter();
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [leasingAddress, setLeasingAddress] = useState('');
+  const [percentageYield, setPercentageYield] = useState('');
+  const [motivation, setMotivation] = useState('');
+  const [summary, setSummary] = useState('');
+  const [category, setCategory] = useState('');
+  const [totalFractions, setTotalFractions] = useState();
+  const [pricePerFraction, setPricePerFraction] = useState();
+  const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const { layout } = useLayout();
+  const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+
+  console.log("all_nfts---->", all_Propsal_NFTS)
+
+  const { mutate: submitCreate, isError, error } = useCreatePropsals();
+  const handleSubmit = () => {
+    try {
+      submitCreate({
+        //@ts-ignore
+        "name": name,
+        "summary": summary,
+        "motivation": motivation,
+        "amount": amount,
+        "nftId": category,
+        "daoId": "680a76bce48a31fb65d162dd",
+        "leasingAddress": selectedNFT?.amount > 1 ? leasingAddress : "0x",
+        "percentageYield": selectedNFT?.amount > 1 ? percentageYield : 1,
+        "totalFractions": selectedNFT?.amount == 1 ? totalFractions : 1,
+        "pricePerFraction": selectedNFT?.amount == 1 ? pricePerFraction : 1,
+        "daoType": "parent",
+        // "address": "{{wallet}}",
+        "expirationDate": new Date()
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function goToAllProposalPage() {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-          routes.proposals,
+        routes.proposals,
       );
     }, 800);
   }
+
+  // function handleSubmit() {
+  //   const formData = {
+  //     name,
+  //     amount,
+  //     leasingAddress,
+  //     percentageYield,
+  //     motivation,
+  //     publish,
+  //     priceType,
+  //     category
+  //   };
+  //   console.log('Form Data:', formData);
+
+  //   // You can replace the console.log with an API call here
+  // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <header className="mb-10 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -289,7 +344,7 @@ const CreateProposalPage = () => {
       <h2 className="mb-5 text-lg font-medium dark:text-gray-100 sm:mb-6 lg:mb-7 xl:text-xl">
         Create a new proposal
       </h2>
-      <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
+      {/* <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="mb-8">
             <InputLabel title="Upload file" important />
@@ -357,49 +412,113 @@ const CreateProposalPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="mb-8">
-        <InputLabel title="Total Investment" important />
+        <InputLabel title="Name" important />
         <Input
-          min={0}
-          type="number"
-          placeholder="Enter your investment"
-          inputClassName="spin-button-hidden"
+          type="text"
+          placeholder="Enter name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Token ID
-        </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Enter the on-chain token id this proposal should take. Token id are
-          executed in the order laid out here (ie. Action 1 fires, then Action
-          2, etc.)
-        </p>
-        <Input placeholder="Enter token id" />
-        {/* <ActionFields /> */}
+      <div className="mb-8">
+        <InputLabel title="Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
       </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Title
-        </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Your title introduces your proposal to the voters. Make sure it is
-          clear and to the point.
-        </p>
-        <Input placeholder="Enter title of your proposal" />
+      <div className="mb-8">
+        <InputLabel title="Domain" important />
+        <select
+          value={category}
+          onChange={(e) => {
+            const selectedId = e.target.value;
+            setCategory(selectedId);
+            const nft = all_Propsal_NFTS?.data?.find((n: any) => n._id === selectedId);
+            setSelectedNFT(nft);
+          }}
+          className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition-all placeholder:text-gray-400 focus:border-gray-900 focus:ring-0 dark:border-gray-700 dark:bg-light-dark dark:text-white dark:placeholder:text-gray-600"
+        >
+          <option value="" disabled>Select a domain</option>
+          {all_Propsal_NFTS?.data?.map((nft: any) => (
+            <option value={nft?._id} key={nft?._id}>
+              {nft?.name}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Description
+
+      {/* Conditionally show inputs based on amount */}
+      {selectedNFT?.amount > 1 && (
+        <>
+          <div className="mb-8">
+            <InputLabel title="Leasing Address" important />
+            <Input
+              type="text"
+              placeholder="Enter leasing address"
+              value={leasingAddress}
+              onChange={(e) => setLeasingAddress(e.target.value)}
+            />
+          </div>
+          <div className="mb-8">
+            <InputLabel title="Percentage Yield" important />
+            <Input
+              type="number"
+              placeholder="Enter percentage yield"
+              value={percentageYield}
+              onChange={(e) => setPercentageYield(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+
+      {selectedNFT?.amount == 1 && (
+        <>
+          <div className="mb-8">
+            <InputLabel title="Total Fractions" important />
+            <Input
+              type="number"
+              placeholder="Enter total fractions"
+              value={totalFractions}
+              onChange={(e:any) => setTotalFractions(e.target.value)}
+            />
+          </div>
+          <div className="mb-8">
+            <InputLabel title="Price Per Fraction" important />
+            <Input
+              type="number"
+              placeholder="Enter price fraction"
+              value={pricePerFraction}
+              onChange={(e:any) => setPricePerFraction(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+
+      <div className="rounded-lg dark:bg-light-dark xs:pb-8">
+        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+          MOTIVATION
         </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Your description should present in full detail what the actions of the
-          proposal will do. This is where voters will educate themselves on what
-          they are voting on.
-        </p>
         <Textarea
-          placeholder="Add the proposal details here"
+          placeholder="Add the motivation here"
+          rows={6}
+          value={motivation}
+          onChange={(e) => setMotivation(e.target.value)}
+        />
+      </div>
+      <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
+        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+          SUMMARY
+        </h3>
+        <Textarea
+          rows={6}
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          placeholder="Add the summary here"
           inputClassName="md:h-32 xl:h-36"
         />
       </div>
@@ -409,6 +528,7 @@ const CreateProposalPage = () => {
           shape="rounded"
           fullWidth={true}
           className="xs:w-64 md:w-72"
+          onClick={handleSubmit}
         >
           Create Proposal
         </Button>

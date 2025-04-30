@@ -73,7 +73,21 @@ class client {
     },
   };
   proposals = {
-    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address}`),
+    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}`),
+  };
+  all_nfts = {
+    getLatestNfts: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
+  };
+  all_propsals_nfts = {
+    getLatestPropsalNFTS: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
+  };
+  createPropsals = {
+    create: (data: any,address:string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_PROPSALS}?address=${address}`, data),
+  };
+  postVote = {
+    create: (data: any,address:string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
   latestDomain = {
     getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),

@@ -16,24 +16,58 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { useModal } from '@/components/modal-views/context';
+import { usePostVote } from '@/hooks/livePricing';
+import { useAccount } from 'wagmi';
+import { useQueryClient } from '@tanstack/react-query';
+import InputLabel from '@/components/ui/input-label';
+import Input from '@/components/ui/forms/input';
 
 function VoteActionButton({ vote }: any) {
-  const { openModal } = useModal();
-  console.log(vote, 'vote---------> inside button');
+  const [amount, setAmount] = useState("");
+  const { address } = useAccount();
+  const { mutate: submitCreate, isError, error } = usePostVote();
+  const handleSubmit = (isFavour: any) => {
+    console.log("amount---->", amount)
+    try {
+      submitCreate({
+        //@ts-ignore
+        "inFavor": isFavour,
+        "amount": Number(amount),
+        "proposalId": vote?._id,
+        "address": address?.toLowerCase()
+
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
+      {(vote?.status == "active" && !vote?.hasVoted) && <div className="mb-8">
+        <InputLabel title="Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>}
+
       <Button
         shape="rounded"
         color="success"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != "active" || vote?.hasVoted}
-        onClick={() => openModal('PROPOSAL_ACCEPT', vote)}
+        onClick={() => handleSubmit("yes")}
       >
-        Accept
+        Invest
       </Button>
-      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted}>
+      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted} onClick={() => handleSubmit("no")}>
         Reject
       </Button>
+
+
     </div>
   );
 }
@@ -66,7 +100,7 @@ export default function VoteDetailsCard({ vote }: any) {
             {vote?.name}
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name} {vote?.parentDAO ? "(Parent)" : "(Child)"}
+            DAO: {vote?.parentDAO?.name || vote?.childDAO?.name} {vote?.pricePerFraction > 1 ? "(Parent)" : "(Child)"}
           </p>
           {!isExpand ? (
             <Button
@@ -80,7 +114,7 @@ export default function VoteDetailsCard({ vote }: any) {
             <VoteActionButton vote={vote} />
           )}
         </div>
-        {vote.status == "active" && (
+        {vote.status == "active" ? (
           <div
             className={cn(
               "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
@@ -97,7 +131,22 @@ export default function VoteDetailsCard({ vote }: any) {
             </h3>
             <AuctionCountdown date={new Date(vote?.expirationDate.toString())} />
           </div>
-        )}
+        ) : <div
+          className={cn(
+            "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+            {
+              'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
+                layout !== LAYOUT_OPTIONS.RETRO,
+              'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
+                layout === LAYOUT_OPTIONS.RETRO,
+            },
+          )}
+        >
+          <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            Voting ended
+          </h3>
+          <AuctionCountdown date={undefined} />
+        </div>}
 
       </motion.div>
       <AnimatePresence>
@@ -120,12 +169,30 @@ export default function VoteDetailsCard({ vote }: any) {
                   : ''}
                 {/* <ExportIcon className="h-auto w-3" /> */}
               </a>
+              <div className="mt-4">
+                Amount allocated: <span className="font-medium text-gray-900">{vote?.amount}</span>
+              </div>
+              {vote?.leasingAddress == "0x" ? <>
+                <div className="mt-4">
+                  Price per fraction: <span className="font-medium text-gray-900">{vote?.pricePerFraction || 2}</span>
+                </div>
+                <div className="mt-4">
+                  Total fractions: <span className="font-medium text-gray-900">{vote?.totalFractions || 100}</span>
+                </div>
+              </> : <>
+                <div className="mt-4">
+                  Leasing address: <span className="font-medium text-gray-900">{vote?.leasingAddress || "0x"}</span>
+                </div>
+                <div className="mt-4">
+                  Yield percentage: <span className="font-medium text-gray-900">{vote?.yieldPercentage || 3}</span>
+                </div>
+              </>}
             </div>
             <VotePoll
               title={'Votes'}
               vote={vote}
             />
-            <VoterTable votes={vote?.votes ?? []} />
+            <VoterTable votes={vote?.votes || []} />
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>

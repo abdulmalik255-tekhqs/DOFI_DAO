@@ -52,8 +52,8 @@ interface VoterTableTypes {
 
 export default function VoterTable({ votes }: VoterTableTypes) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const data = useMemo(() => votes, []);
-  const columns = useMemo(() => COLUMNS, []);
+  const data = votes || []
+  const columns = COLUMNS || []
   const {
     getTableProps,
     getTableBodyProps,

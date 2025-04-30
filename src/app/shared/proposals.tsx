@@ -37,7 +37,7 @@ const ProposalsPage = () => {
           All Proposals{' '}
           {proposals?.count > 0 && (
             <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-              {(proposals?.count)}
+             ({proposals?.count})
             </span>
           )}
         </>
