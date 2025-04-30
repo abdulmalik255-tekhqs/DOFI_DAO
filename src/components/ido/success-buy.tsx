@@ -8,9 +8,9 @@ export default function SuccessfullyBuyIDO() {
           Congratulations
         </h1>
         <p className="justiy-center w-full items-start gap-2 text-[16px] font-normal tracking-normal text-black md:flex">
-          You have successfully purchased the domain 'fractions'. It will be
-          sent to you once one DIO is completed. You can view your fractions in
-          your profile.
+          You have successfully purchased the domain &#39;fractions&#39;. It
+          will be sent to you once one DIO is completed. You can view your
+          fractions in your profile.
         </p>
       </div>
     </>
