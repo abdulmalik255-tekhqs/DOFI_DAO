@@ -15,6 +15,7 @@ import routes from '@/config/routes';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
+import ToastNotification from '@/components/ui/toast-notification';
 
 export function useLivePricing(
   options?: Partial<CryptoQueryOptions>,
@@ -262,7 +263,7 @@ export function useCreatePropsals(path: any) {
     },
   });
 }
-
+ 
 export function usePostVote() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -342,6 +343,29 @@ export function usePostCaculate() {
       }
     },
     onError: (error) => {
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
+}
+
+export function useSwap() {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+   const dispatch= useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.swapToken.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        dispatch(idoActions.setLoading(false));
+        ToastNotification('success', 'Successfully swap token!');
+        return;
+      }
+    },
+    onError: (error) => {
+      dispatch(idoActions.setLoading(false));
       // Optionally handle error
       console.error('Submission failed:', error);
     },

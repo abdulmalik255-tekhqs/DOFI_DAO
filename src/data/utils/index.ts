@@ -103,6 +103,10 @@ class client {
   fetchNFTSwap = {
     getOwnerNFTSwap: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFT_SWAP}?address=${address}`),
   };
+  swapToken = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_SWAP_TOKEN}?address=${address}`, data),
+  };
 }
 
 export default new client();
