@@ -17,7 +17,8 @@ export type MODAL_VIEW =
   | 'SWAP_COIN_SELECT'
   | 'FIND_NAME'
   | 'CREATE_IDO'
-  | 'PROPOSAL_ACCEPT';
+  | 'PROPOSAL_ACCEPT'
+  | 'SUCCESSFULLY_BUY_DIO';
 
 interface ModalTypes {
   isOpen: boolean;
@@ -34,8 +35,8 @@ const modalAtom = atom<ModalTypes>({
 export function useModal() {
   const [state, setState] = useAtom(modalAtom);
   const openModal = (view: MODAL_VIEW, data?: any) =>
-    setState({ ...state, isOpen: true, view, data });
-  const closeModal = () => setState({ ...state, isOpen: false });
+    setState((prev) => ({ ...prev, isOpen: true, view, data }));
+  const closeModal = () => setState((prev) => ({ ...prev, isOpen: false }));
 
   return {
     ...state,

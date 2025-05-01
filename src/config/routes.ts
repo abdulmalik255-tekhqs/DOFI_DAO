@@ -1,7 +1,7 @@
 const routes = {
   home: '/',
   minimal: '/minimal',
-  livePricing: '/live-pricing',
+  livePricing: '/',
   retro: '/retro',
   swap: '/swap',
   liquidity: '/liquidity',

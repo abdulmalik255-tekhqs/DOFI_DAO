@@ -14,11 +14,18 @@ import TransactionTable from '@/components/transaction/transaction-table';
 
 //images
 import AuthorImage from '@/assets/images/author.jpg';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import routes from '@/config/routes';
 
 export default function ModernScreen() {
+  const router = useRouter();
+  useEffect(() => {
+    router.push(routes.livePricing);
+  }, []);
   return (
     <>
-      <div className="flex flex-wrap">
+      {/* <div className="flex flex-wrap">
         <div className="mb-8 w-full sm:mb-0 sm:w-1/2 md:w-[calc(100%-256px)] lg:w-[calc(100%-288px)] 2xl:w-[calc(100%-320px)] 3xl:w-[calc(100%-358px)] sm:ltr:pr-6 sm:rtl:pl-6">
           <CoinSlider coins={coinSlideData} />
         </div>
@@ -66,7 +73,7 @@ export default function ModernScreen() {
           <OverviewChart />
           <TopPools />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

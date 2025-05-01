@@ -48,7 +48,6 @@ class client {
   submitBuy = {
     create: async (data: { id: string }, address: string) => {
       const response = await HttpClient.post(`${API_ENDPOINTS.BUY}/${data.id}?address=${address}`);
-      console.log('API Response:', response);  // Check the structure here
       return response;  // Return the response directly
     },
   };
@@ -61,6 +60,15 @@ class client {
   };
   ido = {
     getLatestIDO: (address: any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
+  };
+  idoDetail = {
+    getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address}`),
+  };
+  shareIDOBuy = {
+    create: async (id: string, data: any, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.BUY_SHARE_IDO}/${id}/invest?address=${address}`, data);
+      return response;
+    },
   };
   proposals = {
     getLatestProposals: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}&daoId=680a76bce48a31fb65d162dd&daoType=parent`),
@@ -81,6 +89,12 @@ class client {
   postVote = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
+  };
+  latestDomain = {
+    getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),
+  };
+  fetchNFT = {
+    getOwnerNFT: (address:any) => HttpClient.get(`${API_ENDPOINTS.OWNER_NFT}?address=${address}`),
   };
 }
 

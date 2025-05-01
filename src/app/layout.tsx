@@ -1,6 +1,7 @@
 import cn from '@/utils/cn';
 import type { Metadata } from 'next';
 import { fira_code } from './fonts';
+// import { Provider } from 'react-redux';
 import { RootProvider } from '@/components/providers';
 
 // third party css files
@@ -12,6 +13,7 @@ import 'swiper/css/pagination';
 import '@/assets/css/range-slider.css';
 import '@/assets/css/scrollbar.css';
 import '@/assets/css/globals.css';
+// import store from '@/store/store';
 
 export const metadata: Metadata = {
   title: 'DOFI DAO',
@@ -42,7 +44,9 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        {/* <Provider store={store}> */}
         <RootProvider>{children}</RootProvider>
+        {/* </Provider> */}
       </body>
     </html>
   );

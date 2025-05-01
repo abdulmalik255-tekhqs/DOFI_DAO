@@ -2,8 +2,20 @@ import cn from '@/utils/cn';
 import { NFTList } from '@/data/static/nft-list';
 import NFTGrid from '@/components/ui/nft-card';
 import { useGridSwitcher } from '@/lib/hooks/use-grid-switcher';
+import { MoonLoader } from 'react-spinners';
 
-export default function Feeds({ className }: { className?: string }) {
+export default function Feeds({
+  data,
+  isLoading,
+  className,
+}: {
+  data?: any; // Ideally type this correctly
+  isLoading?: boolean;
+  className?: string;
+}) {
+  const filteredData = data?.filter((nft: any) => {
+    return Number(nft.amount) <= 1;
+  });
   const { isGridCompact } = useGridSwitcher();
   return (
     <div
@@ -15,15 +27,15 @@ export default function Feeds({ className }: { className?: string }) {
         className,
       )}
     >
-      {NFTList.map((nft) => (
+      {filteredData?.map((nft: any) => (
         <NFTGrid
-          key={nft.id}
+          key={nft._id}
           name={nft.name}
-          image={nft.image}
-          author={nft.author}
-          authorImage={nft.authorImage}
+          image={nft.imageUrl}
+          author={nft.owner}
           price={nft.price}
-          collection={nft.collection}
+          tokenID={nft.tokenId}
+          completeNFT={nft}
         />
       ))}
     </div>

@@ -62,7 +62,7 @@ export function LivePricingFeed({
       localStorage.setItem("Domain_Dao", _id)
     }
     setTimeout(() => {
-      router.push(index == '0' ? routes.proposals : routes.domain);
+      router.push(index === 0 ? routes.proposals : routes.domain);
     }, 800);
   }
   const prices = [
@@ -80,14 +80,14 @@ export function LivePricingFeed({
     <div
       onClick={() => goToCreateProposalPage()}
       className={cn(
-        'm-2 flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:bg-light-dark lg:flex-row',
+        'm-2 flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] dark:bg-light-dark lg:flex-row',
       )}
     >
       <div className="w-full flex-col">
         <div className="mb-3 flex items-center">
           {getInitialIcon(name)}
           {/* {icon} */}
-          <h4 className="text-sm font-medium text-gray-900 dark:text-white ltr:ml-3 rtl:mr-3">
+          <h4 className="text-[12px] font-medium text-gray-900 dark:text-white ltr:ml-1 rtl:mr-1">
             {name}
           </h4>
         </div>
@@ -186,12 +186,9 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
   function mergeDAOs(parentDAOs: any, childDAOs: any) {
     return [...(parentDAOs || []), ...(childDAOs || [])];
   }
-  const { dao, isLoading, error } = useDao();
-  //@ts-ignore
-  console.log(dao?.data, 'dao');
+  const { dao } = useDao();
   //@ts-ignore
   const mergedDAOs = mergeDAOs(dao?.data?.parentDAOs, dao?.data?.childDAOs);
-  console.log(mergedDAOs, 'mergedDAOsmergedDAOsmergedDAOs');
 
   return (
     <Swiper
@@ -204,7 +201,6 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       dir="ltr"
       className="w-full pb-10"
     >
-
       {mergedDAOs.map((item, index) => (
         <SwiperSlide key={item.id}>
           <LivePricingFeed {...item} index={index} />
