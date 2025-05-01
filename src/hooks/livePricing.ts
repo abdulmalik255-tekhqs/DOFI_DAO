@@ -74,12 +74,12 @@ export function useSubmitFindNameQuery() {
 export function useBuyQuery() {
   const { address } = useAccount();
   const { openModal } = useModal();
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   return useMutation({
     //@ts-ignore
     mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
     onSuccess: (data) => {
-      if(data){
+      if (data) {
         dispatch(idoActions.setLoading(false))
         //@ts-ignore
         openModal('CREATE_IDO', data?.data);
@@ -91,47 +91,47 @@ const dispatch = useDispatch()
     },
   });
 }
-  export function useCreateIDO() {
-    const { address } = useAccount();
-     const router = useRouter();
-     const dispatch= useDispatch();
-    return useMutation({
-      //@ts-ignore 
-      mutationFn: (data: any) => client.createido.create(data,address),
-      onSuccess: (data) => {
-        if(data){
-          //@ts-ignore
-          dispatch(idoActions.saveIDOdata(data?.data));
-          dispatch(idoActions.setLoading(false));
-          dispatch(idoActions.setIsConfetti(false));
-          router.push(routes.idoDetail);
-        }
-      },
-      onError: (error) => {
-        // Optionally handle error
-        dispatch(idoActions.setLoading(false))
-        console.error('Submission failed:', error);
-      },
-    });
-  }
-  export function useDao() {
-      const { address } = useAccount();
-    const { data, isLoading, error } = useQuery({
-      queryKey: ['dao-latest',address],
-      queryFn: () => client.dao.getLatest(address),
-      enabled: !!address,
-    });
-    return {
-      dao: data,
-      isLoading,
-      error,
-    };
-  }
+export function useCreateIDO() {
+  const { address } = useAccount();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  return useMutation({
+    //@ts-ignore 
+    mutationFn: (data: any) => client.createido.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        //@ts-ignore
+        dispatch(idoActions.saveIDOdata(data?.data));
+        dispatch(idoActions.setLoading(false));
+        dispatch(idoActions.setIsConfetti(false));
+        router.push(routes.idoDetail);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      dispatch(idoActions.setLoading(false))
+      console.error('Submission failed:', error);
+    },
+  });
+}
+export function useDao() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['dao-latest', address],
+    queryFn: () => client.dao.getLatest(address),
+    enabled: !!address,
+  });
+  return {
+    dao: data,
+    isLoading,
+    error,
+  };
+}
 
 export function useIDO() {
   const { address } = useAccount();
-  const { data, isLoading, error,refetch } = useQuery({
-    queryKey: ['ido-latest',address],
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['ido-latest', address],
     queryFn: () => client.ido.getLatestIDO(address),
     enabled: !!address,
   });
@@ -148,7 +148,7 @@ export function useGetIDODetail() {
   const { address } = useAccount();
   return useMutation({
     //@ts-ignore
-    mutationFn: (id: string) => client.idoDetail.getSingleIDO(id,address),
+    mutationFn: (id: string) => client.idoDetail.getSingleIDO(id, address),
     onSuccess: (data) => {
     },
     onError: (error) => {
@@ -160,7 +160,7 @@ export function useGetIDODetail() {
 
 export function useBuyShareIDO() {
   const { address } = useAccount();
-  const { openModal,closeModal  } = useModal();
+  const { openModal, closeModal } = useModal();
   const router = useRouter();
   const dispatch = useDispatch()
   return useMutation({
@@ -168,13 +168,13 @@ export function useBuyShareIDO() {
     mutationFn: ({ id, data }: { id: string; data: any }) => client.shareIDOBuy.create(id, data, address),
     onSuccess: (data) => {
       // closeModal(); 
-      if(data){
+      if (data) {
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));
       }
     },
-    onError: (error) => { 
+    onError: (error) => {
       dispatch(idoActions.setLoading(false));
       console.error('Submission failed:', error);
     },
@@ -234,7 +234,7 @@ export function useGetALLPropsalNFTS() {
 }
 
 
-export function useCreatePropsals() {
+export function useCreatePropsals(path: any) {
   const { address } = useAccount();
   const router = useRouter();
   const dispatch = useDispatch()
@@ -245,8 +245,14 @@ export function useCreatePropsals() {
     onSuccess: (data) => {
       if (data) {
         // dispatch(idoActions.saveIDOdetailData(data));
-        dispatch(idoActions.setLoading(false));
+        if (path == "child") {
+          dispatch(idoActions.setLoading(false));
+          router.push(routes.domain);
+        } else {
+          dispatch(idoActions.setLoading(false));
         router.push(routes.proposals);
+        }
+
       }
     },
     onError: (error) => {
@@ -305,4 +311,39 @@ export function useFetchOwnerAllNfts() {
     isLoading,
     error,
   };
+}
+
+export function useFetchNFTSWAP() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['all-nft-swap-latest'],
+    queryFn: () => client.fetchNFTSwap.getOwnerNFTSwap(address),
+  });
+  return {
+    NFTSwap: data,
+    isLoading,
+    error,
+  };
+}
+
+
+export function usePostCaculate() {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  //  const dispatch= useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.postCalulation.create(data, address),
+    onSuccess: (data:any) => {
+      if (data) {
+        // queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
+        // router.push(routes.proposals);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
 }

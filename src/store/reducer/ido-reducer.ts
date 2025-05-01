@@ -5,7 +5,10 @@ const initialState = {
   loading:false,
   nftDetail:{},
   previousRoute:false,
-  isConfetti:false
+  isConfetti:false,
+  selectedSwapFrom:{},
+  selectedSwapTo:{},
+
 };
 
 const idoSlice = createSlice({
@@ -26,6 +29,12 @@ const idoSlice = createSlice({
     },
     setIsConfetti(state, action) {
       state.isConfetti = action.payload;
+    },
+    setSelectedSwapFrom(state, action) {
+      state.selectedSwapFrom = action.payload;
+    },
+    setSelectedSwapTo(state, action) {
+      state.selectedSwapTo = action.payload;
     },
   },
 });

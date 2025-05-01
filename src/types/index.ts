@@ -7,10 +7,10 @@ export type NextPageWithLayout<P = {}> = NextPage<P> & {
 };
 
 export type CoinTypes = {
-  icon: JSX.Element;
   code: string;
   name: string;
   price: number;
+  imageurl:string
 };
 
 export interface Attachment {

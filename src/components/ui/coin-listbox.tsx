@@ -7,10 +7,10 @@ import { Transition } from '@/components/ui/transition';
 import SimpleBar from '@/components/ui/simplebar';
 
 type CoinListBoxProps = {
-  coins: CoinTypes[];
+  coins:any;
   className?: string;
-  selectedCoin: CoinTypes;
-  setSelectedCoin: (selectedCoin: CoinTypes) => void;
+  selectedCoin: any;
+  setSelectedCoin: (selectedCoin: any) => void;
 };
 
 export default function CoinListBox({
@@ -39,7 +39,7 @@ export default function CoinListBox({
         >
           <Listbox.Options className="absolute -left-[1px] -right-[1px] !z-[999] listing-box-options-wrapper mt-2 origin-top-right overflow-y-auto rounded-lg bg-white p-3 pr-2 shadow-large dark:bg-gray-800">
             <SimpleBar className="h-56 pr-1">
-              {coins?.map((coin) => (
+              {coins?.map((coin:any) => (
                 <Listbox.Option key={coin.code} value={coin}>
                   {({ selected }) => (
                     <span

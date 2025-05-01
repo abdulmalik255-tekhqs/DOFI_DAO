@@ -21,7 +21,9 @@ export const API_ENDPOINTS = {
   GET_NFTS:"/nft",
   GET_NFTS_PROPOSAL:"/nft/proposal",
   POST_PROPSALS:"/proposals",
-  POST_VOTE:"/vote"
+  POST_VOTE:"/vote",
+  POST_CALC:"/nft/swap/calculate",
+  GET_NFT_SWAP:"/nft/swap"
 
   // PRICING: 'https://api.coingecko.com/api/v3/coins',
   // MARKETS: 'https://api.coingecko.com/api/v3/coins/markets',
