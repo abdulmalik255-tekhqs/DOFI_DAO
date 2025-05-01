@@ -1,6 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { BeatLoader } from 'react-spinners';
+import { useAccount, useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits } from 'viem';
+import { tetherABI } from '@/utils/abi';
+import { config } from '@/app/shared/wagmi-config';
 import InputLabel from '@/components/ui/input-label';
 import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
@@ -23,7 +29,14 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import Avatar from '@/components/ui/avatar';
 import AuthorImage from '@/assets/images/author.jpg';
 import NFT1 from '@/assets/images/nft/nft-1.jpg';
-import { useCreatePropsals, useGetALLPropsalNFTS, useGetNFTS } from '@/hooks/livePricing';
+import {
+  useCreatePropsals,
+  useGetALLPropsalNFTS,
+  useGetNFTS,
+} from '@/hooks/livePricing';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import ToastNotification from '@/components/ui/toast-notification';
 
 const actionOptions = [
   {
@@ -257,6 +270,10 @@ function ActionFields() {
 
 const CreateProposalPage = () => {
   const router = useRouter();
+  const { loading } = useSelector((state: any) => state.ido);
+  const dispatch = useDispatch();
+  const { address } = useAccount();
+  const { writeContractAsync } = useWriteContract();
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
   const [name, setName] = useState('');
@@ -274,28 +291,50 @@ const CreateProposalPage = () => {
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
 
-  console.log("all_nfts---->", all_Propsal_NFTS)
-
   const { mutate: submitCreate, isError, error } = useCreatePropsals();
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
-      submitCreate({
+      if (!address) {
+        ToastNotification('error', 'Connect your wallet first!');
+        return;
+      }
+      dispatch(idoActions.setLoading(true));
+      const hash = await writeContractAsync({
         //@ts-ignore
-        "name": name,
-        "summary": summary,
-        "motivation": motivation,
-        "amount": amount,
-        "nftId": category,
-        "daoId": "680a76bce48a31fb65d162dd",
-        "leasingAddress": !isFractionMode ? leasingAddress : "0x",
-        "percentageYield": !isFractionMode ? percentageYield : 1,
-        "totalFractions": isFractionMode ? totalFractions : 1,
-        "pricePerFraction": isFractionMode ? pricePerFraction : 1,
-        "daoType": "parent",
-        // "address": "{{wallet}}",
-        "expirationDate": new Date()
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        abi: tetherABI,
+        functionName: 'transfer',
+        args: [
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          parseUnits(amount?.toString(), 18),
+        ],
       });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+        pollingInterval: 2000,
+      });
+      if (recipient.status === 'success') {
+        submitCreate({
+          //@ts-ignore
+          name: name,
+          summary: summary,
+          motivation: motivation,
+          amount: amount,
+          nftId: category,
+          daoId: '680a76bce48a31fb65d162dd',
+          leasingAddress: !isFractionMode ? leasingAddress : '0x',
+          percentageYield: !isFractionMode ? percentageYield : 1,
+          totalFractions: isFractionMode ? totalFractions : 1,
+          pricePerFraction: isFractionMode ? pricePerFraction : 1,
+          daoType: 'parent',
+          // "address": "{{wallet}}",
+          expirationDate: new Date(),
+        });
+      } else {
+        console.log('erer');
+      }
     } catch (error) {
+      dispatch(idoActions.setLoading(false));
       console.log(error);
     }
   };
@@ -304,7 +343,7 @@ const CreateProposalPage = () => {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-        routes.proposals,
+          routes.proposals,
       );
     }, 800);
   }
@@ -333,7 +372,7 @@ const CreateProposalPage = () => {
           </div>
         </div>
 
-        <div className="shrink-0 flex items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4">
           <Button
             shape="rounded"
             fullWidth={true}
@@ -346,7 +385,9 @@ const CreateProposalPage = () => {
       </header>
 
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg font-semibold dark:text-white">Create New Proposal</h2>
+        <h2 className="text-lg font-semibold dark:text-white">
+          Create New Proposal
+        </h2>
         {/* <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
           <div className="absolute top-2 right-2">
             <div className="group relative">
@@ -431,12 +472,16 @@ const CreateProposalPage = () => {
           onChange={(e) => {
             const selectedId = e.target.value;
             setCategory(selectedId);
-            const nft = all_Propsal_NFTS?.data?.find((n: any) => n._id === selectedId);
+            const nft = all_Propsal_NFTS?.data?.find(
+              (n: any) => n._id === selectedId,
+            );
             setSelectedNFT(nft);
           }}
           className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition-all placeholder:text-gray-400 focus:border-gray-900 focus:ring-0 dark:border-gray-700 dark:bg-light-dark dark:text-white dark:placeholder:text-gray-600"
         >
-          <option value="" disabled>Select a domain</option>
+          <option value="" disabled>
+            Select a domain
+          </option>
           {all_Propsal_NFTS?.data?.map((nft: any) => (
             <option value={nft?._id} key={nft?._id}>
               {nft?.name}
@@ -464,10 +509,8 @@ const CreateProposalPage = () => {
         />
       </div>
 
-
-
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
-        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+        <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           MOTIVATION
         </h3>
         <Textarea
@@ -478,7 +521,7 @@ const CreateProposalPage = () => {
         />
       </div>
       <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
-        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+        <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           SUMMARY
         </h3>
         <Textarea
@@ -496,19 +539,25 @@ const CreateProposalPage = () => {
           fullWidth={true}
           className="xs:w-64 md:w-72"
           onClick={handleSubmit}
+          disabled={loading}
         >
-          Create Proposal
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'Create Proposal'
+          )}
         </Button>
       </div>
     </section>
   );
-
 };
 
 export default CreateProposalPage;
 
-
-{/* <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
+{
+  /* <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="mb-8">
             <InputLabel title="Upload file" important />
@@ -576,4 +625,5 @@ export default CreateProposalPage;
             </div>
           </div>
         </div>
-      </div> */}
+      </div> */
+}

@@ -4,6 +4,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import cn from '@/utils/cn';
+import { BeatLoader } from 'react-spinners';
+import { useAccount, useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits } from 'viem';
+import { tetherABI } from '@/utils/abi';
+import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
 import RevealContent from '@/components/ui/reveal-content';
 import AuctionCountdown from '@/components/nft/auction-countdown';
@@ -17,57 +23,102 @@ import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { useModal } from '@/components/modal-views/context';
 import { usePostVote } from '@/hooks/livePricing';
-import { useAccount } from 'wagmi';
 import { useQueryClient } from '@tanstack/react-query';
 import InputLabel from '@/components/ui/input-label';
 import Input from '@/components/ui/forms/input';
+import ToastNotification from '@/components/ui/toast-notification';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 function VoteActionButton({ vote }: any) {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState('');
   const { address } = useAccount();
+  const { loading } = useSelector((state: any) => state.ido);
+  const dispatch = useDispatch();
+  const { writeContractAsync } = useWriteContract();
   const { mutate: submitCreate, isError, error } = usePostVote();
-  const handleSubmit = (isFavour: any) => {
-    console.log("amount---->", amount)
+  const handleSubmit = async (isFavour: any) => {
+    console.log('amount---->', amount);
     try {
-      submitCreate({
+      if (!address) {
+        ToastNotification('error', 'Connect your wallet first!');
+        return;
+      }
+      if (!amount) {
+        ToastNotification('error', 'Enter Amount!');
+        return;
+      }
+      dispatch(idoActions.setLoading(true));
+      const hash = await writeContractAsync({
         //@ts-ignore
-        "inFavor": isFavour,
-        "amount": Number(amount),
-        "proposalId": vote?._id,
-        "address": address?.toLowerCase()
-
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        abi: tetherABI,
+        functionName: 'transfer',
+        args: [
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          parseUnits(amount?.toString(), 18),
+        ],
       });
+      const recipient = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+        pollingInterval: 2000,
+      });
+      if (recipient.status === 'success') {
+        submitCreate({
+          //@ts-ignore
+          inFavor: isFavour,
+          amount: Number(amount),
+          proposalId: vote?._id,
+          address: address?.toLowerCase(),
+        });
+      } else {
+        console.log('erer');
+      }
     } catch (error) {
+      dispatch(idoActions.setLoading(false));
       console.log(error);
     }
   };
+  console.log('single file');
 
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      {(vote?.status == "active" && !vote?.hasVoted) && <div className="mb-8">
-        <InputLabel title="Amount" important />
-        <Input
-          type="number"
-          placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </div>}
+      {vote?.status == 'active' && !vote?.hasVoted && (
+        <div className="mb-8">
+          <InputLabel title="Amount" important />
+          <Input
+            type="number"
+            placeholder="Enter Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
+      )}
 
       <Button
         shape="rounded"
         color="success"
         className="flex-1 xs:flex-auto"
-        disabled={vote?.status != "active" || vote?.hasVoted}
-        onClick={() => handleSubmit("yes")}
+        disabled={vote?.status != 'active' || vote?.hasVoted || loading}
+        onClick={() => handleSubmit('yes')}
       >
-        Invest
+        {loading ? (
+          <>
+            <BeatLoader color="#000" />
+          </>
+        ) : (
+          'Invest'
+        )}
       </Button>
-      <Button shape="rounded" color="danger" className="flex-1 xs:flex-auto" disabled={vote?.status != "active" || vote?.hasVoted} onClick={() => handleSubmit("no")}>
+      <Button
+        shape="rounded"
+        color="danger"
+        className="flex-1 xs:flex-auto"
+        disabled={vote?.status != 'active' || vote?.hasVoted}
+        onClick={() => handleSubmit('no')}
+      >
         Reject
       </Button>
-
-
     </div>
   );
 }
@@ -114,7 +165,7 @@ export default function VoteDetailsCard({ vote }: any) {
             <VoteActionButton vote={vote} />
           )}
         </div>
-        {vote.status == "active" ? (
+        {vote.status == 'active' ? (
           <div
             className={cn(
               "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
@@ -129,25 +180,28 @@ export default function VoteDetailsCard({ vote }: any) {
             <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ends in
             </h3>
-            <AuctionCountdown date={new Date(vote?.expirationDate.toString())} />
+            <AuctionCountdown
+              date={new Date(vote?.expirationDate.toString())}
+            />
           </div>
-        ) : <div
-          className={cn(
-            "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
-            {
-              'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
-                layout !== LAYOUT_OPTIONS.RETRO,
-              'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
-                layout === LAYOUT_OPTIONS.RETRO,
-            },
-          )}
-        >
-          <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
-            Voting ended
-          </h3>
-          <AuctionCountdown date={undefined} />
-        </div>}
-
+        ) : (
+          <div
+            className={cn(
+              "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+              {
+                'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
+                  layout !== LAYOUT_OPTIONS.RETRO,
+                'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
+                  layout === LAYOUT_OPTIONS.RETRO,
+              },
+            )}
+          >
+            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+              Voting ended
+            </h3>
+            <AuctionCountdown date={undefined} />
+          </div>
+        )}
       </motion.div>
       <AnimatePresence>
         {isExpand && (
@@ -170,34 +224,51 @@ export default function VoteDetailsCard({ vote }: any) {
                 {/* <ExportIcon className="h-auto w-3" /> */}
               </a>
               <div className="mt-4">
-                Amount allocated: <span className="font-medium text-gray-900">{vote?.amount}</span>
+                Amount allocated:{' '}
+                <span className="font-medium text-gray-900">
+                  {vote?.amount}
+                </span>
               </div>
-              {vote?.leasingAddress == "0x" ? <>
-                <div className="mt-4">
-                  Price per fraction: <span className="font-medium text-gray-900">{vote?.pricePerFraction || 2}</span>
-                </div>
-                <div className="mt-4">
-                  Total fractions: <span className="font-medium text-gray-900">{vote?.totalFractions || 100}</span>
-                </div>
-              </> : <>
-                <div className="mt-4">
-                  Leasing address: <span className="font-medium text-gray-900">{vote?.leasingAddress || "0x"}</span>
-                </div>
-                <div className="mt-4">
-                  Yield percentage: <span className="font-medium text-gray-900">{vote?.yieldPercentage || 3}</span>
-                </div>
-              </>}
+              {vote?.leasingAddress == '0x' ? (
+                <>
+                  <div className="mt-4">
+                    Price per fraction:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.pricePerFraction || 2}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    Total fractions:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.totalFractions || 100}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="mt-4">
+                    Leasing address:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.leasingAddress || '0x'}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    Yield percentage:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.yieldPercentage || 3}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
-            <VotePoll
-              title={'Votes'}
-              vote={vote}
-            />
+            <VotePoll title={'Votes'} vote={vote} />
             <VoterTable votes={vote?.votes || []} />
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>
-
-                <h5 className="mb-6 uppercase dark:text-gray-100">Motivation</h5>
+                <h5 className="mb-6 uppercase dark:text-gray-100">
+                  Motivation
+                </h5>
                 <div
                   className="dynamic-html grid gap-2 leading-relaxed text-gray-600 dark:text-gray-400"
                   dangerouslySetInnerHTML={{ __html: vote?.motivation ?? '' }}

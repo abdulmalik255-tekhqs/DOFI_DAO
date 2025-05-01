@@ -237,6 +237,7 @@ export function useGetALLPropsalNFTS() {
 export function useCreatePropsals() {
   const { address } = useAccount();
   const router = useRouter();
+  const dispatch = useDispatch()
   //  const dispatch= useDispatch();
   return useMutation({
     //@ts-ignore
@@ -244,10 +245,12 @@ export function useCreatePropsals() {
     onSuccess: (data) => {
       if (data) {
         // dispatch(idoActions.saveIDOdetailData(data));
+        dispatch(idoActions.setLoading(false));
         router.push(routes.proposals);
       }
     },
     onError: (error) => {
+      dispatch(idoActions.setLoading(false));
       // Optionally handle error
       console.error('Submission failed:', error);
     },
@@ -258,18 +261,20 @@ export function usePostVote() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();
-  //  const dispatch= useDispatch();
+   const dispatch= useDispatch();
   return useMutation({
     //@ts-ignore
     mutationFn: (data: any) => client.postVote.create(data, address),
     onSuccess: (data) => {
       if (data) {
         // dispatch(idoActions.saveIDOdetailData(data));
+        dispatch(idoActions.setLoading(false));
         queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
         router.push(routes.proposals);
       }
     },
     onError: (error) => {
+      dispatch(idoActions.setLoading(false));
       // Optionally handle error
       console.error('Submission failed:', error);
     },

@@ -20,7 +20,6 @@ export default function FindName({ data }: any) {
   const { loading } = useSelector((state: any) => state.ido);
   const { openModal } = useModal();
   const dispatch = useDispatch();
-  const router = useRouter();
   const { writeContractAsync } = useWriteContract();
   const handleBuy = async () => {
     try {
@@ -39,7 +38,6 @@ export default function FindName({ data }: any) {
         hash,
         pollingInterval: 2000,
       });
-      console.log(recipient, 'recipient');
 
       if (recipient.status === 'success') {
         const result = await submitBuyAsync({ id: data?._id });

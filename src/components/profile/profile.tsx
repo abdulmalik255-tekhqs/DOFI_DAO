@@ -48,7 +48,9 @@ export default function Profile() {
               #{authorData?.id}
             </div> */}
             <div className="text truncate text-ellipsis bg-center text-xs text-gray-500 dark:text-gray-300 sm:text-sm ltr:pl-4 rtl:pr-4">
-              {address}
+              {address?.slice(0, 10)}
+              {'...'}
+              {address?.slice(address?.length - 6)}
             </div>
             <div
               title="Copy Address"
