@@ -46,6 +46,12 @@ const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'), {
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
+const PayTokenAmountView = dynamic(
+  () => import('@/components/ido/pay-token-amount'),
+  {
+    ssr: false,
+  },
+);
 const ProposalAcceptView = dynamic(
   () => import('@/components/proposal-accept/proposal-accept'),
 );
@@ -82,6 +88,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <CreateIDOView data={data} />;
     case 'SUCCESSFULLY_BUY_DIO':
       return <SuccessBuyView />;
+    case 'PAY_TOKEN_AMOUNT':
+      return <PayTokenAmountView />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

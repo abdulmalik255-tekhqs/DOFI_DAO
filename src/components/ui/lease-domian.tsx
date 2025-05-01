@@ -1,5 +1,6 @@
 import Image from '@/components/ui/image';
 import cn from '@/utils/cn';
+import { useModal } from '@/components/modal-views/context';
 import { StaticImageData } from 'next/image';
 import AnchorLink from '@/components/ui/links/anchor-link';
 import Avatar from '@/components/ui/avatar';
@@ -41,6 +42,7 @@ export default function LeaseDomainCard({ item, className = '' }: CardProps) {
   } = item ?? {};
   const router = useRouter();
   const { layout } = useLayout();
+  const { openModal } = useModal();
   function goToNFTDetailPage() {
     setTimeout(() => {
       router.push(routes.nftDetails);
@@ -64,7 +66,10 @@ export default function LeaseDomainCard({ item, className = '' }: CardProps) {
           className="absolute left-0 top-0 z-10 h-full w-full"
         /> */}
         <div className="flex justify-between gap-3">
-          <div className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]">
+          <div
+            onClick={() => openModal('PAY_TOKEN_AMOUNT')}
+            className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
+          >
             Pay
           </div>
           {/* <div

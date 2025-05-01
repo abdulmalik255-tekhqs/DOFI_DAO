@@ -68,12 +68,22 @@ export default function ProfileTab({ data }: any) {
                 : 'md:grid-cols-1',
             )}
           >
-            {domain?.map((collection: any, index: number) => (
-              <CollectionCard
-                item={collection}
-                key={`collection-key-${collection?._id}`}
-              />
-            ))}
+            {domain?.length > 0 ? (
+              domain?.map((collection: any, index: number) => (
+                <CollectionCard
+                  item={collection}
+                  key={`collection-key-${collection?._id}`}
+                />
+              ))
+            ) : (
+              <>
+                <div>
+                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                    No Domain NFT
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </TabPanel>
         <TabPanel className="focus:outline-none">
@@ -86,12 +96,22 @@ export default function ProfileTab({ data }: any) {
                 : 'md:grid-cols-1',
             )}
           >
-            {fraction?.map((fraction: any, index: number) => (
-              <FractionCard
-                item={fraction}
-                key={`fraction-key-${fraction?._id}`}
-              />
-            ))}
+            {fraction?.length > 0 ? (
+              fraction?.map((fraction: any, index: number) => (
+                <FractionCard
+                  item={fraction}
+                  key={`fraction-key-${fraction?._id}`}
+                />
+              ))
+            ) : (
+              <>
+                <div>
+                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                    No Fraction NFT
+                  </p>
+                </div>
+              </>
+            )}
           </div>
           {/* <div className="block">
               <h3 className="text-heading-style mb-3 uppercase text-gray-900 dark:text-white">
@@ -132,12 +152,22 @@ export default function ProfileTab({ data }: any) {
                 : 'md:grid-cols-1',
             )}
           >
-            {fraction?.map((fraction: any, index: number) => (
-              <LeaseDomainCard
-                item={fraction}
-                key={`fraction-key-${fraction?._id}`}
-              />
-            ))}
+            {fraction?.length > 0 ? (
+              fraction?.map((fraction: any, index: number) => (
+                <LeaseDomainCard
+                  item={fraction}
+                  key={`fraction-key-${fraction?._id}`}
+                />
+              ))
+            ) : (
+              <>
+                <div>
+                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                    No Lease Domain NFT
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </TabPanel>
       </ParamTab>
