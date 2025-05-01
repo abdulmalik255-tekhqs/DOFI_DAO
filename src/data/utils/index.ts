@@ -90,11 +90,18 @@ class client {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
+  postCalulation = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_CALC}?address=${address}`, data),
+  };
   latestDomain = {
     getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),
   };
   fetchNFT = {
     getOwnerNFT: (address:any) => HttpClient.get(`${API_ENDPOINTS.OWNER_NFT}?address=${address}`),
+  };
+  fetchNFTSwap = {
+    getOwnerNFTSwap: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFT_SWAP}?address=${address}`),
   };
 }
 

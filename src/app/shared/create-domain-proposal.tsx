@@ -274,16 +274,17 @@ const CreateProposalPage = () => {
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
 
-  const { mutate: submitCreate, isError, error } = useCreatePropsals();
+  const { mutate: submitCreate, isError, error } = useCreatePropsals("child");
 
   useEffect(() => {
     const storedNftString = localStorage.getItem('nft');
     if (storedNftString) {
       const storedNft: any = JSON.parse(storedNftString);
-      console.log("storedNft----->", storedNft);
       setCategory(storedNft);
     }
   }, []);
+
+  console.log("category--->",category)
 
   const handleSubmit = () => {
     try {

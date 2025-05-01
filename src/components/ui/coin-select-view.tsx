@@ -3,17 +3,30 @@ import { useState } from 'react';
 import { coinList } from '@/data/static/coin-list';
 import { SearchIcon } from '@/components/icons/search';
 import { useModal } from '@/components/modal-views/context';
+import { Tether } from '../icons/tether';
+import { useFetchNFTSWAP } from '@/hooks/livePricing';
 
 interface CoinSelectViewTypes {
-  onSelect: (selectedCoin: CoinTypes) => void;
+  onSelect: (selectedCoin: any) => void;
 }
 
 export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   const { closeModal } = useModal();
   let [searchKeyword, setSearchKeyword] = useState('');
-  let coinListData = coinList;
+  const { NFTSwap, isLoading } = useFetchNFTSWAP()
+
+
+  const Tethercoin = {
+    icon: <Tether />,
+    code: 'USDT',
+    name: 'Tether USD',
+    price: 1.01,
+  }
+  const updatedCoinList: any[] = (NFTSwap as any)?.data?.nfts || [];
+
+  let coinListData = updatedCoinList;
   if (searchKeyword.length > 0) {
-    coinListData = coinList.filter(function (item) {
+    coinListData = updatedCoinList?.filter(function (item) {
       const name = item.name;
       return (
         name.match(searchKeyword) ||
@@ -21,13 +34,14 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
       );
     });
   }
-  function handleSelectedCoin(item: CoinTypes) {
+  function handleSelectedCoin(item: any) {
     onSelect(item);
+    console.log("item---onSelect-->",item)
     closeModal();
   }
   function handleSelectedCoinOnKeyDown(
     event: React.KeyboardEvent<HTMLLIElement>,
-    item: CoinTypes,
+    item: any,
   ) {
     if (event.code === 'Enter') {
       onSelect(item);
@@ -50,8 +64,8 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
         />
       </div>
       <ul role="listbox" className="min-h-[200px] py-3">
-        {coinListData.length > 0 ? (
-          coinListData.map((item, index) => (
+        {isLoading ? <p className='text-center text-sm'>loading...</p> : coinListData.length > 0 ? (
+          coinListData?.map((item, index) => (
             <li
               key={item.code}
               role="listitem"
@@ -60,7 +74,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
               onKeyDown={(event) => handleSelectedCoinOnKeyDown(event, item)}
               className="flex cursor-pointer items-center gap-2 px-6 py-3 outline-none hover:bg-gray-100 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             >
-              {item.icon}
+              <img className ="h-6 w-6 rounded-full" src={item?.imageUrl} />
               <span className="uppercase">{item.name}</span>
             </li>
           ))
