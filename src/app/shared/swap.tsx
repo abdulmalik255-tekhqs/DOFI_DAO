@@ -1,15 +1,31 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useAccount, useWriteContract } from 'wagmi';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { parseUnits } from 'viem';
+import { fractionDaoABI, tetherABI } from '@/utils/abi';
+import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
 import CoinInput from '@/components/ui/coin-input';
 import TransactionInfo from '@/components/ui/transaction-info';
 import { SwapIcon } from '@/components/icons/swap-icon';
 import Trade from '@/components/ui/trade';
 import cn from '@/utils/cn';
-import { usePostCaculate } from '@/hooks/livePricing';
+import { usePostCaculate, useSwap } from '@/hooks/livePricing';
+import { BeatLoader } from 'react-spinners';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { useModal } from '@/components/modal-views/context';
+import ToastNotification from '@/components/ui/toast-notification';
 
 const SwapPage = () => {
+  const { mutate: submitSwap, isError, error } = useSwap();
+  const { loading } = useSelector((state: any) => state.ido);
+  const { openModal } = useModal();
+  const { address } = useAccount();
+  const dispatch = useDispatch();
+  const { writeContractAsync } = useWriteContract();
   let [toggleCoin, setToggleCoin] = useState(false);
   const [fromAmount, setFromAmount] = useState<any>(null);
   const [toAmount, setToAmount] = useState<any>(null);
@@ -19,10 +35,9 @@ const SwapPage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken;
+      const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
       const toPricePerFraction = selectedToSwapCoin?.pricePerToken;
       const fromAmountValue = Number(fromAmount?.value);
-
       if (
         fromPricePerFraction &&
         toPricePerFraction &&
@@ -41,13 +56,90 @@ const SwapPage = () => {
   }, [fromAmount, selectedFromSwapCoin, selectedToSwapCoin]);
 
   useEffect(() => {
-    setToAmount(calculationResult || 0.00)
-  }, [calculationResult])
+    setToAmount(calculationResult || 0.0);
+  }, [calculationResult]);
 
   const excangeRate = (value: any) => {
-    const multiply = value * 0.05
-    return value - multiply
-  }
+    const multiply = value * 0.05;
+    return value - multiply;
+  };
+
+  const handleSwap = async () => {
+    try {
+      if (!address) {
+        ToastNotification('error', 'Connect wallet first!');
+        return;
+      }
+      if (!fromAmount) {
+        ToastNotification('error', 'Enter Amount!');
+        return;
+      }
+      if (selectedFromSwapCoin?.tokenType === 'ERC20') {
+        dispatch(idoActions.setLoading(true));
+        const hash = await writeContractAsync({
+          //@ts-ignore
+          address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+          abi: tetherABI,
+          functionName: 'transfer',
+          args: [
+            '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+            parseUnits(fromAmount?.value?.toString(), 18),
+          ],
+        });
+        const recipient = await waitForTransactionReceipt(config.getClient(), {
+          hash,
+          pollingInterval: 2000,
+        });
+        if (recipient.status === 'success') {
+          submitSwap({
+            //@ts-ignore
+            nftID: selectedToSwapCoin?._id,
+            amountToMint: Number(fromAmount?.value),
+          });
+        } else {
+          dispatch(idoActions.setLoading(false));
+        }
+      } else {
+        dispatch(idoActions.setLoading(true));
+        const hash = await writeContractAsync({
+          //@ts-ignore
+          address: '0xE541EE5D9D93724383212fc8796CCE8FACc64Dfc',
+          abi: fractionDaoABI,
+          functionName: 'safeTransferFrom',
+          args: [
+            address,
+            '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+            selectedFromSwapCoin?.tokenId,
+            parseUnits(fromAmount?.value?.toString(), 0),
+            '0x',
+          ],
+        });
+        const recipient = await waitForTransactionReceipt(config.getClient(), {
+          hash,
+          pollingInterval: 2000,
+        });
+        if (recipient.status === 'success') {
+          if (selectedToSwapCoin.tokenType === 'ERC20') {
+            submitSwap({
+              //@ts-ignore
+              type: 'USDT',
+              amountToMint: Number(fromAmount?.value),
+            });
+          } else {
+            submitSwap({
+              //@ts-ignore
+              nftID: selectedFromSwapCoin?._id,
+              amountToMint: Number(fromAmount?.value),
+            });
+          }
+        } else {
+          dispatch(idoActions.setLoading(false));
+        }
+      }
+    } catch (error) {
+      dispatch(idoActions.setLoading(false));
+    }
+  };
   return (
     <>
       <Trade>
@@ -64,7 +156,6 @@ const SwapPage = () => {
               defaultCoinIndex={20}
               getCoinValue={(data: any) => setFromAmount(data)}
               onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
-
             />
             <div className="absolute left-1/2 top-1/2 z-[1] -ml-4 -mt-4 rounded-full bg-white shadow-large dark:bg-gray-600">
               <Button
@@ -92,7 +183,7 @@ const SwapPage = () => {
           <TransactionInfo label={'Rate'} />
           <TransactionInfo label={'Offered by'} />
           {/* <TransactionInfo label={'Price Slippage'} value={'1%'} /> */}
-          <TransactionInfo label={'Network Fee'} value={"0.35"} />
+          <TransactionInfo label={'Network Fee'} value={'0.35'} />
           {/* <TransactionInfo label={'Criptic Fee'} /> */}
         </div>
         <Button
@@ -100,8 +191,16 @@ const SwapPage = () => {
           shape="rounded"
           fullWidth={true}
           className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
+          onClick={() => handleSwap()}
+          disabled={loading}
         >
-          SWAP
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'SWAP'
+          )}
         </Button>
       </Trade>
     </>
