@@ -15,11 +15,15 @@ import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import Loader from '@/components/ui/loader';
 import cn from '@/utils/cn';
+import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
+import { useGetProposalDomainDao } from '@/hooks/livePricing';
 
 const DomainDAOPage = () => {
   const router = useRouter();
   const { layout } = useLayout();
   const { totalVote: totalActiveVote } = getVotesByStatus('active');
+  const { proposalsDomainDao, isLoading }: any = useGetProposalDomainDao();
+
   function goToCreateProposalPage() {
     setTimeout(() => {
       router.push(routes.createDomain);
@@ -29,12 +33,10 @@ const DomainDAOPage = () => {
     {
       title: (
         <>
-          Active{' '}
-          {totalActiveVote > 0 && (
-            <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-              {totalActiveVote}
+          All Proposals{' '}
+          <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
+             ({proposalsDomainDao?.count || 0})
             </span>
-          )}
         </>
       ),
       path: 'active',
@@ -81,9 +83,9 @@ const DomainDAOPage = () => {
   ];
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <h2 className="font-bolder mb-2 text-base uppercase dark:text-gray-100 xl:text-[35px]">
-        Domain DAO
-      </h2>
+     <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] py-4">
+          DOMAIN DAO
+        </h2>
       <header
         className={cn(
           'mb-8 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6',
@@ -120,7 +122,7 @@ const DomainDAOPage = () => {
       <Suspense fallback={<Loader variant="blink" />}>
         <ParamTab tabMenu={tabMenuItems}>
           <TabPanel className="focus:outline-none">
-            <VoteList voteStatus={'active'} />
+            <VoteListDomainDao voteStatus={'active'} />
           </TabPanel>
         </ParamTab>
       </Suspense>

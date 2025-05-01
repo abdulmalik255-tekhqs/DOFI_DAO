@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputLabel from '@/components/ui/input-label';
 import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
@@ -19,9 +19,11 @@ import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { Switch } from '@/components/ui/switch';
 import PriceType from '@/components/create-nft/price-types-props';
 import cn from '@/utils/cn';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import Avatar from '@/components/ui/avatar';
 import AuthorImage from '@/assets/images/author.jpg';
 import NFT1 from '@/assets/images/nft/nft-1.jpg';
+import { useCreatePropsals, useGetALLPropsalNFTS, useGetNFTS } from '@/hooks/livePricing';
 
 const actionOptions = [
   {
@@ -253,19 +255,83 @@ function ActionFields() {
   );
 }
 
-const CreateDomainProposalPage = () => {
+const CreateProposalPage = () => {
   const router = useRouter();
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [leasingAddress, setLeasingAddress] = useState('');
+  const [percentageYield, setPercentageYield] = useState('');
+  const [motivation, setMotivation] = useState('');
+  const [summary, setSummary] = useState('');
+  const [category, setCategory] = useState<any>(null);
+  const [totalFractions, setTotalFractions] = useState();
+  const [pricePerFraction, setPricePerFraction] = useState();
+  const [selectedNFT, setSelectedNFT] = useState<any>(null);
+  const [isFractionMode, setIsFractionMode] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
+  const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+
+  const { mutate: submitCreate, isError, error } = useCreatePropsals();
+
+  useEffect(() => {
+    const storedNftString = localStorage.getItem('nft');
+    if (storedNftString) {
+      const storedNft: any = JSON.parse(storedNftString);
+      console.log("storedNft----->", storedNft);
+      setCategory(storedNft);
+    }
+  }, []);
+
+  const handleSubmit = () => {
+    try {
+      submitCreate({
+        //@ts-ignore
+        "name": name,
+        "summary": summary,
+        "motivation": motivation,
+        "amount": amount,
+        "nftId": category?._id,
+        "daoId": localStorage.getItem("Domain_Dao"),
+        "leasingAddress": !isFractionMode ? leasingAddress : "0x",
+        "percentageYield": !isFractionMode ? percentageYield : 1,
+        "totalFractions": isFractionMode ? totalFractions : 1,
+        "pricePerFraction": isFractionMode ? pricePerFraction : 1,
+        "daoType": "child",
+        // "address": "{{wallet}}",
+        "expirationDate": new Date()
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function goToAllProposalPage() {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-          routes.proposals,
+        routes.domain,
       );
     }, 800);
   }
+
+  // function handleSubmit() {
+  //   const formData = {
+  //     name,
+  //     amount,
+  //     leasingAddress,
+  //     percentageYield,
+  //     motivation,
+  //     publish,
+  //     priceType,
+  //     category
+  //   };
+  //   console.log('Form Data:', formData);
+
+  //   // You can replace the console.log with an API call here
+  // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <header className="mb-10 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -274,7 +340,8 @@ const CreateDomainProposalPage = () => {
             <Image alt="Vote Pool" src={votePool} width={32} height={32} />
           </div>
         </div>
-        <div className="shrink-0">
+
+        <div className="shrink-0 flex items-center gap-4">
           <Button
             shape="rounded"
             fullWidth={true}
@@ -285,10 +352,178 @@ const CreateDomainProposalPage = () => {
           </Button>
         </div>
       </header>
-      <h2 className="mb-5 text-lg font-medium dark:text-gray-100 sm:mb-6 lg:mb-7 xl:text-xl">
-        Create a new proposal
-      </h2>
-      <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
+
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-lg font-semibold dark:text-white">Create New Proposal</h2>
+        {/* <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
+          <div className="absolute top-2 right-2">
+            <div className="group relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white cursor-pointer"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10A8 8 0 112 10a8 8 0 0116 0zM9 7a1 1 0 112 0 1 1 0 01-2 0zm1 3a1 1 0 00-.993.883L9 11v3a1 1 0 001.993.117L11 14v-3a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="absolute right-0 mt-1 w-64 rounded-md bg-white p-3 text-xs text-gray-700 shadow-lg dark:bg-gray-800 dark:text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                This toggle switches between Yield Percentage and Fraction modes for proposal creation.
+              </div>
+            </div>
+          </div>
+
+          <span
+            className={cn(
+              'text-sm text-gray-700 dark:text-gray-300 transition-all duration-200',
+              !isFractionMode ? 'font-bold' : 'font-medium'
+            )}
+          >
+            Yield Percentage
+          </span>
+
+          <Switch checked={isFractionMode} onChange={() => setIsFractionMode(!isFractionMode)}>
+            <div
+              className={cn(
+                isFractionMode ? 'bg-brand dark:bg-white' : 'bg-gray-200 dark:bg-gray-700',
+                'relative inline-flex h-[22px] w-10 items-center rounded-full transition-colors duration-300',
+              )}
+            >
+              <span
+                className={cn(
+                  isFractionMode
+                    ? 'ltr:translate-x-5 rtl:-translate-x-5'
+                    : 'ltr:translate-x-0.5 rtl:-translate-x-0.5',
+                  'inline-block h-[18px] w-[18px] transform rounded-full bg-white transition-transform duration-200',
+                )}
+              />
+            </div>
+          </Switch>
+
+          <span
+            className={cn(
+              'text-sm text-gray-700 dark:text-gray-300 transition-all duration-200',
+              isFractionMode ? 'font-bold' : 'font-medium'
+            )}
+          >
+            Fractions
+          </span>
+        </div> */}
+      </div>
+
+      <div className="mb-8">
+        <InputLabel title="Name" important />
+        <Input
+          type="text"
+          placeholder="Enter name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="mb-8">
+        <InputLabel title="Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>
+
+      <div className="mb-8">
+        <InputLabel title="Domain" important />
+        <Input
+          type="text"
+          placeholder="Enter leasing address"
+          value={ category?.name}
+        />
+      </div>
+      {/* <div className="mb-8">
+        <InputLabel title="Domain" important />
+        <select
+          value={category}
+          onChange={(e) => {
+            const selectedId = e.target.value;
+            setCategory(selectedId);
+            const nft = all_Propsal_NFTS?.data?.find((n: any) => n._id === selectedId);
+            setSelectedNFT(nft);
+          }}
+          className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition-all placeholder:text-gray-400 focus:border-gray-900 focus:ring-0 dark:border-gray-700 dark:bg-light-dark dark:text-white dark:placeholder:text-gray-600"
+        >
+          <option value="" disabled>Select a domain</option>
+          {all_Propsal_NFTS?.data?.map((nft: any) => (
+            <option value={nft?._id} key={nft?._id}>
+              {nft?.name}
+            </option>
+          ))}
+        </select>
+      </div> */}
+
+      <div className="mb-8">
+        <InputLabel title="Leasing Address" important />
+        <Input
+          type="text"
+          placeholder="Enter leasing address"
+          value={leasingAddress}
+          onChange={(e) => setLeasingAddress(e.target.value)}
+        />
+      </div>
+      <div className="mb-8">
+        <InputLabel title="Percentage Yield" important />
+        <Input
+          type="number"
+          placeholder="Enter percentage yield"
+          value={percentageYield}
+          onChange={(e) => setPercentageYield(e.target.value)}
+        />
+      </div>
+
+      <div className="rounded-lg dark:bg-light-dark xs:pb-8">
+        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+          MOTIVATION
+        </h3>
+        <Textarea
+          placeholder="Add the motivation here"
+          rows={6}
+          value={motivation}
+          onChange={(e) => setMotivation(e.target.value)}
+        />
+      </div>
+      <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
+        <h3 className="block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white mb-2">
+          SUMMARY
+        </h3>
+        <Textarea
+          rows={6}
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          placeholder="Add the summary here"
+          inputClassName="md:h-32 xl:h-36"
+        />
+      </div>
+      <div className="mt-6">
+        <Button
+          size="large"
+          shape="rounded"
+          fullWidth={true}
+          className="xs:w-64 md:w-72"
+          onClick={handleSubmit}
+        >
+          Create Proposal
+        </Button>
+      </div>
+    </section>
+  );
+
+};
+
+export default CreateProposalPage;
+
+
+{/* <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="mb-8">
             <InputLabel title="Upload file" important />
@@ -356,64 +591,4 @@ const CreateDomainProposalPage = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mb-8">
-        <InputLabel title="Total Investment" important />
-        <Input
-          min={0}
-          type="number"
-          placeholder="Enter your investment"
-          inputClassName="spin-button-hidden"
-        />
-      </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Token ID
-        </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Enter the on-chain token id this proposal should take. Token id are
-          executed in the order laid out here (ie. Action 1 fires, then Action
-          2, etc.)
-        </p>
-        <Input placeholder="Enter token id" />
-        {/* <ActionFields /> */}
-      </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Title
-        </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Your title introduces your proposal to the voters. Make sure it is
-          clear and to the point.
-        </p>
-        <Input placeholder="Enter title of your proposal" />
-      </div>
-      <div className="mb-6 rounded-lg bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark xs:p-6 xs:pb-8">
-        <h3 className="mb-2 text-base font-medium dark:text-gray-100 xl:text-lg">
-          Description
-        </h3>
-        <p className="mb-5 leading-[1.8] dark:text-gray-300">
-          Your description should present in full detail what the actions of the
-          proposal will do. This is where voters will educate themselves on what
-          they are voting on.
-        </p>
-        <Textarea
-          placeholder="Add the proposal details here"
-          inputClassName="md:h-32 xl:h-36"
-        />
-      </div>
-      <div className="mt-6">
-        <Button
-          size="large"
-          shape="rounded"
-          fullWidth={true}
-          className="xs:w-64 md:w-72"
-        >
-          Create Proposal
-        </Button>
-      </div>
-    </section>
-  );
-};
-
-export default CreateDomainProposalPage;
+      </div> */}

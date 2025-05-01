@@ -17,7 +17,7 @@ type Price = {
 };
 
 type LivePriceFeedProps = {
-  id: string;
+  _id: string;
   name: string;
   symbol: string;
   icon: React.ReactElement;
@@ -28,12 +28,14 @@ type LivePriceFeedProps = {
   isBorder?: boolean;
   prices: Price[];
   noOfProposals?: number;
-  index?: number;
+  index: any,
+  nft:any
 };
 
 export function LivePricingFeed({
-  id,
+  _id,
   name,
+  nft,
   symbol,
   icon,
   balance,
@@ -42,7 +44,7 @@ export function LivePricingFeed({
   isChangePositive,
   noOfProposals,
   isBorder,
-  index,
+  index
 }: LivePriceFeedProps) {
   const router = useRouter();
 
@@ -55,6 +57,10 @@ export function LivePricingFeed({
     );
   }
   function goToCreateProposalPage() {
+    if (index > 0) {
+      localStorage.setItem('nft', JSON.stringify(nft));
+      localStorage.setItem("Domain_Dao", _id)
+    }
     setTimeout(() => {
       router.push(index === 0 ? routes.proposals : routes.domain);
     }, 800);
@@ -122,7 +128,7 @@ export function LivePricingFeed({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={prices}>
             <defs>
-              <linearGradient id={`${name}-${id}`} x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`${name}-${_id}`} x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="0%"
                   stopColor={isChangePositive ? '#22c55e' : '#D6455D'}
@@ -140,7 +146,7 @@ export function LivePricingFeed({
               dataKey="value"
               stroke={isChangePositive ? '#22c55e' : '#D6455D'}
               strokeWidth={2.5}
-              fill={`url(#${`${name}-${id}`})`}
+              fill={`url(#${`${name}-${_id}`})`}
               dot={false}
             />
           </AreaChart>

@@ -154,7 +154,7 @@ export default function LivePricingSliderRetro({ limits }: { limits: number }) {
       dir="ltr"
       className="w-full pb-10"
     >
-      {priceFeedData.map((item) => (
+      {priceFeedData?.map((item) => (
         <SwiperSlide key={item.id}>
           <LivePricingFeed {...item} />
         </SwiperSlide>

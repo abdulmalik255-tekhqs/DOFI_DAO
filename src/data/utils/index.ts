@@ -11,7 +11,7 @@ import type {
 import { HttpClient } from '@/data/utils/client';
 
 class client {
-  
+
   coins = {
     all: ({ id, name, symbol, ...query }: Partial<CryptoQueryOptions> = {}) =>
       HttpClient.get<CoinPaginator>(API_ENDPOINTS.MARKETS, {
@@ -37,8 +37,8 @@ class client {
     all: (params?: SettingsQueryOptions) =>
       HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
   };
-  live_pricing= {
-    all: (params?: SettingsQueryOptions,address?:string) =>
+  live_pricing = {
+    all: (params?: SettingsQueryOptions, address?: string) =>
       HttpClient.get<Settings>(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`, { ...params }),
   };
   findName = {
@@ -52,14 +52,14 @@ class client {
     },
   };
   createido = {
-    create: (data: any,address:string) =>
+    create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.CREATE_IDO}?address=${address}`, data),
   };
   dao = {
-    getLatest: (address:any) => HttpClient.get(`${API_ENDPOINTS.LATEST_DAO}?address=${address}`),
+    getLatest: (address: any) => HttpClient.get(`${API_ENDPOINTS.LATEST_DAO}?address=${address}`),
   };
   ido = {
-    getLatestIDO: (address:any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
+    getLatestIDO: (address: any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
   idoDetail = {
     getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address}`),
@@ -71,20 +71,23 @@ class client {
     },
   };
   proposals = {
-    getLatestProposals: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}`),
+    getLatestProposals: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}&daoId=680a76bce48a31fb65d162dd&daoType=parent`),
+  };
+  proposalsDomainDao = {
+    getLatestProposalsDomainDao: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_PROPOSALS}?address=${address?.toLowerCase()}&daoId=${localStorage.getItem("Domain_Dao")}&daoType=child`),
   };
   all_nfts = {
-    getLatestNfts: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
+    getLatestNfts: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
   };
   all_propsals_nfts = {
-    getLatestPropsalNFTS: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
+    getLatestPropsalNFTS: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
   };
   createPropsals = {
-    create: (data: any,address:string) =>
+    create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_PROPSALS}?address=${address}`, data),
   };
   postVote = {
-    create: (data: any,address:string) =>
+    create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
   latestDomain = {
