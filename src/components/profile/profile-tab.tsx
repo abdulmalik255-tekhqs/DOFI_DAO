@@ -16,6 +16,7 @@ import {
 } from '@/data/static/author-profile';
 import Loader from '@/components/ui/loader';
 import FractionCard from '../ui/fraction-card';
+import LeaseDomainCard from '../ui/lease-domian';
 
 const tabMenu = [
   {
@@ -26,10 +27,10 @@ const tabMenu = [
     title: 'Fractions',
     path: 'portfolio',
   },
-  // {
-  //   title: 'History',
-  //   path: 'history',
-  // },
+  {
+    title: 'Lease Domain',
+    path: 'leasedomain',
+  },
 ];
 
 export default function ProfileTab({ data }: any) {
@@ -123,9 +124,20 @@ export default function ProfileTab({ data }: any) {
           {/* </div> */}
         </TabPanel>
         <TabPanel className="focus:outline-none">
-          <div className="space-y-8 xl:space-y-9">
-            <TransactionSearchForm />
-            <TransactionHistory />
+          <div
+            className={cn(
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              layout === LAYOUT_OPTIONS.RETRO
+                ? 'md:grid-cols-2'
+                : 'md:grid-cols-1',
+            )}
+          >
+            {fraction?.map((fraction: any, index: number) => (
+              <LeaseDomainCard
+                item={fraction}
+                key={`fraction-key-${fraction?._id}`}
+              />
+            ))}
           </div>
         </TabPanel>
       </ParamTab>
