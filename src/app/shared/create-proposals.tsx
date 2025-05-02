@@ -290,6 +290,10 @@ const CreateProposalPage = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+console.log(selectedNFT,"selectedNFT");
+console.log(amount,"amount");
+console.log(all_Propsal_NFTS,"all_Propsal_NFTS");
+
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
   const handleSubmit = async () => {
@@ -453,15 +457,7 @@ const CreateProposalPage = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="mb-8">
-        <InputLabel title="Amount" important />
-        <Input
-          type="number"
-          placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </div>
+      
       <div className="mb-8">
         <InputLabel title="Domain" important />
         <select
@@ -486,7 +482,15 @@ const CreateProposalPage = () => {
           ))}
         </select>
       </div>
-
+      <div className="mb-8">
+        <InputLabel title="Domain Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter Domain Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>
       <div className="mb-8">
         <InputLabel title="Total Fractions" important />
         <Input
