@@ -291,7 +291,7 @@ const CreateProposalPage = () => {
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
 
-  const { mutate: submitCreate, isError, error } = useCreatePropsals();
+  const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
   const handleSubmit = async () => {
     try {
       if (!address) {
@@ -343,7 +343,7 @@ const CreateProposalPage = () => {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-          routes.proposals,
+        routes.proposals,
       );
     }, 800);
   }
@@ -365,11 +365,11 @@ const CreateProposalPage = () => {
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <header className="mb-10 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6 sm:flex-row sm:items-center sm:justify-between">
+      <header className="mb-6 flex flex-col gap-4 rounded-lg bg-white py-3 shadow-card dark:bg-light-dark px-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-4 xs:gap-3 xl:gap-4">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-dark">
-            <Image alt="Vote Pool" src={votePool} width={32} height={32} />
-          </div>
+          <h2 className="text-lg font-semibold dark:text-white">
+            Create New Proposal
+          </h2>
         </div>
 
         <div className="flex shrink-0 items-center gap-4">
@@ -385,9 +385,6 @@ const CreateProposalPage = () => {
       </header>
 
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg font-semibold dark:text-white">
-          Create New Proposal
-        </h2>
         {/* <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
           <div className="absolute top-2 right-2">
             <div className="group relative">

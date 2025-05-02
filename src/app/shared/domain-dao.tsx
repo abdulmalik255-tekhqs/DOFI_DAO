@@ -35,8 +35,8 @@ const DomainDAOPage = () => {
         <>
           All Proposals{' '}
           <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-             ({proposalsDomainDao?.count || 0})
-            </span>
+            ({proposalsDomainDao?.count || 0})
+          </span>
         </>
       ),
       path: 'active',
@@ -83,30 +83,10 @@ const DomainDAOPage = () => {
   ];
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-     <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] py-4">
+      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-2'>
+        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
           DOMAIN DAO
         </h2>
-      <header
-        className={cn(
-          'mb-8 flex flex-col gap-4 rounded-lg bg-white p-5 py-6 shadow-card dark:bg-light-dark xs:p-6',
-          {
-            'sm:flex-row sm:items-center sm:justify-between':
-              layout !== LAYOUT_OPTIONS.RETRO,
-            'lg:flex-row lg:items-center lg:justify-between':
-              layout === LAYOUT_OPTIONS.RETRO,
-          },
-        )}
-      >
-        <div className="flex items-start gap-4 xs:items-center xs:gap-3 xl:gap-4">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-dark">
-            <Image alt="Vote Pool" src={votePool} width={32} height={32} />
-          </div>
-          {/* <div>
-            <h2 className="mb-2 text-base font-medium uppercase dark:text-gray-100 xl:text-lg">
-              You have 100 votes
-            </h2>
-          </div> */}
-        </div>
         <div className="shrink-0">
           <Button
             shape="rounded"
@@ -117,14 +97,93 @@ const DomainDAOPage = () => {
             Create Proposal
           </Button>
         </div>
-      </header>
+      </div>
+      <div className="flex flex-wrap gap-4 mb-4">
+        <div
+          className={`${proposalsDomainDao?.length > 0
+            ? 'col-span-12 md:col-span-6 lg:col-span-3'
+            : 'col-span-12 md:col-span-6 lg:col-span-4'
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
+        >
+          <div className="flex gap-[20px] items-center">
+            <div>
+              <Image alt="Vote Pool" src={votePool} width={32} height={32} />
+
+            </div>
+            <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
+              Proposals
+            </div>
+          </div>
+
+          <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
+            {/* Total */}
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.count || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Total</div>
+            </div>
+
+            {/* Active */}
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.active || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Active</div>
+            </div>
+
+            {/* Sucessfull */}
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.successful || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Sucessfull</div>
+            </div>
+
+            {/* Rejected */}
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.rejected || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Rejected</div>
+            </div>
+          </div>
+        </div>
+        {proposalsDomainDao?.percentageYield || proposalsDomainDao?.leasingAddress && <div
+          className={`${proposalsDomainDao?.length > 0
+            ? 'col-span-12 md:col-span-6 lg:col-span-3'
+            : 'col-span-12 md:col-span-6 lg:col-span-4'
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-lg p-[30px] space-y-[25px] bg-white min-w-[360px]`}
+        >
+          <div className="flex gap-[20px] items-center">
+            <div>
+              <Image alt="Vote Pool" src={votePool} width={32} height={32} />
+
+            </div>
+            <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
+              Others
+            </div>
+          </div>
+
+          <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
+            {/* Total */}
+
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.leasingAddress || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Leasing Address</div>
+            </div>
+
+            {/* Active */}
+            <div className="text-center">
+              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.percentageYield || "00"}</div>
+              <div className="text-[12px] text-grey font-[400]">Percentage Yield</div>
+            </div>
+
+          </div>
+        </div>}
+
+
+      </div>
       <div></div>
       <Suspense fallback={<Loader variant="blink" />}>
-        <ParamTab tabMenu={tabMenuItems}>
+        {/* <ParamTab tabMenu={tabMenuItems}>
           <TabPanel className="focus:outline-none">
-            <VoteListDomainDao voteStatus={'active'} />
+            
           </TabPanel>
-        </ParamTab>
+        </ParamTab> */}
+        <VoteListDomainDao voteStatus={'active'} />
       </Suspense>
     </section>
   );
