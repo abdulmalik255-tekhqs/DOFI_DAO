@@ -357,7 +357,7 @@ console.log(selectedNFT,"selectedNFT");
     setTotalFractions(generateRandomInteger(1000, 1500));
     setPricePerFraction(generateRandomInteger(1, 5));
     if(selectedNFT) {
-      setAmount(selectedNFT?.price)
+      setAmount(selectedNFT?.amount)
     }
   }, [selectedNFT]);
   // function handleSubmit() {

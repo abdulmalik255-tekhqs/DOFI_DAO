@@ -24,7 +24,9 @@ export const API_ENDPOINTS = {
   POST_VOTE:"/vote",
   POST_CALC:"/nft/swap/calculate",
   GET_NFT_SWAP:"/nft/swap",
-  POST_SWAP_TOKEN:"/nft/swap"
+  POST_SWAP_TOKEN:"/nft/swap",
+  GET_ALL_NFTS_DOMAIN:"/nft/available-domain",
+  POST_PAY_TOKEN:"/send/usdt"
 
   // PRICING: 'https://api.coingecko.com/api/v3/coins',
   // MARKETS: 'https://api.coingecko.com/api/v3/coins/markets',

@@ -251,7 +251,7 @@ export function useCreatePropsals(path: any) {
           router.push(routes.domain);
         } else {
           dispatch(idoActions.setLoading(false));
-        router.push(routes.proposals);
+          router.push(routes.proposals);
         }
 
       }
@@ -263,12 +263,12 @@ export function useCreatePropsals(path: any) {
     },
   });
 }
- 
+
 export function usePostVote() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();
-   const dispatch= useDispatch();
+  const dispatch = useDispatch();
   return useMutation({
     //@ts-ignore
     mutationFn: (data: any) => client.postVote.create(data, address),
@@ -336,7 +336,7 @@ export function usePostCaculate() {
   return useMutation({
     //@ts-ignore
     mutationFn: (data: any) => client.postCalulation.create(data, address),
-    onSuccess: (data:any) => {
+    onSuccess: (data: any) => {
       if (data) {
         // queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
         // router.push(routes.proposals);
@@ -353,7 +353,7 @@ export function useSwap() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();
-   const dispatch= useDispatch();
+  const dispatch = useDispatch();
   return useMutation({
     //@ts-ignore
     mutationFn: (data: any) => client.swapToken.create(data, address),
@@ -362,6 +362,32 @@ export function useSwap() {
         dispatch(idoActions.setLoading(false));
         ToastNotification('success', 'Successfully swap token!');
         return;
+      }
+    },
+    onError: (error) => {
+      dispatch(idoActions.setLoading(false));
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
+}
+
+
+
+export function usePostPayToken() {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { closeModal } = useModal()
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.postPaytoken.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        dispatch(idoActions.setLoading(false));
+        ToastNotification('success', 'Successfully Pay!');
+        closeModal();
       }
     },
     onError: (error) => {
