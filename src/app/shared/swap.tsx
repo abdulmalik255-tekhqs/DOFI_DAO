@@ -104,7 +104,7 @@ const SwapPage = () => {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
           //@ts-ignore
-          address: '0xE541EE5D9D93724383212fc8796CCE8FACc64Dfc',
+          address: '0x16ea73c58e56a33185480fe2c61711c5c50cb414',
           abi: fractionDaoABI,
           functionName: 'safeTransferFrom',
           args: [

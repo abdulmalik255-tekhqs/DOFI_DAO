@@ -62,28 +62,19 @@ export default function FindName({ data }: any) {
 
   return (
     <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
-      <div className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
-        Register
+      <div className='w-full justify-between flex'>
+       <h2 className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
+       Register
+       </h2>
+        <div className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          Step 1 / <span className="text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-white">2</span>
+        </div>
       </div>
-      <div className="mb-2 flex w-full items-end justify-end">
-        {/* <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-          0.66 Gwei
-        </h3> */}
-        <Button
-          size="large"
-          shape="rounded"
-          className="uppercase xs:tracking-widest"
-          onClick={() => handleBuy()}
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <BeatLoader color="#000" />
-            </>
-          ) : (
-            'BUY'
-          )}
-        </Button>
+      <div className="mb-2 flex w-full items-start justify-start">
+        <h3 className="text-sm font-medium uppercase tracking-tightest text-shadow-lg text-gray-900 dark:text-white">
+         {data?.name}
+        </h3>
+      
       </div>
       <div
         className={
@@ -109,6 +100,25 @@ export default function FindName({ data }: any) {
           </h3>
         </div>
       </div>
+      <div className='mt-4'>
+      <Button
+          size="large"
+          shape="rounded"
+          className="uppercase xs:tracking-widest"
+          onClick={() => handleBuy()}
+          disabled={loading}
+          fullWidth={true}
+        >
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'BUY'
+          )}
+        </Button>
+      </div>
+      
     </div>
   );
 }
