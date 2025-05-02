@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '@/components/modal-views/context';
 import ToastNotification from '@/components/ui/toast-notification';
 
+
 const SwapPage = () => {
   const { mutate: submitSwap, isError, error } = useSwap();
   const { loading } = useSelector((state: any) => state.ido);
@@ -140,6 +141,13 @@ const SwapPage = () => {
       dispatch(idoActions.setLoading(false));
     }
   };
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   console.log(selectedFromSwapCoin,selectedToSwapCoin,"coins");
+    
+  //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
+  // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
     <>
       <Trade>
