@@ -12,7 +12,7 @@ interface CoinInputTypes extends React.InputHTMLAttributes<HTMLInputElement> {
   exchangeRate?: any;
   defaultCoinIndex?: number;
   className?: string;
-  toAmount?:any,
+  toAmount?: any,
   getCoinValue: (param: { coin: string; value: string }) => void;
   onSelectCoin?: (coin: any) => void;
 }
@@ -33,7 +33,8 @@ export default function CoinInput({
   let [value, setValue] = useState('');
   let [selectedCoin, setSelectedCoin] = useState(coinList[defaultCoinIndex]);
   let [visibleCoinList, setVisibleCoinList] = useState(false);
-console.log("exchangeRate--->",exchangeRate)
+  console.log("exchangeRate--->", exchangeRate)
+  const integerPattern = /^[0-9]*$/;
   const modalContainerRef = useRef<HTMLDivElement>(null);
   useClickAway(modalContainerRef, () => {
     setVisibleCoinList(false);
@@ -41,7 +42,7 @@ console.log("exchangeRate--->",exchangeRate)
 
   useLockBodyScroll(visibleCoinList);
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.match(decimalPattern)) {
+    if (event.target.value.match(integerPattern)) {
       setValue(event.target.value);
       let param = { coin: selectedCoin.code, value: event.target.value };
       getCoinValue && getCoinValue(param);
@@ -51,7 +52,7 @@ console.log("exchangeRate--->",exchangeRate)
     setSelectedCoin(coin);
     onSelectCoin?.(coin);
   }
-  
+
   useEffect(() => {
     if (label === 'To') {
       setValue(toAmount?.data?.toAmount);
@@ -77,7 +78,7 @@ console.log("exchangeRate--->",exchangeRate)
           >
             {selectedCoin?.imageUrl && <img className="h-6 w-6 rounded-full" src={selectedCoin?.imageUrl} />}
             {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[12px] text-gray-500'>Please Select</span>}
-            
+
             <ChevronDown className="ltr:ml-1.5 rtl:mr-1.5 text-gray-500" />
           </button>
         </div>
@@ -85,10 +86,15 @@ console.log("exchangeRate--->",exchangeRate)
           <input
             type="text"
             value={value}
-            placeholder="0.0"
-            inputMode="decimal"
+            placeholder="0"
+            inputMode="numeric"
             disabled={label === 'To'}
             onChange={handleOnChange}
+            onKeyDown={(e) => {
+              if (e.key === '.' || e.key === ',' || e.key === 'e') {
+                e.preventDefault();
+              }
+            }}
             className="w-full rounded-br-lg rounded-tr-lg border-0 pb-0.5 text-right text-lg outline-none focus:ring-0 dark:bg-light-dark"
             {...rest}
           />
