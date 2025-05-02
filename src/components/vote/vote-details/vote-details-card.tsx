@@ -146,7 +146,7 @@ export default function VoteDetailsCard({ vote }: any) {
         <div className="self-start md:col-span-2">
           <h3
             onClick={() => setIsExpand(!isExpand)}
-            className="cursor-pointer text-base font-medium leading-normal dark:text-gray-100 2xl:text-lg"
+            className="cursor-pointer text-base font-medium leading-normal dark:text-gray-100 2xl:text-lg capitalize"
           >
             {vote?.name}
           </h3>
