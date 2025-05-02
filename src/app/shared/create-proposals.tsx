@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
@@ -290,6 +290,8 @@ const CreateProposalPage = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+console.log(selectedNFT,"selectedNFT");
+
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
   const handleSubmit = async () => {
@@ -347,7 +349,17 @@ const CreateProposalPage = () => {
       );
     }, 800);
   }
+  useEffect(() => {
+    const generateRandomInteger = (min:any, max:any) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
 
+    setTotalFractions(generateRandomInteger(1000, 1500));
+    setPricePerFraction(generateRandomInteger(1, 5));
+    if(selectedNFT) {
+      setAmount(selectedNFT?.price)
+    }
+  }, [selectedNFT]);
   // function handleSubmit() {
   //   const formData = {
   //     name,
@@ -453,15 +465,7 @@ const CreateProposalPage = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="mb-8">
-        <InputLabel title="Amount" important />
-        <Input
-          type="number"
-          placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </div>
+      
       <div className="mb-8">
         <InputLabel title="Domain" important />
         <select
@@ -486,10 +490,20 @@ const CreateProposalPage = () => {
           ))}
         </select>
       </div>
-
+      <div className="mb-8">
+        <InputLabel title="Domain Amount" important />
+        <Input
+        disabled={true}
+          type="number"
+          placeholder="Enter Domain Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>
       <div className="mb-8">
         <InputLabel title="Total Fractions" important />
         <Input
+         disabled={true}
           type="number"
           placeholder="Enter total fractions"
           value={totalFractions}
@@ -499,6 +513,7 @@ const CreateProposalPage = () => {
       <div className="mb-8">
         <InputLabel title="Price Per Fraction" important />
         <Input
+         disabled={true}
           type="number"
           placeholder="Enter price fraction"
           value={pricePerFraction}

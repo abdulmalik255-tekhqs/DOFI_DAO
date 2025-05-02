@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '@/components/modal-views/context';
 import ToastNotification from '@/components/ui/toast-notification';
 
+
 const SwapPage = () => {
   const { mutate: submitSwap, isError, error } = useSwap();
   const { loading } = useSelector((state: any) => state.ido);
@@ -103,7 +104,7 @@ const SwapPage = () => {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
           //@ts-ignore
-          address: '0xE541EE5D9D93724383212fc8796CCE8FACc64Dfc',
+          address: '0x16ea73c58e56a33185480fe2c61711c5c50cb414',
           abi: fractionDaoABI,
           functionName: 'safeTransferFrom',
           args: [
@@ -140,6 +141,13 @@ const SwapPage = () => {
       dispatch(idoActions.setLoading(false));
     }
   };
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   console.log(selectedFromSwapCoin,selectedToSwapCoin,"coins");
+    
+  //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
+  // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
     <>
       <Trade>

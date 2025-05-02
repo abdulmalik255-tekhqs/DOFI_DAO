@@ -302,7 +302,7 @@ const CreateProposalPage = () => {
     }
   }, []);
 
-  console.log('category--->', category);
+  // console.log('category--->', category);
 
   const handleSubmit = async () => {
     try {

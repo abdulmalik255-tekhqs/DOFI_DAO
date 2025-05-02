@@ -30,7 +30,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0xdEf6C5307f479f4F0c93F682A3e6D5c6D9CB57A8',
+        address: '0x11c7f45e5dc8d090490e1ee96937e87604750331',
         abi: daoTokenABI,
         functionName: 'transferFrom',
         args: [
@@ -66,6 +66,9 @@ export default function CreateIDO({ data }: CreateIDOProps) {
   };
   return (
     <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
+        <h1 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white flex items-end  justify-end text-end w-full">
+        Step 2 / <span className="text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-white">2</span>
+      </h1>
       <h1 className="flex shrink-0 items-center justify-center text-center text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
         DIO
       </h1>
@@ -78,7 +81,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
           value={totalFraction || ''}
           onChange={(e) => setTotalfraction(e.target.value)}
           className="w-full appearance-none rounded-lg bg-gray-100 py-1 text-sm font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 dark:border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500 rtl:pr-10"
-          placeholder="total_fraction"
+          placeholder="total fraction"
         />
       </label>
 
@@ -91,7 +94,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
           value={priceFraction || ''}
           onChange={(e) => setPricefraction(e.target.value)}
           className="w-full appearance-none rounded-lg bg-gray-100 py-1 text-sm font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 dark:border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500 rtl:pr-10"
-          placeholder="price_per_fraction"
+          placeholder="price per fraction"
         />
       </label>
 
