@@ -80,7 +80,7 @@ class client {
     getLatestNfts: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
   };
   all_propsals_nfts = {
-    getLatestPropsalNFTS: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
+    getLatestPropsalNFTS: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_ALL_NFTS_DOMAIN}?address=${address}`),
   };
   createPropsals = {
     create: (data: any, address: string) =>
@@ -106,6 +106,10 @@ class client {
   swapToken = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_SWAP_TOKEN}?address=${address}`, data),
+  };
+  postPaytoken = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_PAY_TOKEN}?address=${address}`, data),
   };
 }
 

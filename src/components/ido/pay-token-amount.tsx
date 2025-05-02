@@ -11,11 +11,13 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import { config } from '@/app/shared/wagmi-config';
 import ToastNotification from '../ui/toast-notification';
 import { useModal } from '../modal-views/context';
+import { usePostPayToken } from '@/hooks/livePricing';
 
 export default function PayTokenAmount() {
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
+  const { mutate: submitCreate, isError, error } = usePostPayToken();
   const { loading } = useSelector((state: any) => state.ido);
   const { closeModal } = useModal();
   const [tokenAmount, setTokenamount] = useState('');
@@ -44,9 +46,13 @@ export default function PayTokenAmount() {
         hash,
       });
       if (recipient.status === 'success') {
-        dispatch(idoActions.setLoading(false));
-        ToastNotification('success', 'Successfully Pay!');
-        closeModal();
+        const addressArray = ['0x1357331C3d6971e789CcE452fb709465351Dc0A1'];
+        const amountArray=[Number(tokenAmount)];
+        submitCreate({
+          //@ts-ignore
+          amount: amountArray,
+          addresses: addressArray,
+        });
       } else {
         dispatch(idoActions.setLoading(false));
         console.log('erer');
