@@ -43,6 +43,9 @@ const FindNameView = dynamic(() => import('@/components/search/find-name'), {
 const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'), {
   ssr: false,
 });
+const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
+  ssr: false,
+});
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
@@ -86,6 +89,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':
       return <CreateIDOView data={data} />;
+    case 'OPEN_WIZARD':
+      return <OpenWizardView data={data} />;
     case 'SUCCESSFULLY_BUY_DIO':
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':

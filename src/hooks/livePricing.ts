@@ -92,6 +92,50 @@ export function useBuyQuery() {
     },
   });
 }
+
+export function useBuyQueryWizard() {
+  const { address } = useAccount();
+  const { openModal } = useModal();
+  const dispatch = useDispatch()
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: { id: string }) => client.submitBuy.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        dispatch(idoActions.setLoading(false));
+        //@ts-ignore
+        dispatch(idoActions.saveBuydomainNft(data?.data))
+      }
+    },
+    onError: (error) => {
+      dispatch(idoActions.setLoading(false))
+      console.error('Submission failed:', error);
+    },
+  });
+}
+export function useCreateIDOWizard() {
+  const { address } = useAccount();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  return useMutation({
+    //@ts-ignore 
+    mutationFn: (data: any) => client.createido.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        //@ts-ignore
+        dispatch(idoActions.saveIDOdata(data?.data));
+        dispatch(idoActions.setLoading(false));
+        dispatch(idoActions.setIsConfetti(false));
+        // router.push(routes.idoDetail);
+      }
+    },
+    onError: (error) => {
+      // Optionally handle error
+      dispatch(idoActions.setLoading(false))
+      console.error('Submission failed:', error);
+    },
+  });
+}
 export function useCreateIDO() {
   const { address } = useAccount();
   const router = useRouter();

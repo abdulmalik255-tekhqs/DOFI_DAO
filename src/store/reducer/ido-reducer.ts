@@ -8,6 +8,9 @@ const initialState = {
   isConfetti:false,
   selectedSwapFrom:{},
   selectedSwapTo:{},
+  currentStep: 0,
+  buyTransactionhash:{},
+  domainNftData:{}
 
 };
 
@@ -36,6 +39,15 @@ const idoSlice = createSlice({
     setSelectedSwapTo(state, action) {
       state.selectedSwapTo = action.payload;
     },
+    setBuytransactionHash(state, action) {
+      state.buyTransactionhash = action.payload;
+    },
+    saveBuydomainNft(state, action) {
+      state.domainNftData = action.payload;
+    },
+    nextStep: (state) => { state.currentStep += 1 },
+    previousStep: (state) => { state.currentStep -= 1 },
+    goToStep: (state, action) => { state.currentStep = action.payload },
   },
 });
 

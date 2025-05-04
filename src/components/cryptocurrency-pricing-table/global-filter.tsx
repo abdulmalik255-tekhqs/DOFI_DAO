@@ -4,9 +4,15 @@ import { useModal } from '@/components/modal-views/context';
 import { useSubmitFindNameQuery } from '@/hooks/livePricing';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { useAccount } from 'wagmi';
+import ToastNotification from '../ui/toast-notification';
+import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
 
 export default function GlobalFilter() {
   const { openModal } = useModal();
+  const dispatch= useDispatch()
+  const { address } = useAccount();
   const {
     mutate: submitCreate,
     data: searchResult,
@@ -34,7 +40,15 @@ export default function GlobalFilter() {
 
     return () => clearTimeout(handler);
   }, [inputValue, submitCreate]);
-
+  const handleModal = () => {
+    if (!address) {
+      ToastNotification('error', 'Connect wallet first!');
+      return;
+    }
+    dispatch(idoActions.goToStep(0));
+    //@ts-ignore
+    openModal('OPEN_WIZARD', searchResult?.data)
+  }
   return (
     <div className="mb-[40px] flex-1 text-center ltr:ml-auto rtl:mr-auto">
       <h2 className="mb-[40px] flex shrink-0 items-center justify-center gap-[20px] pl-[10px] text-center text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
@@ -55,18 +69,18 @@ export default function GlobalFilter() {
                 NFT Not found
               </div>
             ) : //@ts-ignore
-            searchResult?.success === true ? (
-              <div
-                className="bg-green flex w-auto cursor-pointer items-center gap-2 bg-green-600 p-6 text-white"
-                //@ts-ignore
-                onClick={() => openModal('FIND_NAME', searchResult?.data)}
-              >
-                {!isSuccess ? 'Loading' : '.eth view'}
-                <FaLongArrowAltRight className="cursor-pointer" />
-              </div>
-            ) : (
-              <SearchIcon className="h-[50px] w-[50px]" />
-            )
+              searchResult?.success === true ? (
+                <div
+                  className="bg-green flex w-auto cursor-pointer items-center gap-2 bg-green-600 p-6 text-white"
+                  //@ts-ignore
+                  onClick={() => handleModal()}
+                >
+                  {!isSuccess ? 'Loading' : '.eth view'}
+                  <FaLongArrowAltRight className="cursor-pointer" />
+                </div>
+              ) : (
+                <SearchIcon className="h-[50px] w-[50px]" />
+              )
           ) : (
             <SearchIcon className="h-[50px] w-[50px]" />
           )}

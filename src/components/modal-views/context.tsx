@@ -19,7 +19,8 @@ export type MODAL_VIEW =
   | 'CREATE_IDO'
   | 'PROPOSAL_ACCEPT'
   | 'SUCCESSFULLY_BUY_DIO'
-  | 'PAY_TOKEN_AMOUNT';
+  | 'PAY_TOKEN_AMOUNT'
+  |'OPEN_WIZARD';
 
 interface ModalTypes {
   isOpen: boolean;
