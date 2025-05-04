@@ -42,8 +42,8 @@ export default function FindName({ data }: any) {
         functionName: 'transfer',
         args: [
           '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          // parseUnits(data?.price?.toString(), 18),
-          parseUnits(random.toString(), 18),
+          parseUnits(data?.price?.toString(), 18),
+          // parseUnits(random.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
