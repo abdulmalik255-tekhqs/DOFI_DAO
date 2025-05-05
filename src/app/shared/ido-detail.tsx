@@ -610,7 +610,7 @@ const IDODetailPage = () => {
           >
             {idoDetaildata?.status === 'successful' ? (
               <>
-                <div className="mb-4 pb-4">
+                <div>
                    {/* Progress Bar */}
                    <div className="space-y-1">
                     <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
@@ -640,7 +640,7 @@ const IDODetailPage = () => {
                       />
                     </div>
                   </div>
-                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2 text-center uppercase">
+                  <h4 className="text-lg  mt-4 font-medium text-gray-900 dark:text-white mb-2 text-center uppercase">
                     Investors
                   </h4>
                   <div className="overflow-x-auto">
