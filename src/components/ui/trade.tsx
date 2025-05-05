@@ -19,7 +19,7 @@ import { LAYOUT_OPTIONS } from '@/lib/constants';
 // dynamic import
 const Listbox = dynamic(() => import('@/components/ui/list-box'));
 
-const tradeMenu:any= [
+const tradeMenu: any = [
   // {
   //   name: 'Liquidity',
   //   value: routes.liquidity,
@@ -66,7 +66,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
       .join('/');
   const isMounted = useIsMounted();
   const breakpoint = useBreakpoint();
-  const currentPath = tradeMenu.findIndex((item:any) => item.value === pathname);
+  const currentPath = tradeMenu.findIndex((item: any) => item.value === pathname);
   let [selectedMenuItem, setSelectedMenuItem] = useState(tradeMenu[0]);
   function handleRouteOnSelect(path: string) {
     router.push(path);
@@ -75,20 +75,25 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
     setSelectedMenuItem(tradeMenu[currentPath]);
   }, [currentPath]);
   return (
-    <div className="pt-8 text-sm xl:pt-10">
-      <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5">
-        <h1 className="text-[16px] text-semiBold mb-6">SWAP Domain Frations</h1>
-      <AnimatePresence mode={'wait'}>
-          <motion.div
-            initial="exit"
-            animate="enter"
-            exit="exit"
-            variants={fadeInBottom('easeIn', 0.25)}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
-        
+    <div className="">
+      <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] bg-white py-5 px-4 rounded-sm">
+        SWAP
+      </h2>
+      <div className="pt-8 text-sm xl:pt-10">
+        <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5">
+          <h1 className="text-[16px] text-semiBold mb-6">SWAP Domain Frations</h1>
+          <AnimatePresence mode={'wait'}>
+            <motion.div
+              initial="exit"
+              animate="enter"
+              exit="exit"
+              variants={fadeInBottom('easeIn', 0.25)}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+
+        </div>
       </div>
     </div>
   );
