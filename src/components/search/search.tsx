@@ -15,15 +15,11 @@ export default function Search() {
   const { openDrawer } = useDrawer();
   const dispatch = useDispatch();
   const { domainData, isLoading } = useLatestDomain();
-  console.log(domainData, 'domainData');
+  
 
   useEffect(() => {
     dispatch(idoActions.setPreviousRoute(true));
   }, []);
-  //@ts-ignore
-  const filteredData = domainData?.data?.filter((nft: any) => {
-    return Number(nft.amount) <= 1;
-  });
   return (
     <>
       {isLoading ? (

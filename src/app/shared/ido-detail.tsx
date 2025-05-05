@@ -128,6 +128,7 @@ const IDODetailPage = () => {
           data: { amount: inputValue },
         });
       } else {
+        dispatch(idoActions.setLoading(false));
         console.log('erer');
       }
     } catch (error) {
@@ -135,6 +136,15 @@ const IDODetailPage = () => {
       console.error('Buy Share failed:', error);
     }
   };
+  const getRemaniningAlloction = (funds:any,price:any,supply:any) => {
+    console.log(funds,"funds");
+    console.log(price,"funds");
+    console.log(supply,"funds");
+    
+    let values = Number(funds)/Number(price);    
+    let remaningValue=  Math.floor(Number(supply) - Number(values))  ;    
+    return remaningValue
+  }
   return (
     // <>
     //   <h3 className="flex items-center justify-center text-[30px] font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100">
@@ -580,6 +590,8 @@ const IDODetailPage = () => {
     //     </div>
     //   )}
     // </>
+<>
+
     <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-black py-10 px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
         <h3 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
@@ -608,7 +620,7 @@ const IDODetailPage = () => {
             whileHover={{ scale: 1.015 }}
             className="rounded-xl bg-white dark:bg-gray-800 shadow-xl p-6 flex flex-col justify-between"
           >
-            {idoDetaildata?.status === 'successful' ? (
+            {idoDetaildata?.status !== 'active' ? (
               <>
                 <div>
                    {/* Progress Bar */}
@@ -740,17 +752,19 @@ const IDODetailPage = () => {
                     </p>
                     <p>
                       <strong>Total Allocation:</strong>{' '}
-                      {searchResult?.data?.totalSupply * searchResult?.data?.pricePerToken}
+                      {searchResult?.data?.totalSupply}
                     </p>
                     <p>
                       <strong>Remaining Allocation:</strong>{' '}
-                      {(searchResult?.data?.totalSupply ?? 0) *
-                        (searchResult?.data?.pricePerToken ?? 0) -
-                        (searchResult?.data?.fundsRaised ?? 0)}
+                      {
+                      //@ts-ignore
+                      getRemaniningAlloction(searchResult?.data?.fundsRaised,searchResult?.data?.pricePerToken,searchResult?.data?.totalSupply)
+                      }
                     </p>
                     <p>
                       <strong>Price Per Token:</strong>{' '}
-                      {totalPrice ?? searchResult?.data?.pricePerToken}
+                      {searchResult?.data?.pricePerToken}
+                      {/* {totalPrice ?? searchResult?.data?.pricePerToken} */}
                     </p>
                   </div>
 
@@ -817,6 +831,26 @@ const IDODetailPage = () => {
         </div>
       </div>
     </div>
+      {isConfetti && (
+        <div
+          style={{
+             position: 'fixed',
+             top: 0,
+             left: 0,
+             width: '100%',
+             height: '100%',
+             zIndex: 9999,
+             pointerEvents: 'none',
+          }}
+       >
+          <Confetti
+           width={window.innerWidth}
+           height={window.innerHeight}
+           numberOfPieces={500}
+           />
+         </div>
+      )}
+    </>
   );
 };
 

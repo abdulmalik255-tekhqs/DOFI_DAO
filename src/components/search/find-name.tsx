@@ -52,6 +52,7 @@ export default function FindName({ data }: any) {
         dispatch(idoActions.nextStep());
         const result = await submitBuyAsync({ id: data?._id });
       } else {
+        dispatch(idoActions.setLoading(false));
         console.log('erer');
       }
     } catch (error) {
