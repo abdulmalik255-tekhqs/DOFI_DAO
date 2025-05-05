@@ -1,29 +1,75 @@
+
 import { useSelector } from 'react-redux';
+import { CheckCircle } from 'lucide-react'; // Icon library
 
 export default function SegmentedProgressBar() {
-  const currentStep = useSelector((state:any) => state.ido.currentStep);
-    // Define the steps
-    const steps = ['Register', 'NFT', 'DIO', 'Confirm'];
+  const currentStep = useSelector((state: any) => state.ido.currentStep);
+  const steps = ['Purchase', 'Confirm', 'Launch', 'Validate'];
 
   return (
-    <div className="w-full flex justify-between items-center py-4">
-      {steps.map((_, index) => {
+    <div className="w-full flex justify-between items-center py-4 gap-6">
+      {steps.map((step, index) => {
         const isCompleted = index < currentStep;
         const isActive = index === currentStep;
 
         return (
-          <div
-            key={index}
-            className={`
-              h-2 w-full mx-1 rounded
-              ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'}
-            `}
-          />
+          <div key={index} className="flex flex-col items-center flex-1">
+            {/* Step Label */}
+            <span
+              className={`text-sm mb-2 transition-colors duration-300 ${
+                isActive ? 'text-black font-semibold' : 'text-gray-500'
+              }`}
+            >
+              {step}
+            </span>
+
+            {/* Progress Bar */}
+            <div
+              className={`h-2 w-full rounded-full transition-all duration-500 ${
+                isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'
+              }`}
+            />
+
+            {/* Tick Icon */}
+            <CheckCircle
+              className={`mt-2 h-5 w-5 transition-all duration-500 ${
+                isCompleted ? 'text-green-500 scale-100' : 'text-gray-400 scale-90'
+              }`}
+            />
+          </div>
         );
       })}
     </div>
   );
-};
+}
+
+
+// import { useSelector } from 'react-redux';
+
+// export default function SegmentedProgressBar() {
+//   const currentStep = useSelector((state:any) => state.ido.currentStep);
+//     // Define the steps
+//     const steps = ['Register', 'NFT', 'DIO', 'Confirm'];
+
+//   return (
+//     <div className="w-full flex justify-between items-center py-4">
+//       {steps.map((_, index) => {
+//         const isCompleted = index < currentStep;
+//         const isActive = index === currentStep;
+
+//         return (
+//           <div
+//             key={index}
+//             className={`
+//               h-2 w-full mx-1 rounded
+//               ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'}
+//             `}
+//           />
+//         );
+//       })}
+//     </div>
+//   );
+// };
 
 
 

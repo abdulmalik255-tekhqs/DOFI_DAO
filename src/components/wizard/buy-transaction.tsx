@@ -7,9 +7,14 @@ import { HashLoader } from 'react-spinners';
 import { Copy } from '@/components/icons/copy';
 import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
+import { useAccount } from 'wagmi';
+import { Coins, Globe, Hash, User, Wallet } from 'lucide-react';
 
-export default function BuyTransaction() {
+export default function BuyTransaction({ data }: any) {
+    console.log(data,"dataaaa");
+    
     const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
+    const {address} = useAccount()
     let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
     let [_, copyToClipboard] = useCopyToClipboard();
     const handleCopyToClipboard = () => {
@@ -31,9 +36,9 @@ export default function BuyTransaction() {
                     Buy Confirmation
                 </h2>
             </div>
-            <div
+            {/* <div
                 className={
-                    'flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-100 p-4 border-[#14161A] border-b-4 dark:bg-light-dark'
+                    'flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 border-[#14161A] border-b-4 dark:bg-light-dark'
                 }
             >
                 {
@@ -42,9 +47,31 @@ export default function BuyTransaction() {
                         <HashLoader />
                     </> : <>
                         <div className="flex w-full justify-between">
-                            <h3>Buy</h3>
+                            
+                            <h3>Asset</h3>
                             <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-                                Domain NFT
+                                DO.FI Domain ERC721
+                            </h3>
+                        </div>
+                        <div className="flex w-full justify-between">
+                            
+                            <h3>Domain</h3>
+                            <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+                                {data?.name}
+                            </h3>
+                        </div>
+                        <div className="flex w-full justify-between">
+                            <h3>Total Fee</h3>
+                            <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+                               ${data?.price + 0.48}
+                            </h3>
+                        </div>
+                        <div className="flex w-full justify-between">
+                            <h3>Purchased By</h3>
+                            <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+                            {address?.slice(0, 6)}
+                                {'...'}
+                                {address?.slice(address?.length - 6)}
                             </h3>
                         </div>
                         <div className="flex w-full justify-between">
@@ -63,7 +90,75 @@ export default function BuyTransaction() {
                         </div>
                     </>
                 }
-            </div>
+            </div> */}
+            <div
+  className={
+    'flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 border-[#14161A] border-b-4 dark:bg-light-dark'
+  }
+>
+  {loading ? (
+    <HashLoader />
+  ) : (
+    <>
+      <div className="flex w-full justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Coins className="w-4 h-4 text-gray-700 dark:text-white" />
+          <h3>Asset</h3>
+        </div>
+        <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          DO.FI Domain ERC721
+        </h3>
+      </div>
+
+      <div className="flex w-full justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Globe className="w-4 h-4 text-gray-700 dark:text-white" />
+          <h3>Domain</h3>
+        </div>
+        <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          {buyTransactionhash?.name}
+        </h3>
+      </div>
+
+      <div className="flex w-full justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <Wallet className="w-4 h-4 text-gray-700 dark:text-white" />
+          <h3>Total Fee</h3>
+        </div>
+        <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          ${buyTransactionhash?.price + 0.48}
+        </h3>
+      </div>
+
+      <div className="flex w-full justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          <User className="w-4 h-4 text-gray-700 dark:text-white" />
+          <h3>Purchased By</h3>
+        </div>
+        <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          {address?.slice(0, 6)}...{address?.slice(address?.length - 6)}
+        </h3>
+      </div>
+
+      <div className="flex w-full justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Hash className="w-4 h-4 text-gray-700 dark:text-white" />
+          <h3>Transaction Hash</h3>
+        </div>
+        <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white flex items-center gap-2">
+          {buyTransactionhash?.transactionHash?.slice(0, 6)}...
+          {buyTransactionhash?.transactionHash?.slice(-6)}
+          <span
+            onClick={handleCopyToClipboard}
+            className="text-md flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-all hover:border-gray-400 hover:text-black dark:border-gray-700 dark:text-gray-400"
+          >
+            <Copy className="h-4 w-4" />
+          </span>
+        </h3>
+      </div>
+    </>
+  )}
+</div>
             <div className='mt-4'>
                 <Button
                     size="large"
