@@ -36,7 +36,8 @@ const IDODetailPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [isExpired, setIsExpired] = useState(false);
   const { loading } = useSelector((state: any) => state.ido);
-  const { idoDetaildata, isConfetti } = useSelector((state: any) => state.ido);
+  const { isConfetti } = useSelector((state: any) => state.ido);
+  const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
   console.log(idoDetaildata, "idoDetaildata");
 
@@ -47,8 +48,8 @@ const IDODetailPage = () => {
     isError,
     error,
   } = useGetIDODetail();
-  console.log(searchResult,"searchResult");
-  
+  console.log(searchResult, "searchResult");
+
   //@ts-ignore
   const { mutate: buyShareIDO } = useBuyShareIDO();
 
@@ -88,22 +89,22 @@ const IDODetailPage = () => {
   ];
 
   useEffect(() => {
-    
+
     if (idoDetaildata?._id) {
 
       const savedIdo = localStorage.getItem('dioId');
       //@ts-ignore
-      console.log(JSON.parse(savedIdo),"JSON.parse(savedIdo)");
-      
+      console.log(JSON.parse(savedIdo), "JSON.parse(savedIdo)");
+
       //@ts-ignore
       const parsedData = JSON.parse(savedIdo);
-      console.log(parsedData,"parsedData");
-      
+      console.log(parsedData, "parsedData");
+
       console.log(savedIdo);
 
       idodetail(idoDetaildata._id ? idoDetaildata._id : parsedData?._id);
-      console.log(idoDetaildata,"idoDetaildata");
-      
+      console.log(idoDetaildata, "idoDetaildata");
+
     }
   }, [idoDetaildata]);
   useEffect(() => {
@@ -118,9 +119,9 @@ const IDODetailPage = () => {
         ToastNotification('error', 'Enter Amount');
         return;
       }
-     //@ts-ignore
-      let remaningValue = Math.floor(Number(searchResult?.data?.totalSupply) - Number( searchResult?.data?.fundsRaised));
-      if (Number(inputValue) === 0 ) {
+      //@ts-ignore
+      let remaningValue = Math.floor(Number(searchResult?.data?.totalSupply) - Number(searchResult?.data?.fundsRaised));
+      if (Number(inputValue) === 0) {
         ToastNotification('error', 'Cannot buy share with 0.');
         return;
       }
@@ -148,6 +149,8 @@ const IDODetailPage = () => {
         hash,
       });
       if (recipient.status === 'success') {
+        console.log(inputValue, "inputValue");
+
         buyShareIDO({
           //@ts-ignore
           id: idoDetaildata?._id,
@@ -169,8 +172,8 @@ const IDODetailPage = () => {
 
     // let values = Number(funds) / Number(price);
     let remaningValue = Math.floor(Number(supply) - Number(funds));
-    console.log(remaningValue,"remaningValue");
-    
+    console.log(remaningValue, "remaningValue");
+
     return remaningValue
   }
   return (
@@ -191,13 +194,13 @@ const IDODetailPage = () => {
               <h3 className="text-xl flex gap-2 items-center font-bold mb-2 text-white">
                 <Globe className="w-5 h-5 text-white" />
                 {
-                //@ts-ignore
-                searchResult?.data?.name}
+                  //@ts-ignore
+                  searchResult?.data?.name}
               </h3>
               <p className="text-white">
                 {
-                //@ts-ignore
-                searchResult?.data?.description}
+                  //@ts-ignore
+                  searchResult?.data?.description}
               </p>
             </div>
 
@@ -217,30 +220,30 @@ const IDODetailPage = () => {
                           <strong>Fund Raised</strong>
                         </p>
                         <span>
-                          {(
+                          {(() => {
                             //@ts-ignore
-                            ((searchResult?.data?.fundsRaised ?? 0) /
+                            const fundsRaised = Number(searchResult?.data?.fundsRaised ?? 0);
                             //@ts-ignore
-                              ((searchResult?.data?.totalSupply ?? 0) *
-                              //@ts-ignore
-                                (searchResult?.data?.pricePerToken ?? 1))) *
-                            100
-                          ).toFixed(1)}
-                          %
+                            const totalSupply = Number(searchResult?.data?.totalSupply ?? 0);
+                            if (totalSupply === 0) return '0.0%';
+                            const percentage = (fundsRaised / totalSupply) * 100;
+                            return `${percentage.toFixed(1)}%`;
+                          })()}
                         </span>
                       </div>
                       <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-black transition-all duration-500"
                           style={{
-                            //@ts-ignore
-                            width: `${((searchResult?.data?.fundsRaised ?? 0) /
+                            width: (() => {
                               //@ts-ignore
-                              ((searchResult?.data?.totalSupply ?? 0) *
+                              const fundsRaised = Number(searchResult?.data?.fundsRaised ?? 0);
                               //@ts-ignore
-                                (searchResult?.data?.pricePerToken ?? 1))) *
-                              100
-                              }%`,
+                              const totalSupply = Number(searchResult?.data?.totalSupply ?? 0);
+                              if (totalSupply === 0) return '0%';
+                              const percentage = (fundsRaised / totalSupply) * 100;
+                              return `${percentage.toFixed(1)}%`;
+                            })(),
                           }}
                         />
                       </div>
@@ -320,9 +323,9 @@ const IDODetailPage = () => {
                           {(
                             //@ts-ignore
                             ((searchResult?.data?.fundsRaised ?? 0) /
-                            //@ts-ignore
-                              ((searchResult?.data?.totalSupply ?? 0) *
                               //@ts-ignore
+                              ((searchResult?.data?.totalSupply ?? 0) *
+                                //@ts-ignore
                                 (searchResult?.data?.pricePerToken ?? 1))) *
                             100
                           ).toFixed(1)}
@@ -337,7 +340,7 @@ const IDODetailPage = () => {
                             width: `${((searchResult?.data?.fundsRaised ?? 0) /
                               //@ts-ignore
                               ((searchResult?.data?.totalSupply ?? 0) *
-                              //@ts-ignore
+                                //@ts-ignore
                                 (searchResult?.data?.pricePerToken ?? 1))) *
                               100
                               }%`,
@@ -349,13 +352,13 @@ const IDODetailPage = () => {
                       <p>
                         <strong>Participants:</strong> {
                           //@ts-ignore
-                        searchResult?.data?.investors?.length}
+                          searchResult?.data?.investors?.length}
                       </p>
                       <p>
                         <strong>Total Allocation:</strong>{' '}
                         {
-                        //@ts-ignore
-                        searchResult?.data?.totalSupply}
+                          //@ts-ignore
+                          searchResult?.data?.totalSupply}
                       </p>
                       <p>
                         <strong>Remaining Allocation:</strong>{' '}
@@ -367,8 +370,8 @@ const IDODetailPage = () => {
                       <p>
                         <strong>Price Per Token:</strong>{' '}
                         {
-                        //@ts-ignore
-                        searchResult?.data?.pricePerToken}
+                          //@ts-ignore
+                          searchResult?.data?.pricePerToken}
                         {/* {totalPrice ?? searchResult?.data?.pricePerToken} */}
                       </p>
                     </div>
@@ -418,8 +421,8 @@ const IDODetailPage = () => {
                   Tokens for Sale
                 </h3>
                 <p className="text-sm uppercase text-white">{
-                //@ts-ignore
-                searchResult?.data?.name} Fraction</p>
+                  //@ts-ignore
+                  searchResult?.data?.name} Fraction</p>
               </div>
               <div className="flex justify-between">
                 <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400">
@@ -427,8 +430,8 @@ const IDODetailPage = () => {
                   Total Supply
                 </h3>
                 <p className="text-sm uppercase text-white">{
-                //@ts-ignore
-                searchResult?.data?.totalSupply} DFS</p>
+                  //@ts-ignore
+                  searchResult?.data?.totalSupply} DFS</p>
               </div>
               <div className="flex justify-between">
                 <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400"> <FaCube color='#fff' className="text-gray-800" /> Token Type</h3>

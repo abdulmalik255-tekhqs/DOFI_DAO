@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
+import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 export function useLivePricing(
   options?: Partial<CryptoQueryOptions>,
@@ -123,7 +124,7 @@ export function useCreateIDOWizard() {
     onSuccess: (data) => {
       if (data) {
         //@ts-ignore
-        dispatch(idoActions.saveIDOdata(data?.data));
+        dispatch(idodetailActions.saveIDOdata(data?.data));
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
         // router.push(routes.idoDetail);
@@ -146,7 +147,7 @@ export function useCreateIDO() {
     onSuccess: (data) => {
       if (data) {
         //@ts-ignore
-        dispatch(idoActions.saveIDOdata(data?.data));
+        dispatch(idodetailActions.saveIDOdata(data?.data));
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
         router.push(routes.idoDetail);
@@ -217,9 +218,12 @@ export function useBuyShareIDO() {
     onSuccess: (data) => {
       // closeModal(); 
       if (data) {
+        console.log(data);
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));
+        //@ts-ignore
+        dispatch(idodetailActions.saveIDOdata(data?.data));
         queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
       }
     },

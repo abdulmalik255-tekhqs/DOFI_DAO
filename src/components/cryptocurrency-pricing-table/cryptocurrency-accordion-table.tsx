@@ -21,6 +21,7 @@ import CryptocurrencyDrawer from '@/components/cryptocurrency-pricing-table/cryp
 import routes from '@/config/routes';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch } from 'react-redux';
+import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 function CryptocurrencyAccordionTable({
   // @ts-ignore
@@ -65,7 +66,7 @@ function CryptocurrencyAccordionTable({
   function goToAllProposalPage(data: any) {
     setTimeout(() => {
       localStorage.setItem('dioId', JSON.stringify(data?.original));
-      dispatch(idoActions.saveIDOdata(data?.original));
+      dispatch(idodetailActions.saveIDOdata(data?.original));
       dispatch(idoActions.setIsConfetti(false));
       router.push(routes.idoDetail);
     }, 500);
