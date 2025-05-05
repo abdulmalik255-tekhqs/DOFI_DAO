@@ -22,6 +22,7 @@
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/react-query": "^5.74.4",
+    "antd": "^5.24.9",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "config": "^3.3.12",

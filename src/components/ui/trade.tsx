@@ -76,11 +76,16 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
   }, [currentPath]);
   return (
     <div className="">
-      <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] bg-white py-5 px-4 rounded-sm">
-        SWAP
-      </h2>
+      <div className="bg-white py-5 px-4 rounded-md shadow-lg">
+        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
+          SWAP
+        </h2>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Seamlessly swap NFTs across multiple blockchain networks with real-time valuation and gas fee optimization to ensure accurate and secure transactions.
+        </p>
+      </div>
       <div className="pt-8 text-sm xl:pt-10">
-        <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5">
+        <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5 shadow-2xl">
           <h1 className="text-[16px] text-semiBold mb-6">SWAP Domain Frations</h1>
           <AnimatePresence mode={'wait'}>
             <motion.div

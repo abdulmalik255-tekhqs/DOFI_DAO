@@ -145,7 +145,7 @@ const SwapPage = () => {
 
   // useEffect(() => {
   //   console.log(selectedFromSwapCoin,selectedToSwapCoin,"coins");
-    
+
   //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
   // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
@@ -165,17 +165,12 @@ const SwapPage = () => {
               getCoinValue={(data: any) => setFromAmount(data)}
               onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
             />
-            <div className="absolute left-1/2 top-1/2 z-[1] -ml-4 -mt-4 rounded-full bg-white shadow-large dark:bg-gray-600">
-              <Button
-                size="mini"
-                color="gray"
-                shape="circle"
-                variant="transparent"
-                // onClick={() => setToggleCoin(!toggleCoin)}
-              >
-                <SwapIcon className="h-auto w-3" />
-              </Button>
+            <div className="absolute left-1/2 top-1/2 z-[1] transform -translate-x-1/2 -translate-y-1/2 
+                rounded-full bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 
+                shadow-lg dark:bg-gray-600 p-2 flex items-center justify-center">
+              <SwapIcon className="w-4 h-4 text-white" />
             </div>
+
             <CoinInput
               label={'To'}
               exchangeRate={excangeRate(toAmount?.data?.toAmount)}
@@ -194,22 +189,25 @@ const SwapPage = () => {
           <TransactionInfo label={'Network Fee'} value={'0.35'} />
           {/* <TransactionInfo label={'Criptic Fee'} /> */}
         </div>
-        <Button
-          size="large"
-          shape="rounded"
-          fullWidth={true}
-          className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
-          onClick={() => handleSwap()}
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <BeatLoader color="#000" />
-            </>
-          ) : (
-            'SWAP'
-          )}
-        </Button>
+        <div className="border-b border-dashed border-gray-200 dark:border-gray-800 mt-4"></div>
+        <div className="flex justify-end">
+          <Button
+            size="medium"
+            shape="rounded"
+            // fullWidth={true}
+            className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
+            onClick={() => handleSwap()}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <BeatLoader color="#000" />
+              </>
+            ) : (
+              'SWAP'
+            )}
+          </Button>
+        </div>
       </Trade>
     </>
   );
