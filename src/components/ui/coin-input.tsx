@@ -33,7 +33,6 @@ export default function CoinInput({
   let [value, setValue] = useState('');
   let [selectedCoin, setSelectedCoin] = useState(coinList[defaultCoinIndex]);
   let [visibleCoinList, setVisibleCoinList] = useState(false);
-console.log("exchangeRate--->",exchangeRate)
   const modalContainerRef = useRef<HTMLDivElement>(null);
   useClickAway(modalContainerRef, () => {
     setVisibleCoinList(false);
@@ -61,12 +60,12 @@ console.log("exchangeRate--->",exchangeRate)
     <>
       <div
         className={cn(
-          'group flex min-h-[70px] rounded-lg border border-gray-200 transition-colors duration-200 hover:border-gray-900 dark:border-gray-700 dark:hover:border-gray-600',
+          'group flex min-h-[70px] rounded-lg border border-gray-200 transition-colors duration-200 hover:border-gray-900 dark:border-gray-700 dark:hover:border-gray-600 shadow-lg',
           className,
         )}
       >
         <div className="min-w-[80px] border-gray-200 p-3 transition-colors duration-200 group-hover:border-gray-900 dark:border-gray-700 dark:group-hover:border-gray-600">
-          <span className="mb-1.5 text-xs uppercase text-gray-600 dark:text-gray-400 text-center">
+          <span className="mb-1.5 text-xs uppercase text-gray-600 dark:text-gray-400 text-center font-bold">
             {label}
           </span>
           <button
