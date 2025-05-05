@@ -70,7 +70,7 @@ function CryptocurrencyAccordionTable({
     }, 500);
   }
   return (
-    <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg shadow-card lg:flex-row">
+    <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg  lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
         <GlobalFilter />
         <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
