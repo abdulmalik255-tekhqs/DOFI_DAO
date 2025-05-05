@@ -74,7 +74,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
               onKeyDown={(event) => handleSelectedCoinOnKeyDown(event, item)}
               className="flex cursor-pointer items-center gap-2 px-6 py-3 outline-none hover:bg-gray-100 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             >
-              <img className ="h-6 w-6 rounded-full" src={item?.imageUrl} />
+              <img className ="h-6 w-6 rounded-full" src={"https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png"} />
               <span className="uppercase">{item.name}</span>
             </li>
           ))
