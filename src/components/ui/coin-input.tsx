@@ -75,7 +75,7 @@ export default function CoinInput({
             className="flex items-center font-medium outline-none dark:text-gray-100"
           >
             {selectedCoin?.imageUrl && <img className="h-6 w-6 rounded-full" src={selectedCoin?.imageUrl} />}
-            {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[12px] text-gray-500'>Please Select</span>}
+            {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[12px] text-gray-500'>Select token</span>}
             
             <ChevronDown className="ltr:ml-1.5 rtl:mr-1.5 text-gray-500" />
           </button>

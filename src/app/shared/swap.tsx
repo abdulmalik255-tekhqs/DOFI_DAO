@@ -194,7 +194,7 @@ const SwapPage = () => {
           <Button
             size="medium"
             shape="rounded"
-            // fullWidth={true}
+            fullWidth={true}
             className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
             onClick={() => handleSwap()}
             disabled={loading}
