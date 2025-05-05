@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Confetti from 'react-confetti';
+import { Globe } from 'lucide-react';
 import { useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
@@ -57,7 +58,7 @@ const IDODetailPage = () => {
       setInputValue(raw);
     }
   };
-  
+
   const totalPrice = (parseFloat(inputValue) || 0) * pricePerToken;
   const vote = [
     {
@@ -132,13 +133,16 @@ const IDODetailPage = () => {
   };
   return (
     <>
-      <h3 className="flex items-center justify-center text-[30px] font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100">
-        Domain Initinal Offering
-      </h3>
+      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-4'>
+        <h2 className="text-[30px] font-bold uppercase uppercase dark:text-gray-100 xl:text-[28px]">
+          Domain Initinal Offering
+        </h2>
+      </div>
       <div className="mx-auto w-full max-w-[1160px] text-sm md:pt-14 4xl:pt-24">
         <div className="flex w-full justify-between gap-6 mb-6">
           <div className="flex w-[40%] flex-col justify-center">
-            <h3 className="text-sm font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
+            <h3 className="text-sm flex gap-2 font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
+            <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
               {
                 //@ts-ignore
                 searchResult?.data?.name
@@ -268,42 +272,50 @@ const IDODetailPage = () => {
               </div> */}
                     <div className="flex w-full items-center justify-between p-2">
                       <p className="text-base font-normal">Limited</p>
-                      <p className="text-base font-normal">
+                      <p className="text-base font-semibold">
                         PARTICIPANTS:{' '}
-                        {
-                          //@ts-ignore
-                          searchResult?.data?.investors?.length
-                        }
+                        <span className="text-base font-medium">
+                          {
+                            //@ts-ignore
+                            searchResult?.data?.investors?.length
+                          }
+                        </span>
                       </p>
-
                     </div>
                     <div className="flex w-full flex-col items-start justify-start p-2">
-                      <p className="text-base font-normal">
+                      <p className="text-base font-semibold">
                         Total Allocation:{' '}
-                        {
-                          //@ts-ignore
-                          searchResult?.data?.totalSupply *
-                          //@ts-ignore
-                          searchResult?.data?.pricePerToken
-                        }
+                        <span className="text-base font-medium">
+                          {
+                            //@ts-ignore
+                            searchResult?.data?.totalSupply *
+                            //@ts-ignore
+                            searchResult?.data?.pricePerToken
+                          }
+                        </span>
                       </p>
-                      <p className="text-base font-normal">
+                      <p className="text-base font-semibold">
                         Remaining Allocation:{' '}
-                        {
-                          //@ts-ignore
-                          (searchResult?.data?.totalSupply ?? 0) *
-                          //@ts-ignore
-                          (searchResult?.data?.pricePerToken ?? 0) -
-                          //@ts-ignore
-                          (searchResult?.data?.fundsRaised ?? 0)
-                        }
+                        <span className="text-base font-medium">
+                          {
+                            //@ts-ignore
+                            (searchResult?.data?.totalSupply ?? 0) *
+                            //@ts-ignore
+                            (searchResult?.data?.pricePerToken ?? 0) -
+                            //@ts-ignore
+                            (searchResult?.data?.fundsRaised ?? 0)
+                          }
+                        </span>
+
                       </p>
-                      <p className="text-base font-normal">
-                        Price Per Token:{' '}
-                        {
-                          //@ts-ignore
-                          totalPrice ? totalPrice : searchResult?.data?.pricePerToken 
-                        }
+                      <p className="text-base font-semibold">
+                        Price Per Token: {' '}
+                        <span className="text-base font-medium">
+                          {
+                            //@ts-ignore
+                            totalPrice ? totalPrice : searchResult?.data?.pricePerToken
+                          }
+                        </span>
                       </p>
                     </div>
                     {isExpired === false && (
@@ -338,30 +350,21 @@ const IDODetailPage = () => {
           })}
         >
           <div>
-            <h2 className="mb-2 mt-6 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
-              Token Information
-            </h2>
             <motion.div
               whileTap={{ scale: 0.98 }}
               whileHover={{ scale: 1.015 }}
-              onClick={() =>
-                router.push(
-                  (layout === LAYOUT_OPTIONS.MODERN
-                    ? ''
-                    : routes.home + layout) + routes.proposals,
-                )
-              }
               className={cn(
-                'flex cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
-                {
-                  'xs:col-span-2 sm:col-auto sm:row-span-2':
-                    layout !== LAYOUT_OPTIONS.RETRO,
-                  'col-span-6 sm:row-span-4 md:row-span-1 3xl:col-span-2 3xl:row-span-2':
-                    layout === LAYOUT_OPTIONS.RETRO,
-                },
+                'flex border-[#14161A] border-b-4 cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
+
               )}
             >
-              <div className="flex w-full justify-between">
+              <h2 className="mb-2 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
+                Token Information
+              </h2>
+              <div className='border-b border-black w-full'>
+
+              </div>
+              <div className="flex w-full mt-2 justify-between">
                 <h3 className="text-[12px] font-semibold uppercase text-gray-800 dark:text-gray-100">
                   TOKEN TICKER
                 </h3>
@@ -429,9 +432,7 @@ const IDODetailPage = () => {
           </div>
 
           <div>
-            <h2 className="mb-2 mt-6 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
-              Pool Information
-            </h2>
+
             <motion.div
               whileTap={{ scale: 0.98 }}
               whileHover={{ scale: 1.015 }}
@@ -443,16 +444,16 @@ const IDODetailPage = () => {
                 )
               }
               className={cn(
-                'flex cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
-                {
-                  'xs:col-span-2 sm:col-auto sm:row-span-2':
-                    layout !== LAYOUT_OPTIONS.RETRO,
-                  'col-span-6 sm:row-span-4 md:row-span-1 3xl:col-span-2 3xl:row-span-2':
-                    layout === LAYOUT_OPTIONS.RETRO,
-                },
+                'flex border-[#14161A] border-b-4 cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
               )}
             >
-              <div className="flex w-full justify-between">
+              <h2 className="mb-2 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
+                Pool Information
+              </h2>
+              <div className='border-b border-black w-full'>
+
+              </div>
+              <div className="flex mt-2 w-full justify-between">
                 <h3 className="text-[12px] font-semibold uppercase text-gray-800 dark:text-gray-100">
                   TOKEN DISTRIBUTION
                 </h3>
@@ -488,9 +489,7 @@ const IDODetailPage = () => {
           </div>
 
           <div>
-            <h2 className="mb-2 mt-6 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
-              Vesting Information
-            </h2>
+
             <motion.div
               whileTap={{ scale: 0.98 }}
               whileHover={{ scale: 1.015 }}
@@ -502,16 +501,17 @@ const IDODetailPage = () => {
                 )
               }
               className={cn(
-                'flex cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
-                {
-                  'xs:col-span-2 sm:col-auto sm:row-span-2':
-                    layout !== LAYOUT_OPTIONS.RETRO,
-                  'col-span-6 sm:row-span-4 md:row-span-1 3xl:col-span-2 3xl:row-span-2':
-                    layout === LAYOUT_OPTIONS.RETRO,
-                },
+                'flex border-[#14161A] border-b-4 cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 text-center shadow-card transition-shadow duration-200 hover:shadow-large dark:bg-light-dark',
+
               )}
             >
-              <div className="flex w-full justify-between">
+              <h2 className="mb-2 text-center text-sm font-bold uppercase text-gray-800 dark:text-gray-100 sm:text-base 3xl:text-[25px]">
+                Vesting Information
+              </h2>
+              <div className='border-b border-black w-full'>
+
+              </div>
+              <div className="flex mt-2 w-full justify-between">
                 <h3 className="text-[12px] font-semibold uppercase text-gray-800 dark:text-gray-100">
                   TGE
                 </h3>

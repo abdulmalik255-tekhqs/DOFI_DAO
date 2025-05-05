@@ -83,38 +83,38 @@ export default function FindName({ data }: any) {
           {data?.name}
         </h3> */}
         <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
-  <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
-  {data?.name}
-</h3>
+          <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
+          {data?.name}
+        </h3>
         {/* <h3 className="text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
   {data?.name}
 </h3> */}
 
       </div>
       <div
-  className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white"
->
-  <div className="flex w-full justify-between mb-2">
-    <h3 className="text-sm font-medium">1 year registration</h3>
-    <h3 className="text-sm font-medium uppercase tracking-wide">
-      ${data?.price}
-    </h3>
-  </div>
+        className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white"
+      >
+        <div className="flex w-full justify-between mb-2">
+          <h3 className="text-sm font-medium">1 year registration</h3>
+          <h3 className="text-sm font-medium uppercase tracking-wide">
+            ${data?.price}
+          </h3>
+        </div>
 
-  <div className="flex w-full justify-between mb-2">
-    <h3 className="text-sm font-medium">Est. network fee</h3>
-    <h3 className="text-sm font-medium uppercase tracking-wide">
-      $0.48
-    </h3>
-  </div>
+        <div className="flex w-full justify-between mb-2">
+          <h3 className="text-sm font-medium">Est. network fee</h3>
+          <h3 className="text-sm font-medium uppercase tracking-wide">
+            $0.48
+          </h3>
+        </div>
 
-  <div className="flex w-full justify-between">
-    <h3 className="text-sm font-semibold">Estimated total</h3>
-    <h3 className="text-sm font-semibold uppercase tracking-wide">
-      ${data?.price + 0.48}
-    </h3>
-  </div>
-</div>
+        <div className="flex w-full justify-between">
+          <h3 className="text-sm font-semibold">Estimated total</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide">
+            ${data?.price + 0.48}
+          </h3>
+        </div>
+      </div>
       <div className='mt-4'>
         <Button
           size="large"
