@@ -350,6 +350,7 @@ export function useFetchOwnerAllNfts() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['all-nft-latest'],
     queryFn: () => client.fetchNFT.getOwnerNFT(address),
+    enabled: !!address,
   });
   return {
     ownerNFT: data,

@@ -17,8 +17,8 @@ import NFT8 from '@/assets/images/dao/08.png';
 export function DomainFeed({ image }: any) {
   return (
     <div>
-      <div className="w w-full flex-col">
-        <Image src={image} alt="no-icon" />
+      <div className="w-full flex-col">
+        <Image src={image} alt="no-icon" className='w-[90%]'/>
       </div>
     </div>
   );

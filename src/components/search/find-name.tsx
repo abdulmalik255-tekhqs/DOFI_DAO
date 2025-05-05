@@ -18,8 +18,6 @@ import ToastNotification from '../ui/toast-notification';
 import { Globe } from 'lucide-react';
 
 export default function FindName({ data }: any) {
-  console.log(data, "data");
-
   const { address } = useAccount();
   const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQueryWizard();
   const { loading } = useSelector((state: any) => state.ido);
@@ -28,8 +26,6 @@ export default function FindName({ data }: any) {
   const { writeContractAsync } = useWriteContract();
   const handleBuy = async () => {
     try {
-      // dispatch(idoActions.nextStep());
-      // return
       if (!address) {
         ToastNotification('error', 'Connect wallet first!');
         return;
@@ -50,9 +46,7 @@ export default function FindName({ data }: any) {
       const recipient = await waitForTransactionReceipt(config.getClient(), {
         hash,
         pollingInterval: 2000,
-      });
-      console.log(recipient, "recipient");
-
+      })
       if (recipient.status === 'success') {
         dispatch(idoActions.setBuytransactionHash(recipient));
         dispatch(idoActions.nextStep());
