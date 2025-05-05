@@ -116,7 +116,7 @@ export default function BuyTransaction({ data }: any) {
           <h3>Domain</h3>
         </div>
         <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-          {buyTransactionhash?.name}
+          {data?.name}
         </h3>
       </div>
 
@@ -126,7 +126,7 @@ export default function BuyTransaction({ data }: any) {
           <h3>Total Fee</h3>
         </div>
         <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-          ${buyTransactionhash?.price + 0.48}
+          ${data?.price + 0.48}
         </h3>
       </div>
 

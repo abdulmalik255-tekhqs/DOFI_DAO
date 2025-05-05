@@ -14,9 +14,9 @@ export default function WizardModal({ data }: { data: any }) {
       <WizardProgressBar />
 
       {currentStep === 0 && <FindName data={data} />}
-      {currentStep === 1 && <BuyTransaction />}
+      {currentStep === 1 && <BuyTransaction  data={data}/>}
       {currentStep === 2 && <CreateIDOWizard data={data} />}
-      {currentStep === 3 && <DIOTransaction />}
+      {currentStep === 3 && <DIOTransaction  data={data} />}
     </div>
   );
 }
