@@ -193,7 +193,9 @@ export function useGetIDODetail() {
   const { address } = useAccount();
   return useMutation({
     //@ts-ignore
+    queryKey: ['get_single_dio'],
     mutationFn: (id: string) => client.idoDetail.getSingleIDO(id, address),
+    enabled:  !!address,
     onSuccess: (data) => {
     },
     onError: (error) => {
@@ -206,6 +208,7 @@ export function useGetIDODetail() {
 export function useBuyShareIDO() {
   const { address } = useAccount();
   const { openModal, closeModal } = useModal();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const dispatch = useDispatch()
   return useMutation({
@@ -217,6 +220,7 @@ export function useBuyShareIDO() {
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));
+        queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
       }
     },
     onError: (error) => {

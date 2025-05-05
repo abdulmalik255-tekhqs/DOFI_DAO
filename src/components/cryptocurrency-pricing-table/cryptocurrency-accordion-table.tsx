@@ -64,6 +64,7 @@ function CryptocurrencyAccordionTable({
   const dispatch = useDispatch();
   function goToAllProposalPage(data: any) {
     setTimeout(() => {
+      localStorage.setItem('dioId', JSON.stringify(data?.original));
       dispatch(idoActions.saveIDOdata(data?.original));
       dispatch(idoActions.setIsConfetti(false));
       router.push(routes.idoDetail);
