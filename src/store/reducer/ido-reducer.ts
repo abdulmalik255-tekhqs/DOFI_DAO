@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  idoDetaildata: {},
   loading:false,
   nftDetail:{},
   previousRoute:false,
@@ -18,9 +17,6 @@ const idoSlice = createSlice({
   name: "ido",
   initialState,
   reducers: {
-    saveIDOdata(state, action) {
-      state.idoDetaildata = action.payload;
-    },
     setLoading(state, action) {
       state.loading = action.payload;
     },

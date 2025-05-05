@@ -93,7 +93,7 @@ const COLUMNS = [
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-center ltr:text-left rtl:text-left">
-          ${row.original.totalSupply}
+          {row.original.totalSupply}
         </div>
       </div>
     ),

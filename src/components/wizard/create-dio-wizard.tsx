@@ -67,6 +67,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
           description: 'token',
         });
       } else {
+        dispatch(idoActions.setLoading(false));
         console.log('erer');
       }
     } catch (error) {
