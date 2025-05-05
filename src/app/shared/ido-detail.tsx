@@ -39,7 +39,6 @@ const IDODetailPage = () => {
   const { isConfetti } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
-  console.log(idoDetaildata, "idoDetaildata");
 
   const {
     mutate: idodetail,
@@ -48,7 +47,6 @@ const IDODetailPage = () => {
     isError,
     error,
   } = useGetIDODetail();
-  console.log(searchResult, "searchResult");
 
   //@ts-ignore
   const { mutate: buyShareIDO } = useBuyShareIDO();
@@ -89,22 +87,11 @@ const IDODetailPage = () => {
   ];
 
   useEffect(() => {
-
     if (idoDetaildata?._id) {
-
       const savedIdo = localStorage.getItem('dioId');
       //@ts-ignore
-      console.log(JSON.parse(savedIdo), "JSON.parse(savedIdo)");
-
-      //@ts-ignore
       const parsedData = JSON.parse(savedIdo);
-      console.log(parsedData, "parsedData");
-
-      console.log(savedIdo);
-
       idodetail(idoDetaildata._id ? idoDetaildata._id : parsedData?._id);
-      console.log(idoDetaildata, "idoDetaildata");
-
     }
   }, [idoDetaildata]);
   useEffect(() => {
@@ -149,8 +136,6 @@ const IDODetailPage = () => {
         hash,
       });
       if (recipient.status === 'success') {
-        console.log(inputValue, "inputValue");
-
         buyShareIDO({
           //@ts-ignore
           id: idoDetaildata?._id,
@@ -166,15 +151,13 @@ const IDODetailPage = () => {
     }
   };
   const getRemaniningAlloction = (funds: any, price: any, supply: any) => {
-    console.log(funds, "funds");
-    console.log(price, "funds");
-    console.log(supply, "funds");
-
-    // let values = Number(funds) / Number(price);
     let remaningValue = Math.floor(Number(supply) - Number(funds));
-    console.log(remaningValue, "remaningValue");
-
     return remaningValue
+  }
+  const progressBarValues = (funds: number, supply: number) => {
+    const percentage = (funds / supply) * 100;
+    return `${percentage.toFixed(1)}%`;
+
   }
   return (
     <>
@@ -220,30 +203,17 @@ const IDODetailPage = () => {
                           <strong>Fund Raised</strong>
                         </p>
                         <span>
-                          {(() => {
-                            //@ts-ignore
-                            const fundsRaised = Number(searchResult?.data?.fundsRaised ?? 0);
-                            //@ts-ignore
-                            const totalSupply = Number(searchResult?.data?.totalSupply ?? 0);
-                            if (totalSupply === 0) return '0.0%';
-                            const percentage = (fundsRaised / totalSupply) * 100;
-                            return `${percentage.toFixed(1)}%`;
-                          })()}
+                          {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
                         </span>
                       </div>
                       <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-black transition-all duration-500"
                           style={{
-                            width: (() => {
-                              //@ts-ignore
-                              const fundsRaised = Number(searchResult?.data?.fundsRaised ?? 0);
-                              //@ts-ignore
-                              const totalSupply = Number(searchResult?.data?.totalSupply ?? 0);
-                              if (totalSupply === 0) return '0%';
-                              const percentage = (fundsRaised / totalSupply) * 100;
-                              return `${percentage.toFixed(1)}%`;
-                            })(),
+                            width: progressBarValues(
+                              Number(searchResult?.data?.fundsRaised),
+                              Number(searchResult?.data?.totalSupply)
+                            ), // OR `${percentage * 2}%` if intentional
                           }}
                         />
                       </div>
@@ -320,30 +290,17 @@ const IDODetailPage = () => {
                           <strong>Fund Raised</strong>
                         </p>
                         <span>
-                          {(
-                            //@ts-ignore
-                            ((searchResult?.data?.fundsRaised ?? 0) /
-                              //@ts-ignore
-                              ((searchResult?.data?.totalSupply ?? 0) *
-                                //@ts-ignore
-                                (searchResult?.data?.pricePerToken ?? 1))) *
-                            100
-                          ).toFixed(1)}
-                          %
+                          {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
                         </span>
                       </div>
                       <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-black transition-all duration-500"
                           style={{
-                            //@ts-ignore
-                            width: `${((searchResult?.data?.fundsRaised ?? 0) /
-                              //@ts-ignore
-                              ((searchResult?.data?.totalSupply ?? 0) *
-                                //@ts-ignore
-                                (searchResult?.data?.pricePerToken ?? 1))) *
-                              100
-                              }%`,
+                            width: progressBarValues(
+                              Number(searchResult?.data?.fundsRaised),
+                              Number(searchResult?.data?.totalSupply)
+                            ), // OR `${percentage * 2}%` if intentional
                           }}
                         />
                       </div>
