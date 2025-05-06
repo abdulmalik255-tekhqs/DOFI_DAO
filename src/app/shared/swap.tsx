@@ -37,7 +37,7 @@ const SwapPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
-      const toPricePerFraction = selectedToSwapCoin?.pricePerToken;
+      const toPricePerFraction = selectedToSwapCoin?.pricePerToken || 1;
       const fromAmountValue = Number(fromAmount?.value);
       if (
         fromPricePerFraction &&
