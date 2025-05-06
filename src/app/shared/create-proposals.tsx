@@ -280,6 +280,7 @@ const CreateProposalPage = () => {
   const [amount, setAmount] = useState('');
   const [leasingAddress, setLeasingAddress] = useState('');
   const [percentageYield, setPercentageYield] = useState('');
+  const [domainAmount, setDomainAmount] = useState('');
   const [motivation, setMotivation] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
@@ -308,7 +309,7 @@ console.log(selectedNFT,"selectedNFT");
         functionName: 'transfer',
         args: [
           '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          parseUnits(amount?.toString(), 18),
+          parseUnits(domainAmount?.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
@@ -321,7 +322,7 @@ console.log(selectedNFT,"selectedNFT");
           name: name,
           summary: summary,
           motivation: motivation,
-          amount: amount,
+          amount: domainAmount,
           nftId: category,
           daoId: '680a76bce48a31fb65d162dd',
           leasingAddress: !isFractionMode ? leasingAddress : '0x',
@@ -357,7 +358,7 @@ console.log(selectedNFT,"selectedNFT");
     setTotalFractions(generateRandomInteger(1000, 1500));
     setPricePerFraction(generateRandomInteger(1, 5));
     if(selectedNFT) {
-      setAmount(selectedNFT?.amount)
+      setAmount(selectedNFT?.price)
     }
   }, [selectedNFT]);
   // function handleSubmit() {
@@ -491,13 +492,22 @@ console.log(selectedNFT,"selectedNFT");
         </select>
       </div>
       <div className="mb-8">
-        <InputLabel title="Domain Amount" important />
+        <InputLabel title="Domain Value" important />
         <Input
         disabled={true}
           type="number"
           placeholder="Enter Domain Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+        />
+      </div>
+      <div className="mb-8">
+        <InputLabel title="Amount" important />
+        <Input
+          type="number"
+          placeholder="Enter amount"
+          value={domainAmount}
+          onChange={(e: any) => setDomainAmount(e.target.value)}
         />
       </div>
       <div className="mb-8">
