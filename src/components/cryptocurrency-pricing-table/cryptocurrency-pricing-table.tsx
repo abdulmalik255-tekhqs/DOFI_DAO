@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FcShare } from "react-icons/fc";
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import CryptocurrencyAccordionTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-accordion-table';
@@ -8,6 +9,11 @@ import CryptocurrencyDrawerTable from '@/components/cryptocurrency-pricing-table
 
 import { useIDO } from '@/hooks/livePricing';
 import { Globe } from 'lucide-react';
+import ToastNotification from '../ui/toast-notification';
+import { Check } from '@/components/icons/check';
+import { Copy } from '@/components/icons/copy';
+import routes from '@/config/routes';
+import { useCopyToClipboard } from 'react-use';
 
 const COLUMNS = [
   // {
@@ -35,7 +41,7 @@ const COLUMNS = [
     maxWidth: 20,
   },
   {
-    Header: () => <div className="">IDO Name</div>,
+    Header: () => <div className="">DIO Name</div>,
     accessor: 'name',
     // @ts-ignore
     Cell: ({ row }) => (
@@ -45,7 +51,7 @@ const COLUMNS = [
       </div>
     ),
     minWidth: 100,
-    maxWidth: 140,
+    maxWidth: 200,
   },
   {
     Header: () => <div className="">Price</div>,
@@ -71,7 +77,7 @@ const COLUMNS = [
       </div>
     ),
     minWidth: 80,
-    maxWidth: 80,
+    maxWidth: 70,
   },
   {
     Header: () => <div className="">Soft Cap</div>,
@@ -84,7 +90,7 @@ const COLUMNS = [
         </div>
       </div>
     ),
-    maxWidth: 120,
+    maxWidth: 80,
   },
   {
     Header: () => <div className="">Total Supply</div>,
@@ -97,7 +103,42 @@ const COLUMNS = [
         </div>
       </div>
     ),
-    maxWidth: 120,
+    maxWidth: 100,
+  },
+  {
+    Header: () => <div className="">Share DIO</div>,
+    accessor: 'share',
+    // @ts-ignore
+    Cell: ({ row }) => {
+      const [copyButtonStatus, setCopyButtonStatus] = useState(false);
+      const [_, copyToClipboard] = useCopyToClipboard();
+  
+      const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${row.original._id}`;
+  
+      function handleCopyToClipboard(e: React.MouseEvent) {
+        e.stopPropagation(); // prevent row redirect
+        copyToClipboard(shareUrl);
+        setCopyButtonStatus(true);
+        ToastNotification('success', 'Now you can share DIO!');
+        setTimeout(() => {
+          setCopyButtonStatus(false); // ✅ reset correctly
+        }, 2500);
+      }
+  
+      return (
+        <div
+          className="flex items-center justify-center gap-2 cursor-pointer"
+          onClick={handleCopyToClipboard}
+        >
+          {copyButtonStatus ? (
+            <Check className="h-auto w-3.5 text-green-500" />
+          ) : (
+            <Copy className="h-auto w-3.5" />
+          )}
+        </div>
+      );
+    },
+    maxWidth: 90,
   },
   {
     Header: () => <div className="">status</div>,

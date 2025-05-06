@@ -9,7 +9,8 @@ const initialState = {
   selectedSwapTo:{},
   currentStep: 0,
   buyTransactionhash:{},
-  domainNftData:{}
+  domainNftData:{},
+  componentLoading:false
 
 };
 
@@ -44,6 +45,9 @@ const idoSlice = createSlice({
     nextStep: (state) => { state.currentStep += 1 },
     previousStep: (state) => { state.currentStep -= 1 },
     goToStep: (state, action) => { state.currentStep = action.payload },
+    setComponentloading(state, action) {
+      state.componentLoading = action.payload;
+    },
   },
 });
 

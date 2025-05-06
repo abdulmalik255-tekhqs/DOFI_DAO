@@ -192,12 +192,16 @@ export function useIDO() {
 
 export function useGetIDODetail() {
   const { address } = useAccount();
+  const dispatch= useDispatch();
   return useMutation({
     //@ts-ignore
     queryKey: ['get_single_dio'],
     mutationFn: (id: string) => client.idoDetail.getSingleIDO(id, address),
     enabled:  !!address,
     onSuccess: (data) => {
+      if(data){
+        dispatch(idoActions.setComponentloading(false))
+      }
     },
     onError: (error) => {
       console.error('Submission failed:', error);
