@@ -88,7 +88,7 @@ function VoteActionButton({ vote }: any) {
           <InputLabel title="Amount" important />
           <Input
             type="number"
-            placeholder="Enter Amount"
+            placeholder="Enter DOFI Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -124,9 +124,14 @@ function VoteActionButton({ vote }: any) {
 }
 
 export default function VoteDetailsCard({ vote }: any) {
+  console.log(vote, "vote");
+
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
-
+const getRemainingallocation = () => {
+ const allocationvalue=  Math.floor((vote?.totalFractions) - (vote?.amountRaised / vote?.pricePerFraction));
+  return allocationvalue;
+}
   return (
     <motion.div
       layout
@@ -152,6 +157,9 @@ export default function VoteDetailsCard({ vote }: any) {
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
+          </p>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            {vote?.nftId?.name}
           </p>
           {!isExpand ? (
             <Button
@@ -196,8 +204,23 @@ export default function VoteDetailsCard({ vote }: any) {
               },
             )}
           >
-            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            <h3 className=" flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ended
+
+
+              <div
+                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
+    ${vote?.status === 'approved'
+                    ? 'bg-green-100 text-green-800 border border-green-300'
+                    : vote?.status === 'rejected'
+                      ? 'bg-red-100 text-red-800 border border-red-300'
+                      : vote?.status === 'active'
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                  }`}
+              >
+                {vote?.status}
+              </div>
             </h3>
             <AuctionCountdown date={undefined} />
           </div>
@@ -223,12 +246,12 @@ export default function VoteDetailsCard({ vote }: any) {
                   : ''}
                 {/* <ExportIcon className="h-auto w-3" /> */}
               </a>
-              <div className="mt-4">
-                Amount allocated:{' '}
-                <span className="font-medium text-gray-900">
-                  {vote?.amount}
-                </span>
-              </div>
+              {/* <div className="mt-4">
+                    Total fractions:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.totalFractions || 100}
+                    </span>
+                  </div> */}
               {vote?.leasingAddress == '0x' ? (
                 <>
                   <div className="mt-4">
@@ -241,6 +264,12 @@ export default function VoteDetailsCard({ vote }: any) {
                     Total fractions:{' '}
                     <span className="font-medium text-gray-900">
                       {vote?.totalFractions || 100}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                  Remaining Allocation:{' '}
+                    <span className="font-medium text-gray-900">
+                      {getRemainingallocation()}
                     </span>
                   </div>
                 </>
@@ -262,7 +291,7 @@ export default function VoteDetailsCard({ vote }: any) {
               )}
             </div>
             <VotePoll title={'Votes'} vote={vote} />
-            <VoterTable votes={vote?.votes || []} />
+            <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction}/>
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>

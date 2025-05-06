@@ -48,12 +48,44 @@ interface VoterTableTypes {
     voting_weight: number;
     status: string[];
   }[];
+  price:number
 }
 
-export default function VoterTable({ votes }: VoterTableTypes) {
+export default function VoterTable({ votes,price }: VoterTableTypes) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const data = votes || []
-  const columns = COLUMNS || []
+  const columns = useMemo(() => [
+    {
+      Header: 'Voter',
+      accessor: 'user.wallet',
+      Cell: ({ cell: { value } }: any) => (
+        <div>
+          {value ? `${value?.slice(0, 8)}...${value?.slice(-8)}` : ''}
+        </div>
+      ),
+    },
+    {
+      Header: 'Voting weight',
+      accessor: 'amount',
+      Cell: ({ cell: { value } }: any) => (
+        <div>{price && value ? (value / price).toFixed(2) : 'N/A'}</div>
+      ),
+    },
+    {
+      Header: 'Decision',
+      accessor: 'inFavor',
+      Cell: ({ cell: { value } }: any) => (
+        <span
+          className={cn(
+            'text-[13px] uppercase sm:text-inherit font-medium',
+            value ? 'text-green-600' : 'text-red-600',
+          )}
+        >
+          {value ? 'Approved' : 'Rejected'}
+        </span>
+      ),
+    },
+  ], [price]);
   const {
     getTableProps,
     getTableBodyProps,
