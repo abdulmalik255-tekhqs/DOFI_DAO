@@ -50,11 +50,12 @@ export default function PayTokenAmount({ data }: { data: any }) {
       if (recipient.status === 'success') {
         const addressArray = ['0x1357331C3d6971e789CcE452fb709465351Dc0A1'];
         const amountArray=[Number(tokenAmount)];
-        const domainName=[data]
+        const nftName=data ? data : ""
         submitCreate({
           //@ts-ignore
-          amount: amountArray,
           addresses: addressArray,
+          nftName,
+          amount: amountArray,
         });
       } else {
         dispatch(idoActions.setLoading(false));
