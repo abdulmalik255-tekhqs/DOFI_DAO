@@ -297,6 +297,7 @@ const CreateProposalPage = () => {
     const storedNftString = localStorage.getItem('nft');
     if (storedNftString) {
       const storedNft: any = JSON.parse(storedNftString);
+      console.log('storedNft----->', storedNft);
       setCategory(storedNft);
     }
   }, []);
@@ -309,10 +310,18 @@ const CreateProposalPage = () => {
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
+
+      const isEmpty = !name || !amount || !leasingAddress || !percentageYield;
+
+    if (isEmpty) {
+      ToastNotification('error', 'Please fill all required fields');
+      return;
+    }
+
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
+        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
         abi: tetherABI,
         functionName: 'transfer',
         args: [

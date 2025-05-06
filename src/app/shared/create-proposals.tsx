@@ -291,7 +291,6 @@ const CreateProposalPage = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
-console.log(selectedNFT,"selectedNFT");
 
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
@@ -301,6 +300,13 @@ console.log(selectedNFT,"selectedNFT");
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
+      const isEmpty = !name || !category;
+
+    if (isEmpty) {
+      ToastNotification('error', 'Please fill all required fields');
+      return;
+    }
+
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
@@ -322,7 +328,7 @@ console.log(selectedNFT,"selectedNFT");
           name: name,
           summary: summary,
           motivation: motivation,
-          amount: domainAmount,
+          amount: 50,
           nftId: category,
           daoId: '680a76bce48a31fb65d162dd',
           leasingAddress: !isFractionMode ? leasingAddress : '0x',
@@ -502,16 +508,17 @@ console.log(selectedNFT,"selectedNFT");
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Amount" important />
+        <InputLabel title="Proposal creationamount" />
         <Input
           type="number"
+          disabled
           placeholder="Enter amount"
-          value={domainAmount}
-          onChange={(e: any) => setDomainAmount(e.target.value)}
+          value={"50"}
+
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Total Fractions" important />
+        <InputLabel title="Total Fractions" />
         <Input
          disabled={true}
           type="number"
@@ -521,7 +528,7 @@ console.log(selectedNFT,"selectedNFT");
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Price Per Fraction" important />
+        <InputLabel title="Price Per Fraction" />
         <Input
          disabled={true}
           type="number"

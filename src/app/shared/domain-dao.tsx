@@ -17,6 +17,10 @@ import Loader from '@/components/ui/loader';
 import cn from '@/utils/cn';
 import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
 import { useFetchNftLeaseAddress, useGetProposalDomainDao } from '@/hooks/livePricing';
+import { FaChartLine } from "react-icons/fa";
+import { TbHomeStats } from "react-icons/tb";
+
+
 
 const DomainDAOPage = () => {
   const router = useRouter();
@@ -99,9 +103,10 @@ const DomainDAOPage = () => {
   }, []);
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-2'>
-        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
-          {storedNft?.name} (Domain Dao)
+      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
+        <h2 className="text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] flex items-center gap-2">
+          {storedNft?.name}
+          <span className='text-[16px] text-base '>(Domain Dao)</span>
         </h2>
         <div className="shrink-0">
           <Button
@@ -114,6 +119,7 @@ const DomainDAOPage = () => {
           </Button>
         </div>
       </div>
+
       <div className="flex flex-wrap gap-4 mb-4">
         <div
           className={`${proposalsDomainDao?.length > 0
@@ -121,13 +127,12 @@ const DomainDAOPage = () => {
             : 'col-span-12 md:col-span-6 lg:col-span-4'
             } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
         >
-          <div className="flex gap-[20px] items-center">
-            <div>
-              <Image alt="Vote Pool" src={votePool} width={32} height={32} />
-
+           <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
+              <TbHomeStats className="text-gray-700 text-[18px] text-white" />
             </div>
             <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
-              Proposals
+            Proposals
             </div>
           </div>
 
@@ -163,16 +168,14 @@ const DomainDAOPage = () => {
             : 'col-span-12 md:col-span-6 lg:col-span-4'
             } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-lg p-[30px] space-y-[25px] bg-white min-w-[360px]`}
         >
-          <div className="flex gap-[20px] items-center">
-            <div>
-              <Image alt="Vote Pool" src={votePool} width={32} height={32} />
-
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
+              <FaChartLine className="text-gray-700 text-[16px] text-white" />
             </div>
             <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
               Profit
             </div>
           </div>
-
           <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
             {/* Total */}
 

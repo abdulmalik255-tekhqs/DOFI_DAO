@@ -16,6 +16,7 @@ import { LAYOUT_OPTIONS } from '@/lib/constants';
 import Loader from '@/components/ui/loader';
 import cn from '@/utils/cn';
 import { useGetProposal } from '@/hooks/livePricing';
+import { TbHomeStats } from 'react-icons/tb';
 
 const ProposalsPage = () => {
   const router = useRouter();
@@ -86,7 +87,7 @@ const ProposalsPage = () => {
   ];
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-2'>
+      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
         <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
           DOFI DAO
         </h2>
@@ -108,13 +109,12 @@ const ProposalsPage = () => {
             : 'col-span-12 md:col-span-6 lg:col-span-4'
             } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
         >
-          <div className="flex gap-[20px] items-center">
-            <div>
-              <Image alt="Vote Pool" src={votePool} width={32} height={32} />
-
+           <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
+              <TbHomeStats className="text-gray-700 text-[18px] text-white" />
             </div>
             <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
-              Proposals
+            Proposals
             </div>
           </div>
 
