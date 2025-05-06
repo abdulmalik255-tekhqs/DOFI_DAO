@@ -30,7 +30,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x11c7f45e5dc8d090490e1ee96937e87604750331',
+        address: '0xD82955e4721F14d3Ae3cCfd551F205b6AbC87211',
         abi: daoTokenABI,
         functionName: 'transferFrom',
         args: [

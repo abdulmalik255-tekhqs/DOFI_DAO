@@ -34,7 +34,7 @@ export default function PayTokenAmount() {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
         abi: tetherABI,
         functionName: 'transfer',
         args: [

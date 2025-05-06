@@ -8,6 +8,7 @@ import { useAccount } from 'wagmi';
 import ToastNotification from '../ui/toast-notification';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
+import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 export default function GlobalFilter() {
   const { openModal } = useModal();
@@ -45,6 +46,8 @@ export default function GlobalFilter() {
       ToastNotification('error', 'Connect wallet first!');
       return;
     }
+    dispatch(idoActions.setLoading(false));
+    dispatch(idodetailActions.saveIDOdata({}));
     dispatch(idoActions.goToStep(0));
     //@ts-ignore
     openModal('OPEN_WIZARD', searchResult?.data)

@@ -37,6 +37,9 @@ const IDODetailPage = () => {
     data: searchResult,
   } = useGetIDODetail();
 
+
+console.log(searchResult,"searchResult");
+
   //@ts-ignore
   const { mutate: buyShareIDO } = useBuyShareIDO();
   //@ts-ignore
@@ -58,7 +61,7 @@ const IDODetailPage = () => {
     //@ts-ignore
     idodetail(params.id?.toString());
 
-  }, []);
+  }, [isConfetti]);
   useEffect(() => {
     //@ts-ignore
     const endTime = new Date(searchResult?.data?.endTime).getTime();
@@ -89,7 +92,7 @@ const IDODetailPage = () => {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
         abi: tetherABI,
         functionName: 'transfer',
         args: [
@@ -166,7 +169,7 @@ const IDODetailPage = () => {
                   whileHover={{ scale: 1.015 }}
                   className="rounded-xl bg-white dark:bg-gray-800 shadow-xl p-6 flex flex-col justify-between"
                 >
-                  {idoDetaildata?.status !== 'active' ? (
+                  {searchResult?.data?.status !== 'active' ? (
                     <>
                       <div>
                         {/* Progress Bar */}

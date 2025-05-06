@@ -12,7 +12,12 @@ import routes from '@/config/routes';
 import { FaCube, FaDollarSign, FaGlobe, FaLayerGroup, FaLink } from 'react-icons/fa6';
 
 export default function DIOTransaction({ data }: any) {
+  console.log(data,"datadata");
+  
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
+  const { idoDetaildata} = useSelector((state: any) => state.idodeatil);
+  console.log(idoDetaildata,"idoDetaildataidoDetaildata");
+  
   const router = useRouter();
   const dispatch = useDispatch();
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
@@ -26,9 +31,10 @@ export default function DIOTransaction({ data }: any) {
   };
   const handleBuy = async () => {
     // dispatch(idoActions.goToStep(0));
-    router.push(routes.idoDetail);
+     router.push(`${routes.idoDetail}/${idoDetaildata?._id}`);
+    // router.push(routes.idoDetail);
   };
-
+ 
   return (
     <>
 

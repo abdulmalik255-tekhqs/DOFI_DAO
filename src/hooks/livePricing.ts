@@ -150,7 +150,9 @@ export function useCreateIDO() {
         dispatch(idodetailActions.saveIDOdata(data?.data));
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
-        router.push(routes.idoDetail);
+        //@ts-ignore
+        router.push(`${routes.idoDetail}/${data?.data?._id}`);
+        // router.push(routes.idoDetail);
       }
     },
     onError: (error) => {
@@ -222,13 +224,13 @@ export function useBuyShareIDO() {
     onSuccess: (data) => {
       // closeModal(); 
       if (data) {
-        console.log(data);
+        queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
+        console.log(data,"datatata");
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));
         //@ts-ignore
         dispatch(idodetailActions.saveIDOdata(data?.data));
-        queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
       }
     },
     onError: (error) => {
