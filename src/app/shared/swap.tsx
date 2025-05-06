@@ -33,12 +33,22 @@ const SwapPage = () => {
   const [selectedFromSwapCoin, setSelectedFromSwapCoin] = useState<any>(null);
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
   const { mutate: submitCreate, data: calculationResult } = usePostCaculate();
-
+console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
       const toPricePerFraction = selectedToSwapCoin?.pricePerToken || 1;
       const fromAmountValue = Number(fromAmount?.value);
+      if (
+        selectedFromSwapCoin?._id &&
+        selectedToSwapCoin?._id &&
+        selectedFromSwapCoin._id === selectedToSwapCoin._id
+      ) {
+        ToastNotification('error', 'Same token can\'t be swapped.');
+        return; // stop execution here
+      }
+
+
       if (
         fromPricePerFraction &&
         toPricePerFraction &&
@@ -71,6 +81,15 @@ const SwapPage = () => {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
+      if (
+        selectedFromSwapCoin?._id &&
+        selectedToSwapCoin?._id &&
+        selectedFromSwapCoin._id === selectedToSwapCoin._id
+      ) {
+        ToastNotification('error', 'Same token can\'t be swapped.');
+        return;
+      }
+
       if (!fromAmount) {
         ToastNotification('error', 'Enter Amount!');
         return;
