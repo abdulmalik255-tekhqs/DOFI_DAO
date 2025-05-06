@@ -47,7 +47,9 @@ export default function LeaseDomainCard({ item, className = '' }: CardProps) {
     setTimeout(() => {
       router.push(routes.nftDetails);
     }, 800);
-  }
+  };
+  console.log(name,"name");
+  
   return (
     <div
       className={cn(
@@ -67,7 +69,7 @@ export default function LeaseDomainCard({ item, className = '' }: CardProps) {
         /> */}
         <div className="flex justify-between gap-3">
           <div
-            onClick={() => openModal('PAY_TOKEN_AMOUNT')}
+            onClick={() => openModal('PAY_TOKEN_AMOUNT',name)}
             className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
           >
             Pay

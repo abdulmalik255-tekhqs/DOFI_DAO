@@ -27,18 +27,18 @@ const IDODetailPage = () => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
   const [isExpired, setIsExpired] = useState(false);
-  const { isConfetti, loading,componentLoading } = useSelector((state: any) => state.ido);
+  const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
   console.log(componentLoading, "loading");
-const { address } = useAccount();
+  const { address } = useAccount();
   const {
     mutate: idodetail,
     data: searchResult,
   } = useGetIDODetail();
 
 
-console.log(searchResult,"searchResult");
+  console.log(searchResult, "searchResult");
 
   //@ts-ignore
   const { mutate: buyShareIDO } = useBuyShareIDO();
@@ -71,9 +71,9 @@ console.log(searchResult,"searchResult");
   const handleBuyShare = async () => {
     try {
       if (!address) {
-              ToastNotification('error', 'Connect wallet first!');
-              return;
-            }
+        ToastNotification('error', 'Connect wallet first!');
+        return;
+      }
       if (!inputValue) {
         ToastNotification('error', 'Enter Amount');
         return;
@@ -155,12 +155,28 @@ console.log(searchResult,"searchResult");
             <div className="mx-auto w-full max-w-7xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
                 <div className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-6 transition-all duration-300">
-                  <h3 className="text-xl flex gap-2 items-center font-bold mb-2 text-white">
-                    <Globe className="w-5 h-5 text-white" />
-                    {
-                      //@ts-ignore
-                      searchResult?.data?.name}
-                  </h3>
+                  <div className='w-full flex justify-between items-center mb-2'>
+                    <h3 className="text-xl flex gap-2 items-center font-bold mb-2 text-white">
+                      <Globe className="w-5 h-5 text-white" />
+                      {
+                        //@ts-ignore
+                        searchResult?.data?.name}
+                    </h3>
+                    <div
+                      className={`flex capitalize h-auto w-[120px] items-center justify-center rounded-full px-2 py-1 text-sm font-medium shadow-md
+    ${searchResult?.data?.status === 'successful'
+                          ? 'bg-green-100 text-green-800 border border-green-300'
+                          : searchResult?.data?.status === 'failed'
+                            ? 'bg-red-100 text-red-800 border border-red-300'
+                            : searchResult?.data?.status === 'active'
+                              ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                              : 'bg-gray-100 text-gray-800 border border-gray-300'
+                        }`}
+                    >
+                      {searchResult?.data?.status}
+                    </div>
+                  </div>
+
                   <p className="text-white">
                     {
                       //@ts-ignore
@@ -218,22 +234,22 @@ console.log(searchResult,"searchResult");
                             </thead>
                             <tbody>
                               {
-                              //@ts-ignore
-                              searchResult?.data?.investors?.length > 0 ? (
                                 //@ts-ignore
-                                searchResult?.data?.investors.map((inv: any, idx: number) => (
-                                  <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
-                                    <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
-                                    <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
+                                searchResult?.data?.investors?.length > 0 ? (
+                                  //@ts-ignore
+                                  searchResult?.data?.investors.map((inv: any, idx: number) => (
+                                    <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
+                                      <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
+                                      <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td colSpan={2} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">
+                                      No investors found.
+                                    </td>
                                   </tr>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td colSpan={2} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">
-                                    No investors found.
-                                  </td>
-                                </tr>
-                              )}
+                                )}
                             </tbody>
                           </table>
                         </div>

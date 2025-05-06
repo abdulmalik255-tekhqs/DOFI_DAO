@@ -94,7 +94,7 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
     case 'SUCCESSFULLY_BUY_DIO':
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':
-      return <PayTokenAmountView />;
+      return <PayTokenAmountView data={data}/>;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

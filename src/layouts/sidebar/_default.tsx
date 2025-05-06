@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import { useWatchAsset } from 'wagmi'
 import cn from '@/utils/cn';
+import { FaGoogleWallet } from "react-icons/fa";
 import AuthorCard from '@/components/ui/author-card';
 import Logo from '@/components/ui/logo';
 import { MenuItem } from '@/components/ui/collapsible-menu';
@@ -29,6 +31,7 @@ export default function Sidebar({
   layoutOption = '',
   menuItems = defaultMenuItems,
 }: SidebarProps) {
+  const { watchAsset } = useWatchAsset()
   const { closeDrawer } = useDrawer();
   const { layout } = useLayout();
   const router = useRouter();
@@ -52,7 +55,16 @@ export default function Sidebar({
       })),
     }),
   }));
-
+  const handleWalletTransfer = () => {
+    watchAsset({
+      type: 'ERC20',
+      options: {
+        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
+        symbol: 'DO.FI',
+        decimals: 18,
+      },
+    })
+  }
   return (
     <aside
       className={cn(
@@ -79,7 +91,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      <SimpleBar className="h-[calc(100%-96px)]">
+      <SimpleBar className="h-[calc(100%-96px)] relative">
         <div className="px-6 pb-5 2xl:px-8">
           <AuthorCard
             image={AuthorImage}
@@ -103,6 +115,9 @@ export default function Sidebar({
                 dropdownItems={item.dropdownItems}
               />
             ))}
+          </div>
+          <div className='flex justify-end absolute bottom-0'>
+            <button className='underline pointer gap-2 text-gray-500 flex h-12 cursor-pointer items-center justify-between font-bold text-sm' onClick={() => handleWalletTransfer()}> <FaGoogleWallet /> Add DOFI token to your wallet</button>
           </div>
         </div>
       </SimpleBar>

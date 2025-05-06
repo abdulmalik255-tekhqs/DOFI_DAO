@@ -198,6 +198,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       breakpoints={sliderBreakPoints}
       pagination={{ clickable: true }}
       observer={true}
+      navigation={true}
       dir="ltr"
       className="w-full pb-10"
     >

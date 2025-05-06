@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { FaShareAlt } from "react-icons/fa";
 import { FcShare } from "react-icons/fc";
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
@@ -105,16 +106,40 @@ const COLUMNS = [
     ),
     maxWidth: 100,
   },
+  
   {
-    Header: () => <div className="">Share DIO</div>,
+    Header: () => <div className="">status</div>,
+    accessor: 'total_volume',
+    // @ts-ignore
+    Cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <div
+          className={`flex h-auto w-[140px] items-center justify-center rounded-full px-4 py-1 text-sm font-medium shadow-md
+    ${row.original.status === 'successful'
+              ? 'bg-green-100 text-green-800 border border-green-300'
+              : row.original.status === 'failed'
+                ? 'bg-red-100 text-red-800 border border-red-300'
+                : row.original.status === 'active'
+                  ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                  : 'bg-gray-100 text-gray-800 border border-gray-300'
+            }`}
+        >
+          {row.original.status}
+        </div>
+      </div>
+    ),
+    maxWidth: 300,
+  },
+  {
+    Header: () => <div className="">Share</div>,
     accessor: 'share',
     // @ts-ignore
     Cell: ({ row }) => {
       const [copyButtonStatus, setCopyButtonStatus] = useState(false);
       const [_, copyToClipboard] = useCopyToClipboard();
-  
+
       const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${row.original._id}`;
-  
+
       function handleCopyToClipboard(e: React.MouseEvent) {
         e.stopPropagation(); // prevent row redirect
         copyToClipboard(shareUrl);
@@ -124,45 +149,17 @@ const COLUMNS = [
           setCopyButtonStatus(false); // ✅ reset correctly
         }, 2500);
       }
-  
+
       return (
         <div
           className="flex items-center justify-center gap-2 cursor-pointer"
           onClick={handleCopyToClipboard}
         >
-          {copyButtonStatus ? (
-            <Check className="h-auto w-3.5 text-green-500" />
-          ) : (
-            <Copy className="h-auto w-3.5" />
-          )}
+          <FaShareAlt size={30}/>
         </div>
       );
     },
     maxWidth: 90,
-  },
-  {
-    Header: () => <div className="">status</div>,
-    accessor: 'total_volume',
-    // @ts-ignore
-    Cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <div
-  className={`flex h-auto w-[140px] items-center justify-center rounded-full px-4 py-1 text-sm font-medium shadow-md
-    ${
-      row.original.status === 'successful'
-        ? 'bg-green-100 text-green-800 border border-green-300'
-        : row.original.status === 'failed'
-        ? 'bg-red-100 text-red-800 border border-red-300'
-        : row.original.status === 'active'
-        ? 'bg-blue-100 text-blue-800 border border-blue-300'
-        : 'bg-gray-100 text-gray-800 border border-gray-300'
-    }`}
->
-  {row.original.status}
-</div>
-      </div>
-    ),
-    maxWidth: 300,
   },
 ];
 

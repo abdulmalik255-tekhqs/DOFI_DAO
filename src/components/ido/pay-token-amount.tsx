@@ -13,7 +13,9 @@ import ToastNotification from '../ui/toast-notification';
 import { useModal } from '../modal-views/context';
 import { usePostPayToken } from '@/hooks/livePricing';
 
-export default function PayTokenAmount() {
+export default function PayTokenAmount({ data }: { data: any }) {
+  console.log(data,"namedata");
+  
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
@@ -48,6 +50,7 @@ export default function PayTokenAmount() {
       if (recipient.status === 'success') {
         const addressArray = ['0x1357331C3d6971e789CcE452fb709465351Dc0A1'];
         const amountArray=[Number(tokenAmount)];
+        const domainName=[data]
         submitCreate({
           //@ts-ignore
           amount: amountArray,
