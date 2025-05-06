@@ -297,7 +297,6 @@ const CreateProposalPage = () => {
     const storedNftString = localStorage.getItem('nft');
     if (storedNftString) {
       const storedNft: any = JSON.parse(storedNftString);
-      console.log('storedNft----->', storedNft);
       setCategory(storedNft);
     }
   }, []);

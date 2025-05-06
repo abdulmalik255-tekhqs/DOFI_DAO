@@ -381,6 +381,20 @@ export function useFetchNFTSWAP() {
 }
 
 
+export function useFetchNftLeaseAddress(nftId:any) {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['all-nft-leaseAddress-latest'],
+    queryFn: () => client.fetchNFTLeaseAddress.getNftLeaseAddress(address,nftId),
+  });
+  return {
+    leaseAddressInfo: data,
+    isLoading,
+    error,
+  };
+}
+
+
 export function usePostCaculate() {
   const { address } = useAccount();
   const queryClient = useQueryClient();
