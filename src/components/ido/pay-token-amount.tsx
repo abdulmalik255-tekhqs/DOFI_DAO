@@ -55,7 +55,7 @@ export default function PayTokenAmount({ data }: { data: any }) {
           //@ts-ignore
           addresses: addressArray,
           nftName,
-          amount: amountArray,
+          amounts: amountArray,
         });
       } else {
         dispatch(idoActions.setLoading(false));
