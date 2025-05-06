@@ -104,11 +104,13 @@ export function useBuyQueryWizard() {
     onSuccess: (data) => {
       if (data) {
         dispatch(idoActions.setLoading(false));
+        
         //@ts-ignore
         dispatch(idoActions.saveBuydomainNft(data?.data))
       }
     },
     onError: (error) => {
+      dispatch(idoActions.goToStep(0));
       dispatch(idoActions.setLoading(false))
       console.error('Submission failed:', error);
     },

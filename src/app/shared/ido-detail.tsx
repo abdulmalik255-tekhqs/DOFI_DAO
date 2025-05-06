@@ -7,7 +7,7 @@ import { GiMeshNetwork } from "react-icons/gi";
 import { FcSalesPerformance } from "react-icons/fc";
 import Confetti from 'react-confetti';
 import { Globe } from 'lucide-react';
-import { useWriteContract } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
@@ -31,7 +31,7 @@ const IDODetailPage = () => {
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
   console.log(componentLoading, "loading");
-
+const { address } = useAccount();
   const {
     mutate: idodetail,
     data: searchResult,
@@ -70,10 +70,15 @@ console.log(searchResult,"searchResult");
   }, [searchResult]);
   const handleBuyShare = async () => {
     try {
+      if (!address) {
+              ToastNotification('error', 'Connect wallet first!');
+              return;
+            }
       if (!inputValue) {
         ToastNotification('error', 'Enter Amount');
         return;
       }
+
       //@ts-ignore
       let remaningValue = Math.floor(Number(searchResult?.data?.totalSupply) - Number(searchResult?.data?.fundsRaised));
       if (Number(inputValue) === 0) {
@@ -106,7 +111,7 @@ console.log(searchResult,"searchResult");
       if (recipient.status === 'success') {
         buyShareIDO({
           //@ts-ignore
-          id: idoDetaildata?._id,
+          id: params.id,
           data: { amount: inputValue },
         });
       } else {
@@ -212,8 +217,11 @@ console.log(searchResult,"searchResult");
                               </tr>
                             </thead>
                             <tbody>
-                              {idoDetaildata?.investors?.length > 0 ? (
-                                idoDetaildata?.investors.map((inv: any, idx: number) => (
+                              {
+                              //@ts-ignore
+                              searchResult?.data?.investors?.length > 0 ? (
+                                //@ts-ignore
+                                searchResult?.data?.investors.map((inv: any, idx: number) => (
                                   <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
                                     <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
                                     <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
