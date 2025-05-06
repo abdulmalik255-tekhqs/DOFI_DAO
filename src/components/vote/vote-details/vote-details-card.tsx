@@ -185,8 +185,21 @@ const getRemainingallocation = () => {
               },
             )}
           >
-            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            <h3 className="flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ends in
+              <div
+                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
+    ${vote?.status === 'approved'
+                    ? 'bg-green-100 text-green-800 border border-green-300'
+                    : vote?.status === 'rejected'
+                      ? 'bg-red-100 text-red-800 border border-red-300'
+                      : vote?.status === 'active'
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                  }`}
+              >
+                {vote?.status}
+              </div>
             </h3>
             <AuctionCountdown
               date={new Date(vote?.expirationDate.toString())}
