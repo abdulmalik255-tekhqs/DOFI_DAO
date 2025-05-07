@@ -38,7 +38,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
             <h2 className="mb-3 text-base font-medium leading-relaxed dark:text-gray-100 md:text-lg xl:text-xl">
               There are no proposals at the moment
             </h2>
-            <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+            {/* <p className="leading-relaxed text-gray-600 dark:text-gray-400">
               Discuss ideas you have on{' '}
               <a
                 target="_blank"
@@ -57,7 +57,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
               >
                 Discourse <ExportIcon className="h-auto w-3" />
               </a>
-            </p>
+            </p> */}
           </div>
         )}
       </motion.div>}

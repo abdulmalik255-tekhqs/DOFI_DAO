@@ -10,23 +10,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { config } from '@/app/shared/wagmi-config';
 import ToastNotification from '../ui/toast-notification';
-import { useModal } from '../modal-views/context';
 import { usePostPayToken } from '@/hooks/livePricing';
+import { FaDollarSign } from 'react-icons/fa';
 
 export default function PayTokenAmount({ data }: { data: any }) {
-  console.log(data,"namedata");
   
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  const { mutate: submitCreate, isError, error } = usePostPayToken();
+  const { mutate: submitCreate} = usePostPayToken();
   const { loading } = useSelector((state: any) => state.ido);
-  const { closeModal } = useModal();
   const [tokenAmount, setTokenamount] = useState('');
   const handlePay = async () => {
     try {
       if (!address) {
         ToastNotification('error', 'Connect wallet first!');
+        return;
+      }
+      if (Number(tokenAmount)===0) {
+        ToastNotification('error', 'Amount Cannot be 0.');
         return;
       }
       if (!tokenAmount) {
@@ -71,16 +73,21 @@ export default function PayTokenAmount({ data }: { data: any }) {
       <h1 className="flex shrink-0 items-center justify-center text-center text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
         Pay Token Amount
       </h1>
+      <div className='w-full py-2'>
+        <h1 className="flex shrink-0 items-start justify-start text-start text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
+          {data}
+        </h1>
+      </div>
       <label className="relative mb-8 hidden w-full flex-col items-start md:flex">
-        <h2 className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white">
-          Token Amount
+        <h2 className="flex items-start justify-start text-start text-[16px] font-regular uppercase tracking-tighter text-gray-900 dark:text-white">
+      Token Amount
         </h2>
         <input
           type="number"
           value={tokenAmount || ''}
           onChange={(e) => setTokenamount(e.target.value)}
           className="w-full appearance-none rounded-lg bg-gray-100 py-1 text-sm font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 dark:border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500 rtl:pr-10"
-          placeholder="enter token amount"
+          placeholder="Enter token amount"
         />
       </label>
       <Button
