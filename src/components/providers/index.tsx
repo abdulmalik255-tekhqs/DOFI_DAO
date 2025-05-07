@@ -21,7 +21,7 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
           <ThemeProvider>
             <JotaiProvider>
               <SettingsButton />
-              <SettingsDrawer />
+              {/* <SettingsDrawer /> */}
               <Toaster position="top-center" reverseOrder={false} />
               {children}
               <Suspense fallback={null}>

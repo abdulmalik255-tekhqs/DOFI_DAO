@@ -227,7 +227,6 @@ export function useBuyShareIDO() {
       // closeModal(); 
       if (data) {
         queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
-        console.log(data,"datatata");
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));

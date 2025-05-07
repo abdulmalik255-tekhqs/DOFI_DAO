@@ -297,12 +297,10 @@ const CreateProposalPage = () => {
     const storedNftString = localStorage.getItem('nft');
     if (storedNftString) {
       const storedNft: any = JSON.parse(storedNftString);
-      console.log('storedNft----->', storedNft);
       setCategory(storedNft);
     }
   }, []);
 
-  // console.log('category--->', category);
 
   const handleSubmit = async () => {
     try {
@@ -381,7 +379,6 @@ const CreateProposalPage = () => {
   //   };
   //   console.log('Form Data:', formData);
 
-  //   // You can replace the console.log with an API call here
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">

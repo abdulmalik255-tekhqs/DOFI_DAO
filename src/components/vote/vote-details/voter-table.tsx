@@ -68,7 +68,8 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
       Header: 'Voting weight',
       accessor: 'amount',
       Cell: ({ cell: { value } }: any) => (
-        <div>{price && value ? (value / price).toFixed(2) : 'N/A'}</div>
+        // <div>{price && value ? (value / price).toFixed(2) : 'N/A'}</div>
+        <div>{value.toFixed(2)}</div>
       ),
     },
     {

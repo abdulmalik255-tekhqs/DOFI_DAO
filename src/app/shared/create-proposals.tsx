@@ -378,9 +378,6 @@ const CreateProposalPage = () => {
   //     priceType,
   //     category
   //   };
-  //   console.log('Form Data:', formData);
-
-  //   // You can replace the console.log with an API call here
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">

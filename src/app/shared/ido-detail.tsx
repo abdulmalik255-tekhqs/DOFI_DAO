@@ -116,7 +116,6 @@ const IDODetailPage = () => {
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.error('Buy Share failed:', error);
     }
   };
   const getRemaniningAlloction = (funds: any, price: any, supply: any) => {

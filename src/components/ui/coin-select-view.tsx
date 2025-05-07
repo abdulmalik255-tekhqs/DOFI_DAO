@@ -15,8 +15,6 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   let [searchKeyword, setSearchKeyword] = useState('');
   const { NFTSwap, isLoading } = useFetchNFTSWAP()
 
-console.log(NFTSwap,"NFTSwap");
-
   const Tethercoin = {
     icon: <Tether />,
     code: 'USDT',
@@ -37,7 +35,6 @@ console.log(NFTSwap,"NFTSwap");
   }
   function handleSelectedCoin(item: any) {
     onSelect(item);
-    console.log("item---onSelect-->",item)
     closeModal();
   }
   function handleSelectedCoinOnKeyDown(

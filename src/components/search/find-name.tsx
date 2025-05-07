@@ -52,7 +52,6 @@ export default function FindName({ data }: any) {
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.error('Buy failed:', error);
     }
   };
 

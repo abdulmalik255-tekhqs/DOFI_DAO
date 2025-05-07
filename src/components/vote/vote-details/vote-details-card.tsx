@@ -38,7 +38,6 @@ function VoteActionButton({ vote }: any) {
   const { writeContractAsync } = useWriteContract();
   const { mutate: submitCreate, isError, error } = usePostVote();
   const handleSubmit = async (isFavour: any) => {
-    console.log('amount---->', amount);
     try {
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
@@ -79,7 +78,6 @@ function VoteActionButton({ vote }: any) {
       console.log(error);
     }
   };
-  console.log('single file');
 
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
@@ -124,8 +122,6 @@ function VoteActionButton({ vote }: any) {
 }
 
 export default function VoteDetailsCard({ vote }: any) {
-  console.log(vote, "vote");
-
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
 const getRemainingallocation = () => {
@@ -206,7 +202,7 @@ const getRemainingallocation = () => {
             />
           </div>
         ) : (
-          <div
+          <div 
             className={cn(
               "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
               {

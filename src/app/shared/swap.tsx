@@ -138,22 +138,22 @@ const SwapPage = () => {
             parseUnits(fromAmount?.value?.toString(), 18),
           ],
         });
-        const recipient = await waitForTransactionReceipt(config.getClient(), {
+        const recipient =  waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
-        if (recipient.status === 'success') {
+        // if (recipient.status === 'success') {
           submitSwap({
             //@ts-ignore
             nftID: selectedToSwapCoin?._id,
             amountToMint: Number(fromAmount?.value),
           });
-        } else {
-          dispatch(idoActions.setLoading(false));
-        }
+        // } else {
+        //   dispatch(idoActions.setLoading(false));
+        // }
       } else {
         dispatch(idoActions.setLoading(true));
-        const hash = await writeContractAsync({
+        const hash =  await writeContractAsync({
           //@ts-ignore
           address: '0xd2C0C989B44Ce73c65E4c974271823A873fE738a',
           abi: fractionDaoABI,
@@ -166,11 +166,11 @@ const SwapPage = () => {
             '0x',
           ],
         });
-        const recipient = await waitForTransactionReceipt(config.getClient(), {
+        const recipient =  waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
-        if (recipient.status === 'success') {
+        // if (recipient.status === 'success') {
           if (selectedToSwapCoin.tokenType === 'ERC20') {
             submitSwap({
               //@ts-ignore
@@ -184,9 +184,9 @@ const SwapPage = () => {
               amountToMint: Number(fromAmount?.value),
             });
           }
-        } else {
-          dispatch(idoActions.setLoading(false));
-        }
+        // } else {
+        //   dispatch(idoActions.setLoading(false));
+        // }
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
