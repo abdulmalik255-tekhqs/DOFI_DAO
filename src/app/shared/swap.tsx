@@ -12,7 +12,7 @@ import TransactionInfo from '@/components/ui/transaction-info';
 import { SwapIcon } from '@/components/icons/swap-icon';
 import Trade from '@/components/ui/trade';
 import cn from '@/utils/cn';
-import { usePostCaculate, useSwap } from '@/hooks/livePricing';
+import { useFetchNFTSWAP, usePostCaculate, useSwap } from '@/hooks/livePricing';
 import { BeatLoader } from 'react-spinners';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,8 +32,12 @@ const SwapPage = () => {
   const [toAmount, setToAmount] = useState<any>(null);
   const [selectedFromSwapCoin, setSelectedFromSwapCoin] = useState<any>(null);
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
+  const [selectedNFT, setSelectedNFT] = useState<any>(null);
+  const [blockNFT, setBlocknft] = useState<boolean>(false);
   const { mutate: submitCreate, data: calculationResult } = usePostCaculate();
-console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
+  const { NFTSwap } = useFetchNFTSWAP()
+
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
@@ -65,6 +69,26 @@ console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
 
     return () => clearTimeout(timer);
   }, [fromAmount, selectedFromSwapCoin, selectedToSwapCoin]);
+  useEffect(() => {
+    // @ts-ignore
+    if (NFTSwap?.data?.userNFTs && selectedFromSwapCoin) {
+      // @ts-ignore
+      const foundNFT = NFTSwap.data.userNFTs.find((nft: any) => {
+        const nftId = nft?.name;
+        const selectedId = selectedFromSwapCoin?.name;
+        setBlocknft(false)
+        return nftId === selectedId;
+      });
+
+      if (foundNFT) {
+        setBlocknft(false)
+        setSelectedNFT(foundNFT);
+      } else {
+        setBlocknft(true)
+        setSelectedNFT(null);
+      }
+    }
+  }, [selectedFromSwapCoin, NFTSwap]);
 
   useEffect(() => {
     setToAmount(calculationResult || 0.0);
@@ -81,6 +105,14 @@ console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
+      if (Number(selectedNFT?.amount) < Number(fromAmount?.value)) {
+        ToastNotification('error', 'Entered Amount is should be less the nft amount holding!');
+        return;
+      };
+      if (blockNFT) {
+        ToastNotification('error', 'You are not holding this NFT!');
+        return;
+      }
       if (
         selectedFromSwapCoin?._id &&
         selectedToSwapCoin?._id &&
@@ -90,7 +122,7 @@ console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
         return;
       }
 
-      if (!fromAmount) {
+      if (!fromAmount?.value) {
         ToastNotification('error', 'Enter Amount!');
         return;
       }
@@ -163,8 +195,6 @@ console.log("selectedFromSwapCoin---------->",selectedFromSwapCoin)
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   // useEffect(() => {
-  //   console.log(selectedFromSwapCoin,selectedToSwapCoin,"coins");
-
   //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
   // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
