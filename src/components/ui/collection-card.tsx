@@ -14,6 +14,8 @@ type ItemType = {
   image: StaticImageData;
   imageUrl?: any;
   amount?: number;
+  tokenId?:any;
+  contractAddress?:any;
   _id?: string;
   number_of_artwork: number;
   user: {
@@ -37,6 +39,8 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
     number_of_artwork,
     user,
     _id,
+    tokenId,
+    contractAddress,
     amount,
   } = item ?? {};
   const dispatch = useDispatch();
@@ -75,6 +79,22 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
             className="inline-flex h-8 shrink-0 border border-white cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-[40px]"
           >
             Detail View
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="inline-flex h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px]">
+            Token ID<span className='ml-2 font-bold'>{item?.tokenId}</span>
+          </div>
+          <div
+            className="inline-flex cursor-pointer h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px] cursor-pointer"
+            title="Click to copy"
+            onClick={() => {
+              if (contractAddress) {
+                navigator.clipboard.writeText(contractAddress);
+              }
+            }}
+          >
+            {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
           </div>
         </div>
       </div>

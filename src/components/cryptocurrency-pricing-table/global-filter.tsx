@@ -12,7 +12,7 @@ import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 export default function GlobalFilter() {
   const { openModal } = useModal();
-  const dispatch= useDispatch()
+  const dispatch = useDispatch()
   const { address } = useAccount();
   const {
     mutate: submitCreate,
@@ -23,6 +23,7 @@ export default function GlobalFilter() {
   } = useSubmitFindNameQuery();
 
   const [inputValue, setInputValue] = useState('');
+  console.log(searchResult, "searchResult");
 
   // Update external state
 
@@ -52,6 +53,13 @@ export default function GlobalFilter() {
     //@ts-ignore
     openModal('OPEN_WIZARD', searchResult?.data)
   }
+  const getValue = () => {
+    //@ts-ignore
+    const name = searchResult?.data?.name;
+    const extension = name.split('.')[1]; // returns 'eth'
+    console.log(`.${extension}`);
+    return `.${extension}`
+  }
   return (
     <div className="mb-[40px] flex-1 text-center ltr:ml-auto rtl:mr-auto">
       <h2 className="mb-[40px] flex shrink-0 items-center justify-center gap-[20px] pl-[10px] text-center text-[28px] font-bold uppercase tracking-wider text-gray-900 dark:text-white md:pl-0">
@@ -78,7 +86,7 @@ export default function GlobalFilter() {
                   //@ts-ignore
                   onClick={() => handleModal()}
                 >
-                  {!isSuccess ? 'Loading' : '.eth view'}
+                  {!isSuccess ? 'Loading' : `${getValue()} view`}
                   <FaLongArrowAltRight className="cursor-pointer" />
                 </div>
               ) : (

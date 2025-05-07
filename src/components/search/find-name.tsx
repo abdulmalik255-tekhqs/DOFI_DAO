@@ -4,7 +4,10 @@
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
+import { formatUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
+import Eth from '@/assets/images/dao/eth.png';
+import Shib from '@/assets/images/dao/shib.png';
 import { config } from '@/app/shared/wagmi-config';
 import { useSelector } from 'react-redux';
 import Button from '@/components/ui/button';
@@ -14,9 +17,15 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import { BeatLoader } from 'react-spinners';
 import ToastNotification from '../ui/toast-notification';
 import { Globe } from 'lucide-react';
+import Image from 'next/image';
+import { readContract } from '@wagmi/core'; 
+import { useEffect, useState } from 'react';
 
 export default function FindName({ data }: any) {
   const { address } = useAccount();
+  const [tokenBalance, setTokenBalance] = useState<string | null>(null);
+  console.log(tokenBalance,"tokenBalance");
+  
   const { mutate: submitBuyAsync } = useBuyQueryWizard();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
@@ -55,20 +64,52 @@ export default function FindName({ data }: any) {
     }
   };
 
+  const getTokenBalance = async (userAddress: string) => {
+    try {
+      const balance = await readContract(config, {
+        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
+        abi: tetherABI,
+        functionName: 'balanceOf',
+        args: [userAddress],
+      });
 
+      const formatted = formatUnits(balance as bigint, 18);
+      setTokenBalance(formatted);
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      ToastNotification('error', 'Failed to fetch token balance');
+    }
+  };
+   // 🔁 Call on address change
+   useEffect(() => {
+    if (address) {
+      getTokenBalance(address);
+    }
+  }, [address]);
   return (
     <>
-
       <div className='w-full justify-between flex'>
         <h2 className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
-          Register
+          Register Domain
         </h2>
       </div>
-      <div className="mb-2 flex w-full items-start justify-start">
+      <div className="mb-2 flex w-full items-start justify-between">
+       
         <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
           <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
           {data?.name}
+          <Image
+            src={data?.name?.endsWith('.eth') ? Eth : Shib}
+            alt="Domain extension"
+            className="w-5 h-5"
+          />
         </h3>
+        <div>
+          <h4 className="flex items-center gap-2 text-md font-medium tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
+          Balance: $DOFI {tokenBalance}
+          </h4>
+          
+        </div>
       </div>
       <div
         className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white"
@@ -76,7 +117,7 @@ export default function FindName({ data }: any) {
         <div className="flex w-full justify-between mb-2">
           <h3 className="text-sm font-medium">1 year registration</h3>
           <h3 className="text-sm font-medium uppercase tracking-wide">
-            ${data?.price}
+            $DOFI {data?.price}
           </h3>
         </div>
 

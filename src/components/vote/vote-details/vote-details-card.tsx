@@ -296,6 +296,12 @@ const getRemainingallocation = () => {
                       {vote?.yieldPercentage || 3}
                     </span>
                   </div>
+                  <div className="mt-4">
+                   Acceptance Criteria:{' '}
+                    <span className="font-medium text-gray-900">
+                      $DOFI 100
+                    </span>
+                  </div>
                 </>
               )}
             </div>

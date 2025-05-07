@@ -130,6 +130,8 @@ export default function Profile() {
             //@ts-ignore
             ownerNFT?.data
           }
+          //@ts-ignore
+          leasingData={ownerNFT?.leasedDomainNFTs}
         />
       </div>
       <AuthorInformation data={authorData} />

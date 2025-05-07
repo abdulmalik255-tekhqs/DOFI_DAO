@@ -20,8 +20,8 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
         <QueryProvider>
           <ThemeProvider>
             <JotaiProvider>
-              <SettingsButton />
-              {/* <SettingsDrawer /> */}
+              {/* <SettingsButton /> */}
+              <SettingsDrawer />
               <Toaster position="top-center" reverseOrder={false} />
               {children}
               <Suspense fallback={null}>

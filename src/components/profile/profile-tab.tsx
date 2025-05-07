@@ -33,10 +33,13 @@ const tabMenu = [
   },
 ];
 
-export default function ProfileTab({ data }: any) {
+export default function ProfileTab({ data ,leasingData}: any) {
+  console.log(leasingData,"leasingData");
+  
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
+  const [leasedDomainNFTs, setLeasedDomainNFTs] = useState([]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -54,6 +57,7 @@ export default function ProfileTab({ data }: any) {
       setDomain(domainArr);
       setFraction(fractionArr);
     }
+    setLeasedDomainNFTs(leasingData)
   }, [data]);
 
   return (
@@ -152,11 +156,11 @@ export default function ProfileTab({ data }: any) {
                 : 'md:grid-cols-1',
             )}
           >
-            {fraction?.length > 0 ? (
-              fraction?.map((fraction: any, index: number) => (
+            {leasingData?.length > 0 ? (
+              leasingData?.map((leasingData: any, index: number) => (
                 <LeaseDomainCard
-                  item={fraction}
-                  key={`fraction-key-${fraction?._id}`}
+                  item={leasingData}
+                  key={`fraction-key-${leasingData?._id}`}
                 />
               ))
             ) : (

@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  loading:false,
-  nftDetail:{},
-  previousRoute:false,
-  isConfetti:false,
-  selectedSwapFrom:{},
-  selectedSwapTo:{},
+  loading: false,
+  nftDetail: {},
+  previousRoute: false,
+  isConfetti: false,
+  selectedSwapFrom: {},
+  selectedSwapTo: {},
   currentStep: 0,
-  buyTransactionhash:{},
-  domainNftData:{},
-  componentLoading:false
-
+  buyTransactionhash: {},
+  domainNftData: {},
+  componentLoading: false,
+  initialDomain: {}
 };
 
 const idoSlice = createSlice({
@@ -47,6 +47,9 @@ const idoSlice = createSlice({
     goToStep: (state, action) => { state.currentStep = action.payload },
     setComponentloading(state, action) {
       state.componentLoading = action.payload;
+    },
+    saveInitialDomain (state, action) {
+      state.initialDomain = action.payload;
     },
   },
 });
