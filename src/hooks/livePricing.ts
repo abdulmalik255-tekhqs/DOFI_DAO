@@ -337,6 +337,7 @@ export function usePostVote(pathName:any) {
         dispatch(idoActions.setLoading(false));
         queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
         queryClient.invalidateQueries({ queryKey: ['all-nft-leaseAddress-latest'] });
+        queryClient.invalidateQueries({ queryKey: ['proposal-domaindao-latest'] });
         router.push(pathName);
       }
     },

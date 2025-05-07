@@ -93,7 +93,7 @@ const SwapPage = () => {
   useEffect(() => {
     setToAmount(calculationResult || 0.0);
   }, [calculationResult]);
-console.log("calculationResult----->",calculationResult)
+
   const excangeRate = (value: any) => {
     const multiply = value * 0.05;
     return value - multiply;
@@ -186,7 +186,7 @@ console.log("calculationResult----->",calculationResult)
         } else {
           submitSwap({
             //@ts-ignore
-            nftID: selectedFromSwapCoin?._id,
+            nftID: selectedToSwapCoin?._id,
             amountToMint: Number(fromAmount?.value),
           });
         }
