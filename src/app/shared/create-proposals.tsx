@@ -300,7 +300,7 @@ const CreateProposalPage = () => {
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
-      const isEmpty = !name || !category;
+      const isEmpty = !name || !category ||!motivation || !summary;
 
     if (isEmpty) {
       ToastNotification('error', 'Please fill all required fields');

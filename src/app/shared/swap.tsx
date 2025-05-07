@@ -93,26 +93,30 @@ const SwapPage = () => {
   useEffect(() => {
     setToAmount(calculationResult || 0.0);
   }, [calculationResult]);
-
+console.log("calculationResult----->",calculationResult)
   const excangeRate = (value: any) => {
     const multiply = value * 0.05;
     return value - multiply;
   };
-
+  console.log("selectedNFT--->", selectedNFT)
   const handleSwap = async () => {
     try {
       if (!address) {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
-      if (Number(selectedNFT?.amount) < Number(fromAmount?.value)) {
-        ToastNotification('error', 'Entered Amount is should be less the nft amount holding!');
-        return;
-      };
-      if (blockNFT) {
-        ToastNotification('error', 'You are not holding this NFT!');
-        return;
+      if (selectedNFT) {
+        if (Number(selectedNFT?.amount) < Number(fromAmount?.value)) {
+          ToastNotification('error', 'Entered Amount is should be less the nft amount holding!');
+          return;
+        };
+
+        if (blockNFT) {
+          ToastNotification('error', 'You are not holding this NFT!');
+          return;
+        }
       }
+
       if (
         selectedFromSwapCoin?._id &&
         selectedToSwapCoin?._id &&
@@ -138,22 +142,24 @@ const SwapPage = () => {
             parseUnits(fromAmount?.value?.toString(), 18),
           ],
         });
-        const recipient =  waitForTransactionReceipt(config.getClient(), {
+        const recipient = waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
         // if (recipient.status === 'success') {
-          submitSwap({
-            //@ts-ignore
-            nftID: selectedToSwapCoin?._id,
-            amountToMint: Number(fromAmount?.value),
-          });
+        submitSwap({
+          //@ts-ignore
+           //@ts-ignore
+          nftID: selectedToSwapCoin?._id,
+          //@ts-ignore
+          amountToMint: Number(calculationResult?.data?.toAmount),
+        });
         // } else {
         //   dispatch(idoActions.setLoading(false));
         // }
       } else {
         dispatch(idoActions.setLoading(true));
-        const hash =  await writeContractAsync({
+        const hash = await writeContractAsync({
           //@ts-ignore
           address: '0xd2C0C989B44Ce73c65E4c974271823A873fE738a',
           abi: fractionDaoABI,
@@ -166,24 +172,24 @@ const SwapPage = () => {
             '0x',
           ],
         });
-        const recipient =  waitForTransactionReceipt(config.getClient(), {
+        const recipient = waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
         // if (recipient.status === 'success') {
-          if (selectedToSwapCoin.tokenType === 'ERC20') {
-            submitSwap({
-              //@ts-ignore
-              type: 'USDT',
-              amountToMint: Number(fromAmount?.value),
-            });
-          } else {
-            submitSwap({
-              //@ts-ignore
-              nftID: selectedFromSwapCoin?._id,
-              amountToMint: Number(fromAmount?.value),
-            });
-          }
+        if (selectedToSwapCoin.tokenType === 'ERC20') {
+          submitSwap({
+            //@ts-ignore
+            type: 'USDT',
+            amountToMint: Number(fromAmount?.value),
+          });
+        } else {
+          submitSwap({
+            //@ts-ignore
+            nftID: selectedFromSwapCoin?._id,
+            amountToMint: Number(fromAmount?.value),
+          });
+        }
         // } else {
         //   dispatch(idoActions.setLoading(false));
         // }
