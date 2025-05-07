@@ -277,7 +277,7 @@ const CreateProposalPage = () => {
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
   const [name, setName] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('50');
   const [leasingAddress, setLeasingAddress] = useState('');
   const [percentageYield, setPercentageYield] = useState('');
   const [motivation, setMotivation] = useState('');
@@ -309,7 +309,7 @@ const CreateProposalPage = () => {
         return;
       }
 
-      const isEmpty = !name || !amount || !leasingAddress || !percentageYield;
+      const isEmpty = !name || !leasingAddress || !percentageYield ||!motivation || !summary;
 
     if (isEmpty) {
       ToastNotification('error', 'Please fill all required fields');
@@ -337,13 +337,13 @@ const CreateProposalPage = () => {
           name: name,
           summary: summary,
           motivation: motivation,
-          amount: amount,
+          amount: "50",
           nftId: category?._id,
           daoId: localStorage.getItem('Domain_Dao'),
-          leasingAddress: !isFractionMode ? leasingAddress : '0x',
-          percentageYield: !isFractionMode ? percentageYield : 1,
-          totalFractions: isFractionMode ? totalFractions : 1,
-          pricePerFraction: isFractionMode ? pricePerFraction : 1,
+          leasingAddress: leasingAddress || '0x',
+          percentageYield: percentageYield || 1,
+          totalFractions: totalFractions || 1,
+          pricePerFraction: pricePerFraction || 1,
           daoType: 'child',
           // "address": "{{wallet}}",
           expirationDate: new Date(),
@@ -471,12 +471,13 @@ const CreateProposalPage = () => {
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Amount" important />
+        <InputLabel title="Amount" />
         <Input
           type="number"
+          disabled
           placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={"50"}
+          // onChange={(e) => setAmount(e.target.value)}
         />
       </div>
 

@@ -323,7 +323,7 @@ export function useCreatePropsals(path: any) {
   });
 }
 
-export function usePostVote() {
+export function usePostVote(pathName:any) {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -336,7 +336,8 @@ export function usePostVote() {
         // dispatch(idoActions.saveIDOdetailData(data));
         dispatch(idoActions.setLoading(false));
         queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
-        router.push(routes.proposals);
+        queryClient.invalidateQueries({ queryKey: ['all-nft-leaseAddress-latest'] });
+        router.push(pathName);
       }
     },
     onError: (error) => {

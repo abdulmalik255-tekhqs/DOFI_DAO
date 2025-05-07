@@ -101,6 +101,8 @@ const DomainDAOPage = () => {
       }
     }
   }, []);
+
+  console.log("leaseAddressInfo--->",leaseAddressInfo)
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
@@ -127,12 +129,12 @@ const DomainDAOPage = () => {
             : 'col-span-12 md:col-span-6 lg:col-span-4'
             } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
         >
-           <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
               <TbHomeStats className="text-gray-700 text-[18px] text-white" />
             </div>
             <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
-            Proposals
+              Proposals
             </div>
           </div>
 
@@ -162,7 +164,7 @@ const DomainDAOPage = () => {
             </div>
           </div>
         </div>
-        {true && <div
+        {<div
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
@@ -180,10 +182,20 @@ const DomainDAOPage = () => {
             {/* Total */}
 
             <div className="text-center text-xl font-[600] text-[#151515]">
-              {leaseAddressInfo?.payments?.[0]?.wallet
-                ? <div className="">{leaseAddressInfo.payments[0].wallet.slice(0, 5)}...{leaseAddressInfo.payments[0].wallet.slice(-5)}</div>
-                : "0x"}
-              <div className="text-[12px] text-grey font-[400]">Current Leasing Address</div>
+              {
+                leaseAddressInfo?.leasingAddress
+                  ? <div className="">
+                    {leaseAddressInfo.leasingAddress.slice(0, 5)}...
+                    {leaseAddressInfo.leasingAddress.slice(-5)}
+                  </div>
+                  : leaseAddressInfo?.payments?.[0]?.wallet
+                    ? <div className="">
+                      {leaseAddressInfo.payments[0].wallet.slice(0, 5)}...
+                      {leaseAddressInfo.payments[0].wallet.slice(-5)}
+                    </div>
+                    : "0x"
+              }
+              <div className="text-[12px] text-grey font-[400]">Current Leasing Address1</div>
             </div>
 
             {/* Active */}

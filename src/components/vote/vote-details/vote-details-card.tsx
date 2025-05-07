@@ -29,14 +29,17 @@ import Input from '@/components/ui/forms/input';
 import ToastNotification from '@/components/ui/toast-notification';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { usePathname } from 'next/navigation';
 
 function VoteActionButton({ vote }: any) {
   const [amount, setAmount] = useState('');
   const { address } = useAccount();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
+  const params = usePathname();
+
   const { writeContractAsync } = useWriteContract();
-  const { mutate: submitCreate, isError, error } = usePostVote();
+  const { mutate: submitCreate, isError, error } = usePostVote(params);
   const handleSubmit = async (isFavour: any) => {
     try {
       if (!address) {
@@ -105,7 +108,7 @@ function VoteActionButton({ vote }: any) {
             <BeatLoader color="#000" />
           </>
         ) : (
-          'Invest'
+          'Vote'
         )}
       </Button>
       <Button
@@ -264,21 +267,21 @@ const getRemainingallocation = () => {
               {vote?.leasingAddress == '0x' ? (
                 <>
                   <div className="mt-4">
-                    Price per fraction:{' '}
+                    Leasing Address:{' '}
                     <span className="font-medium text-gray-900">
-                      {vote?.pricePerFraction || 2}
+                      {vote?.leasingAddress || "0x"}
                     </span>
                   </div>
                   <div className="mt-4">
-                    Total fractions:{' '}
+                    Percentage Yield :{' '}
                     <span className="font-medium text-gray-900">
-                      {vote?.totalFractions || 100}
+                      {vote?.percentageYield || "0"}
                     </span>
                   </div>
                   <div className="mt-4">
-                  Remaining Allocation:{' '}
+                  Acceptacnce Criteria:{' '}
                     <span className="font-medium text-gray-900">
-                      {getRemainingallocation()}
+                      {"50"}
                     </span>
                   </div>
                 </>
