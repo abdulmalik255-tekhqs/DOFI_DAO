@@ -30,15 +30,11 @@ const IDODetailPage = () => {
   const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
-  console.log(componentLoading, "loading");
   const { address } = useAccount();
   const {
     mutate: idodetail,
     data: searchResult,
   } = useGetIDODetail();
-
-
-  console.log(searchResult, "searchResult");
 
   //@ts-ignore
   const { mutate: buyShareIDO } = useBuyShareIDO();
