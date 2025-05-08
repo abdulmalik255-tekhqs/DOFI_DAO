@@ -37,7 +37,7 @@ const SwapPage = () => {
   const { mutate: submitCreate, data: calculationResult } = usePostCaculate();
   const { NFTSwap } = useFetchNFTSWAP()
 
-
+console.log("toAmount--->",toAmount)
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
@@ -181,13 +181,13 @@ const SwapPage = () => {
           submitSwap({
             //@ts-ignore
             type: 'USDT',
-            amountToMint: Number(fromAmount?.value),
+            amountToMint: Number(toAmount?.data?.toAmount),
           });
         } else {
           submitSwap({
             //@ts-ignore
             nftID: selectedToSwapCoin?._id,
-            amountToMint: Number(fromAmount?.value),
+            amountToMint: Number(toAmount?.data?.toAmount),
           });
         }
         // } else {
