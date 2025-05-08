@@ -57,7 +57,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
   const [priceFraction, setPricefraction] = useState('');
   const { mutate: submitCreate } = useCreateIDOWizard(setCurrentStepButton);
   const [mintedHash, setMindedHash] = useState("");
-  const [selectedCoin, setSelectedCoin] = useState(coinListDIO[0]) ;
+  const [selectedCoin, setSelectedCoin] = useState(coinListDIO[0]);
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
   let [_, copyToClipboard] = useCopyToClipboard();
   const steps = ['Purchase', 'Mint Domain'];
@@ -120,7 +120,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
       setCopyButtonStatus(copyButtonStatus);
     }, 1000);
   };
-  
+
   return (
     <>
       <div className="w-full max-w-5xl mx-auto grid grid-cols-1 gap-10 md:grid-cols-2 p-4">
@@ -190,60 +190,61 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                 </div>
               </Listbox>
             </div>
+            <div className='flex flex-col gap-2'>
+              {/* progress bar */}
+              <div className="w-full flex justify-between items-center py-2 gap-2">
+                {steps.map((step, index) => {
+                  const isCompleted = index < currentStepButton;
+                  const isActive = index === currentStepButton;
+                  return (
+                    <div key={index} className="flex flex-col items-center flex-1">
 
-            {/* progress bar */}
-            <div className="w-full flex justify-between items-center py-4 gap-6">
-              {steps.map((step, index) => {
-                const isCompleted = index < currentStepButton;
-                const isActive = index === currentStepButton;
-
-                return (
-                  <div key={index} className="flex flex-col items-center flex-1">
-
-                    {/* Progress Bar */}
-                    <div
-                      className={`h-2 w-full rounded-full transition-all duration-500 ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'
-                        }`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {currentStepButton === 0 && <>
-              <Button
-                size="small"
-                shape="rounded"
-                onClick={handleBuy}
-                fullWidth
-                disabled={loading}
-                className="uppercase xs:tracking-widest"
-              >
-                {loading ? <BeatLoader color="#000" /> : 'Send NFT to escrow'}
-              </Button>
-            </>}
-            <AnimatePresence mode="wait">
-              {currentStepButton === 1 && (
-                <motion.div
-                  key="step-1-button"
-                  initial={{ x: 100, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -100, opacity: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }} // Slower and smoother
+                      {/* Progress Bar */}
+                      <div
+                        className={`h-2 w-full rounded-full transition-all duration-500 ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'
+                          }`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              {currentStepButton === 0 && <>
+                <Button
+                  size="small"
+                  shape="rounded"
+                  onClick={handleBuy}
+                  fullWidth
+                  disabled={loading}
+                  className="uppercase xs:tracking-widest"
                 >
-                  <Button
-                    size="small"
-                    shape="rounded"
-                    onClick={goToAllProposalPage}
-                    fullWidth
-                    disabled={nextLoader}
-                    className="uppercase xs:tracking-widest text-[1px]"
+                  {loading ? <BeatLoader color="#000" /> : 'Send NFT to escrow'}
+                </Button>
+              </>}
+              <AnimatePresence mode="wait">
+                {currentStepButton === 1 && (
+                  <motion.div
+                    key="step-1-button"
+                    initial={{ x: 100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -100, opacity: 0 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }} // Slower and smoother
                   >
-                    {nextLoader ? <BeatLoader color="#000" /> : 'Tokenize'}
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {/* Submit Button */}
+                    <Button
+                      size="small"
+                      shape="rounded"
+                      onClick={goToAllProposalPage}
+                      fullWidth
+                      disabled={nextLoader}
+                      className="uppercase xs:tracking-widest text-[1px]"
+                    >
+                      {nextLoader ? <BeatLoader color="#000" /> : 'Tokenize'}
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {/* Submit Button */}
+            </div>
+
 
             <p className="mt-4 text-xs leading-relaxed text-left text-gray-600 dark:text-gray-400">
               <span className="font-semibold text-red-500">Note:</span> This action will create the Domain Initial Offering for the purchased domain. Upon successful DIO completion, a separate domain sub-DAO is created where fraction holders can participate and vote using their ERC-1155 fraction assets.
