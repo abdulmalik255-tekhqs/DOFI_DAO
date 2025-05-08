@@ -1,6 +1,7 @@
 'use client';
 import { useSelector } from 'react-redux';
 import { FaExternalLinkAlt } from "react-icons/fa";
+import {  FaLink } from 'react-icons/fa6';
 import Button from '@/components/ui/button';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
@@ -12,8 +13,6 @@ import { useAccount } from 'wagmi';
 import { Coins, Globe, Hash, User, Wallet } from 'lucide-react';
 
 export default function BuyTransaction({ data }: any) {
-  console.log(data, "data");
-
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
   const { address } = useAccount()
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
@@ -71,6 +70,29 @@ export default function BuyTransaction({ data }: any) {
               </div>
               <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
                 {data?.tokenId}
+              </h3>
+            </div>
+            <div className="flex w-full items-center justify-between gap-2 py-1">
+              <div className="flex items-center gap-2">
+                <FaLink className="w-4 h-4 text-gray-700 dark:text-white" />
+                <h3>NFT Address</h3>
+              </div>
+              <h3 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+                {data?.contractAddress?.slice(0, 6)}...{data?.contractAddress?.slice(-6)}
+                <span
+                  onClick={handleCopyToClipboard}
+                  className="cursor-pointer rounded-full border border-gray-200 p-1 text-gray-600 transition hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400"
+                >
+                  <Copy className="h-4 w-4" />
+                </span>
+                <a
+                  href={`https://sepolia.basescan.org/address/${data?.contractAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
+                >
+                  <FaExternalLinkAlt />
+                </a>
               </h3>
             </div>
             <div className="flex w-full justify-between items-center mb-2">

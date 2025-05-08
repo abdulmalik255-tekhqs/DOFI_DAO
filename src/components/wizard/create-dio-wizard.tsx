@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useWriteContract } from 'wagmi';
 import { Listbox } from '@headlessui/react'
+import { useRouter } from 'next/navigation';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { daoTokenABI } from '@/utils/abi';
 import Button from '@/components/ui/button';
+import { Copy } from '@/components/icons/copy';
 import { FaSackDollar } from 'react-icons/fa6';
-import { Globe,Hash } from 'lucide-react';
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { useAccount } from 'wagmi';
 import { BeatLoader } from 'react-spinners';
 import { AiOutlineGlobal } from 'react-icons/ai';
@@ -15,74 +18,17 @@ import { useCreateIDOWizard } from '@/hooks/livePricing';
 import { useDispatch, useSelector } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { config } from '@/app/shared/wagmi-config';
-import InputLabel from '../ui/input-label';
-import { coinList } from '@/data/static/coin-list';
-import { Ethereum } from '../icons/ethereum';
 import Eth from '@/assets/images/dao/eth.png';
 import Shib from '@/assets/images/dao/shib.png';
 import DAO from '@/assets/images/dao/dao1.png';
-import { Bnb } from '../icons/bnb';
-import { Usdc } from '../icons/usdc';
 import Image from 'next/image';
+import { useCopyToClipboard } from 'react-use';
+
+
 interface CreateIDOProps {
   data: any;
 }
 export default function CreateIDOWizard({ data }: CreateIDOProps) {
-  const dispatch = useDispatch();
-  const { address } = useAccount();
-  const { writeContractAsync } = useWriteContract();
-  const { loading } = useSelector((state: any) => state.ido);
-  const [totalFraction, setTotalfraction] = useState('');
-  const [priceFraction, setPricefraction] = useState('');
-  const { mutate: submitCreate } = useCreateIDOWizard();
-  const handleBuy = async () => {
-    try {
-
-      dispatch(idoActions.setLoading(true));
-      const hash = await writeContractAsync({
-        //@ts-ignore
-        address:  process.env.NEXT_PUBLIC_DAO_TOKEN as `0x${string}`,
-        abi: daoTokenABI,
-        functionName: 'transferFrom',
-        args: [
-          address,
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          data?.tokenId,
-        ],
-      });
-      const recipientRaw = await waitForTransactionReceipt(config.getClient(), {
-        hash,
-      });
-      const recipient = {
-        ...recipientRaw,
-        totalFraction,
-        priceFraction,
-      };
-      if (recipientRaw.status === 'success') {
-        dispatch(idoActions.setBuytransactionHash(recipient));
-        dispatch(idoActions.nextStep());
-        submitCreate({
-          //@ts-ignore
-          nftID: data?._id,
-          name: `${data?.name} DIO`,
-          tokenSymbol: 'DAO NFT',
-          totalSupply: totalFraction,
-          pricePerToken: priceFraction,
-          startTime: 1745600400000,
-          endTime: 1745600400000,
-          creator: address,
-          address: address,
-          description: 'token',
-        });
-      } else {
-        dispatch(idoActions.setLoading(false));
-        console.log('erer');
-      }
-    } catch (error) {
-      dispatch(idoActions.setLoading(true));
-      console.log(error);
-    }
-  };
   const coinListDIO = [
     {
       icon: DAO,
@@ -101,8 +47,80 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
       name: 'SHIB',
     },
   ];
-  // <PartyPopper />
-  const [selectedCoin, setSelectedCoin] = useState(coinListDIO[0]) // ✅ define it
+  const dispatch = useDispatch();
+  const { address } = useAccount();
+  const { writeContractAsync } = useWriteContract();
+  const { loading } = useSelector((state: any) => state.ido);
+  const [totalFraction, setTotalfraction] = useState('');
+  const [currentStepButton, setCurrentStepButton] = useState(0);
+  const [nextLoader, setNextLoader] = useState(false);
+  const [priceFraction, setPricefraction] = useState('');
+  const { mutate: submitCreate } = useCreateIDOWizard(setCurrentStepButton);
+  const [mintedHash, setMindedHash] = useState("");
+  const [selectedCoin, setSelectedCoin] = useState(coinListDIO[0]) ;
+  let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
+  let [_, copyToClipboard] = useCopyToClipboard();
+  const steps = ['Purchase', 'Mint Domain'];
+  const handleBuy = async () => {
+    try {
+      dispatch(idoActions.setLoading(true));
+      const hash = await writeContractAsync({
+        //@ts-ignore
+        address: process.env.NEXT_PUBLIC_DAO_TOKEN as `0x${string}`,
+        abi: daoTokenABI,
+        functionName: 'transferFrom',
+        args: [
+          address,
+          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          data?.tokenId,
+        ],
+      });
+      const recipientRaw = await waitForTransactionReceipt(config.getClient(), {
+        hash,
+      });
+      const recipient = {
+        ...recipientRaw,
+        totalFraction,
+        priceFraction,
+      };
+      if (recipientRaw.status === 'success') {
+        dispatch(idoActions.setBuytransactionHash(recipient));
+        setMindedHash(recipient?.transactionHash)
+        submitCreate({
+          //@ts-ignore
+          nftID: data?._id,
+          name: `${data?.name} DIO`,
+          tokenSymbol: 'DAO NFT',
+          totalSupply: totalFraction,
+          pricePerToken: priceFraction,
+          startTime: 1745600400000,
+          endTime: 1745600400000,
+          creator: address,
+          address: address,
+          description: 'token',
+        });
+      } else {
+        dispatch(idoActions.setLoading(false));
+      }
+    } catch (error) {
+      dispatch(idoActions.setLoading(true));
+    }
+  };
+  function goToAllProposalPage() {
+    setNextLoader(true);
+    setTimeout(() => {
+      dispatch(idoActions.nextStep());
+      setNextLoader(false);
+    }, 4500);
+  }
+  const handleCopyToClipboard = () => {
+    copyToClipboard(mintedHash);
+    setCopyButtonStatus('Copied!');
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 1000);
+  };
+  
   return (
     <>
       <div className="w-full max-w-5xl mx-auto grid grid-cols-1 gap-10 md:grid-cols-2 p-4">
@@ -112,11 +130,11 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
             Fractionalize Domain
           </h1>
           <h3 className="text-sm text-gray-700 dark:text-gray-400">
-          {data?.name}
-        </h3>
-        <h3 className="mb-4 text-sm text-gray-700 dark:text-gray-400">
-          Token ID {data?.tokenId}
-        </h3>
+            {data?.name}
+          </h3>
+          <h3 className="mb-4 text-sm text-gray-700 dark:text-gray-400">
+            Token ID {data?.tokenId}
+          </h3>
           <div className="space-y-6">
             {/* Total Fraction */}
             <label className="block">
@@ -164,7 +182,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                         value={coin}
                         className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
                       >
-                        <Image src={coin.icon} alt={coin.name} className='rounded-full h-6 w-6'/>
+                        <Image src={coin.icon} alt={coin.name} className='rounded-full h-6 w-6' />
                         {coin.name}
                       </Listbox.Option>
                     ))}
@@ -173,21 +191,95 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
               </Listbox>
             </div>
 
+            {/* progress bar */}
+            <div className="w-full flex justify-between items-center py-4 gap-6">
+              {steps.map((step, index) => {
+                const isCompleted = index < currentStepButton;
+                const isActive = index === currentStepButton;
 
+                return (
+                  <div key={index} className="flex flex-col items-center flex-1">
+
+                    {/* Progress Bar */}
+                    <div
+                      className={`h-2 w-full rounded-full transition-all duration-500 ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'
+                        }`}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            {currentStepButton === 0 && <>
+              <Button
+                size="small"
+                shape="rounded"
+                onClick={handleBuy}
+                fullWidth
+                disabled={loading}
+                className="uppercase xs:tracking-widest"
+              >
+                {loading ? <BeatLoader color="#000" /> : 'Send NFT to escrow'}
+              </Button>
+            </>}
+            <AnimatePresence mode="wait">
+              {currentStepButton === 1 && (
+                <motion.div
+                  key="step-1-button"
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }} // Slower and smoother
+                >
+                  <Button
+                    size="small"
+                    shape="rounded"
+                    onClick={goToAllProposalPage}
+                    fullWidth
+                    disabled={nextLoader}
+                    className="uppercase xs:tracking-widest text-[1px]"
+                  >
+                    {nextLoader ? <BeatLoader color="#000" /> : 'Tokenize'}
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
             {/* Submit Button */}
-            <Button
-              size="large"
-              shape="rounded"
-              onClick={handleBuy}
-              fullWidth
-              disabled={loading}
-              className="uppercase xs:tracking-widest"
-            >
-              {loading ? <BeatLoader color="#000" /> : 'Tokenize'}
-            </Button>
+
             <p className="mt-4 text-xs leading-relaxed text-left text-gray-600 dark:text-gray-400">
               <span className="font-semibold text-red-500">Note:</span> This action will create the Domain Initial Offering for the purchased domain. Upon successful DIO completion, a separate domain sub-DAO is created where fraction holders can participate and vote using their ERC-1155 fraction assets.
             </p>
+            <AnimatePresence>
+              {mintedHash && (
+                <motion.div
+                  key="minted-popup"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }} // Slower & smooth
+                  className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-4"
+                >
+                  <h3 className="text-sm font-medium uppercase tracking-wide text-white flex items-center gap-2">
+                    {mintedHash?.slice(0, 6)}...
+                    {mintedHash?.slice(-6)}
+                    <span
+                      onClick={handleCopyToClipboard}
+                      className="text-md flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-all hover:border-gray-400 hover:text-black dark:border-gray-700 dark:text-gray-400"
+                    >
+                      <Copy className="h-4 w-4 text-white cursor-pointer" />
+                    </span>
+                    <a
+                      href={`https://sepolia.basescan.org/tx/${mintedHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
+                    >
+                      <FaExternalLinkAlt />
+                    </a>
+                  </h3>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </div>
         </div>
         {/* === PRIVILEGES CARD === */}
