@@ -59,7 +59,7 @@ export default function Sidebar({
     watchAsset({
       type: 'ERC20',
       options: {
-        address: '0xD5062eAafdAa5e5d211Ffde0327c10D2369690b6',
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         symbol: 'DO.FI',
         decimals: 18,
       },

@@ -102,7 +102,7 @@ const DomainDAOPage = () => {
     }
   }, []);
 
-  console.log("leaseAddressInfo--->",leaseAddressInfo)
+  console.log("leaseAddressInfo--->", leaseAddressInfo)
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
@@ -183,19 +183,19 @@ const DomainDAOPage = () => {
 
             <div className="text-center text-xl font-[600] text-[#151515]">
               {
-                leaseAddressInfo?.leasingAddress
+                leaseAddressInfo?.leasingAddress && leaseAddressInfo?.leasingAddress != "0x"
                   ? <div className="">
                     {leaseAddressInfo.leasingAddress.slice(0, 5)}...
                     {leaseAddressInfo.leasingAddress.slice(-5)}
                   </div>
-                  : leaseAddressInfo?.payments?.[0]?.wallet
+                  : leaseAddressInfo?.payments?.length > 0 && leaseAddressInfo?.payments?.[0]?.wallet
                     ? <div className="">
                       {leaseAddressInfo.payments[0].wallet.slice(0, 5)}...
                       {leaseAddressInfo.payments[0].wallet.slice(-5)}
                     </div>
                     : "0x"
               }
-              <div className="text-[12px] text-grey font-[400]">Current Leasing Address1</div>
+              <div className="text-[12px] text-grey font-[400]">Current Leasing Address</div>
             </div>
 
             {/* Active */}

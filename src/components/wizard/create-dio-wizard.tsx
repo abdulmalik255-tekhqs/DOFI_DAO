@@ -41,7 +41,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0xD82955e4721F14d3Ae3cCfd551F205b6AbC87211',
+        address:  process.env.NEXT_PUBLIC_DAO_TOKEN as `0x${string}`,
         abi: daoTokenABI,
         functionName: 'transferFrom',
         args: [

@@ -60,7 +60,7 @@ export default function FractionCard({ item, className = '' }: CardProps) {
           {/* Image Boxes (hover only) */}
           {amount && amount > 0 && (
             <div className="absolute inset-0 flex gap-1 items-center justify-center group-hover:flex hidden">
-              {Array.from({ length: 10 }).map((_, index) => (
+              {Array.from({ length: amount }).map((_, index) => (
                 <img
                   key={index}
                   src={imageUrl}

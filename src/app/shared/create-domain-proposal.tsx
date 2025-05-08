@@ -319,7 +319,7 @@ const CreateProposalPage = () => {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
         args: [

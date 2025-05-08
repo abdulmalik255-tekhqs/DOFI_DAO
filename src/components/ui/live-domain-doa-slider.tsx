@@ -98,9 +98,9 @@ export default function DomainDaoSlider({ limits }: { limits: number }) {
       }}
       className="w-full pb-10 mt-6"
     >
-      {imageList.map((item: any) => (
-        <SwiperSlide key={item.id}>
-          <DomainFeed image={item.image} />
+      {ShibimageList?.map((item: any) => (
+        <SwiperSlide key={item?.id}>
+          <DomainFeed image={item?.image} />
         </SwiperSlide>
       ))}
     </Swiper>
