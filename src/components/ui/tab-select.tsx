@@ -30,7 +30,7 @@ const TabSelect = forwardRef(
       >
         <button
           onClick={() => setVisibleMobileMenu(!visibleMobileMenu)}
-          className="flex w-full items-center justify-between px-4 py-2.5 uppercase text-gray-400 dark:text-gray-300 sm:px-5 sm:py-3.5"
+          className="flex w-full items-center justify-between px-4 py-2.5 text-gray-400 dark:text-gray-300 sm:px-5 sm:py-3.5"
         >
           <span className="font-medium text-gray-900 dark:text-gray-100">
             {tabMenu[selectedTabIndex].title}

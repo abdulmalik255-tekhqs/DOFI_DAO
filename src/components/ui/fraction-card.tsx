@@ -50,7 +50,7 @@ export default function FractionCard({ item, className = '' }: CardProps) {
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
         <img src={imageUrl} width={600} alt="no-image" />
       </div>
-      <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
+      <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
         <div className="relative group cursor-pointer">
           {/* Default Amount Pill */}
           <div className="inline-flex h-8 items-center rounded-2xl border border-white bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px] group-hover:hidden">
@@ -71,12 +71,13 @@ export default function FractionCard({ item, className = '' }: CardProps) {
             </div>
           )}
         </div>
-        <div className="flex justify-between">
-          <div className="inline-flex h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px]">
-            Token ID<span className='ml-2 font-bold'>{item?.tokenId}</span>
+      </div>
+       <div className="flex flex-col">
+          <div className="inline-flex mt-2 items-center px-4 text-[14px] font-[500] tracking-wide">
+            Token ID : <span className='ml-2 font-bold'>{item?.tokenId}</span>
           </div>
           <div
-            className="inline-flex cursor-pointer h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px] cursor-pointer"
+            className="ml-4 mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
             title="Click to copy"
             onClick={() => {
               if (contractAddress) {
@@ -87,24 +88,6 @@ export default function FractionCard({ item, className = '' }: CardProps) {
             {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
           </div>
         </div>
-      </div>
     </div>
-    // <div
-    //   className={cn(
-    //     'group relative overflow-hidden rounded-lg transition-transform hover:-translate-y-1',
-    //     className,
-    //   )}
-    // >
-    //   <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
-    //     <img src={imageUrl} width={600} alt="no-image" />
-    //   </div>
-    //   <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
-    //     <div className="flex justify-end gap-3">
-    //       <div className="inline-flex h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px]">
-    //         Amount: <span className='font-bold'>{amount}</span>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }

@@ -9,6 +9,8 @@ import { Transition } from '@/components/ui/transition';
 import ActiveLink from '@/components/ui/links/active-link';
 import { ChevronForward } from '@/components/icons/chevron-forward';
 import { PowerIcon } from '@/components/icons/power';
+import GreenDot from '@/assets/images/dao/greendot.png';
+import Image from 'next/image';
 
 export default function WalletConnect({
   btnClassName,
@@ -29,6 +31,16 @@ export default function WalletConnect({
     <>
       {address ? (
         <div className="flex items-center gap-3 sm:gap-6 lg:gap-8">
+          <div className='flex gap-2 items-center'>
+         <Image src={GreenDot} alt="no-icon"/>   <h2 className='text-[16px] text-[#1E293B] font-[500] '>Wallet Connected</h2>
+          </div>
+          {/* <ActiveLink href="/create-nft" className={cn(anchorClassName)}>
+            <Button
+              className={cn('shadow-main hover:shadow-large', btnClassName)}
+            >
+              CREATE
+            </Button>
+          </ActiveLink> */}
           <div className="relative flex-shrink-0">
             <Menu>
               <MenuButton className="block h-10 w-10 overflow-hidden rounded-full border-3 border-solid border-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-main transition-all hover:-translate-y-0.5 hover:shadow-large dark:border-gray-700 sm:h-12 sm:w-12"></MenuButton>
@@ -88,13 +100,7 @@ export default function WalletConnect({
             </Menu>
           </div>
 
-          {/* <ActiveLink href="/create-nft" className={cn(anchorClassName)}>
-            <Button
-              className={cn('shadow-main hover:shadow-large', btnClassName)}
-            >
-              CREATE
-            </Button>
-          </ActiveLink> */}
+          
         </div>
       ) : (
         <Button

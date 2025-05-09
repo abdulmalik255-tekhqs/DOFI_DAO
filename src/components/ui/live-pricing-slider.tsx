@@ -51,7 +51,7 @@ export function LivePricingFeed({
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
     return (
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-sm font-semibold text-white">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E2E8F0] text-sm font-semibold text-black">
         {firstLetter}
       </div>
     );
@@ -80,21 +80,21 @@ export function LivePricingFeed({
     <div
       onClick={() => goToCreateProposalPage()}
       className={cn(
-        'm-2 flex border-[#14161A] border-b-4 cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-lg dark:bg-light-dark lg:flex-row',
+        'm-2 w-[350px] flex border-[#E2E8F0] border cursor-pointer items-center gap-4 rounded-[12px] bg-white p-5 lg:flex-row',
       )}
     >
       <div className="w-full flex-col">
         <div className="mb-3 flex items-center">
           {getInitialIcon(name)}
           {/* {icon} */}
-          <h4 className="text-[12px] font-medium text-gray-900 dark:text-white ltr:ml-1 rtl:mr-1">
-            {name}
+          <h4 className="text-[16px] font-[400] text-black  ltr:ml-1 rtl:mr-1">
+           {name}
           </h4>
         </div>
 
-        <div className="mb-2 text-sm font-medium tracking-tighter text-gray-900 dark:text-white lg:text-lg 2xl:text-xl 3xl:text-2xl">
+        <div className="mb-2 text-[24px] font-[500] tracking-tighter text-gray-900 dark:text-white lg:text-lg 2xl:text-xl 3xl:text-2xl">
           {noOfProposals}
-          <span className="ml-3">proposals</span>
+          <span className="ml-3">Proposals</span>
         </div>
 
         {/* <div className="flex items-center text-xs font-medium 2xl:text-sm">
@@ -200,7 +200,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       observer={true}
       navigation={true}
       dir="ltr"
-      className="w-full pb-10"
+      className="w-full"
     >
       {mergedDAOs.map((item, index) => (
         <SwiperSlide key={item.id}>

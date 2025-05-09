@@ -34,7 +34,7 @@ export default function Profile() {
   const { ownerNFT, isLoading } = useFetchOwnerAllNfts();
 
   return (
-    <div className="flex w-full flex-col pt-4 md:flex-row md:pt-10 lg:flex-row 3xl:pt-12">
+    <div className="flex w-full flex-col pt-4 md:flex-row md:pt-6 lg:flex-row 3xl:pt-10">
       {/* <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 md:w-72 2xl:w-80 3xl:w-96 ltr:md:border-r md:ltr:pr-7 lg:ltr:pr-10 3xl:ltr:pr-14 rtl:md:border-l md:rtl:pl-7 lg:rtl:pl-10 3xl:rtl:pl-14">
         <div className="text-center ltr:md:text-left rtl:md:text-right">
           <h2 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
@@ -123,7 +123,7 @@ export default function Profile() {
         <AuthorInformation className="hidden md:block" data={authorData} />
       </div> */}
       <div 
-      className="grow pb-9 pt-6 md:-mt-2.5 md:pb-0 md:pt-1.5 md:ltr:pl-7 lg:ltr:pl-10 3xl:ltr:pl-14 md:rtl:pr-7 lg:rtl:pr-10 3xl:rtl:pr-14"
+      className="grow pb-9 pt-6 md:-mt-2.5 md:pb-0 md:pt-1.5 md:ltr:pl-1 lg:ltr:pl-1 3xl:ltr:pl-1 md:rtl:pr-7 lg:rtl:pr-10 3xl:rtl:pr-14"
       >
         <ProfileTab
           data={
@@ -134,7 +134,7 @@ export default function Profile() {
           leasingData={ownerNFT?.leasedDomainNFTs}
         />
       </div>
-      <AuthorInformation data={authorData} />
+      {/* <AuthorInformation data={authorData} /> */}
     </div>
   );
 }

@@ -15,6 +15,8 @@ import { Check } from '@/components/icons/check';
 import { Copy } from '@/components/icons/copy';
 import routes from '@/config/routes';
 import { useCopyToClipboard } from 'react-use';
+import Image from 'next/image';
+import Share from '@/assets/images/dao/share.png';
 
 const COLUMNS = [
   // {
@@ -47,7 +49,7 @@ const COLUMNS = [
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
+        {/* <Globe className="w-5 h-5 text-gray-600 dark:text-white" /> */}
         <div className="ltr:text-left rtl:text-left">{row.original.name}</div>
       </div>
     ),
@@ -155,7 +157,7 @@ const COLUMNS = [
           className="flex items-center justify-center gap-2 cursor-pointer"
           onClick={handleCopyToClipboard}
         >
-          <FaShareAlt size={30}/>
+          <Image src={Share} alt="no-icon" />
         </div>
       );
     },

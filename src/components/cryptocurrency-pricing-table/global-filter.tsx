@@ -47,6 +47,10 @@ export default function GlobalFilter() {
       ToastNotification('error', 'Connect wallet first!');
       return;
     }
+     if (inputValue.trim() === '') {
+      ToastNotification('error', 'Enter domain name');
+      return;
+    }
     dispatch(idoActions.setLoading(false));
     dispatch(idodetailActions.saveIDOdata({}));
     dispatch(idoActions.goToStep(0));
@@ -62,41 +66,48 @@ export default function GlobalFilter() {
   }
   return (
     <div className="mb-[40px] flex-1 text-center ltr:ml-auto rtl:mr-auto">
-      <h2 className="mb-[40px] flex shrink-0 items-center justify-center gap-[20px] pl-[10px] text-center text-[28px] font-bold uppercase tracking-wider text-gray-900 dark:text-white md:pl-0">
-        <IoMdArrowDropdown /> Register your name today <IoMdArrowDropdown />
-      </h2>
-      <label className="relative hidden w-full items-center md:flex">
-        <input
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          className="h-[100px] w-full appearance-none rounded-lg bg-gray-100 py-1 text-[50px] font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus-none border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 ltr:pl-[80px] rtl:pr-10"
-          placeholder="Find Your Name"
-        />
-        <span className="absolute right-0 flex h-full cursor-pointer items-center justify-center px-4 text-gray-600 hover:text-gray-900 dark:text-white">
-          {inputValue?.length > 0 ? (
-            //@ts-ignore
-            searchResult?.success === false ? (
-              <div className="flex w-auto cursor-not-allowed items-center gap-2 bg-red-300 border border-red-600 p-4 text-white rounded-lg">
-                NFT Not found
-              </div>
-            ) : //@ts-ignore
-              searchResult?.success === true ? (
-                <div
-                  className="flex w-auto cursor-pointer items-center gap-2 bg-green-500 border border-green-600 p-4 text-white rounded-lg"
-                  //@ts-ignore
-                  onClick={() => handleModal()}
-                >
-                  {!isSuccess ? 'Loading' : `${getValue()} view`}
-                  <FaLongArrowAltRight className="cursor-pointer" />
+      <div className='gap-[38px] flex flex-col bg-black rounded-[12px]'>
+        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[500] uppercase tracking-wider text-white">
+          Register your name today
+        </h2>
+        <label className="mb-[46px] relative hidden w-full items-center justify-center  md:flex">
+          <input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="h-[59px] w-[550px] appearance-none rounded-tl-[12px] rounded-bl-[12px] bg-[#18181B] text-[16px] font-[400] tracking-tighter text-[#A1A1AA] focus:outline-none focus:ring-0 focus:shadow-none  transition-all placeholder:text-[#A1A1AA] border border-[#3F3F46] rtl:pr-10"
+            placeholder="Find your domain name"
+          />
+          <span className="flex h-[59px] items-center justify-center text-gray-600 hover:text-gray-900 dark:text-white">
+            {inputValue?.length > 0 ? (
+              // @ts-ignore
+              searchResult?.success === false ? (
+                <div className="flex h-[59px] w-auto cursor-not-allowed items-center gap-2 bg-red-300 p-4 text-white rounded-tr-[12px] rounded-br-[12px]">
+                  NFT Not found
                 </div>
-              ) : (
-                <SearchIcon className="h-[50px] w-[50px]" />
-              )
-          ) : (
-            <SearchIcon className="h-[50px] w-[50px]" />
-          )}
-        </span>
-      </label>
+              ) : // @ts-ignore
+                searchResult?.success === true ? (
+                  <div
+                    className="flex h-[59px] w-auto cursor-pointer items-center gap-2 bg-green-500  p-4 text-white rounded-tr-[12px] rounded-br-[12px]"
+                    // @ts-ignore
+                    onClick={() => handleModal()}
+                  >
+                    {!isSuccess ? 'Loading' : `${getValue()} view`}
+                    <FaLongArrowAltRight className="cursor-pointer" />
+                  </div>
+                ) : (
+                  <div className="w-[141px] flex justify-center items-center h-[59px] bg-white rounded-tr-[12px] rounded-br-[12px]">
+                <p className='text-[16px] text-black font-[500]'>Search</p>
+              </div>
+                )
+            ) : (
+              <div className="w-[141px] flex justify-center items-center h-[59px] bg-white rounded-tr-[12px] rounded-br-[12px]">
+                <p className='text-[16px] text-black font-[500]'>Search</p>
+              </div>
+            )}
+          </span>
+        </label>
+
+      </div>
     </div>
   );
 }

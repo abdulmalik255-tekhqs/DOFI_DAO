@@ -1,7 +1,7 @@
-import { Fira_Code } from 'next/font/google';
+import { DM_Mono  } from 'next/font/google';
 
-export const fira_code = Fira_Code({
-  weight: ['400', '500', '600', '700'],
+export const fira_code = DM_Mono ({
+  weight: ['400', '500'],
   subsets: ['latin'],
   display: 'swap',
 });

@@ -77,7 +77,7 @@ export default function ParamTab({
     >
       <Tab.List
         className={cn(
-          'relative mb-6 bg-body text-sm uppercase before:absolute before:bottom-0 before:left-0 w-[38%] before:rounded-sm before:bg-gray-200 dark:bg-dark dark:before:bg-gray-800 sm:gap-8 sm:rounded-none md:before:h-0.5',
+          'relative mb-6 w-full text-sm before:absolute before:bottom-0 before:left-0  before:rounded-sm before:bg-gray-200 dark:bg-dark dark:before:bg-gray-800 sm:gap-8 sm:rounded-none md:before:h-0.5',
           tabListClassName,
         )}
       >

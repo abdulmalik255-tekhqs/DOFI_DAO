@@ -96,7 +96,7 @@ export default function DomainDaoSlider({ limits }: { limits: number }) {
         delay: 1500,
         disableOnInteraction: false,
       }}
-      className="w-full pb-10 mt-6"
+      className="w-full pb-10 mt-[24px]"
     >
       {ShibimageList?.map((item: any) => (
         <SwiperSlide key={item?.id}>

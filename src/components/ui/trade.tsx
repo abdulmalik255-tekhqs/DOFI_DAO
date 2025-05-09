@@ -78,19 +78,23 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
   }, [currentPath]);
   return (
     <div className="">
-      <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 py-5 px-4 rounded-md shadow-lg">
-        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] text-white">
-          SWAP
-        </h2>
-        <p className="text-sm text-white/80 dark:text-gray-300">
 
-          Seamlessly swap NFTs across multiple blockchain networks with real-time valuation and gas fee optimization to ensure accurate and secure transactions.
-        </p>
-      </div>
       <div className="pt-8 text-sm xl:pt-10">
-        <div className="mx-auto w-full max-w-lg rounded-lg bg-white p-5 pt-4 shadow-card dark:bg-light-dark xs:p-6 xs:pt-5 shadow-2xl">
+        <div className="flex justify-center items-center flex-col mb-[32px]">
+          <h2 className="mb-2 text-[36px] font-[700] text-[#0F172A] uppercase">
+            SWAP
+          </h2>
+          <p className="mt-[12px] text-[14px] font-[400] text-[#334155] items-center flex">
+            Seamlessly swap NFTs across multiple blockchain networks with real-time
+          </p>
+          <p className="text-[14px] font-[400] text-[#334155] items-center flex">
+            valuation and gas fee optimization to ensure accurate and secure
+          </p>
+          <p className="text-[14px] font-[400] text-[#334155] items-center flex">transactions.</p>
+        </div>
+        <div className="mx-auto w-full max-w-lg bg-white p-5 xs:p-6 xs:pt-5 border border-[#E2E8F0] rounded-[12px]">
           <div className="flex justify-between items-center">
-            <h1 className="text-[16px] font-medium mb-6">SWAP Domain Fractions</h1>
+            <h1 className="text-[20px] font-[500] mb-6">SWAP Domain Fractions</h1>
             <div className="flex gap-[5px] items-center mb-6">
               {coinList?.map((coin, index) => (
                 <div key={index} className="w-4 h-4">

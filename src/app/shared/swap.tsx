@@ -206,7 +206,7 @@ console.log("toAmount--->",toAmount)
   return (
     <>
       <Trade>
-        <div className="mb-5 border-b border-dashed border-gray-200 pb-5 dark:border-gray-800 xs:mb-7 xs:pb-6">
+        <div className="mb-6">
           <div
             className={cn(
               'relative flex gap-3',
@@ -221,8 +221,7 @@ console.log("toAmount--->",toAmount)
               onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
             />
             <div className="absolute left-1/2 top-1/2 z-[1] transform -translate-x-1/2 -translate-y-1/2 
-                rounded-full bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 
-                shadow-lg dark:bg-gray-600 p-2 flex items-center justify-center">
+                rounded-full bg-[#1E293B] p-2 flex items-center justify-center">
               <SwapIcon className="w-4 h-4 text-white" />
             </div>
 
@@ -244,13 +243,13 @@ console.log("toAmount--->",toAmount)
           <TransactionInfo label={'Network Fee'} value={'0.35'} />
           {/* <TransactionInfo label={'Criptic Fee'} /> */}
         </div>
-        <div className="border-b border-dashed border-gray-200 dark:border-gray-800 mt-4"></div>
+        <div className="border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800 mt-4"></div>
         <div className="flex justify-end">
           <Button
             size="medium"
             shape="rounded"
             fullWidth={true}
-            className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
+            className="mt-6 uppercase xs:mt-8 xs:tracking-widest bg-[#0F172A]"
             onClick={() => handleSwap()}
             disabled={loading}
           >

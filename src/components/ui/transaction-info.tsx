@@ -13,12 +13,12 @@ export default function TransactionInfo({
   return (
     <div
       className={cn(
-        'flex items-center justify-between dark:text-gray-300',
+        'flex items-center justify-between text-[#0F172A] dark:text-gray-300',
         className,
       )}
     >
-      <span className="font-medium">{label}</span>
-      <span>{value ? value : '_ _'}</span>
+      <span className="font-[400] text-[20px]">{label}</span>
+      <span className="font-[400] text-[20px]">{value ? value : '_ _'}</span>
     </div>
   );
 }

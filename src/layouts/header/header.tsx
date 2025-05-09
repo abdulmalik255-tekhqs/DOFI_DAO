@@ -76,10 +76,10 @@ export function RetroHeader({ className }: { className?: string }) {
               className="dark:text-white"
             />
           </div>
-          <SearchButton
+          {/* <SearchButton
             variant="transparent"
             className="dark:text-white ltr:-ml-[17px] rtl:-mr-[17px]"
-          />
+          /> */}
         </div>
         <HeaderRightArea />
       </div>

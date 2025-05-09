@@ -20,7 +20,7 @@ import LeaseDomainCard from '../ui/lease-domian';
 
 const tabMenu = [
   {
-    title: 'Domain NFTS',
+    title: 'Domain NFTs',
     path: 'collection',
   },
   {
