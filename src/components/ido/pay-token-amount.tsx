@@ -42,7 +42,7 @@ export default function PayTokenAmount({ data }: { data: any }) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          '0xA50673D518847dF8A5dc928B905c54c35930b949',
           parseUnits(tokenAmount?.toString(), 18),
         ],
       });
@@ -50,7 +50,7 @@ export default function PayTokenAmount({ data }: { data: any }) {
         hash,
       });
       if (recipient.status === 'success') {
-        const addressArray = ['0x1357331C3d6971e789CcE452fb709465351Dc0A1'];
+        const addressArray = ['0xA50673D518847dF8A5dc928B905c54c35930b949'];
         const amountArray=[Number(tokenAmount)];
         const nftName=data ? data : ""
         submitCreate({

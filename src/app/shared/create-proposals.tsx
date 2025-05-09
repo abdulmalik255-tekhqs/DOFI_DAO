@@ -314,7 +314,7 @@ const CreateProposalPage = () => {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          '0xA50673D518847dF8A5dc928B905c54c35930b949',
           parseUnits(50?.toString(), 18),
         ],
       });
