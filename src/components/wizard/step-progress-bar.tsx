@@ -4,7 +4,7 @@ import { CheckCircle } from 'lucide-react'; // Icon library
 
 export default function SegmentedProgressBar() {
   const currentStep = useSelector((state: any) => state.ido.currentStep);
-  const steps = ['Purchase', 'Confirm', 'Launch', 'Validate'];
+  const steps = ['Purchase', 'Mint Domain', 'Tokenize', 'Validate'];
 
   return (
     <div className="w-full flex justify-between items-center py-4 gap-6">

@@ -116,7 +116,7 @@ export function useBuyQueryWizard() {
     },
   });
 }
-export function useCreateIDOWizard() {
+export function useCreateIDOWizard(setCurrentStepButton:any) {
   const { address } = useAccount();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -129,10 +129,12 @@ export function useCreateIDOWizard() {
         dispatch(idodetailActions.saveIDOdata(data?.data));
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
+        setCurrentStepButton(1)
         // router.push(routes.idoDetail);
       }
     },
     onError: (error) => {
+      setCurrentStepButton(0)
       // Optionally handle error
       dispatch(idoActions.setLoading(false))
       console.error('Submission failed:', error);
