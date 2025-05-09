@@ -106,7 +106,7 @@ function VoteActionButton({ vote, data }: any) {
       console.log(error);
     }
   };
-console.log("data--->",data)
+  console.log("data--->", data)
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
@@ -156,7 +156,7 @@ console.log("data--->",data)
 }
 
 export default function VoteDetailsCard({ vote, data }: any) {
-  console.log("data--parent->",data)
+  console.log("data--parent->", data)
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
   const getRemainingallocation = () => {
@@ -201,7 +201,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
               Vote Now
             </Button>
           ) : (
-            <VoteActionButton vote={vote} data={data}/>
+            <VoteActionButton vote={vote} data={data} />
           )}
         </div>
         {vote.status == 'active' ? (
@@ -298,7 +298,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                   </div> */}
               {vote?.leasingAddress == '0x' ? (
                 <>
-                  <div className="mt-4">
+                  {/* <div className="mt-4">
                     Leasing Address:{' '}
                     <span className="font-medium text-gray-900">
                       {vote?.leasingAddress || "0x"}
@@ -309,7 +309,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     <span className="font-medium text-gray-900">
                       {vote?.percentageYield || "0"}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="mt-4">
                     Acceptacnce Criteria:{' '}
                     <span className="font-medium text-gray-900">
@@ -334,13 +334,19 @@ export default function VoteDetailsCard({ vote, data }: any) {
                   {data?.votePower > 1 ? <>  <div className="mt-4">
                     Vote Weightage:{' '}
                     <span className="font-medium text-gray-900">
-                      {((data?.votePower/data?.totalSupply)*100)?.toPrecision(3) || 0}%
+                      {/* {((data?.votePower/data?.totalSupply)*100)?.toPrecision(3) || 0}% */}
+                      {data?.votePower}
                     </span>
                   </div>
                     <div className="mt-4">
-                      Acceptance Criteria:{' '}
+                      Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
                       <span className="font-medium text-gray-900">
-                        {data?.quorum} Quorum (Total Supply {data?.totalSupply})
+                        {data?.quorum}
+                      </span>
+                    </div><div className="mt-4">
+                      Total Supply:{' '}
+                      <span className="font-medium text-gray-900">
+                        {data?.totalSupply || 0}
                       </span>
                     </div></> : <div className="mt-4">
                     Acceptance Criteria:{' '}
