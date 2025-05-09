@@ -315,7 +315,7 @@ const CreateProposalPage = () => {
         functionName: 'transfer',
         args: [
           '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          parseUnits(domainAmount?.toString(), 18),
+          parseUnits(50?.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
@@ -505,7 +505,7 @@ const CreateProposalPage = () => {
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Proposal creationamount" />
+        <InputLabel title="Proposal Creation Amount" />
         <Input
           type="number"
           disabled

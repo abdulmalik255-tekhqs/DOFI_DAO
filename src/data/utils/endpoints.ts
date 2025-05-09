@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   GET_NFTS_PROPOSAL:"/nft/proposal",
   POST_PROPSALS:"/proposals",
   POST_VOTE:"/vote",
+  POST_VOTE_UPDATED:"/vote/childDAO",
   POST_CALC:"/nft/swap/calculate",
   GET_NFT_SWAP:"/nft/swap",
   POST_SWAP_TOKEN:"/nft/swap",

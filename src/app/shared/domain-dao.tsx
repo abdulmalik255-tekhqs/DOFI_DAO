@@ -22,11 +22,11 @@ import { TbHomeStats } from "react-icons/tb";
 import { FaRegClock } from "react-icons/fa6";
 
 
-const AUCTION_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
 const AUCTION_TIMER_KEY = 'auctionExpiryTime';
 
 
- function AuctionCountdown() {
+function AuctionCountdown() {
   const [expiryTime, setExpiryTime] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<{
     hours: number;
@@ -228,13 +228,13 @@ const DomainDAOPage = () => {
             <div className="bg-white/80 p-[5px] rounded-full flex items-center justify-center">
               <FaRegClock className="text-gray-700 text-[22px] text-black" />
             </div>
-            <div className="text-xl font-bold text-white tour_Hours_tracking">
-              Voting Time
+            <div className="text-[18] font-bold text-white tour_Hours_tracking">
+              Profit Distribution In
             </div>
           </div>
 
           <div className="">
-          <AuctionCountdown />
+            <AuctionCountdown />
           </div>
         </div>
         <div

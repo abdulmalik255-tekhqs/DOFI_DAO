@@ -90,6 +90,12 @@ class client {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
+
+  postVoteUpdated = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_VOTE_UPDATED}?address=${address}`, data),
+  };
+
   postCalulation = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_CALC}?address=${address}`, data),

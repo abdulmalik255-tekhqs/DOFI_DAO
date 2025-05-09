@@ -317,21 +317,22 @@ const CreateProposalPage = () => {
     }
 
       dispatch(idoActions.setLoading(true));
-      const hash = await writeContractAsync({
-        //@ts-ignore
-        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
-        abi: tetherABI,
-        functionName: 'transfer',
-        args: [
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          parseUnits(amount?.toString(), 18),
-        ],
-      });
-      const recipient = await waitForTransactionReceipt(config.getClient(), {
-        hash,
-        pollingInterval: 2000,
-      });
-      if (recipient.status === 'success') {
+      // Disabled Contract Call
+      // const hash = await writeContractAsync({
+      //   //@ts-ignore
+      //   address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+      //   abi: tetherABI,
+      //   functionName: 'transfer',
+      //   args: [
+      //     '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+      //     parseUnits(amount?.toString(), 18),
+      //   ],
+      // });
+      // const recipient = await waitForTransactionReceipt(config.getClient(), {
+      //   hash,
+      //   pollingInterval: 2000,
+      // });
+      // if (recipient.status === 'success') {
         submitCreate({
           //@ts-ignore
           name: name,
@@ -348,9 +349,9 @@ const CreateProposalPage = () => {
           // "address": "{{wallet}}",
           expirationDate: new Date(),
         });
-      } else {
-        console.log('erer');
-      }
+      // } else {
+      //   console.log('erer');
+      // }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
       console.log(error);
@@ -470,7 +471,7 @@ const CreateProposalPage = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <InputLabel title="Amount" />
         <Input
           type="number"
@@ -479,7 +480,7 @@ const CreateProposalPage = () => {
           value={"50"}
           // onChange={(e) => setAmount(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div className="mb-8">
         <InputLabel title="Domain" important />

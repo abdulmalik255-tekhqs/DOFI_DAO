@@ -475,3 +475,29 @@ export function usePostPayToken() {
     },
   });
 }
+
+export function usePostVoteUpdated(pathName:any) {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.postVoteUpdated.create(data, address),
+    onSuccess: (data) => {
+      if (data) {
+        // dispatch(idoActions.saveIDOdetailData(data));
+        dispatch(idoActions.setLoading(false));
+        queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
+        queryClient.invalidateQueries({ queryKey: ['all-nft-leaseAddress-latest'] });
+        queryClient.invalidateQueries({ queryKey: ['proposal-domaindao-latest'] });
+        router.push(pathName);
+      }
+    },
+    onError: (error) => {
+      dispatch(idoActions.setLoading(false));
+      // Optionally handle error
+      console.error('Submission failed:', error);
+    },
+  });
+}
