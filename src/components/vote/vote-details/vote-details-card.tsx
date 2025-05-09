@@ -22,7 +22,7 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { useModal } from '@/components/modal-views/context';
-import { usePostVote } from '@/hooks/livePricing';
+import { usePostVote, usePostVoteUpdated } from '@/hooks/livePricing';
 import { useQueryClient } from '@tanstack/react-query';
 import InputLabel from '@/components/ui/input-label';
 import Input from '@/components/ui/forms/input';
@@ -31,7 +31,7 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 
-function VoteActionButton({ vote }: any) {
+function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
   const { address } = useAccount();
   const { loading } = useSelector((state: any) => state.ido);
@@ -40,6 +40,9 @@ function VoteActionButton({ vote }: any) {
 
   const { writeContractAsync } = useWriteContract();
   const { mutate: submitCreate, isError, error } = usePostVote(params);
+  const { mutate: submitCreateupdated } = usePostVoteUpdated(params);
+
+  // For Dofi Dao vote Cast
   const handleSubmit = async (isFavour: any) => {
     try {
       if (!address) {
@@ -57,7 +60,7 @@ function VoteActionButton({ vote }: any) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+          '0xA50673D518847dF8A5dc928B905c54c35930b949',
           parseUnits(amount?.toString(), 18),
         ],
       });
@@ -81,10 +84,32 @@ function VoteActionButton({ vote }: any) {
       console.log(error);
     }
   };
+  // For Domain Dao vote Cast
+  const handleSubmitUpdated = async (isFavour: any) => {
+    try {
+      if (!address) {
+        ToastNotification('error', 'Connect your wallet first!');
+        return;
+      }
+      dispatch(idoActions.setLoading(true));
+      submitCreateupdated({
+        //@ts-ignore
+        inFavor: isFavour,
+        proposalId: vote?._id,
+        address: address?.toLowerCase(),
+      });
 
+
+
+    } catch (error) {
+      dispatch(idoActions.setLoading(false));
+      console.log(error);
+    }
+  };
+console.log("data--->",data)
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      {vote?.status == 'active' && !vote?.hasVoted && (
+      {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
         <div className="mb-8">
           <InputLabel title="Amount" important />
           <Input
@@ -101,7 +126,13 @@ function VoteActionButton({ vote }: any) {
         color="success"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted || loading}
-        onClick={() => handleSubmit('yes')}
+        onClick={() => {
+          if (data?.votePower > 1) {
+            handleSubmitUpdated('yes')
+          } else {
+            handleSubmit('yes')
+          }
+        }}
       >
         {loading ? (
           <>
@@ -124,13 +155,14 @@ function VoteActionButton({ vote }: any) {
   );
 }
 
-export default function VoteDetailsCard({ vote }: any) {
+export default function VoteDetailsCard({ vote, data }: any) {
+  console.log("data--parent->",data)
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
-const getRemainingallocation = () => {
- const allocationvalue=  Math.floor((vote?.totalFractions) - (vote?.amountRaised / vote?.pricePerFraction));
-  return allocationvalue;
-}
+  const getRemainingallocation = () => {
+    const allocationvalue = Math.floor((vote?.totalFractions) - (vote?.amountRaised / vote?.pricePerFraction));
+    return allocationvalue;
+  }
   return (
     <motion.div
       layout
@@ -169,7 +201,7 @@ const getRemainingallocation = () => {
               Vote Now
             </Button>
           ) : (
-            <VoteActionButton vote={vote} />
+            <VoteActionButton vote={vote} data={data}/>
           )}
         </div>
         {vote.status == 'active' ? (
@@ -205,7 +237,7 @@ const getRemainingallocation = () => {
             />
           </div>
         ) : (
-          <div 
+          <div
             className={cn(
               "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
               {
@@ -279,9 +311,9 @@ const getRemainingallocation = () => {
                     </span>
                   </div>
                   <div className="mt-4">
-                  Acceptacnce Criteria:{' '}
+                    Acceptacnce Criteria:{' '}
                     <span className="font-medium text-gray-900">
-                      {"50"}
+                      {"$DOFI 100"}
                     </span>
                   </div>
                 </>
@@ -299,17 +331,29 @@ const getRemainingallocation = () => {
                       {vote?.yieldPercentage || 3}
                     </span>
                   </div>
-                  <div className="mt-4">
-                   Acceptance Criteria:{' '}
+                  {data?.votePower > 1 ? <>  <div className="mt-4">
+                    Vote Weightage:{' '}
+                    <span className="font-medium text-gray-900">
+                      {((data?.votePower/data?.totalSupply)*100)?.toPrecision(3) || 0}%
+                    </span>
+                  </div>
+                    <div className="mt-4">
+                      Acceptance Criteria:{' '}
+                      <span className="font-medium text-gray-900">
+                        {data?.quorum} Quorum (Total Supply {data?.totalSupply})
+                      </span>
+                    </div></> : <div className="mt-4">
+                    Acceptance Criteria:{' '}
                     <span className="font-medium text-gray-900">
                       $DOFI 100
                     </span>
-                  </div>
+                  </div>}
+
                 </>
               )}
             </div>
             <VotePoll title={'Votes'} vote={vote} />
-            <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction}/>
+            <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>

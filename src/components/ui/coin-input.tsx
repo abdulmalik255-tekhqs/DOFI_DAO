@@ -12,7 +12,7 @@ interface CoinInputTypes extends React.InputHTMLAttributes<HTMLInputElement> {
   exchangeRate?: any;
   defaultCoinIndex?: number;
   className?: string;
-  toAmount?:any,
+  toAmount?: any,
   getCoinValue: (param: { coin: string; value: string }) => void;
   onSelectCoin?: (coin: any) => void;
 }
@@ -34,13 +34,14 @@ export default function CoinInput({
   let [selectedCoin, setSelectedCoin] = useState(coinList[defaultCoinIndex]);
   let [visibleCoinList, setVisibleCoinList] = useState(false);
   const modalContainerRef = useRef<HTMLDivElement>(null);
+  const integerPattern = /^[0-9]*$/;
   useClickAway(modalContainerRef, () => {
     setVisibleCoinList(false);
   });
 
   useLockBodyScroll(visibleCoinList);
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.match(decimalPattern)) {
+    if (event.target.value.match(integerPattern)) {
       setValue(event.target.value);
       let param = { coin: selectedCoin.code, value: event.target.value };
       getCoinValue && getCoinValue(param);
@@ -50,7 +51,7 @@ export default function CoinInput({
     setSelectedCoin(coin);
     onSelectCoin?.(coin);
   }
-  
+
   useEffect(() => {
     if (label === 'To') {
       setValue(toAmount?.data?.toAmount);
@@ -84,10 +85,15 @@ export default function CoinInput({
           <input
             type="text"
             value={value}
-            placeholder="0.0"
-            inputMode="decimal"
+            placeholder="0"
+            inputMode="numeric"
             disabled={label === 'To'}
             onChange={handleOnChange}
+            onKeyDown={(e) => {
+              if (e.key === '.' || e.key === ',' || e.key === 'e') {
+                e.preventDefault();
+              }
+            }}
             className="w-full bg-[#F8FAFC] rounded-br-lg rounded-tr-lg border-0 pb-0.5 text-right text-lg outline-none focus:ring-0 placeholder:text-[#334155]"
             {...rest}
           />

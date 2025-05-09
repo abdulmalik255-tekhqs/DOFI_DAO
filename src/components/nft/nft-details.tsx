@@ -70,7 +70,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
-        args: ['0x1357331C3d6971e789CcE452fb709465351Dc0A1', priceInWei],
+        args: ['0xA50673D518847dF8A5dc928B905c54c35930b949', priceInWei],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
         hash,

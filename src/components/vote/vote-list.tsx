@@ -13,7 +13,7 @@ export default function VoteList({ voteStatus }: { voteStatus: string }) {
       {isLoading ? <p className="text-center">Loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
         {proposals?.count > 0 ? (
           proposals?.data?.map((proposal: any) => (
-            <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} />
+            <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} data={proposals}/>
           ))
         ) : (
           <div className="flex flex-col items-center justify-center rounded-lg bg-white px-4 py-16 text-center shadow-card dark:bg-light-dark xs:px-6 md:px-5 md:py-24">
