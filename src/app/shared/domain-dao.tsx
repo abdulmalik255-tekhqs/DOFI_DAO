@@ -19,6 +19,101 @@ import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
 import { useFetchNftLeaseAddress, useGetProposalDomainDao } from '@/hooks/livePricing';
 import { FaChartLine } from "react-icons/fa";
 import { TbHomeStats } from "react-icons/tb";
+import { FaRegClock } from "react-icons/fa6";
+
+
+const AUCTION_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+const AUCTION_TIMER_KEY = 'auctionExpiryTime';
+
+
+ function AuctionCountdown() {
+  const [expiryTime, setExpiryTime] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
+
+  // Run only on the client
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const now = Date.now();
+    let expiry = null;
+
+    const stored = localStorage.getItem(AUCTION_TIMER_KEY);
+    if (stored) {
+      const parsed = parseInt(stored, 10);
+      if (!isNaN(parsed) && parsed > now) {
+        expiry = parsed;
+      }
+    }
+
+    if (!expiry) {
+      expiry = now + AUCTION_DURATION;
+      localStorage.setItem(AUCTION_TIMER_KEY, expiry.toString());
+    }
+
+    setExpiryTime(expiry);
+    setTimeLeft(getTimeLeft(expiry));
+  }, []);
+
+  // Update countdown every second
+  useEffect(() => {
+    if (!expiryTime) return;
+
+    const interval = setInterval(() => {
+      const diff = expiryTime - Date.now();
+
+      if (diff <= 0) {
+        const newExpiry = Date.now() + AUCTION_DURATION;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(AUCTION_TIMER_KEY, newExpiry.toString());
+        }
+        setExpiryTime(newExpiry);
+        setTimeLeft(getTimeLeft(newExpiry));
+      } else {
+        setTimeLeft(getTimeLeft(expiryTime));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [expiryTime]);
+
+  // Helper to calculate remaining time
+  function getTimeLeft(endTime: number) {
+    const diff = endTime - Date.now();
+    if (diff <= 0) return null;
+
+    return {
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / 1000 / 60) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    };
+  }
+
+  if (!timeLeft) {
+    return <div className="text-white/80 font-semibold text-center">Loading...</div>;
+  }
+
+  return (
+    <div className="flex space-x-6 text-lg font-semibold px-6">
+      <div className="flex flex-col text-white/80">
+        <span className='text-xl font-[600]'>{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className='text-[12px] text-grey font-[400]'>Hours</span>
+      </div>
+      <div className="flex flex-col text-white/80">
+        <span className='text-xl font-[600]'>{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className='text-[12px] text-grey font-[400]'>Minutes</span>
+      </div>
+      <div className="flex flex-col text-white/80">
+        <span className='text-xl font-[600]'>{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className='text-[12px] text-grey font-[400]'>Seconds</span>
+      </div>
+    </div>
+  );
+}
+
 
 
 
@@ -123,6 +218,25 @@ const DomainDAOPage = () => {
       </div>
 
       <div className="flex flex-wrap gap-4 mb-4">
+        <div
+          className={`${proposalsDomainDao?.length > 0
+            ? 'col-span-12 md:col-span-6 lg:col-span-3'
+            : 'col-span-12 md:col-span-6 lg:col-span-4'
+            } col-span-12 md:col-span-6 lg:col-span-3 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 min-w-[320px]`}
+        >
+          <div className="flex items-center gap-3">
+            <div className="bg-white/80 p-[5px] rounded-full flex items-center justify-center">
+              <FaRegClock className="text-gray-700 text-[22px] text-black" />
+            </div>
+            <div className="text-xl font-bold text-white tour_Hours_tracking">
+              Voting Time
+            </div>
+          </div>
+
+          <div className="">
+          <AuctionCountdown />
+          </div>
+        </div>
         <div
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
