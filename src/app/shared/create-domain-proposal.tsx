@@ -277,7 +277,7 @@ const CreateProposalPage = () => {
   let [publish, setPublish] = useState(true);
   let [priceType, setPriceType] = useState('fixed');
   const [name, setName] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('50');
   const [leasingAddress, setLeasingAddress] = useState('');
   const [percentageYield, setPercentageYield] = useState('');
   const [motivation, setMotivation] = useState('');
@@ -297,12 +297,10 @@ const CreateProposalPage = () => {
     const storedNftString = localStorage.getItem('nft');
     if (storedNftString) {
       const storedNft: any = JSON.parse(storedNftString);
-      console.log('storedNft----->', storedNft);
       setCategory(storedNft);
     }
   }, []);
 
-  // console.log('category--->', category);
 
   const handleSubmit = async () => {
     try {
@@ -310,41 +308,50 @@ const CreateProposalPage = () => {
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
+
+      const isEmpty = !name || !leasingAddress || !percentageYield ||!motivation || !summary;
+
+    if (isEmpty) {
+      ToastNotification('error', 'Please fill all required fields');
+      return;
+    }
+
       dispatch(idoActions.setLoading(true));
-      const hash = await writeContractAsync({
-        //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
-        abi: tetherABI,
-        functionName: 'transfer',
-        args: [
-          '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          parseUnits(amount?.toString(), 18),
-        ],
-      });
-      const recipient = await waitForTransactionReceipt(config.getClient(), {
-        hash,
-        pollingInterval: 2000,
-      });
-      if (recipient.status === 'success') {
+      // Disabled Contract Call
+      // const hash = await writeContractAsync({
+      //   //@ts-ignore
+      //   address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+      //   abi: tetherABI,
+      //   functionName: 'transfer',
+      //   args: [
+      //     '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
+      //     parseUnits(amount?.toString(), 18),
+      //   ],
+      // });
+      // const recipient = await waitForTransactionReceipt(config.getClient(), {
+      //   hash,
+      //   pollingInterval: 2000,
+      // });
+      // if (recipient.status === 'success') {
         submitCreate({
           //@ts-ignore
           name: name,
           summary: summary,
           motivation: motivation,
-          amount: amount,
+          amount: "50",
           nftId: category?._id,
           daoId: localStorage.getItem('Domain_Dao'),
-          leasingAddress: !isFractionMode ? leasingAddress : '0x',
-          percentageYield: !isFractionMode ? percentageYield : 1,
-          totalFractions: isFractionMode ? totalFractions : 1,
-          pricePerFraction: isFractionMode ? pricePerFraction : 1,
+          leasingAddress: leasingAddress || '0x',
+          percentageYield: percentageYield || 1,
+          totalFractions: totalFractions || 1,
+          pricePerFraction: pricePerFraction || 1,
           daoType: 'child',
           // "address": "{{wallet}}",
           expirationDate: new Date(),
         });
-      } else {
-        console.log('erer');
-      }
+      // } else {
+      //   console.log('erer');
+      // }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
       console.log(error);
@@ -373,7 +380,6 @@ const CreateProposalPage = () => {
   //   };
   //   console.log('Form Data:', formData);
 
-  //   // You can replace the console.log with an API call here
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
@@ -465,15 +471,16 @@ const CreateProposalPage = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div className="mb-8">
-        <InputLabel title="Amount" important />
+      {/* <div className="mb-8">
+        <InputLabel title="Amount" />
         <Input
           type="number"
+          disabled
           placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={"50"}
+          // onChange={(e) => setAmount(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div className="mb-8">
         <InputLabel title="Domain" important />

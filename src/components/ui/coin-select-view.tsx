@@ -15,7 +15,6 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   let [searchKeyword, setSearchKeyword] = useState('');
   const { NFTSwap, isLoading } = useFetchNFTSWAP()
 
-
   const Tethercoin = {
     icon: <Tether />,
     code: 'USDT',
@@ -36,7 +35,6 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   }
   function handleSelectedCoin(item: any) {
     onSelect(item);
-    console.log("item---onSelect-->",item)
     closeModal();
   }
   function handleSelectedCoinOnKeyDown(
@@ -51,7 +49,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   return (
     <div className="w-full rounded-lg bg-white text-sm shadow-large dark:bg-dark xs:w-[400px]">
       <h2 className="p-6 text-lg font-medium uppercase text-gray-900 dark:text-white">
-        Pay with
+        Select Token
       </h2>
       <div className="relative">
         <SearchIcon className="absolute left-6 h-full text-gray-700" />
@@ -74,7 +72,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
               onKeyDown={(event) => handleSelectedCoinOnKeyDown(event, item)}
               className="flex cursor-pointer items-center gap-2 px-6 py-3 outline-none hover:bg-gray-100 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             >
-              <img className ="h-6 w-6 rounded-full" src={item?.imageUrl} />
+              <img className ="h-6 w-6 rounded-full" src={"https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png"} />
               <span className="uppercase">{item.name}</span>
             </li>
           ))

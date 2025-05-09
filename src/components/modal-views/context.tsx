@@ -1,6 +1,8 @@
 'use client';
 
+import { idoActions } from '@/store/reducer/ido-reducer';
 import { atom, useAtom } from 'jotai';
+import { useDispatch } from 'react-redux';
 
 export type MODAL_VIEW =
   | 'SEARCH_VIEW'
@@ -19,7 +21,8 @@ export type MODAL_VIEW =
   | 'CREATE_IDO'
   | 'PROPOSAL_ACCEPT'
   | 'SUCCESSFULLY_BUY_DIO'
-  | 'PAY_TOKEN_AMOUNT';
+  | 'PAY_TOKEN_AMOUNT'
+  | 'OPEN_WIZARD';
 
 interface ModalTypes {
   isOpen: boolean;
@@ -35,9 +38,13 @@ const modalAtom = atom<ModalTypes>({
 
 export function useModal() {
   const [state, setState] = useAtom(modalAtom);
+  const dispatch = useDispatch()
   const openModal = (view: MODAL_VIEW, data?: any) =>
     setState((prev) => ({ ...prev, isOpen: true, view, data }));
-  const closeModal = () => setState((prev) => ({ ...prev, isOpen: false }));
+  const closeModal = () => {
+     dispatch(idoActions.setIsConfetti(false));
+    setState((prev) => ({ ...prev, isOpen: false }))
+  }
 
   return {
     ...state,

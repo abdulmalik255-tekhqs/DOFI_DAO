@@ -1,10 +1,6 @@
 'use client';
 
-import Image from '@/components/ui/image';
 import AnchorLink from '@/components/ui/links/anchor-link';
-import { Verified } from '@/components/icons/verified';
-import Avatar from '@/components/ui/avatar';
-import { StaticImageData } from 'next/image';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import routes from '@/config/routes';
@@ -32,6 +28,7 @@ export default function NFTGrid({
   const dispatch = useDispatch();
   const { layout } = useLayout();
   const router = useRouter();
+
   const goToDetailPage = () => {
     dispatch(idoActions.setNFTDetail(completeNFT));
     router.push(routes.nftDetails);
@@ -39,51 +36,31 @@ export default function NFTGrid({
 
   return (
     <div
-      className="relative overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:shadow-large dark:bg-light-dark"
-      onClick={() => goToDetailPage()}
+      className="relative flex flex-col overflow-hidden rounded-lg shadow-card transition-all duration-200 shadow-lg cursor-pointer max-w-[260px]"
+      onClick={goToDetailPage}
     >
-      <div className="p-4"></div>
-      <AnchorLink
-        href={
-          (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
-          routes.nftDetails
-        }
-        className="relative block w-full"
-      >
-        <img
-          src={image}
-          width={450}
-          height={450}
-          alt="no-image"
-          className="w-full"
-        />
-      </AnchorLink>
+      {/* Image section (no background) */}
+      {/* <div className="w-full h-[300px] flex items-center justify-center !bg-[inherit]"> */}
+      <img
+        src={image}
+        alt="NFT Image"
+        className="object-contain max-h-full max-w-full"
+      />
+      {/* </div> */}
 
-      <div className="p-5">
+      {/* Text section (white bg) */}
+      <div className="dark:bg-light-dark p-4 pt-3">
         <AnchorLink
           href={
             (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
             routes.nftDetails
           }
-          className="text-sm font-medium text-black dark:text-white"
+          className="block text-[12px] font-medium text-black dark:text-white truncate"
         >
-          {name} #{tokenID}
+          <div className="flex justify-between">
+            <p>{name} #{tokenID}</p> <p className='font-bold text-[14px]'>({price} USDT)</p>
+          </div>
         </AnchorLink>
-        {/* <div className="mt-1.5 flex">
-          <AnchorLink
-            href={
-              (layout === LAYOUT_OPTIONS.MODERN ? '' : `/${layout}`) +
-              routes.nftDetails
-            }
-            className="inline-flex items-center text-xs text-gray-600 dark:text-gray-400"
-          >
-            {collection}
-            <Verified className="ltr:ml-1 rtl:mr-1" />
-          </AnchorLink>
-        </div> */}
-        <div className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-          {price} USDT
-        </div>
       </div>
     </div>
   );

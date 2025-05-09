@@ -1,12 +1,7 @@
-import Image from '@/components/ui/image';
 import cn from '@/utils/cn';
 import { useModal } from '@/components/modal-views/context';
 import { useRouter } from 'next/navigation';
 import { StaticImageData } from 'next/image';
-import AnchorLink from '@/components/ui/links/anchor-link';
-import Avatar from '@/components/ui/avatar';
-import { useLayout } from '@/lib/hooks/use-layout';
-import { LAYOUT_OPTIONS } from '@/lib/constants';
 import routes from '@/config/routes';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
@@ -19,6 +14,8 @@ type ItemType = {
   image: StaticImageData;
   imageUrl?: any;
   amount?: number;
+  tokenId?:any;
+  contractAddress?:any;
   _id?: string;
   number_of_artwork: number;
   user: {
@@ -42,11 +39,12 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
     number_of_artwork,
     user,
     _id,
+    tokenId,
+    contractAddress,
     amount,
   } = item ?? {};
   const dispatch = useDispatch();
   const { openModal } = useModal();
-  const { layout } = useLayout();
   const router = useRouter();
   function goToNFTDetailPage() {
     dispatch(idoActions.setNFTDetail(item));
@@ -64,18 +62,12 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
         <img src={imageUrl} width={600} alt="no-image" />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
-        {/* <AnchorLink
-          href={
-            '/' + (layout === LAYOUT_OPTIONS.MODERN ? '' : layout + '/') + slug
-          }
-          className="absolute left-0 top-0 z-10 h-full w-full"
-        /> */}
         <div className="flex justify-between gap-3">
           {amount && amount <= 1 && (
             <>
               <div
                 onClick={() => openModal('CREATE_IDO', item)}
-                className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
+                className="inline-flex h-8 border border-white shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-[40px]"
               >
                 create DIO
               </div>
@@ -84,37 +76,27 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
 
           <div
             onClick={() => goToNFTDetailPage()}
-            className="inline-flex h-8 shrink-0 cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white backdrop-blur-[40px]"
+            className="inline-flex h-8 shrink-0 border border-white cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-[40px]"
           >
             Detail View
           </div>
         </div>
-        {/* <div className="block">
-          <h2 className="mb-1.5 truncate text-lg font-medium -tracking-wider text-white">
-            {title}
-          </h2>
-          <div className="text-sm font-medium -tracking-wide text-[#B6AAA2]">
-            {number_of_artwork} Artworks
+        <div className="flex justify-between">
+          <div className="inline-flex h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px]">
+            Token ID<span className='ml-2 font-bold'>{item?.tokenId}</span>
           </div>
-          <AnchorLink
-            href={user?.slug}
-            className="relative z-10 mt-3.5 inline-flex items-center rounded-3xl bg-white/20 p-2 backdrop-blur-[40px]"
+          <div
+            className="inline-flex cursor-pointer h-8 border border-white shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium tracking-wide text-white backdrop-blur-[40px] cursor-pointer"
+            title="Click to copy"
+            onClick={() => {
+              if (contractAddress) {
+                navigator.clipboard.writeText(contractAddress);
+              }
+            }}
           >
-            <Avatar
-              //@ts-ignore
-              image={user?.avatar}
-              alt={user?.name}
-              size="xs"
-              width={24}
-              height={24}
-              className="rounded-full"
-            />
-
-            <div className="truncate text-sm -tracking-wide text-white ltr:ml-2 ltr:pr-2 rtl:mr-2 rtl:pl-2">
-              @{user?.name}
-            </div>
-          </AnchorLink>
-        </div> */}
+            {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
+          </div>
+        </div>
       </div>
     </div>
   );

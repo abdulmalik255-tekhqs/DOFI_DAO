@@ -20,10 +20,7 @@ export default function Feeds({
   return (
     <div
       className={cn(
-        'grid gap-5 sm:grid-cols-2 md:grid-cols-3',
-        isGridCompact
-          ? '3xl:!grid-cols-4 4xl:!grid-cols-5'
-          : '3xl:!grid-cols-3 4xl:!grid-cols-4',
+        'grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10',
         className,
       )}
     >

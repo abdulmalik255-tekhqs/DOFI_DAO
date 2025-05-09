@@ -16,11 +16,13 @@ import {
   usePagination,
   useGlobalFilter,
 } from 'react-table';
+
 import { LongArrowLeft } from '@/components/icons/long-arrow-left';
 import CryptocurrencyDrawer from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer';
 import routes from '@/config/routes';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch } from 'react-redux';
+import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 function CryptocurrencyAccordionTable({
   // @ts-ignore
@@ -64,21 +66,21 @@ function CryptocurrencyAccordionTable({
   const dispatch = useDispatch();
   function goToAllProposalPage(data: any) {
     setTimeout(() => {
-      dispatch(idoActions.saveIDOdata(data?.original));
+      localStorage.setItem('dioId', JSON.stringify(data?.original));
+      dispatch(idodetailActions.saveIDOdata(data?.original));
       dispatch(idoActions.setIsConfetti(false));
-      router.push(routes.idoDetail);
+      router.push(`${routes.idoDetail}/${data?.original?._id}`);
     }, 500);
   }
   return (
-    <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg shadow-card lg:flex-row">
+    <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg  lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
         <GlobalFilter />
         <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
           <div className="rounded-tl-lg rounded-tr-lg bg-white pt-6 dark:bg-light-dark md:px-6 md:pt-8">
             <div
-              className={`flex items-center justify-between gap-4 border-b border-dashed border-gray-200 pb-5 dark:border-gray-700 ${
-                !isOpen ? 'rounded-tr-lg' : ''
-              }`}
+              className={`flex items-center justify-between gap-4 border-b border-dashed border-gray-200 pb-5 dark:border-gray-700 ${!isOpen ? 'rounded-tr-lg' : ''
+                }`}
             >
               <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
                 Domain Initial Offering
@@ -112,14 +114,13 @@ function CryptocurrencyAccordionTable({
                               key={idx}
                               className={`group px-3 py-5 font-normal first:!w-7`}
                             >
-                              <div className="flex items-center">
+                              <div className="flex items-center justify-center">
                                 {column.render('Header')}
                                 {column.canResize && (
                                   <div
                                     {...column.getResizerProps()}
-                                    className={`resizer ${
-                                      column.isResizing ? 'isResizing' : ''
-                                    }`}
+                                    className={`resizer ${column.isResizing ? 'isResizing' : ''
+                                      }`}
                                   />
                                 )}
                                 <span className="ltr:ml-1 rtl:mr-1">
@@ -158,7 +159,8 @@ function CryptocurrencyAccordionTable({
                                 <td
                                   {...cell.getCellProps()}
                                   key={idx}
-                                  className={`flex h-[50px] items-center px-3 tracking-[1px]`}
+                                  className={`flex h-[50px] items-center px-3 tracking-[1px] ${idx > 1 ? 'justify-center' : ''
+                                    }`}
                                 >
                                   {cell.render('Cell')}
                                 </td>

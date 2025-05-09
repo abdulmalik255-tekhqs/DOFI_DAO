@@ -1,32 +1,46 @@
 'use client';
 
-import { useState } from 'react';
-import { useWriteContract } from 'wagmi';
+
+import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
+import { formatUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
+import Eth from '@/assets/images/dao/eth.png';
+import Shib from '@/assets/images/dao/shib.png';
 import { config } from '@/app/shared/wagmi-config';
 import { useSelector } from 'react-redux';
 import Button from '@/components/ui/button';
-import { useBuyQuery } from '@/hooks/livePricing';
-import { useModal } from '@/components/modal-views/context';
+import { useBuyQueryWizard } from '@/hooks/livePricing';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { BeatLoader } from 'react-spinners';
+import ToastNotification from '../ui/toast-notification';
+import { Globe } from 'lucide-react';
+import Image from 'next/image';
+import { readContract } from '@wagmi/core'; 
+import { useEffect, useState } from 'react';
 
 export default function FindName({ data }: any) {
-  const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
+  const { address } = useAccount();
+  const [tokenBalance, setTokenBalance] = useState<string | null>(null);
+  console.log(tokenBalance,"tokenBalance");
+  
+  const { mutate: submitBuyAsync } = useBuyQueryWizard();
   const { loading } = useSelector((state: any) => state.ido);
-  const { openModal } = useModal();
   const dispatch = useDispatch();
   const { writeContractAsync } = useWriteContract();
   const handleBuy = async () => {
     try {
+      if (!address) {
+        ToastNotification('error', 'Connect wallet first!');
+        return;
+      }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
         args: [
@@ -37,71 +51,93 @@ export default function FindName({ data }: any) {
       const recipient = await waitForTransactionReceipt(config.getClient(), {
         hash,
         pollingInterval: 2000,
-      });
-
+      })
       if (recipient.status === 'success') {
+        dispatch(idoActions.setBuytransactionHash(recipient));
+        dispatch(idoActions.nextStep());
         const result = await submitBuyAsync({ id: data?._id });
-        // openModal('CREATE_IDO', data?.data);
       } else {
+        dispatch(idoActions.setLoading(false));
         console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.error('Buy failed:', error);
     }
   };
-  // const handleBuy = async () => {
-  //   try {
-  //     dispatch(idoActions.setLoading(true));
-  //     const result = await submitBuyAsync({ id: data?._id });
-  //     // openModal('CREATE_IDO', result);
-  //   } catch (error) {
-  //     console.error('Buy failed:', error);
-  //   }
-  // };
 
+  const getTokenBalance = async (userAddress: string) => {
+    try {
+      const balance = await readContract(config, {
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+        abi: tetherABI,
+        functionName: 'balanceOf',
+        args: [userAddress],
+      });
+
+      const formatted = formatUnits(balance as bigint, 18);
+      setTokenBalance(formatted);
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      ToastNotification('error', 'Failed to fetch token balance');
+    }
+  };
+   // 🔁 Call on address change
+   useEffect(() => {
+    if (address) {
+      getTokenBalance(address);
+    }
+  }, [address]);
   return (
-    <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
+    <>
       <div className='w-full justify-between flex'>
-       <h2 className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
-       Register
-       </h2>
-        <div className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-          Step 1 / <span className="text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-white">2</span>
-        </div>
+        <h2 className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
+          Register Domain
+        </h2>
       </div>
-      <div className="mb-2 flex w-full items-start justify-start">
-        <h3 className="text-sm font-medium uppercase tracking-tightest text-shadow-lg text-gray-900 dark:text-white">
-         {data?.name}
+      <div className="mb-2 flex w-full items-start justify-between">
+       
+        <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
+          <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
+          {data?.name}
+          <Image
+            src={data?.name?.endsWith('.eth') ? Eth : Shib}
+            alt="Domain extension"
+            className="w-5 h-5"
+          />
         </h3>
-      
+        <div>
+          <h4 className="flex items-center gap-2 text-md font-medium tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
+          Balance: $DOFI {tokenBalance}
+          </h4>
+          
+        </div>
       </div>
       <div
-        className={
-          'flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-100 p-4 dark:bg-light-dark'
-        }
+        className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white"
       >
-        <div className="flex w-full justify-between">
-          <h3>1 years registration</h3>
-          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-            ${data?.price}
+        <div className="flex w-full justify-between mb-2">
+          <h3 className="text-sm font-medium">1 year registration</h3>
+          <h3 className="text-sm font-medium uppercase tracking-wide">
+            $DOFI {data?.price}
           </h3>
         </div>
-        <div className="flex w-full justify-between">
-          <h3>Est. network fee</h3>
-          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+
+        <div className="flex w-full justify-between mb-2">
+          <h3 className="text-sm font-medium">Est. network fee</h3>
+          <h3 className="text-sm font-medium uppercase tracking-wide">
             $0.48
           </h3>
         </div>
+
         <div className="flex w-full justify-between">
-          <h3>Estimated total</h3>
-          <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
+          <h3 className="text-sm font-semibold">Estimated total</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide">
             ${data?.price + 0.48}
           </h3>
         </div>
       </div>
       <div className='mt-4'>
-      <Button
+        <Button
           size="large"
           shape="rounded"
           className="uppercase xs:tracking-widest"
@@ -118,7 +154,6 @@ export default function FindName({ data }: any) {
           )}
         </Button>
       </div>
-      
-    </div>
+    </>
   );
 }

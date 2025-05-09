@@ -12,7 +12,7 @@ import TransactionInfo from '@/components/ui/transaction-info';
 import { SwapIcon } from '@/components/icons/swap-icon';
 import Trade from '@/components/ui/trade';
 import cn from '@/utils/cn';
-import { usePostCaculate, useSwap } from '@/hooks/livePricing';
+import { useFetchNFTSWAP, usePostCaculate, useSwap } from '@/hooks/livePricing';
 import { BeatLoader } from 'react-spinners';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,13 +32,27 @@ const SwapPage = () => {
   const [toAmount, setToAmount] = useState<any>(null);
   const [selectedFromSwapCoin, setSelectedFromSwapCoin] = useState<any>(null);
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
+  const [selectedNFT, setSelectedNFT] = useState<any>(null);
+  const [blockNFT, setBlocknft] = useState<boolean>(false);
   const { mutate: submitCreate, data: calculationResult } = usePostCaculate();
+  const { NFTSwap } = useFetchNFTSWAP()
 
+console.log("toAmount--->",toAmount)
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
-      const toPricePerFraction = selectedToSwapCoin?.pricePerToken;
+      const toPricePerFraction = selectedToSwapCoin?.pricePerToken || 1;
       const fromAmountValue = Number(fromAmount?.value);
+      if (
+        selectedFromSwapCoin?._id &&
+        selectedToSwapCoin?._id &&
+        selectedFromSwapCoin._id === selectedToSwapCoin._id
+      ) {
+        ToastNotification('error', 'Same token can\'t be swapped.');
+        return; // stop execution here
+      }
+
+
       if (
         fromPricePerFraction &&
         toPricePerFraction &&
@@ -55,6 +69,26 @@ const SwapPage = () => {
 
     return () => clearTimeout(timer);
   }, [fromAmount, selectedFromSwapCoin, selectedToSwapCoin]);
+  useEffect(() => {
+    // @ts-ignore
+    if (NFTSwap?.data?.userNFTs && selectedFromSwapCoin) {
+      // @ts-ignore
+      const foundNFT = NFTSwap.data.userNFTs.find((nft: any) => {
+        const nftId = nft?.name;
+        const selectedId = selectedFromSwapCoin?.name;
+        setBlocknft(false)
+        return nftId === selectedId;
+      });
+
+      if (foundNFT) {
+        setBlocknft(false)
+        setSelectedNFT(foundNFT);
+      } else {
+        setBlocknft(true)
+        setSelectedNFT(null);
+      }
+    }
+  }, [selectedFromSwapCoin, NFTSwap]);
 
   useEffect(() => {
     setToAmount(calculationResult || 0.0);
@@ -64,14 +98,35 @@ const SwapPage = () => {
     const multiply = value * 0.05;
     return value - multiply;
   };
-
+  console.log("selectedNFT--->", selectedNFT)
   const handleSwap = async () => {
     try {
       if (!address) {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
-      if (!fromAmount) {
+      if (selectedNFT) {
+        if (Number(selectedNFT?.amount) < Number(fromAmount?.value)) {
+          ToastNotification('error', 'Entered Amount is should be less the nft amount holding!');
+          return;
+        };
+
+        if (blockNFT) {
+          ToastNotification('error', 'You are not holding this NFT!');
+          return;
+        }
+      }
+
+      if (
+        selectedFromSwapCoin?._id &&
+        selectedToSwapCoin?._id &&
+        selectedFromSwapCoin._id === selectedToSwapCoin._id
+      ) {
+        ToastNotification('error', 'Same token can\'t be swapped.');
+        return;
+      }
+
+      if (!fromAmount?.value) {
         ToastNotification('error', 'Enter Amount!');
         return;
       }
@@ -79,7 +134,7 @@ const SwapPage = () => {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
           //@ts-ignore
-          address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+          address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
           abi: tetherABI,
           functionName: 'transfer',
           args: [
@@ -87,24 +142,26 @@ const SwapPage = () => {
             parseUnits(fromAmount?.value?.toString(), 18),
           ],
         });
-        const recipient = await waitForTransactionReceipt(config.getClient(), {
+        const recipient = waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
-        if (recipient.status === 'success') {
-          submitSwap({
-            //@ts-ignore
-            nftID: selectedToSwapCoin?._id,
-            amountToMint: Number(fromAmount?.value),
-          });
-        } else {
-          dispatch(idoActions.setLoading(false));
-        }
+        // if (recipient.status === 'success') {
+        submitSwap({
+          //@ts-ignore
+           //@ts-ignore
+          nftID: selectedToSwapCoin?._id,
+          //@ts-ignore
+          amountToMint: Number(calculationResult?.data?.toAmount),
+        });
+        // } else {
+        //   dispatch(idoActions.setLoading(false));
+        // }
       } else {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
           //@ts-ignore
-          address: '0x16ea73c58e56a33185480fe2c61711c5c50cb414',
+          address: process.env.NEXT_PUBLIC_FRACTIONDAO_TOKEN as `0x${string}`,
           abi: fractionDaoABI,
           functionName: 'safeTransferFrom',
           args: [
@@ -115,27 +172,27 @@ const SwapPage = () => {
             '0x',
           ],
         });
-        const recipient = await waitForTransactionReceipt(config.getClient(), {
+        const recipient = waitForTransactionReceipt(config.getClient(), {
           hash,
           pollingInterval: 2000,
         });
-        if (recipient.status === 'success') {
-          if (selectedToSwapCoin.tokenType === 'ERC20') {
-            submitSwap({
-              //@ts-ignore
-              type: 'USDT',
-              amountToMint: Number(fromAmount?.value),
-            });
-          } else {
-            submitSwap({
-              //@ts-ignore
-              nftID: selectedFromSwapCoin?._id,
-              amountToMint: Number(fromAmount?.value),
-            });
-          }
+        // if (recipient.status === 'success') {
+        if (selectedToSwapCoin.tokenType === 'ERC20') {
+          submitSwap({
+            //@ts-ignore
+            type: 'USDT',
+            amountToMint: Number(toAmount?.data?.toAmount),
+          });
         } else {
-          dispatch(idoActions.setLoading(false));
+          submitSwap({
+            //@ts-ignore
+            nftID: selectedToSwapCoin?._id,
+            amountToMint: Number(toAmount?.data?.toAmount),
+          });
         }
+        // } else {
+        //   dispatch(idoActions.setLoading(false));
+        // }
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
@@ -144,8 +201,6 @@ const SwapPage = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   // useEffect(() => {
-  //   console.log(selectedFromSwapCoin,selectedToSwapCoin,"coins");
-    
   //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
   // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
@@ -165,17 +220,12 @@ const SwapPage = () => {
               getCoinValue={(data: any) => setFromAmount(data)}
               onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
             />
-            <div className="absolute left-1/2 top-1/2 z-[1] -ml-4 -mt-4 rounded-full bg-white shadow-large dark:bg-gray-600">
-              <Button
-                size="mini"
-                color="gray"
-                shape="circle"
-                variant="transparent"
-                // onClick={() => setToggleCoin(!toggleCoin)}
-              >
-                <SwapIcon className="h-auto w-3" />
-              </Button>
+            <div className="absolute left-1/2 top-1/2 z-[1] transform -translate-x-1/2 -translate-y-1/2 
+                rounded-full bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 
+                shadow-lg dark:bg-gray-600 p-2 flex items-center justify-center">
+              <SwapIcon className="w-4 h-4 text-white" />
             </div>
+
             <CoinInput
               label={'To'}
               exchangeRate={excangeRate(toAmount?.data?.toAmount)}
@@ -194,22 +244,25 @@ const SwapPage = () => {
           <TransactionInfo label={'Network Fee'} value={'0.35'} />
           {/* <TransactionInfo label={'Criptic Fee'} /> */}
         </div>
-        <Button
-          size="large"
-          shape="rounded"
-          fullWidth={true}
-          className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
-          onClick={() => handleSwap()}
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <BeatLoader color="#000" />
-            </>
-          ) : (
-            'SWAP'
-          )}
-        </Button>
+        <div className="border-b border-dashed border-gray-200 dark:border-gray-800 mt-4"></div>
+        <div className="flex justify-end">
+          <Button
+            size="medium"
+            shape="rounded"
+            fullWidth={true}
+            className="mt-6 uppercase xs:mt-8 xs:tracking-widest"
+            onClick={() => handleSwap()}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <BeatLoader color="#000" />
+              </>
+            ) : (
+              'SWAP'
+            )}
+          </Button>
+        </div>
       </Trade>
     </>
   );

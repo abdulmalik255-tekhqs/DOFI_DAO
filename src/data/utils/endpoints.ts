@@ -22,9 +22,13 @@ export const API_ENDPOINTS = {
   GET_NFTS_PROPOSAL:"/nft/proposal",
   POST_PROPSALS:"/proposals",
   POST_VOTE:"/vote",
+  POST_VOTE_UPDATED:"/vote/childDAO",
   POST_CALC:"/nft/swap/calculate",
   GET_NFT_SWAP:"/nft/swap",
-  POST_SWAP_TOKEN:"/nft/swap"
+  POST_SWAP_TOKEN:"/nft/swap",
+  GET_ALL_NFTS_DOMAIN:"/nft/available-domain",
+  POST_PAY_TOKEN:"/send/usdt",
+  GET_LEASE_ADDRESS:"/proposals/lease"
 
   // PRICING: 'https://api.coingecko.com/api/v3/coins',
   // MARKETS: 'https://api.coingecko.com/api/v3/coins/markets',

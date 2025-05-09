@@ -33,9 +33,8 @@ export default function CoinInput({
   let [value, setValue] = useState('');
   let [selectedCoin, setSelectedCoin] = useState(coinList[defaultCoinIndex]);
   let [visibleCoinList, setVisibleCoinList] = useState(false);
-  console.log("exchangeRate--->", exchangeRate)
-  const integerPattern = /^[0-9]*$/;
   const modalContainerRef = useRef<HTMLDivElement>(null);
+  const integerPattern = /^[0-9]*$/;
   useClickAway(modalContainerRef, () => {
     setVisibleCoinList(false);
   });
@@ -62,12 +61,12 @@ export default function CoinInput({
     <>
       <div
         className={cn(
-          'group flex min-h-[70px] rounded-lg border border-gray-200 transition-colors duration-200 hover:border-gray-900 dark:border-gray-700 dark:hover:border-gray-600',
+          'group flex min-h-[70px] rounded-lg border border-gray-200 transition-colors duration-200 hover:border-gray-900 dark:border-gray-700 dark:hover:border-gray-600 shadow-lg',
           className,
         )}
       >
         <div className="min-w-[80px] border-gray-200 p-3 transition-colors duration-200 group-hover:border-gray-900 dark:border-gray-700 dark:group-hover:border-gray-600">
-          <span className="mb-1.5 text-xs uppercase text-gray-600 dark:text-gray-400 text-center">
+          <span className="mb-1.5 text-xs uppercase text-gray-600 dark:text-gray-400 text-center font-bold">
             {label}
           </span>
           <button
@@ -76,9 +75,9 @@ export default function CoinInput({
             }
             className="flex items-center font-medium outline-none dark:text-gray-100"
           >
-            {selectedCoin?.imageUrl && <img className="h-6 w-6 rounded-full" src={selectedCoin?.imageUrl} />}
-            {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[12px] text-gray-500'>Please Select</span>}
-
+            {selectedCoin?.imageUrl && <img className="h-6 w-6 rounded-full" src={"https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png"} />}
+            {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[12px] text-gray-500'>Select token</span>}
+            
             <ChevronDown className="ltr:ml-1.5 rtl:mr-1.5 text-gray-500" />
           </button>
         </div>

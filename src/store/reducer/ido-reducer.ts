@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  idoDetaildata: {},
-  loading:false,
-  nftDetail:{},
-  previousRoute:false,
-  isConfetti:false,
-  selectedSwapFrom:{},
-  selectedSwapTo:{},
-
+  loading: false,
+  nftDetail: {},
+  previousRoute: false,
+  isConfetti: false,
+  selectedSwapFrom: {},
+  selectedSwapTo: {},
+  currentStep: 0,
+  buyTransactionhash: {},
+  domainNftData: {},
+  componentLoading: false,
+  initialDomain: {}
 };
 
 const idoSlice = createSlice({
   name: "ido",
   initialState,
   reducers: {
-    saveIDOdata(state, action) {
-      state.idoDetaildata = action.payload;
-    },
     setLoading(state, action) {
       state.loading = action.payload;
     },
@@ -35,6 +35,21 @@ const idoSlice = createSlice({
     },
     setSelectedSwapTo(state, action) {
       state.selectedSwapTo = action.payload;
+    },
+    setBuytransactionHash(state, action) {
+      state.buyTransactionhash = action.payload;
+    },
+    saveBuydomainNft(state, action) {
+      state.domainNftData = action.payload;
+    },
+    nextStep: (state) => { state.currentStep += 1 },
+    previousStep: (state) => { state.currentStep -= 1 },
+    goToStep: (state, action) => { state.currentStep = action.payload },
+    setComponentloading(state, action) {
+      state.componentLoading = action.payload;
+    },
+    saveInitialDomain (state, action) {
+      state.initialDomain = action.payload;
     },
   },
 });

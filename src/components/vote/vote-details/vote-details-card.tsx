@@ -22,23 +22,28 @@ import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { useModal } from '@/components/modal-views/context';
-import { usePostVote } from '@/hooks/livePricing';
+import { usePostVote, usePostVoteUpdated } from '@/hooks/livePricing';
 import { useQueryClient } from '@tanstack/react-query';
 import InputLabel from '@/components/ui/input-label';
 import Input from '@/components/ui/forms/input';
 import ToastNotification from '@/components/ui/toast-notification';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { usePathname } from 'next/navigation';
 
-function VoteActionButton({ vote }: any) {
+function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
   const { address } = useAccount();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
+  const params = usePathname();
+
   const { writeContractAsync } = useWriteContract();
-  const { mutate: submitCreate, isError, error } = usePostVote();
+  const { mutate: submitCreate, isError, error } = usePostVote(params);
+  const { mutate: submitCreateupdated } = usePostVoteUpdated(params);
+
+  // For Dofi Dao vote Cast
   const handleSubmit = async (isFavour: any) => {
-    console.log('amount---->', amount);
     try {
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
@@ -51,7 +56,7 @@ function VoteActionButton({ vote }: any) {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
         args: [
@@ -79,16 +84,37 @@ function VoteActionButton({ vote }: any) {
       console.log(error);
     }
   };
-  console.log('single file');
+  // For Domain Dao vote Cast
+  const handleSubmitUpdated = async (isFavour: any) => {
+    try {
+      if (!address) {
+        ToastNotification('error', 'Connect your wallet first!');
+        return;
+      }
+      dispatch(idoActions.setLoading(true));
+      submitCreateupdated({
+        //@ts-ignore
+        inFavor: isFavour,
+        proposalId: vote?._id,
+        address: address?.toLowerCase(),
+      });
 
+
+
+    } catch (error) {
+      dispatch(idoActions.setLoading(false));
+      console.log(error);
+    }
+  };
+console.log("data--->",data)
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      {vote?.status == 'active' && !vote?.hasVoted && (
+      {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
         <div className="mb-8">
           <InputLabel title="Amount" important />
           <Input
             type="number"
-            placeholder="Enter Amount"
+            placeholder="Enter DOFI Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -100,14 +126,20 @@ function VoteActionButton({ vote }: any) {
         color="success"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted || loading}
-        onClick={() => handleSubmit('yes')}
+        onClick={() => {
+          if (data?.votePower > 1) {
+            handleSubmitUpdated('yes')
+          } else {
+            handleSubmit('yes')
+          }
+        }}
       >
         {loading ? (
           <>
             <BeatLoader color="#000" />
           </>
         ) : (
-          'Invest'
+          'Vote'
         )}
       </Button>
       <Button
@@ -123,10 +155,14 @@ function VoteActionButton({ vote }: any) {
   );
 }
 
-export default function VoteDetailsCard({ vote }: any) {
+export default function VoteDetailsCard({ vote, data }: any) {
+  console.log("data--parent->",data)
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
-
+  const getRemainingallocation = () => {
+    const allocationvalue = Math.floor((vote?.totalFractions) - (vote?.amountRaised / vote?.pricePerFraction));
+    return allocationvalue;
+  }
   return (
     <motion.div
       layout
@@ -153,6 +189,9 @@ export default function VoteDetailsCard({ vote }: any) {
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
           </p>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            {vote?.nftId?.name}
+          </p>
           {!isExpand ? (
             <Button
               onClick={() => setIsExpand(!isExpand)}
@@ -162,7 +201,7 @@ export default function VoteDetailsCard({ vote }: any) {
               Vote Now
             </Button>
           ) : (
-            <VoteActionButton vote={vote} />
+            <VoteActionButton vote={vote} data={data}/>
           )}
         </div>
         {vote.status == 'active' ? (
@@ -177,8 +216,21 @@ export default function VoteDetailsCard({ vote }: any) {
               },
             )}
           >
-            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            <h3 className="flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ends in
+              <div
+                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
+    ${vote?.status === 'approved'
+                    ? 'bg-green-100 text-green-800 border border-green-300'
+                    : vote?.status === 'rejected'
+                      ? 'bg-red-100 text-red-800 border border-red-300'
+                      : vote?.status === 'active'
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                  }`}
+              >
+                {vote?.status}
+              </div>
             </h3>
             <AuctionCountdown
               date={new Date(vote?.expirationDate.toString())}
@@ -196,8 +248,23 @@ export default function VoteDetailsCard({ vote }: any) {
               },
             )}
           >
-            <h3 className="text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
+            <h3 className=" flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ended
+
+
+              <div
+                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
+    ${vote?.status === 'approved'
+                    ? 'bg-green-100 text-green-800 border border-green-300'
+                    : vote?.status === 'rejected'
+                      ? 'bg-red-100 text-red-800 border border-red-300'
+                      : vote?.status === 'active'
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                  }`}
+              >
+                {vote?.status}
+              </div>
             </h3>
             <AuctionCountdown date={undefined} />
           </div>
@@ -223,24 +290,30 @@ export default function VoteDetailsCard({ vote }: any) {
                   : ''}
                 {/* <ExportIcon className="h-auto w-3" /> */}
               </a>
-              <div className="mt-4">
-                Amount allocated:{' '}
-                <span className="font-medium text-gray-900">
-                  {vote?.amount}
-                </span>
-              </div>
-              {vote?.leasingAddress == '0x' ? (
-                <>
-                  <div className="mt-4">
-                    Price per fraction:{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.pricePerFraction || 2}
-                    </span>
-                  </div>
-                  <div className="mt-4">
+              {/* <div className="mt-4">
                     Total fractions:{' '}
                     <span className="font-medium text-gray-900">
                       {vote?.totalFractions || 100}
+                    </span>
+                  </div> */}
+              {vote?.leasingAddress == '0x' ? (
+                <>
+                  <div className="mt-4">
+                    Leasing Address:{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.leasingAddress || "0x"}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    Percentage Yield :{' '}
+                    <span className="font-medium text-gray-900">
+                      {vote?.percentageYield || "0"}
+                    </span>
+                  </div>
+                  <div className="mt-4">
+                    Acceptacnce Criteria:{' '}
+                    <span className="font-medium text-gray-900">
+                      {"$DOFI 100"}
                     </span>
                   </div>
                 </>
@@ -258,11 +331,29 @@ export default function VoteDetailsCard({ vote }: any) {
                       {vote?.yieldPercentage || 3}
                     </span>
                   </div>
+                  {data?.votePower > 1 ? <>  <div className="mt-4">
+                    Vote Weightage:{' '}
+                    <span className="font-medium text-gray-900">
+                      {((data?.votePower/data?.totalSupply)*100)?.toPrecision(3) || 0}%
+                    </span>
+                  </div>
+                    <div className="mt-4">
+                      Acceptance Criteria:{' '}
+                      <span className="font-medium text-gray-900">
+                        {data?.quorum} Quorum (Total Supply {data?.totalSupply})
+                      </span>
+                    </div></> : <div className="mt-4">
+                    Acceptance Criteria:{' '}
+                    <span className="font-medium text-gray-900">
+                      $DOFI 100
+                    </span>
+                  </div>}
+
                 </>
               )}
             </div>
             <VotePoll title={'Votes'} vote={vote} />
-            <VoterTable votes={vote?.votes || []} />
+            <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
             <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
             <div className="mb-2">
               <RevealContent defaultHeight={250}>

@@ -33,10 +33,13 @@ const tabMenu = [
   },
 ];
 
-export default function ProfileTab({ data }: any) {
+export default function ProfileTab({ data ,leasingData}: any) {
+  console.log(leasingData,"leasingData");
+  
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
+  const [leasedDomainNFTs, setLeasedDomainNFTs] = useState([]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -54,6 +57,7 @@ export default function ProfileTab({ data }: any) {
       setDomain(domainArr);
       setFraction(fractionArr);
     }
+    setLeasedDomainNFTs(leasingData)
   }, [data]);
 
   return (
@@ -62,7 +66,7 @@ export default function ProfileTab({ data }: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
               layout === LAYOUT_OPTIONS.RETRO
                 ? 'md:grid-cols-2'
                 : 'md:grid-cols-1',
@@ -90,7 +94,7 @@ export default function ProfileTab({ data }: any) {
           {/* <div className="space-y-8 md:space-y-10 xl:space-y-12"> */}
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
               layout === LAYOUT_OPTIONS.RETRO
                 ? 'md:grid-cols-2'
                 : 'md:grid-cols-1',
@@ -146,17 +150,17 @@ export default function ProfileTab({ data }: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
               layout === LAYOUT_OPTIONS.RETRO
                 ? 'md:grid-cols-2'
                 : 'md:grid-cols-1',
             )}
           >
-            {fraction?.length > 0 ? (
-              fraction?.map((fraction: any, index: number) => (
+            {leasingData?.length > 0 ? (
+              leasingData?.map((leasingData: any, index: number) => (
                 <LeaseDomainCard
-                  item={fraction}
-                  key={`fraction-key-${fraction?._id}`}
+                  item={leasingData}
+                  key={`fraction-key-${leasingData?._id}`}
                 />
               ))
             ) : (

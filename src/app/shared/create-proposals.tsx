@@ -280,6 +280,7 @@ const CreateProposalPage = () => {
   const [amount, setAmount] = useState('');
   const [leasingAddress, setLeasingAddress] = useState('');
   const [percentageYield, setPercentageYield] = useState('');
+  const [domainAmount, setDomainAmount] = useState('');
   const [motivation, setMotivation] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
@@ -290,7 +291,6 @@ const CreateProposalPage = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
-console.log(selectedNFT,"selectedNFT");
 
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
@@ -300,15 +300,22 @@ console.log(selectedNFT,"selectedNFT");
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
+      const isEmpty = !name || !category ||!motivation || !summary;
+
+    if (isEmpty) {
+      ToastNotification('error', 'Please fill all required fields');
+      return;
+    }
+
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
         args: [
           '0x1357331C3d6971e789CcE452fb709465351Dc0A1',
-          parseUnits(amount?.toString(), 18),
+          parseUnits(50?.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
@@ -321,7 +328,7 @@ console.log(selectedNFT,"selectedNFT");
           name: name,
           summary: summary,
           motivation: motivation,
-          amount: amount,
+          amount: 50,
           nftId: category,
           daoId: '680a76bce48a31fb65d162dd',
           leasingAddress: !isFractionMode ? leasingAddress : '0x',
@@ -371,9 +378,6 @@ console.log(selectedNFT,"selectedNFT");
   //     priceType,
   //     category
   //   };
-  //   console.log('Form Data:', formData);
-
-  //   // You can replace the console.log with an API call here
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
@@ -491,7 +495,7 @@ console.log(selectedNFT,"selectedNFT");
         </select>
       </div>
       <div className="mb-8">
-        <InputLabel title="Domain Amount" important />
+        <InputLabel title="Domain Value" important />
         <Input
         disabled={true}
           type="number"
@@ -501,7 +505,17 @@ console.log(selectedNFT,"selectedNFT");
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Total Fractions" important />
+        <InputLabel title="Proposal Creation Amount" />
+        <Input
+          type="number"
+          disabled
+          placeholder="Enter amount"
+          value={"50"}
+
+        />
+      </div>
+      <div className="mb-8">
+        <InputLabel title="Total Fractions" />
         <Input
          disabled={true}
           type="number"
@@ -511,7 +525,7 @@ console.log(selectedNFT,"selectedNFT");
         />
       </div>
       <div className="mb-8">
-        <InputLabel title="Price Per Fraction" important />
+        <InputLabel title="Price Per Fraction" />
         <Input
          disabled={true}
           type="number"

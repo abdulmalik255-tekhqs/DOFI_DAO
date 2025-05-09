@@ -62,7 +62,7 @@ class client {
     getLatestIDO: (address: any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
   idoDetail = {
-    getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address}`),
+    getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address != undefined ? address :"0x753a356898A3f9aC27f31c1250BE6De1C51EC883"}`),
   };
   shareIDOBuy = {
     create: async (id: string, data: any, address: string) => {
@@ -80,7 +80,7 @@ class client {
     getLatestNfts: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS}?address=${address}`),
   };
   all_propsals_nfts = {
-    getLatestPropsalNFTS: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_NFTS_PROPOSAL}?address=${address}`),
+    getLatestPropsalNFTS: (address: any) => HttpClient.get(`${API_ENDPOINTS.GET_ALL_NFTS_DOMAIN}?address=${address}`),
   };
   createPropsals = {
     create: (data: any, address: string) =>
@@ -90,6 +90,12 @@ class client {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_VOTE}?address=${address}`, data),
   };
+
+  postVoteUpdated = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_VOTE_UPDATED}?address=${address}`, data),
+  };
+
   postCalulation = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_CALC}?address=${address}`, data),
@@ -103,9 +109,16 @@ class client {
   fetchNFTSwap = {
     getOwnerNFTSwap: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFT_SWAP}?address=${address}`),
   };
+  fetchNFTLeaseAddress = {
+    getNftLeaseAddress: (address:any,nftId:any) => HttpClient.get(`${API_ENDPOINTS.GET_LEASE_ADDRESS}?address=${address}&nftID=${nftId}`),
+  };
   swapToken = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_SWAP_TOKEN}?address=${address}`, data),
+  };
+  postPaytoken = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_PAY_TOKEN}?address=${address}`, data),
   };
 }
 

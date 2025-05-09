@@ -14,7 +14,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
       {isLoading ? <p className="text-center">Loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
         {proposalsDomainDao?.count > 0 ? (
           proposalsDomainDao?.data?.map((proposal: any) => (
-            <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} />
+            <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} data={proposalsDomainDao}/>
           ))
         ) : (
           <div className="flex flex-col items-center justify-center rounded-lg bg-white px-4 py-16 text-center shadow-card dark:bg-light-dark xs:px-6 md:px-5 md:py-24">
@@ -38,7 +38,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
             <h2 className="mb-3 text-base font-medium leading-relaxed dark:text-gray-100 md:text-lg xl:text-xl">
               There are no proposals at the moment
             </h2>
-            <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+            {/* <p className="leading-relaxed text-gray-600 dark:text-gray-400">
               Discuss ideas you have on{' '}
               <a
                 target="_blank"
@@ -57,7 +57,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
               >
                 Discourse <ExportIcon className="h-auto w-3" />
               </a>
-            </p>
+            </p> */}
           </div>
         )}
       </motion.div>}

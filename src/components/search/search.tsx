@@ -15,15 +15,11 @@ export default function Search() {
   const { openDrawer } = useDrawer();
   const dispatch = useDispatch();
   const { domainData, isLoading } = useLatestDomain();
-  console.log(domainData, 'domainData');
+  
 
   useEffect(() => {
     dispatch(idoActions.setPreviousRoute(true));
   }, []);
-  //@ts-ignore
-  const filteredData = domainData?.data?.filter((nft: any) => {
-    return Number(nft.amount) <= 1;
-  });
   return (
     <>
       {isLoading ? (
@@ -35,41 +31,11 @@ export default function Search() {
       ) : (
         <>
           {' '}
-          <div className="grid 2xl:grid-cols-[280px_minmax(auto,_1fr)] 4xl:grid-cols-[320px_minmax(auto,_1fr)]">
-            <div className="hidden border-dashed border-gray-200 dark:border-gray-700 2xl:block ltr:border-r ltr:pr-8 rtl:border-l rtl:pl-8">
-              <Filters />
-            </div>
-            <div className="2xl:ltr:pl-8 4xl:ltr:pl-10 2xl:rtl:pr-8 4xl:rtl:pr-10">
-              <div className="relative z-10 mb-6 flex items-center justify-between">
-                {isLoading ? null : (
-                  <span className="text-xs font-medium text-gray-900 dark:text-white sm:text-sm">
-                    {
-                      //@ts-ignore
-                      filteredData?.length
-                    }{' '}
-                    items
-                  </span>
-                )}
-
-                <div className="flex gap-6 3xl:gap-8">
-                  {/* <SortList /> */}
-                  {/* <div className="hidden 3xl:block">
-              <GridSwitcher />
-            </div> */}
-                  {/* <div className="hidden sm:block 2xl:hidden">
-              <Button
-                shape="rounded"
-                size="small"
-                variant="ghost"
-                color="gray"
-                onClick={() => openDrawer('DRAWER_SEARCH')}
-                className="!h-11 !p-3 hover:!translate-y-0 hover:!shadow-none focus:!translate-y-0 focus:!shadow-none"
-              >
-                <OptionIcon className="relative h-auto w-[18px]" />
-              </Button>
-            </div> */}
-                </div>
-              </div>
+          <div className="">
+            <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] bg-white py-5 px-4 rounded-sm">
+              Explore Domains
+            </h2>
+            <div className="">
               <Feeds
                 data={
                   //@ts-ignore

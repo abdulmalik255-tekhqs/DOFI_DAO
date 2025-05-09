@@ -5,8 +5,6 @@ interface ProposalProps {
   data: any;
 }
 export default function ProposalAccpet({ data }: ProposalProps) {
-  console.log(data);
-
   const [priceFraction, setPricefraction] = useState('');
   return (
     <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">

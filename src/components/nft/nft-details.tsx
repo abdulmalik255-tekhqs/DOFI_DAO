@@ -57,7 +57,6 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
   const { nftDetail, previousRoute, loading } = useSelector(
     (state: any) => state.ido,
   );
-  console.log(nftDetail);
 
   const dispatch = useDispatch();
   const { mutate: submitBuyAsync, isError, error, isSuccess } = useBuyQuery();
@@ -66,10 +65,9 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
     try {
       dispatch(idoActions.setLoading(true));
       const priceInWei = parseUnits(nftDetail?.price?.toString() || '0', 18);
-      console.log('Transferring', formatEther(priceInWei), 'USDT');
       const hash = await writeContractAsync({
         //@ts-ignore
-        address: '0x04568e30d14de553921B305BE1165fc8F9a26E94',
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
         args: ['0x1357331C3d6971e789CcE452fb709465351Dc0A1', priceInWei],
@@ -86,7 +84,6 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
       // openModal('CREATE_IDO', result);
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.error('Buy failed:', error);
     }
   };
   return (

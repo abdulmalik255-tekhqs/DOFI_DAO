@@ -80,7 +80,7 @@ export function LivePricingFeed({
     <div
       onClick={() => goToCreateProposalPage()}
       className={cn(
-        'm-2 flex cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.25)] dark:bg-light-dark lg:flex-row',
+        'm-2 flex border-[#14161A] border-b-4 cursor-pointer items-center gap-4 rounded-lg bg-white p-5 shadow-lg dark:bg-light-dark lg:flex-row',
       )}
     >
       <div className="w-full flex-col">
@@ -198,6 +198,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       breakpoints={sliderBreakPoints}
       pagination={{ clickable: true }}
       observer={true}
+      navigation={true}
       dir="ltr"
       className="w-full pb-10"
     >
