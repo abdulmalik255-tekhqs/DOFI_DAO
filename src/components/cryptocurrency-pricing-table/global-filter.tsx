@@ -68,8 +68,10 @@ export default function GlobalFilter() {
   }
   return (
     <div className="mb-[40px] flex-1 text-center ltr:ml-auto rtl:mr-auto">
-      <div className='gap-[38px] flex flex-col rounded-[12px] bg-cover bg-no-repeat' style={{ backgroundImage: `url(${Bg.src})` }}>
-        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[800]  text-[#0F172A]">
+<div
+  className="gap-[38px] flex flex-col rounded-[12px] bg-contain bg-center bg-no-repeat"
+  style={{ backgroundImage: `url(${Bg.src})` }}
+>        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[800]  text-[#0F172A]">
           Register Your Name
         </h2>
         <label className="mb-[46px] relative hidden w-full items-center justify-center  md:flex">
