@@ -126,6 +126,7 @@ function VoteActionButton({ vote, data }: any) {
         shape="rounded"
         color="success"
         size="medium"
+        fullWidth={true}
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted || loading}
         onClick={() => {
@@ -148,6 +149,7 @@ function VoteActionButton({ vote, data }: any) {
         shape="rounded"
         color="danger"
         size="medium"
+        fullWidth={true}
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted}
         onClick={() => handleSubmit('no')}
@@ -186,8 +188,8 @@ export default function VoteDetailsCard({ vote, data }: any) {
 
         <div className="self-start md:col-span-2">
           <div
-            className={`mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
-    ${vote?.status === 'approved'
+            className={`hidden md:flex mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
+              ${vote?.status === 'approved'
                 ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6]'
                 : vote?.status === 'rejected'
                   ? 'bg-[#FEE2E2] text-[#EF4444] border border-[#EF4444]'
@@ -199,19 +201,17 @@ export default function VoteDetailsCard({ vote, data }: any) {
             <span className="h-[8px] w-[8px] rounded-full bg-current"></span>
             {vote?.status}
           </div>
-          <div className='flex items-center '>
+          <div className='flex items-center flex-wrap'>
             <span
               onClick={() => setIsExpand(!isExpand)}
-              className="cursor-pointer text-[#000000] font-[500] leading-normal text-[20px] pr-[16px]"
+              className="capitalize cursor-pointer text-[#000000] font-[500] leading-normal text-[16px] md:text-[20px] pr-[12px] md:pr-[16px]"
             >
               {vote?.name}
-
-
             </span>
-            <span className="border-l border-l-[#64748B] text-[16px] text-[#475569] font-[400] pl-[16px] pr-[16px]">
+            <span className="border-l border-l-[#64748B] text-[14px] md:text-[16px] text-[#475569] font-[400] pl-[12px] md:pl-[16px] pr-[12px] md:pr-[16px]">
               {" "}DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
             </span>
-            <span className="border-l border-l-[#64748B] text-[16px] text-[#475569] font-[400] pl-[16px]">
+            <span className="border-l border-l-[#64748B] text-[14px] md:text-[16px] text-[#475569] font-[400] pl-[12px] md:pl-[16px]">
               {" "}{vote?.nftId?.name}
             </span>
           </div>
@@ -263,8 +263,29 @@ export default function VoteDetailsCard({ vote, data }: any) {
         </div>
 
 
-        <div className='flex flex-col justify-between items-end'>
-          <div>
+        <div className='flex flex-col justify-between items-start md:items-end mb-10 md:mb-0'>
+          <div className='flex md:hidden w-full flex justify-between'>
+            <div
+              className={` mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
+              ${vote?.status === 'approved'
+                  ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6]'
+                  : vote?.status === 'rejected'
+                    ? 'bg-[#FEE2E2] text-[#EF4444] border border-[#EF4444]'
+                    : vote?.status === 'active'
+                      ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]'
+                      : 'bg-gray-100 text-gray-800 border border-gray-300'
+                }`}
+            >
+              <span className="h-[8px] w-[8px] rounded-full bg-current"></span>
+              {vote?.status}
+            </div>
+            <div>
+            <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+            {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
+          </div>
+          </div>
+
+          <div className='hidden md:flex'>
             <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
             {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
           </div>
@@ -276,7 +297,6 @@ export default function VoteDetailsCard({ vote, data }: any) {
 
             </>) : null
           }
-
           {!isExpand ? (
             <Button
               onClick={() => setIsExpand(!isExpand)}
@@ -302,9 +322,9 @@ export default function VoteDetailsCard({ vote, data }: any) {
           >
             <hr />
             <div
-              className={cn('flex w-full mt-[28px] mb-[28px] justify-between')}
+              className={cn('flex flex-col md:flex-row w-full mt-[28px] mb-[28px] justify-between')}
             >
-              <div className='border-r border-r-[#CBD5E1] w-[48%]' >
+              <div className='md:border-r md:border-r-[#CBD5E1] w-full md:w-[48%]' >
                 <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
                   Proposed by:{' '}
                   <span className="font-[400] text-black">
@@ -375,7 +395,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                   </>
                 )}
               </div>
-              <div className='w-[48%]'>
+              <div className=' w-full md:w-[48%] mt-4 md:mt-0'>
                 <VotePoll title={'Votes'} vote={vote} />
                 <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
               </div>

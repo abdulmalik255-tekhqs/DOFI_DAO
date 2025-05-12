@@ -121,26 +121,26 @@ const ProposalsPage = () => {
           <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
             {/* Total */}
             <div className="text-center">
-              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.count || "00"}</div>
-              <div className="text-[14px] text-[#334155] font-[400]">Total</div>
+              <div className="text-[16px] md:text-[24px] font-[500] text-[#1E293B]">{proposals?.count || "00"}</div>
+              <div className="text-[12px] md:text-[14px] text-[#334155] font-[400]">Total</div>
             </div>
 
             {/* Active */}
             <div className="text-center">
-              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.active || "00"}</div>
-              <div className="text-[14px] text-[#334155] font-[400]">Active</div>
+              <div className="text-[16px] md:text-[24px] font-[500] text-[#1E293B]">{proposals?.active || "00"}</div>
+              <div className="text-[12px] md:text-[14px] text-[#334155] font-[400]">Active</div>
             </div>
 
             {/* Sucessfull */}
             <div className="text-center">
-              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.successful || "00"}</div>
-              <div className="text-[14px] text-[#334155] font-[400]">Sucessfull</div>
+              <div className="text-[16px] md:text-[24px] font-[500] text-[#1E293B]">{proposals?.successful || "00"}</div>
+              <div className="text-[12px] md:text-[14px] text-[#334155] font-[400]">Sucessfull</div>
             </div>
 
             {/* Rejected */}
             <div className="text-center">
-              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.rejected || "00"}</div>
-              <div className="text-[14px] text-[#334155] font-[400]">Rejected</div>
+              <div className="text-[16px] md:text-[24px] font-[500] text-[#1E293B]">{proposals?.rejected || "00"}</div>
+              <div className="text-[12px] md:text-[14px] text-[#334155] font-[400]">Rejected</div>
             </div>
           </div>
         </div>

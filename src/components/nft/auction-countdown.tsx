@@ -110,7 +110,7 @@ function CountdownDisplayWrapper({ days, hours, minutes, seconds }: any) {
       </div>
       <span className="mt-[10px] border-r border-r-[#CBD5E1] h-[32px] self-stretch pr-[20px] md:pr-[28px] lg:pr-[50px] xl:pr-[63px] "></span>
       <div
-        className={cn('shrink-0 3xl:w-20 flex items-center flex-col pl-[20px] md-pl-[28px] lg:pl-[50px] xl:pl-[63px]', {
+        className={cn('shrink-0 3xl:w-20 flex items-center flex-col pl-[20px] md:pl-[28px] lg:pl-[50px] xl:pl-[63px]', {
           '3xl:w-auto': layout === LAYOUT_OPTIONS.RETRO,
         })}
       >
@@ -125,7 +125,7 @@ function CountdownDisplayWrapper({ days, hours, minutes, seconds }: any) {
         </span>
         <span
           className={cn(
-            'hidden truncate pt-[4px] text-[14px] font-[400] -tracking-wide text-[#334155] flex items-center justify-center',
+            'hidden truncate pt-[4px] text-[14px] font-[400] -tracking-wide text-[#334155]',
             {
               'md:block': layout !== LAYOUT_OPTIONS.RETRO,
               'lg:block': layout === LAYOUT_OPTIONS.RETRO,

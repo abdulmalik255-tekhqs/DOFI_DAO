@@ -116,7 +116,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
   return (
     <motion.div
       layout
-      className="dark:border-gray-700"
+      className=""
     >
       <table
         {...getTableProps()}
@@ -160,7 +160,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
                 <tr
                   {...row.getRowProps()}
                   key={idx}
-                  className="mb-3 grid border-b border-gray-200 pb-3 dark:border-gray-700 sm:mb-0 sm:table-row sm:border-b-0 sm:pb-0"
+                  className="mb-3 grid md:border-b border-gray-200 pb-3 dark:border-gray-700 sm:mb-0 sm:table-row sm:border-b-0 sm:pb-0"
                 >
                   {row.cells.map((cell, idx) => (
                     <td
