@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import cn from '@/utils/cn';
+import { readContract } from '@wagmi/core';
 import { BeatLoader } from 'react-spinners';
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
-import { parseUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
 import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
@@ -34,6 +35,7 @@ import { usePathname } from 'next/navigation';
 
 function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
+  const [tokenBalance, setTokenBalance] = useState<string | null>(null);
   const { address } = useAccount();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
@@ -52,6 +54,10 @@ function VoteActionButton({ vote, data }: any) {
       }
       if (!amount) {
         ToastNotification('error', 'Enter Amount!');
+        return;
+      }
+      if (Number(tokenBalance) < Number(amount)) {
+        ToastNotification('error', 'You do not have enough DOFI token!');
         return;
       }
       dispatch(idoActions.setLoading(true));
@@ -107,7 +113,28 @@ function VoteActionButton({ vote, data }: any) {
       console.log(error);
     }
   };
-  console.log("data--->", data)
+  const getTokenBalance = async (userAddress: string) => {
+    try {
+      const balance = await readContract(config, {
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+        abi: tetherABI,
+        functionName: 'balanceOf',
+        args: [userAddress],
+      });
+
+      const formatted = formatUnits(balance as bigint, 18);
+      setTokenBalance(formatted);
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      ToastNotification('error', 'Failed to fetch token balance');
+    }
+  };
+  // 🔁 Call on address change
+  useEffect(() => {
+    if (address) {
+      getTokenBalance(address);
+    }
+  }, [address]);
   return (
     <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
@@ -280,9 +307,9 @@ export default function VoteDetailsCard({ vote, data }: any) {
               {vote?.status}
             </div>
             <div>
-            <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
-            {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
-          </div>
+              <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+              {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
+            </div>
           </div>
 
           <div className='hidden md:flex'>
@@ -366,8 +393,8 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
                       Leasing address:{' '}
                       <span className="font-[400] text-black">
-                      {vote?.leasingAddress.slice(0, 5)}...
-                      {vote?.leasingAddress.slice(-5)}
+                        {vote?.leasingAddress.slice(0, 5)}...
+                        {vote?.leasingAddress.slice(-5)}
                       </span>
                     </div>
                     <div className="mt-4">

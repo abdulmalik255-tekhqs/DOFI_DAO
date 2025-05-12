@@ -33,7 +33,6 @@ const IDODetailPage = () => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
   const [tokenBalance, setTokenBalance] = useState<string | null>(null);
-  console.log(tokenBalance,"tokenBalance");
   const [_, copyToClipboard] = useCopyToClipboard();
   const [isExpired, setIsExpired] = useState(false);
   const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
