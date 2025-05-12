@@ -17,7 +17,7 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
             <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} data={proposalsDomainDao}/>
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-lg bg-white px-4 py-16 text-center shadow-card dark:bg-light-dark xs:px-6 md:px-5 md:py-24">
+          <div className="flex flex-col items-center justify-center rounded-lg bg-white px-4 py-16 text-center border-[#E2E8F0] border dark:bg-light-dark xs:px-6 md:px-5 md:py-24">
             <div className="mb-6 flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gray-900 text-white shadow-card md:h-24 md:w-24">
               <svg
                 stroke="currentColor"

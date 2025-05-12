@@ -85,7 +85,7 @@ const ProposalsPage = () => {
     //   ),
     //   path: 'past',
     // },
-  ];
+  ]; 
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>
@@ -148,7 +148,7 @@ const ProposalsPage = () => {
           className={`${proposals?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-lg p-[30px] space-y-[25px] bg-white min-w-[360px]`}
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[10px] shadow-lg p-[30px] space-y-[25px] bg-white min-w-[360px]`}
         >
           <div className="flex gap-[20px] items-center">
             <div>

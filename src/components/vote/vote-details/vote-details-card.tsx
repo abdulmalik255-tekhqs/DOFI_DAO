@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import cn from '@/utils/cn';
@@ -108,9 +109,9 @@ function VoteActionButton({ vote, data }: any) {
   };
   console.log("data--->", data)
   return (
-    <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
+    <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
-        <div className="mb-8">
+        <div className="">
           <InputLabel title="Amount" important />
           <Input
             type="number"
@@ -124,6 +125,7 @@ function VoteActionButton({ vote, data }: any) {
       <Button
         shape="rounded"
         color="success"
+        fullWidth="medium"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted || loading}
         onClick={() => {
@@ -145,6 +147,7 @@ function VoteActionButton({ vote, data }: any) {
       <Button
         shape="rounded"
         color="danger"
+        fullWidth="medium"
         className="flex-1 xs:flex-auto"
         disabled={vote?.status != 'active' || vote?.hasVoted}
         onClick={() => handleSubmit('no')}
@@ -156,6 +159,7 @@ function VoteActionButton({ vote, data }: any) {
 }
 
 export default function VoteDetailsCard({ vote, data }: any) {
+  console.log(vote, "votevote");
 
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
@@ -168,48 +172,116 @@ export default function VoteDetailsCard({ vote, data }: any) {
       layout
       initial={{ borderRadius: 8 }}
       className={cn(
-        'mb-3 rounded-[12px] bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
-        isExpand ? 'shadow-large' : 'border-[#E2E8F0] border',
+        'mb-3 rounded-[12px]  bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
+        isExpand ? 'border-[#E2E8F0] border' : 'border-[#E2E8F0] border',
       )}
     >
       <motion.div
         layout
-        className={cn('flex w-full flex-col-reverse justify-between', {
+        className={cn('flex w-full flex-col-reverse mb-[32px] justify-between', {
           'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
           'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
         })}
       >
-       
+
         <div className="self-start md:col-span-2">
-           <div
-                className={`mb-[32px] flex capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
+          <div
+            className={`mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
     ${vote?.status === 'approved'
+                ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6]'
+                : vote?.status === 'rejected'
+                  ? 'bg-[#FEE2E2] text-[#EF4444] border border-[#EF4444]'
+                  : vote?.status === 'active'
                     ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]'
-                    : vote?.status === 'rejected'
-                      ? 'bg-red-100 text-red-800 border border-red-300'
-                      : vote?.status === 'active'
-                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                        : 'bg-gray-100 text-gray-800 border border-gray-300'
-                  }`}
-              >
-                {vote?.status}
-              </div>
-          <h3
-            onClick={() => setIsExpand(!isExpand)}
-            className="cursor-pointer text-base font-medium leading-normal dark:text-gray-100 2xl:text-lg capitalize"
+                    : 'bg-gray-100 text-gray-800 border border-gray-300'
+              }`}
           >
-            {vote?.name}
-          </h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            <span className="h-[8px] w-[8px] rounded-full bg-current"></span>
+            {vote?.status}
+          </div>
+          <div className='flex items-center '>
+            <span
+              onClick={() => setIsExpand(!isExpand)}
+              className="cursor-pointer text-[#000000] font-[500] leading-normal text-[20px] pr-[16px]"
+            >
+              {vote?.name}
+
+
+            </span>
+            <span className="border-l border-l-[#64748B] text-[16px] text-[#475569] font-[400] pl-[16px] pr-[16px]">
+              {" "}DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
+            </span>
+            <span className="border-l border-l-[#64748B] text-[16px] text-[#475569] font-[400] pl-[16px]">
+              {" "}{vote?.nftId?.name}
+            </span>
+          </div>
+
+
+          {/* <p className="mt-2 text-gray-600 dark:text-gray-400">
             DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
           </p>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             {vote?.nftId?.name}
-          </p>
+          </p> */}
+          <h3 className="mt-[20px] flex justify-start text-[#1E293B] md:text-base font-[400] 2xl:text-[16px]">
+            Time Remaining:
+          </h3>
+          {vote.status == 'active' ? (
+            <div
+              className={cn(
+                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b  before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+                // {
+                //   'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
+                //     layout !== LAYOUT_OPTIONS.RETRO,
+                //   'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
+                //     layout === LAYOUT_OPTIONS.RETRO,
+                // },
+              )}
+            >
+              <AuctionCountdown
+                date={new Date(vote?.expirationDate.toString())}
+              />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b  before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+                // {
+                //   'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
+                //     layout !== LAYOUT_OPTIONS.RETRO,
+                //   'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
+                //     layout === LAYOUT_OPTIONS.RETRO,
+                // },
+              )}
+            >
+              <h3 className="mt-[8px]  flex justify-start text-[#1E293B] md:text-base md:font-[500]  2xl:text-[20px">
+                Voting Ended
+              </h3>
+              {/* <AuctionCountdown date={undefined} /> */}
+            </div>
+          )}
+        </div>
+
+
+        <div className='flex flex-col justify-between items-end'>
+          <div>
+            <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+            {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
+          </div>
+          {
+            !isExpand ? (<>
+              <div className=''>
+                <VotePoll title={''} vote={vote} />
+              </div>
+
+            </>) : null
+          }
+
           {!isExpand ? (
             <Button
               onClick={() => setIsExpand(!isExpand)}
-              className="mt-4 w-full xs:mt-6 xs:w-auto md:mt-10"
+
+              className="w-full  xs:w-auto"
               shape="rounded"
             >
               Vote Now
@@ -218,57 +290,6 @@ export default function VoteDetailsCard({ vote, data }: any) {
             <VoteActionButton vote={vote} data={data} />
           )}
         </div>
-        {vote.status == 'active' ? (
-          <div
-            className={cn(
-              "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
-              {
-                'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
-                  layout !== LAYOUT_OPTIONS.RETRO,
-                'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
-                  layout === LAYOUT_OPTIONS.RETRO,
-              },
-            )}
-          >
-            <h3 className="flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
-              Voting ends in
-             
-            </h3>
-            <AuctionCountdown
-              date={new Date(vote?.expirationDate.toString())}
-            />
-          </div>
-        ) : (
-          <div
-            className={cn(
-              "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-r before:border-dashed before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
-              {
-                'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
-                  layout !== LAYOUT_OPTIONS.RETRO,
-                'mb-5 pb-5 before:h-[1px] before:w-full lg:mb-0 lg:pb-0 lg:before:h-full lg:before:w-[1px] ltr:pl-0 ltr:lg:pl-3 rtl:lg:pr-3':
-                  layout === LAYOUT_OPTIONS.RETRO,
-              },
-            )}
-          >
-            <h3 className=" flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
-              Voting ended
-              <div
-                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
-    ${vote?.status === 'approved'
-                    ? 'bg-green-100 text-green-800 border border-green-300'
-                    : vote?.status === 'rejected'
-                      ? 'bg-red-100 text-red-800 border border-red-300'
-                      : vote?.status === 'active'
-                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                        : 'bg-gray-100 text-gray-800 border border-gray-300'
-                  }`}
-              >
-                {vote?.status}
-              </div>
-            </h3>
-            <AuctionCountdown date={undefined} />
-          </div>
-        )}
       </motion.div>
       <AnimatePresence>
         {isExpand && (
@@ -279,103 +300,127 @@ export default function VoteDetailsCard({ vote, data }: any) {
             exit="exit"
             variants={fadeInBottom('easeIn', 0.25, 16)}
           >
-            <div className="my-6 border-y border-dashed border-gray-200 py-6 text-gray-500 dark:border-gray-700 dark:text-gray-400">
-              Proposed by:{' '}
-              <a
-                // href={vote.proposed_by.link}
-                className="ml-1 inline-flex items-center gap-3 font-medium text-gray-900 hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
-              >
-                {vote?.creatorAddress
-                  ? `${vote.creatorAddress.slice(0, 8)}...${vote.creatorAddress.slice(-8)}`
-                  : ''}
-                {/* <ExportIcon className="h-auto w-3" /> */}
-              </a>
-              {/* <div className="mt-4">
-                    Total fractions:{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.totalFractions || 100}
-                    </span>
-                  </div> */}
-              {vote?.leasingAddress == '0x' ? (
-                <>
-                  <div className="mt-4">
-                    Leasing Address:{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.leasingAddress || "0x"}
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    Percentage Yield :{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.percentageYield || "0"}
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    Acceptacnce Criteria:{' '}
-                    <span className="font-medium text-gray-900">
-                      {"$DOFI 100"}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="mt-4">
-                    Leasing address:{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.leasingAddress || '0x'}
-                    </span>
-                  </div>
-                  <div className="mt-4">
-                    Yield percentage:{' '}
-                    <span className="font-medium text-gray-900">
-                      {vote?.yieldPercentage || 3}
-                    </span>
-                  </div>
-                  {data?.votePower > 1 ? <>  <div className="mt-4">
-                    Vote Weightage:{' '}
-                    <span className="font-medium text-gray-900">
-                      {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
-                    </span>
-                  </div>
-                    <div className="mt-4">
-                      Acceptance Criteria:{' '}
-                      <span className="font-medium text-gray-900">
-                        {data?.quorum} Quorum (Total Supply {data?.totalSupply})
-                      </span>
-                    </div></> : <div className="mt-4">
-                    Acceptance Criteria:{' '}
-                    <span className="font-medium text-gray-900">
-                      $DOFI 100
-                    </span>
-                  </div>}
+            <hr />
+            <div
+              className={cn('flex w-full mt-[28px] mb-[28px] justify-between')}
+            >
+              <div className='border-r border-r-[#CBD5E1] w-[48%]' >
+                <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
+                  Proposed by:{' '}
+                  <span className="font-[400] text-black">
+                    <a
+                      // href={vote.proposed_by.link}
+                      className="ml-1 inline-flex items-center gap-3 font-[400] text-black hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
+                    >
+                      {vote?.creatorAddress
+                        ? `${vote.creatorAddress.slice(0, 8)}...${vote.creatorAddress.slice(-8)}`
+                        : ''}
+                      {/* <ExportIcon className="h-auto w-3" /> */}
+                    </a>
+                  </span>
+                </div>
 
-                </>
-              )}
-            </div>
-            <VotePoll title={'Votes'} vote={vote} />
-            <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
-            <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4>
-            <div className="mb-2">
-              <RevealContent defaultHeight={250}>
-                <h5 className="mb-6 uppercase dark:text-gray-100">
-                  Motivation
-                </h5>
-                <div
-                  className="dynamic-html grid gap-2 leading-relaxed text-gray-600 dark:text-gray-400"
-                  dangerouslySetInnerHTML={{ __html: vote?.motivation ?? '' }}
-                />
-              </RevealContent>
+                {vote?.leasingAddress == '0x' ? (
+                  <>
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
+                      Leasing Address:{' '}
+                      <span className="font-[400] text-black">
+                        {vote?.leasingAddress || "0x"}
+                      </span>
+                    </div>
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
+                      Percentage Yield :{' '}
+                      <span className="font-[400] text-black">
+                        {vote?.percentageYield || "0"}
+                      </span>
+                    </div>
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
+                      Acceptacnce Criteria:{' '}
+                      <span className="font-[400] text-black">
+                        {"$DOFI 100"}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
+                      Leasing address:{' '}
+                      <span className="font-[400] text-black">
+                        {vote?.leasingAddress || '0x'}
+                      </span>
+                    </div>
+                    <div className="mt-4">
+                      Yield percentage:{' '}
+                      <span className="font-[400] text-black">
+                        {vote?.yieldPercentage || 3}
+                      </span>
+                    </div>
+                    {data?.votePower > 1 ? <>  <div className="mt-4">
+                      Vote Weightage:{' '}
+                      <span className="font-[400] text-black">
+                        {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
+                      </span>
+                    </div>
+                      <div className="mt-4">
+                        Acceptance Criteria:{' '}
+                        <span className="font-[400] text-black">
+                          {data?.quorum} Quorum (Total Supply {data?.totalSupply})
+                        </span>
+                      </div></> : <div className="mt-4">
+                      Acceptance Criteria:{' '}
+                      <span className="font-[400] text-black">
+                        $DOFI 100
+                      </span>
+                    </div>}
+                  </>
+                )}
+              </div>
+              <div className='w-[48%]'>
+                <VotePoll title={'Votes'} vote={vote} />
+                <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
+              </div>
             </div>
             <hr />
-            <div className="mt-2">
-              <RevealContent defaultHeight={250}>
-                <h5 className="mb-6 uppercase dark:text-gray-100">Summary</h5>
-                <div
-                  className="dynamic-html grid gap-2 leading-relaxed text-gray-600 dark:text-gray-400"
-                  dangerouslySetInnerHTML={{ __html: vote?.summary ?? '' }}
-                />
-              </RevealContent>
+            <div
+              className={cn('flex w-full flex-col-reverse justify-between mt-[32px]', {
+                'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
+                'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
+              })}
+            >
+              {/* <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4> */}
+              <div className="mb-2">
+                <RevealContent defaultHeight={250}>
+                  <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">
+                    Description:
+                  </h5>
+                  <div
+                    className="dynamic-html grid gap-2 leading-relaxed text-black text-[14px] font-[400]"
+                    dangerouslySetInnerHTML={{ __html: vote?.description ?? '-' }}
+                  />
+                </RevealContent>
+              </div>
+              <div className="mb-2">
+                <RevealContent defaultHeight={250}>
+                  <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">
+                    Motivation:
+                  </h5>
+                  <div
+                    className="dynamic-html grid gap-2 leading-relaxed text-black text-[14px] font-[400]"
+                    dangerouslySetInnerHTML={{ __html: vote?.motivation ?? '' }}
+                  />
+                </RevealContent>
+              </div>
+              <div className="mt-2">
+                <RevealContent defaultHeight={250}>
+                  <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">Summary:</h5>
+                  <div
+                    className="dynamic-html grid gap-2 leading-relaxed text-black text-[14px] font-[400]"
+                    dangerouslySetInnerHTML={{ __html: vote?.summary ?? '' }}
+                  />
+                </RevealContent>
+              </div>
             </div>
+
             {/* <RevealContent
               defaultHeight={320}
               className="mt-6 border-t border-dashed border-gray-200 pt-6 dark:border-gray-700"
