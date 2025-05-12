@@ -62,7 +62,7 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
         <img src={imageUrl} width={600} alt="no-image" />
       </div>
-      <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6 max-w-[220px] max-h-[291px]">
+      <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
         <div className="flex justify-end">
           <div
             onClick={() => goToNFTDetailPage()}

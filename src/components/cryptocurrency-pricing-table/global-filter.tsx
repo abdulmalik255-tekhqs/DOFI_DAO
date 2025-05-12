@@ -9,6 +9,8 @@ import ToastNotification from '../ui/toast-notification';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
+import Bg from '@/assets/images/dao/BG-REGISTER.png';
+import Image from 'next/image';
 
 export default function GlobalFilter() {
   const { openModal } = useModal();
@@ -66,15 +68,15 @@ export default function GlobalFilter() {
   }
   return (
     <div className="mb-[40px] flex-1 text-center ltr:ml-auto rtl:mr-auto">
-      <div className='gap-[38px] flex flex-col bg-black rounded-[12px]'>
-        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[500] uppercase tracking-wider text-white">
-          Register your name today
+      <div className='gap-[38px] flex flex-col rounded-[12px] bg-cover bg-no-repeat' style={{ backgroundImage: `url(${Bg.src})` }}>
+        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[800]  text-[#0F172A]">
+          Register Your Name
         </h2>
         <label className="mb-[46px] relative hidden w-full items-center justify-center  md:flex">
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="h-[59px] w-[550px] appearance-none rounded-tl-[12px] rounded-bl-[12px] bg-[#18181B] text-[16px] font-[400] tracking-tighter text-[#A1A1AA] focus:outline-none focus:ring-0 focus:shadow-none  transition-all placeholder:text-[#A1A1AA] border border-[#3F3F46] rtl:pr-10"
+            className="h-[59px] w-[550px] appearance-none rounded-tl-[12px] rounded-bl-[12px] bg-transparent text-[16px] font-[400] tracking-tighter text-[#A1A1AA] focus:outline-none focus:ring-0 focus:shadow-none  transition-all placeholder:text-[#A1A1AA] border border-gray-400  rtl:pr-10"
             placeholder="Find your domain name"
           />
           <span className="flex h-[59px] items-center justify-center text-gray-600 hover:text-gray-900 dark:text-white">
@@ -95,18 +97,17 @@ export default function GlobalFilter() {
                     <FaLongArrowAltRight className="cursor-pointer" />
                   </div>
                 ) : (
-                  <div className="w-[141px] flex justify-center items-center h-[59px] bg-white rounded-tr-[12px] rounded-br-[12px]">
-                <p className='text-[16px] text-black font-[500]'>Search</p>
+                  <div className="w-[141px] flex justify-center items-center h-[59px] bg-black rounded-tr-[12px] rounded-br-[12px]">
+                <p className='text-[16px] text-white font-[500]'>Search</p>
               </div>
                 )
             ) : (
-              <div className="w-[141px] flex justify-center items-center h-[59px] bg-white rounded-tr-[12px] rounded-br-[12px]">
-                <p className='text-[16px] text-black font-[500]'>Search</p>
+              <div className="w-[141px] flex justify-center items-center h-[59px] bg-black rounded-tr-[12px] rounded-br-[12px]">
+                <p className='text-[16px] text-white font-[500]'>Search</p>
               </div>
             )}
           </span>
         </label>
-
       </div>
     </div>
   );
