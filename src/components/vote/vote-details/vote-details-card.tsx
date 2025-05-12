@@ -373,7 +373,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     <div className="mt-4">
                       Yield percentage:{' '}
                       <span className="font-[400] text-black">
-                        {vote?.yieldPercentage || 3}
+                        {vote?.percentageYield || 3}
                       </span>
                     </div>
                     {data?.votePower > 1 ? <>  <div className="mt-4">

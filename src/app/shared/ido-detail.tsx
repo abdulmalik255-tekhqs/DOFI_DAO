@@ -21,11 +21,16 @@ import { useBuyShareIDO, useGetIDODetail } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
 import { config } from '@/app/shared/wagmi-config';
+import Image from 'next/image';
+import ShareIcon from '@/assets/images/dao/shareicon.png';
+import { useCopyToClipboard } from 'react-use';
+import routes from '@/config/routes';
 
 const IDODetailPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
+   const [_, copyToClipboard] = useCopyToClipboard();
   const [isExpired, setIsExpired] = useState(false);
   const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
@@ -127,6 +132,15 @@ const IDODetailPage = () => {
     return `${percentage.toFixed(1)}%`;
 
   }
+  
+  
+        const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${params.id}`;
+
+        const  handleCopyToClipboard = (e: React.MouseEvent)=> {
+          e.stopPropagation(); // prevent row redirect
+          copyToClipboard(shareUrl);
+          ToastNotification('success', 'Now you can share DIO!');
+        }
   return (
     <>
       {componentLoading ? (
@@ -150,8 +164,11 @@ const IDODetailPage = () => {
             <div className="mx-auto w-full max-w-7xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
                 <div className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-6 transition-all duration-300">
+                <div className='w-full flex justify-end items-center mb-1 cursor-pointer'
+                 onClick={handleCopyToClipboard}
+                ><Image src={ShareIcon} alt="no-icon" /></div>
                   <div className='w-full flex justify-between items-center mb-2'>
-                    <h3 className="text-xl flex gap-2 items-center font-bold mb-2 text-white">
+                    <h3 className="text-[16px] flex gap-2 items-center font-bold mb-2 text-white">
                       <Globe className="w-5 h-5 text-white" />
                       {
                         //@ts-ignore
@@ -159,16 +176,22 @@ const IDODetailPage = () => {
                     </h3>
                     <div
                       className={`flex capitalize h-auto w-[120px] items-center justify-center rounded-full px-2 py-1 text-sm font-medium shadow-md
-    ${searchResult?.data?.status === 'successful'
+                            ${
+                              //@ts-ignore
+                              searchResult?.data?.status === 'successful'
                           ? 'bg-green-100 text-green-800 border border-green-300'
+                          //@ts-ignore
                           : searchResult?.data?.status === 'failed'
                             ? 'bg-red-100 text-red-800 border border-red-300'
+                            //@ts-ignore
                             : searchResult?.data?.status === 'active'
                               ? 'bg-blue-100 text-blue-800 border border-blue-300'
                               : 'bg-gray-100 text-gray-800 border border-gray-300'
                         }`}
                     >
-                      {searchResult?.data?.status}
+                      {
+                      //@ts-ignore
+                      searchResult?.data?.status}
                     </div>
                   </div>
 
@@ -185,7 +208,9 @@ const IDODetailPage = () => {
                   whileHover={{ scale: 1.015 }}
                   className="rounded-xl bg-white dark:bg-gray-800 shadow-xl p-6 flex flex-col justify-between"
                 >
-                  {searchResult?.data?.status !== 'active' ? (
+                  {
+                    //@ts-ignore
+                  searchResult?.data?.status !== 'active' ? (
                     <>
                       <div>
                         {/* Progress Bar */}
@@ -195,6 +220,7 @@ const IDODetailPage = () => {
                               <strong>Fund Raised</strong>
                             </p>
                             <span>
+                              
                               {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
                             </span>
                           </div>
@@ -349,9 +375,12 @@ const IDODetailPage = () => {
               </div>
 
               <div className="mt-12">
-                <h2 className="text-xl font-bold text-center uppercase text-dark dark:text-white mb-6">
+                <h2 className="text-xl font-bold text-center uppercase text-[#1E293B] mb-2">
                   Token Information
                 </h2>
+                <p className="text-[14px] font-[400] text-center text-[#1E293B] mb-6">
+                  Note : after successful DIO completion random percentage on fractions are minted<br/> for creating liquidity.
+                </p>
                 <motion.div
                   whileTap={{ scale: 0.98 }}
                   whileHover={{ scale: 1.015 }}

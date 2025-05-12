@@ -29,7 +29,7 @@ const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
 const AUCTION_TIMER_KEY = 'auctionExpiryTime';
 
 
-function AuctionCountdown() {
+function AuctionCountdown(address: string | any) {
   const [expiryTime, setExpiryTime] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<{
     hours: number;
@@ -37,9 +37,10 @@ function AuctionCountdown() {
     seconds: number;
   } | null>(null);
 
-  // Run only on the client
+  // Only run if address exists
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (!address) return; // 👈 Address check
 
     const now = Date.now();
     let expiry = null;
@@ -59,9 +60,8 @@ function AuctionCountdown() {
 
     setExpiryTime(expiry);
     setTimeLeft(getTimeLeft(expiry));
-  }, []);
+  }, [address]);
 
-  // Update countdown every second
   useEffect(() => {
     if (!expiryTime) return;
 
@@ -83,7 +83,6 @@ function AuctionCountdown() {
     return () => clearInterval(interval);
   }, [expiryTime]);
 
-  // Helper to calculate remaining time
   function getTimeLeft(endTime: number) {
     const diff = endTime - Date.now();
     if (diff <= 0) return null;
@@ -95,7 +94,7 @@ function AuctionCountdown() {
     };
   }
 
-  if (!timeLeft) {
+  if (!address || !timeLeft) {
     return <div className="text-white/80 font-semibold text-center">Loading...</div>;
   }
 
@@ -120,6 +119,7 @@ function AuctionCountdown() {
 
 
 
+
 const DomainDAOPage = () => {
   const router = useRouter();
   const { layout } = useLayout();
@@ -135,58 +135,7 @@ const DomainDAOPage = () => {
       router.push(routes.createDomain);
     }, 800);
   }
-  const tabMenuItems = [
-    {
-      title: (
-        <>
-          All Proposals{' '}
-          <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-            ({proposalsDomainDao?.count || 0})
-          </span>
-        </>
-      ),
-      path: 'active',
-    },
-    // {
-    //   title: (
-    //     <>
-    //       Off-Chain{' '}
-    //       {totalOffChainVote > 0 && (
-    //         <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-    //           {totalOffChainVote}
-    //         </span>
-    //       )}
-    //     </>
-    //   ),
-    //   path: 'off-chain',
-    // },
-    // {
-    //   title: (
-    //     <>
-    //       Executable{' '}
-    //       {totalExecutableVote > 0 && (
-    //         <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-    //           {totalExecutableVote}
-    //         </span>
-    //       )}
-    //     </>
-    //   ),
-    //   path: 'executable',
-    // },
-    // {
-    //   title: (
-    //     <>
-    //       Past{' '}
-    //       {totalPastVote > 0 && (
-    //         <span className="ltr:ml-0.5 ltr:md:ml-1.5 ltr:lg:ml-2 rtl:mr-0.5 rtl:md:mr-1.5 rtl:lg:mr-2">
-    //           {totalPastVote}
-    //         </span>
-    //       )}
-    //     </>
-    //   ),
-    //   path: 'past',
-    // },
-  ];
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedNftString = localStorage.getItem('nft');
@@ -200,7 +149,7 @@ const DomainDAOPage = () => {
     }
   }, []);
 
-  console.log("leaseAddressInfo--->", leaseAddressInfo)
+  console.log("leaseAddressInfo--->", leaseAddressInfo?.leasingAddress)
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>
@@ -238,7 +187,7 @@ const DomainDAOPage = () => {
           </div>
 
           <div className="">
-            <AuctionCountdown />
+            <AuctionCountdown address={leaseAddressInfo?.leasingAddress}/>
           </div>
         </div>
         <div
@@ -329,11 +278,6 @@ const DomainDAOPage = () => {
         <h2 className='text-[#1E293B] text-[24px] font-bold'>Proposals</h2>
       </div>
       <Suspense fallback={<Loader variant="blink" />}>
-        {/* <ParamTab tabMenu={tabMenuItems}>
-          <TabPanel className="focus:outline-none">
-            
-          </TabPanel>
-        </ParamTab> */}
         <VoteListDomainDao voteStatus={'active'} />
       </Suspense>
     </section>

@@ -66,7 +66,7 @@ export default function ProfileTab({ data ,leasingData}: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
               layout === LAYOUT_OPTIONS.RETRO
                 ? 'md:grid-cols-2'
                 : 'md:grid-cols-1',
@@ -94,10 +94,8 @@ export default function ProfileTab({ data ,leasingData}: any) {
           {/* <div className="space-y-8 md:space-y-10 xl:space-y-12"> */}
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
-              layout === LAYOUT_OPTIONS.RETRO
-                ? 'md:grid-cols-2'
-                : 'md:grid-cols-1',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
+             
             )}
           >
             {fraction?.length > 0 ? (
@@ -150,7 +148,7 @@ export default function ProfileTab({ data ,leasingData}: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4',
+              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
               layout === LAYOUT_OPTIONS.RETRO
                 ? 'md:grid-cols-2'
                 : 'md:grid-cols-1',
