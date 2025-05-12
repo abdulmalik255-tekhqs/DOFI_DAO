@@ -10,7 +10,9 @@ import cn from '@/utils/cn';
 import { priceFeedData } from '@/data/static/price-feed';
 import { useDao } from '@/hooks/livePricing';
 import routes from '@/config/routes';
-
+import RedGraph from '@/assets/images/red-graph.png';
+import GreenGraph from '@/assets/images/green-graph.png';
+import Image from 'next/image';
 type Price = {
   name: number;
   value: number;
@@ -47,7 +49,7 @@ export function LivePricingFeed({
   index
 }: LivePriceFeedProps) {
   const router = useRouter();
-
+console.log(noOfProposals, "gfchjbknk")
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
     return (
@@ -88,7 +90,7 @@ export function LivePricingFeed({
           {getInitialIcon(name)}
           {/* {icon} */}
           <h4 className="text-[16px] font-[400] text-black  ltr:ml-1 rtl:mr-1">
-           {name}
+          {name.length > 9 ? `${name.substring(0, 10)}..` : name}
           </h4>
         </div>
 
@@ -121,6 +123,10 @@ export function LivePricingFeed({
           </span>
         </div> */}
       </div>
+
+      
+      {/* <Image src={noOfProposals === 0 ? <RedGraph /> : <GreenGraph />}  alt="green-graph" fill height={50} width={50}/> */}
+
       <div
         className="h-20 w-full overflow-hidden"
         data-hello={isChangePositive ? '#22c55e' : '#D6455D'}
@@ -139,20 +145,21 @@ export function LivePricingFeed({
                   stopColor={isChangePositive ? '#22c55e' : '#D6455D'}
                   stopOpacity={0}
                 />
-              </linearGradient>
+              </linearGradient> 
             </defs>
-            <Area
+             <Area
               type="linear"
               dataKey="value"
               stroke={isChangePositive ? '#22c55e' : '#D6455D'}
               strokeWidth={2.5}
               fill={`url(#${`${name}-${_id}`})`}
               dot={false}
-            />
-          </AreaChart>
+            /> 
+            
+           </AreaChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </div> 
   );
 }
 

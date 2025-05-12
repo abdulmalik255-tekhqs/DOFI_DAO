@@ -50,11 +50,13 @@ const COLUMNS = [
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
         {/* <Globe className="w-5 h-5 text-gray-600 dark:text-white" /> */}
-        <div className="ltr:text-left rtl:text-left">{row.original.name}</div>
+        <div className="ltr:text-left rtl:text-left">
+          {row.original.name.length > 15 ? `${row.original.name.substring(0, 15)}...` : row.original.name}
+        </div>
       </div>
     ),
-    minWidth: 100,
-    maxWidth: 200,
+    minWidth: 70,
+    maxWidth: 80,
   },
   {
     Header: () => <div className="">Price</div>,
@@ -110,13 +112,13 @@ const COLUMNS = [
   },
   
   {
-    Header: () => <div className="">status</div>,
+    Header: () => <div className="">Status</div>,
     accessor: 'total_volume',
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <div
-          className={`flex h-auto w-[140px] items-center justify-center rounded-full px-4 py-1 text-sm font-medium shadow-md
+          className={`flex h-auto w-[140px] capitalize items-center justify-center rounded-full px-4 py-1 text-sm font-medium shadow-md
     ${row.original.status === 'successful'
               ? 'bg-green-100 text-green-800 border border-green-300'
               : row.original.status === 'failed'
@@ -130,7 +132,8 @@ const COLUMNS = [
         </div>
       </div>
     ),
-    maxWidth: 300,
+    maxWidth: 90,
+    minWidth: 90,
   },
   {
     Header: () => <div className="">Share</div>,
