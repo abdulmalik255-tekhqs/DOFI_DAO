@@ -25,7 +25,6 @@ export default function GlobalFilter() {
   } = useSubmitFindNameQuery();
 
   const [inputValue, setInputValue] = useState('');
-  console.log(searchResult, "searchResult");
 
   // Update external state
 
@@ -63,7 +62,6 @@ export default function GlobalFilter() {
     //@ts-ignore
     const name = searchResult?.data?.name;
     const extension = name.split('.')[1]; // returns 'eth'
-    console.log(`.${extension}`);
     return `.${extension}`
   }
   return (
