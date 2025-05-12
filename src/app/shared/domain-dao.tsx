@@ -35,12 +35,20 @@ function AuctionCountdown(address: string | any) {
     hours: number;
     minutes: number;
     seconds: number;
-  } | null>(null);
+  }>({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-  // Only run if address exists
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (!address) return; // 👈 Address check
+
+    if (!address) {
+      // Reset timer to 00 if no address
+      setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+      return;
+    }
 
     const now = Date.now();
     let expiry = null;
@@ -63,16 +71,14 @@ function AuctionCountdown(address: string | any) {
   }, [address]);
 
   useEffect(() => {
-    if (!expiryTime) return;
+    if (!expiryTime || !address) return;
 
     const interval = setInterval(() => {
       const diff = expiryTime - Date.now();
 
       if (diff <= 0) {
         const newExpiry = Date.now() + AUCTION_DURATION;
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(AUCTION_TIMER_KEY, newExpiry.toString());
-        }
+        localStorage.setItem(AUCTION_TIMER_KEY, newExpiry.toString());
         setExpiryTime(newExpiry);
         setTimeLeft(getTimeLeft(newExpiry));
       } else {
@@ -81,11 +87,11 @@ function AuctionCountdown(address: string | any) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [expiryTime]);
+  }, [expiryTime, address]);
 
   function getTimeLeft(endTime: number) {
     const diff = endTime - Date.now();
-    if (diff <= 0) return null;
+    if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
 
     return {
       hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -94,27 +100,24 @@ function AuctionCountdown(address: string | any) {
     };
   }
 
-  if (!address || !timeLeft) {
-    return <div className="text-white/80 font-semibold text-center">Loading...</div>;
-  }
-
   return (
     <div className="flex items-center space-x-6 text-lg font-semibold px-6">
       <div className="flex flex-col text-[#1E293B]">
-        <span className='text-[24px] font-[500]'>{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className='text-[12px] text-[#1E293B] font-[400]'>Hours</span>
+        <span className="text-[24px] font-[500]">{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className="text-[12px] text-[#1E293B] font-[400]">Hours</span>
       </div>
       <div className="flex flex-col text-[#1E293B]">
-        <span className='text-[24px] font-[500]'>{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className='text-[12px] text-[#1E293B] font-[400]'>Minutes</span>
+        <span className="text-[24px] font-[500]">{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className="text-[12px] text-[#1E293B] font-[400]">Minutes</span>
       </div>
       <div className="flex flex-col text-[#1E293B]">
-        <span className='text-[24px] font-[500]'>{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className='text-[12px] text-[#1E293B] font-[400]'>Seconds</span>
+        <span className="text-[24px] font-[500]">{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className="text-[12px] text-[#1E293B] font-[400]">Seconds</span>
       </div>
     </div>
   );
 }
+
 
 
 
