@@ -89,10 +89,12 @@ console.log(noOfProposals, "gfchjbknk")
         <div className="mb-3 flex items-center">
           {getInitialIcon(name)}
           {/* {icon} */}
-          <h4 className="text-[16px] font-[400] text-black  ltr:ml-1 rtl:mr-1">
-          {name.length > 9 ? `${name.substring(0, 10)}..` : name}
-          </h4>
-        </div>
+          <h4
+            className="text-[16px] font-[400] text-black ltr:ml-1 rtl:mr-1"
+            title={name.length > 9 ? name : undefined}
+          >
+            {name.length > 9 ? `${name.substring(0, 10)}..` : name}
+          </h4>        </div>
 
         <div className="mb-2 text-[24px] font-[500] tracking-tighter text-gray-900 dark:text-white lg:text-lg 2xl:text-xl 3xl:text-2xl">
           {noOfProposals}
@@ -127,37 +129,15 @@ console.log(noOfProposals, "gfchjbknk")
       
       {/* <Image src={noOfProposals === 0 ? <RedGraph /> : <GreenGraph />}  alt="green-graph" fill height={50} width={50}/> */}
 
-      <div
-        className="h-20 w-full overflow-hidden"
-        data-hello={isChangePositive ? '#22c55e' : '#D6455D'}
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={prices}>
-            <defs>
-              <linearGradient id={`${name}-${_id}`} x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor={isChangePositive ? '#22c55e' : '#D6455D'}
-                  stopOpacity={0.5}
-                />
-                <stop
-                  offset="100%"
-                  stopColor={isChangePositive ? '#22c55e' : '#D6455D'}
-                  stopOpacity={0}
-                />
-              </linearGradient> 
-            </defs>
-             <Area
-              type="linear"
-              dataKey="value"
-              stroke={isChangePositive ? '#22c55e' : '#D6455D'}
-              strokeWidth={2.5}
-              fill={`url(#${`${name}-${_id}`})`}
-              dot={false}
-            /> 
-            
-           </AreaChart>
-        </ResponsiveContainer>
+      <div className="h-20 w-full relative">
+        {/* Conditionally render the appropriate graph image */}
+        <Image
+          src={noOfProposals === 0 ? GreenGraph : RedGraph}
+          alt={noOfProposals === 0 ? 'No Proposals Graph' : 'Active Proposals Graph'}
+          height={80}
+          width={200}
+          objectFit="contain"
+        />
       </div>
     </div> 
   );
