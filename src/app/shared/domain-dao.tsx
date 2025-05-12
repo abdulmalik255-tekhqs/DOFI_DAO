@@ -259,25 +259,25 @@ const DomainDAOPage = () => {
           <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
             {/* Total */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.count || "00"}</div>
+              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.count || "00"}</div>
               <div className="text-[12px] text-grey font-[400]">Total</div>
             </div>
 
             {/* Active */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.active || "00"}</div>
+              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.active || "00"}</div>
               <div className="text-[12px] text-grey font-[400]">Active</div>
             </div>
 
             {/* Sucessfull */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.successful || "00"}</div>
+              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.successful || "00"}</div>
               <div className="text-[12px] text-grey font-[400]">Sucessfull</div>
             </div>
 
             {/* Rejected */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposalsDomainDao?.rejected || "00"}</div>
+              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.rejected || "00"}</div>
               <div className="text-[12px] text-grey font-[400]">Rejected</div>
             </div>
           </div>
@@ -299,7 +299,7 @@ const DomainDAOPage = () => {
           <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
             {/* Total */}
 
-            <div className="text-center text-xl font-[600] text-[#151515]">
+            <div className="text-center text-xl font-[500] text-[#151515]">
               {
                 leaseAddressInfo?.leasingAddress && leaseAddressInfo?.leasingAddress != "0x"
                   ? <div className="">
@@ -318,7 +318,7 @@ const DomainDAOPage = () => {
 
             {/* Active */}
             <div className="text-center mt-1">
-              <div className="text-xl font-[600] text-[#151515]">{leaseAddressInfo?.payments?.[0]?.totalAmount || "00"}</div>
+              <div className="text-xl font-[500] text-[#151515]">{leaseAddressInfo?.payments?.[0]?.totalAmount || "00"}</div>
               <div className="text-[12px] text-grey font-[400]"> Total Profit</div>
             </div>
 
