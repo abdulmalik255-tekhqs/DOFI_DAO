@@ -123,6 +123,9 @@ console.log(noOfProposals, "gfchjbknk")
           </span>
         </div> */}
       </div>
+
+
+      
       
       {/* <Image src={noOfProposals === 0 ? <RedGraph /> : <GreenGraph />}  alt="green-graph" fill height={50} width={50}/> */}
 
