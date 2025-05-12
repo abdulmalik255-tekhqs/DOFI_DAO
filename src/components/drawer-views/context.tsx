@@ -15,7 +15,6 @@ const drawerAtom = atom({ isOpen: false, view: 'DEFAULT_SIDEBAR' });
 export function useDrawer() {
   const [state, setState] = useAtom(drawerAtom);
   const openDrawer = (view: DRAWER_VIEW) => {
-    console.log('view', view);
     setState({ ...state, isOpen: true, view });
   };
   const closeDrawer = () => setState({ ...state, isOpen: false });

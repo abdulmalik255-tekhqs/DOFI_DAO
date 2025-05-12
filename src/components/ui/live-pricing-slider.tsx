@@ -49,7 +49,6 @@ export function LivePricingFeed({
   index
 }: LivePriceFeedProps) {
   const router = useRouter();
-console.log(noOfProposals, "gfchjbknk")
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
     return (

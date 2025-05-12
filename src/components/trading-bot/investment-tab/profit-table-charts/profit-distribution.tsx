@@ -23,7 +23,6 @@ function renderCustomizedLabel(props: any) {
   const { x, y, width, height, value } = props;
   const radius = 20;
 
-  // console.log(value);
   let fillColor = '#10B981';
   if (value < 0) fillColor = '#EF4444';
 
