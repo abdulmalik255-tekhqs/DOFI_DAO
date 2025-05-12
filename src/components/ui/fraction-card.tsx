@@ -47,7 +47,7 @@ export default function FractionCard({ item, className = '' }: CardProps) {
         className,
       )}
     >
-      <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
+      <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg max-w-[220px] max-h-[291px]">
         <img src={imageUrl} width={600} alt="no-image" />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
@@ -59,8 +59,8 @@ export default function FractionCard({ item, className = '' }: CardProps) {
 
         {/* Image Boxes (hover only) */}
         {amount && amount > 0 && (
-            <div className="absolute top-6 inset-x-0 bg-white rounded-[12px] w-[350px] p-2 hidden group-hover:flex items-center justify-center">
-              <div className="grid grid-cols-4 gap-1 w-[350px]">
+            <div className="absolute top-6 inset-x-0 bg-white rounded-[12px] w-[150px] p-2 hidden group-hover:flex items-center justify-center">
+              <div className="grid grid-cols-4 gap-1 w-[150px]">
                 {Array?.from({ length: 10 })?.map((_, index) => (
                   <div key={index}>
                     <img
