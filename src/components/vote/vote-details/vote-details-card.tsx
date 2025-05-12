@@ -313,16 +313,16 @@ export default function VoteDetailsCard({ vote, data }: any) {
                       className="ml-1 inline-flex items-center gap-3 font-[400] text-black hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
                     >
                       {vote?.creatorAddress
-                        ? `${vote.creatorAddress.slice(0, 8)}...${vote.creatorAddress.slice(-8)}`
+                        ? `${vote.creatorAddress.slice(0, 5)}...${vote.creatorAddress.slice(-5)}`
                         : ''}
                       {/* <ExportIcon className="h-auto w-3" /> */}
                     </a>
                   </span>
                 </div>
 
-                {vote?.leasingAddress == '0x' ? (
+                {vote?.parentDAO ? (
                   <>
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
+                    {/* <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
                       Leasing Address:{' '}
                       <span className="font-[400] text-black">
                         {vote?.leasingAddress || "0x"}
@@ -333,7 +333,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                       <span className="font-[400] text-black">
                         {vote?.percentageYield || "0"}
                       </span>
-                    </div>
+                    </div> */}
                     <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
                       Acceptacnce Criteria:{' '}
                       <span className="font-[400] text-black">
@@ -346,7 +346,8 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
                       Leasing address:{' '}
                       <span className="font-[400] text-black">
-                        {vote?.leasingAddress || '0x'}
+                      {vote?.leasingAddress.slice(0, 5)}...
+                      {vote?.leasingAddress.slice(-5)}
                       </span>
                     </div>
                     <div className="mt-4">
@@ -358,15 +359,25 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     {data?.votePower > 1 ? <>  <div className="mt-4">
                       Vote Weightage:{' '}
                       <span className="font-[400] text-black">
-                        {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
+                        {/* {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}% */}
+                        {data?.votePower}
                       </span>
                     </div>
                       <div className="mt-4">
-                        Acceptance Criteria:{' '}
+                        Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
                         <span className="font-[400] text-black">
-                          {data?.quorum} Quorum (Total Supply {data?.totalSupply})
+                          {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
+                          {data?.quorum}
                         </span>
-                      </div></> : <div className="mt-4">
+                      </div>
+                      <div className="mt-4">
+                        Total Supply:
+                        <span className="font-[400] text-black">
+                          {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
+                          {data?.totalSupply || 0}
+                        </span>
+                      </div>
+                    </> : <div className="mt-4">
                       Acceptance Criteria:{' '}
                       <span className="font-[400] text-black">
                         $DOFI 100
@@ -388,7 +399,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
               })}
             >
               {/* <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4> */}
-              <div className="mb-2">
+              {/* <div className="mb-2">
                 <RevealContent defaultHeight={250}>
                   <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">
                     Description:
@@ -398,7 +409,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     dangerouslySetInnerHTML={{ __html: vote?.description ?? '-' }}
                   />
                 </RevealContent>
-              </div>
+              </div> */}
               <div className="mb-2">
                 <RevealContent defaultHeight={250}>
                   <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">
