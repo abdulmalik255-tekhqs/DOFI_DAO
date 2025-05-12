@@ -6,6 +6,14 @@ import routes from '@/config/routes';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import Detail from '@/assets/images/dao/detail.png';
+import Shib1 from '@/assets/images/dao/shib1.png';
+import Shib2 from '@/assets/images/dao/shib2.png';
+import Shib3 from '@/assets/images/dao/shib3.png';
+import Shib4 from '@/assets/images/dao/shib4.png';
+import Shib5 from '@/assets/images/dao/shib5.png';
+import Shib6 from '@/assets/images/dao/shib6.png';
+import Shib7 from '@/assets/images/dao/shib7.png';
+import Shib8 from '@/assets/images/dao/shib8.png';
 
 type ItemType = {
   id?: string | number;
@@ -30,7 +38,7 @@ type CardProps = {
   className?: string;
 };
 
-export default function CollectionCard({ item, className = '' }: CardProps) {
+export default function CollectionCard({ item, className = '' }: any) {
   const {
     name,
     slug,
@@ -51,7 +59,21 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
     dispatch(idoActions.setNFTDetail(item));
     router.push(routes.nftDetails);
   }
-
+  const ShibimageList = [
+    { id: 1, image: Shib1 },
+    { id: 2, image: Shib2 },
+    { id: 3, image: Shib3 },
+    { id: 4, image: Shib4 },
+    { id: 5, image: Shib5 },
+    { id: 6, image: Shib6 },
+    { id: 7, image: Shib7 },
+    { id: 8, image: Shib8 },
+  ];
+  const getImageByTokenID = (id: string) => {
+    const numericID = parseInt(id, 10);
+    const match = ShibimageList.find((item) => item.id === numericID);
+    return match ? match.image.src : image;
+  };
   return (
     <div
       className={cn(
@@ -60,7 +82,8 @@ export default function CollectionCard({ item, className = '' }: CardProps) {
       )}
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
-        <img src={imageUrl} width={600} alt="no-image" />
+        <img src={getImageByTokenID(item?.tokenId)}
+          alt={`NFT #${item?.tokenId}`} width={600} />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
         <div className="flex justify-end">

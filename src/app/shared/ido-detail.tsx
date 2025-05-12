@@ -3,6 +3,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { FaCube, FaDollarSign } from 'react-icons/fa6';
 import { TbSticker2 } from "react-icons/tb";
+import { readContract } from '@wagmi/core'; 
 import { GiMeshNetwork } from "react-icons/gi";
 import { FcSalesPerformance } from "react-icons/fc";
 import Confetti from 'react-confetti';
@@ -17,6 +18,7 @@ import { BeatLoader, MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import AuctionCountdown from '@/components/nft/auction-countdown';
 import { useEffect, useState } from 'react';
+import { formatUnits } from 'viem';
 import { useBuyShareIDO, useGetIDODetail } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
@@ -30,7 +32,9 @@ const IDODetailPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
-   const [_, copyToClipboard] = useCopyToClipboard();
+  const [tokenBalance, setTokenBalance] = useState<string | null>(null);
+  console.log(tokenBalance,"tokenBalance");
+  const [_, copyToClipboard] = useCopyToClipboard();
   const [isExpired, setIsExpired] = useState(false);
   const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
@@ -79,7 +83,10 @@ const IDODetailPage = () => {
         ToastNotification('error', 'Enter Amount');
         return;
       }
-
+       if (Number(tokenBalance) < Number(inputValue)) {
+        ToastNotification('error', 'You do not have enough DOFI token buy share!');
+        return;
+      }
       //@ts-ignore
       let remaningValue = Math.floor(Number(searchResult?.data?.totalSupply) - Number(searchResult?.data?.fundsRaised));
       if (Number(inputValue) === 0) {
@@ -132,15 +139,34 @@ const IDODetailPage = () => {
     return `${percentage.toFixed(1)}%`;
 
   }
+  const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${params.id}`;
+  const handleCopyToClipboard = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent row redirect
+    copyToClipboard(shareUrl);
+    ToastNotification('success', 'Now you can share DIO!');
+  }
+    const getTokenBalance = async (userAddress: string) => {
+      try {
+        const balance = await readContract(config, {
+          address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+          abi: tetherABI,
+          functionName: 'balanceOf',
+          args: [userAddress],
+        });
   
-  
-        const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${params.id}`;
-
-        const  handleCopyToClipboard = (e: React.MouseEvent)=> {
-          e.stopPropagation(); // prevent row redirect
-          copyToClipboard(shareUrl);
-          ToastNotification('success', 'Now you can share DIO!');
-        }
+        const formatted = formatUnits(balance as bigint, 18);
+        setTokenBalance(formatted);
+      } catch (error) {
+        console.error('Failed to fetch balance:', error);
+        ToastNotification('error', 'Failed to fetch token balance');
+      }
+    };
+     // 🔁 Call on address change
+     useEffect(() => {
+      if (address) {
+        getTokenBalance(address);
+      }
+    }, [address]);
   return (
     <>
       {componentLoading ? (
@@ -164,9 +190,9 @@ const IDODetailPage = () => {
             <div className="mx-auto w-full max-w-7xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
                 <div className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-6 transition-all duration-300">
-                <div className='w-full flex justify-end items-center mb-1 cursor-pointer'
-                 onClick={handleCopyToClipboard}
-                ><Image src={ShareIcon} alt="no-icon" /></div>
+                  <div className='w-full flex justify-end items-center mb-1 cursor-pointer'
+                    onClick={handleCopyToClipboard}
+                  ><Image src={ShareIcon} alt="no-icon" /></div>
                   <div className='w-full flex justify-between items-center mb-2'>
                     <h3 className="text-[16px] flex gap-2 items-center font-bold mb-2 text-white">
                       <Globe className="w-5 h-5 text-white" />
@@ -177,8 +203,8 @@ const IDODetailPage = () => {
                     <div
                       className={`flex capitalize h-auto w-[120px] items-center justify-center rounded-full px-2 py-1 text-sm font-medium shadow-md
                             ${
-                              //@ts-ignore
-                              searchResult?.data?.status === 'successful'
+                        //@ts-ignore
+                        searchResult?.data?.status === 'successful'
                           ? 'bg-green-100 text-green-800 border border-green-300'
                           //@ts-ignore
                           : searchResult?.data?.status === 'failed'
@@ -190,8 +216,8 @@ const IDODetailPage = () => {
                         }`}
                     >
                       {
-                      //@ts-ignore
-                      searchResult?.data?.status}
+                        //@ts-ignore
+                        searchResult?.data?.status}
                     </div>
                   </div>
 
@@ -210,167 +236,167 @@ const IDODetailPage = () => {
                 >
                   {
                     //@ts-ignore
-                  searchResult?.data?.status !== 'active' ? (
-                    <>
-                      <div>
-                        {/* Progress Bar */}
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
-                            <p>
-                              <strong>Fund Raised</strong>
-                            </p>
-                            <span>
-                              
-                              {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
-                            </span>
+                    searchResult?.data?.status !== 'active' ? (
+                      <>
+                        <div>
+                          {/* Progress Bar */}
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
+                              <p>
+                                <strong>Fund Raised</strong>
+                              </p>
+                              <span>
+
+                                {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                              <div
+                                className="h-full rounded-full bg-black transition-all duration-500"
+                                style={{
+                                  width: progressBarValues(
+                                    //@ts-ignore
+                                    Number(searchResult?.data?.fundsRaised),
+                                    //@ts-ignore
+                                    Number(searchResult?.data?.totalSupply)
+                                  ), // OR `${percentage * 2}%` if intentional
+                                }}
+                              />
+                            </div>
                           </div>
-                          <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-black transition-all duration-500"
-                              style={{
-                                width: progressBarValues(
+                          <h4 className="text-lg  mt-4 font-medium text-gray-900 dark:text-white mb-2 text-center uppercase">
+                            Investors
+                          </h4>
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full text-sm">
+                              <thead>
+                                <tr className="border-b border-gray-300 dark:border-gray-600">
+                                  <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
+                                    Amount
+                                  </th>
+                                  <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
+                                    Wallet
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {
                                   //@ts-ignore
-                                  Number(searchResult?.data?.fundsRaised),
-                                  //@ts-ignore
-                                  Number(searchResult?.data?.totalSupply)
-                                ), // OR `${percentage * 2}%` if intentional
-                              }}
-                            />
+                                  searchResult?.data?.investors?.length > 0 ? (
+                                    //@ts-ignore
+                                    searchResult?.data?.investors.map((inv: any, idx: number) => (
+                                      <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
+                                        <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
+                                        <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan={2} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">
+                                        No investors found.
+                                      </td>
+                                    </tr>
+                                  )}
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                        <h4 className="text-lg  mt-4 font-medium text-gray-900 dark:text-white mb-2 text-center uppercase">
-                          Investors
-                        </h4>
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full text-sm">
-                            <thead>
-                              <tr className="border-b border-gray-300 dark:border-gray-600">
-                                <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
-                                  Amount
-                                </th>
-                                <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
-                                  Wallet
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                      </>
+                    ) : (
+                      <>
+                        <div className="space-y-4">
+                          <div className="flex justify-between border-b border-gray-300 pb-4">
+                            <div>
+                              <p className="text-sm font-medium uppercase text-gray-600 dark:text-gray-300">
+                                Total Raised
+                              </p>
+                              <p className="text-lg font-semibold text-gray-900 dark:text-white">DOFI</p>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                              <input
+                                disabled={isExpired}
+                                type="number"
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                className="rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+                                placeholder="Enter Amount"
+                              />
+                              <Button
+                                size="small"
+                                shape="rounded"
+                                onClick={() => handleBuyShare()}
+                                disabled={loading || isExpired}
+                                className="bg-black text-white hover:bg-gray-800 px-4 py-2 rounded-md"
+                              >
+                                {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
+                              </Button>
+                            </div>
+                          </div>
+                          {/* Progress Bar */}
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
+                              <p>
+                                <strong>Fund Raised</strong>
+                              </p>
+                              <span>
+                                {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                              <div
+                                className="h-full rounded-full bg-black transition-all duration-500"
+                                style={{
+                                  width: progressBarValues(
+                                    Number(searchResult?.data?.fundsRaised),
+                                    Number(searchResult?.data?.totalSupply)
+                                  ), // OR `${percentage * 2}%` if intentional
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                            <p>
+                              <strong>Participants:</strong> {
+                                //@ts-ignore
+                                searchResult?.data?.investors?.length}
+                            </p>
+                            <p>
+                              <strong>Total Allocation:</strong>{' '}
                               {
                                 //@ts-ignore
-                                searchResult?.data?.investors?.length > 0 ? (
-                                  //@ts-ignore
-                                  searchResult?.data?.investors.map((inv: any, idx: number) => (
-                                    <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
-                                      <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
-                                      <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
-                                    </tr>
-                                  ))
-                                ) : (
-                                  <tr>
-                                    <td colSpan={2} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">
-                                      No investors found.
-                                    </td>
-                                  </tr>
-                                )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="space-y-4">
-                        <div className="flex justify-between border-b border-gray-300 pb-4">
-                          <div>
-                            <p className="text-sm font-medium uppercase text-gray-600 dark:text-gray-300">
-                              Total Raised
+                                searchResult?.data?.totalSupply}
                             </p>
-                            <p className="text-lg font-semibold text-gray-900 dark:text-white">DOFI</p>
-                          </div>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              disabled={isExpired}
-                              type="number"
-                              value={inputValue}
-                              onChange={handleInputChange}
-                              className="rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-                              placeholder="Enter Amount"
-                            />
-                            <Button
-                              size="small"
-                              shape="rounded"
-                              onClick={() => handleBuyShare()}
-                              disabled={loading || isExpired}
-                              className="bg-black text-white hover:bg-gray-800 px-4 py-2 rounded-md"
-                            >
-                              {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
-                            </Button>
-                          </div>
-                        </div>
-                        {/* Progress Bar */}
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
                             <p>
-                              <strong>Fund Raised</strong>
-                            </p>
-                            <span>
-                              {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-black transition-all duration-500"
-                              style={{
-                                width: progressBarValues(
-                                  Number(searchResult?.data?.fundsRaised),
-                                  Number(searchResult?.data?.totalSupply)
-                                ), // OR `${percentage * 2}%` if intentional
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-2 text-sm text-gray-700 dark:text-gray-200">
-                          <p>
-                            <strong>Participants:</strong> {
-                              //@ts-ignore
-                              searchResult?.data?.investors?.length}
-                          </p>
-                          <p>
-                            <strong>Total Allocation:</strong>{' '}
-                            {
-                              //@ts-ignore
-                              searchResult?.data?.totalSupply}
-                          </p>
-                          <p>
-                            <strong>Remaining Allocation:</strong>{' '}
-                            {
-                              //@ts-ignore
-                              getRemaniningAlloction(searchResult?.data?.fundsRaised, searchResult?.data?.pricePerToken, searchResult?.data?.totalSupply)
-                            }
-                          </p>
-                          <p>
-                            <strong>Price Per Token:</strong>{' '}
-                            {
-                              //@ts-ignore
-                              searchResult?.data?.pricePerToken}
-                            {/* {totalPrice ?? searchResult?.data?.pricePerToken} */}
-                          </p>
-                        </div>
-
-                        {!isExpired && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase mt-4">
-                              DIO ends in:
-                            </h4>
-                            <AuctionCountdown
-                              date={new Date(
+                              <strong>Remaining Allocation:</strong>{' '}
+                              {
                                 //@ts-ignore
-                                searchResult?.data?.endTime?.toString())}
-                            />
+                                getRemaniningAlloction(searchResult?.data?.fundsRaised, searchResult?.data?.pricePerToken, searchResult?.data?.totalSupply)
+                              }
+                            </p>
+                            <p>
+                              <strong>Price Per Token:</strong>{' '}
+                              {
+                                //@ts-ignore
+                                searchResult?.data?.pricePerToken}
+                              {/* {totalPrice ?? searchResult?.data?.pricePerToken} */}
+                            </p>
                           </div>
-                        )}
-                      </div>
-                    </>
-                  )}
+
+                          {!isExpired && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase mt-4">
+                                DIO ends in:
+                              </h4>
+                              <AuctionCountdown
+                                date={new Date(
+                                  //@ts-ignore
+                                  searchResult?.data?.endTime?.toString())}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
                 </motion.div>
               </div>
 
@@ -379,7 +405,7 @@ const IDODetailPage = () => {
                   Token Information
                 </h2>
                 <p className="text-[14px] font-[400] text-center text-[#1E293B] mb-6">
-                  Note : after successful DIO completion random percentage on fractions are minted<br/> for creating liquidity.
+                  Note : after successful DIO completion random percentage on fractions are minted<br /> for creating liquidity.
                 </p>
                 <motion.div
                   whileTap={{ scale: 0.98 }}

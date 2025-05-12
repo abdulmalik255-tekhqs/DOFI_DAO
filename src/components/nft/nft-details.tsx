@@ -18,6 +18,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useBuyQuery } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { BeatLoader } from 'react-spinners';
+import Shib1 from '@/assets/images/dao/shib1.png';
+import Shib2 from '@/assets/images/dao/shib2.png';
+import Shib3 from '@/assets/images/dao/shib3.png';
+import Shib4 from '@/assets/images/dao/shib4.png';
+import Shib5 from '@/assets/images/dao/shib5.png';
+import Shib6 from '@/assets/images/dao/shib6.png';
+import Shib7 from '@/assets/images/dao/shib7.png';
+import Shib8 from '@/assets/images/dao/shib8.png';
 
 type Avatar = {
   id: string | number;
@@ -86,15 +94,30 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
       dispatch(idoActions.setLoading(false));
     }
   };
+  const ShibimageList = [
+    { id: 1, image: Shib1 },
+    { id: 2, image: Shib2 },
+    { id: 3, image: Shib3 },
+    { id: 4, image: Shib4 },
+    { id: 5, image: Shib5 },
+    { id: 6, image: Shib6 },
+    { id: 7, image: Shib7 },
+    { id: 8, image: Shib8 },
+  ];
+  const getImageByTokenID = (id: string) => {
+    const numericID = parseInt(id, 10);
+    const match = ShibimageList.find((item) => item.id === numericID);
+    return match ? match.image.src : nftDetail?.imageUrl;
+  };
   return (
     <div className="flex flex-grow">
       <div className="mx-auto flex w-full flex-grow flex-col transition-all xl:max-w-[1360px] 4xl:max-w-[1760px]">
-        <div className="relative mb-5 flex flex-grow items-center justify-center md:pb-7 md:pt-4 lg:fixed lg:mb-0 lg:h-[calc(100%-96px)] lg:w-[calc(100%-492px)] xl:w-[calc(100%-550px)] 3xl:w-[calc(100%-632px)] ltr:md:left-0 ltr:md:pl-6 ltr:lg:pl-8 ltr:xl:pl-[340px] ltr:xl:pr-12 ltr:2xl:pl-96 ltr:4xl:pl-0 rtl:md:right-0 rtl:md:pr-6 rtl:lg:pr-8 rtl:xl:pl-12 rtl:xl:pr-[340px] rtl:2xl:pr-96 rtl:4xl:pr-0">
+        <div className="relative mb-5 flex flex-grow items-center justify-center md:pb-7 md:pt-4 lg:fixed lg:mb-0 lg:w-[calc(100%-492px)] xl:w-[calc(100%-550px)] 3xl:w-[calc(100%-632px)] ltr:md:left-0 ltr:md:pl-6 ltr:lg:pl-8 ltr:xl:pl-[340px] ltr:xl:pr-12 ltr:2xl:pl-96 ltr:4xl:pl-0 rtl:md:right-0 rtl:md:pr-6 rtl:lg:pr-8 rtl:xl:pl-12 rtl:xl:pr-[340px] rtl:2xl:pr-96 rtl:4xl:pr-0">
           <div className="flex h-full max-h-full w-full items-center justify-center lg:max-w-[768px]">
             <div className="relative aspect-square max-h-full overflow-hidden rounded-lg">
               <img
-                src={nftDetail?.imageUrl}
-                alt="no-image"
+                src={getImageByTokenID(nftDetail?.tokenId)}
+                alt={`NFT #${nftDetail?.tokenId}`}
                 width={768}
                 className="h-full"
               />
@@ -102,7 +125,7 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
           </div>
         </div>
 
-        <div className="relative flex w-full flex-grow flex-col justify-between lg:min-h-[calc(100vh-96px)] lg:w-[460px] xl:w-[592px] ltr:md:ml-auto ltr:md:pl-8 ltr:lg:pl-12 ltr:xl:pl-20 rtl:md:mr-auto rtl:md:pr-8 rtl:lg:pr-12 rtl:xl:pr-20">
+        <div className="relative flex w-full flex-grow flex-col justify-between lg:w-[460px] xl:w-[592px] ltr:md:ml-auto ltr:md:pl-8 ltr:lg:pl-12 ltr:xl:pl-20 rtl:md:mr-auto rtl:md:pr-8 rtl:lg:pr-12 rtl:xl:pr-20">
           <div className="block">
             <div className="block">
               <div className="flex justify-between">
