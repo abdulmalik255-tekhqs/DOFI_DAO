@@ -10,6 +10,7 @@ import VoteList from '@/components/vote/vote-list';
 import { ExportIcon } from '@/components/icons/export-icon';
 // static data
 import { getVotesByStatus } from '@/data/static/vote-data';
+import ProfitIcon from '@/assets/images/dao/profit.png';
 import votePool from '@/assets/images/vote-pool.svg';
 import { useLayout } from '@/lib/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
@@ -87,18 +88,17 @@ const ProposalsPage = () => {
   ];
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
-        <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px]">
+      <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>
+        <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px]">
           DOFI DAO
         </h2>
         <div className="shrink-0">
           <Button
             shape="rounded"
             fullWidth={true}
-            className="uppercase"
             onClick={() => goToCreateProposalPage()}
           >
-            Create Proposals
+            Create Proposal
           </Button>
         </div>
       </div>
@@ -107,44 +107,44 @@ const ProposalsPage = () => {
           className={`${proposals?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[12px]  p-[30px] space-y-[25px] bg-white`}
         >
-           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
-              <TbHomeStats className="text-gray-700 text-[18px] text-white" />
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center">
+              <Image src={ProfitIcon} alt="no-icon" />
             </div>
-            <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
-            Proposals
+            <div className="text-[16px] font-[400] text-[#1E293B]">
+              Proposals
             </div>
           </div>
 
           <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
             {/* Total */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposals?.count || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Total</div>
+              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.count || "00"}</div>
+              <div className="text-[14px] text-[#334155] font-[400]">Total</div>
             </div>
 
             {/* Active */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposals?.active || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Active</div>
+              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.active || "00"}</div>
+              <div className="text-[14px] text-[#334155] font-[400]">Active</div>
             </div>
 
             {/* Sucessfull */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposals?.successful || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Sucessfull</div>
+              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.successful || "00"}</div>
+              <div className="text-[14px] text-[#334155] font-[400]">Sucessfull</div>
             </div>
 
             {/* Rejected */}
             <div className="text-center">
-              <div className="text-xl font-[600] text-[#151515]">{proposals?.rejected || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Rejected</div>
+              <div className="text-[24px] font-[500] text-[#1E293B]">{proposals?.rejected || "00"}</div>
+              <div className="text-[14px] text-[#334155] font-[400]">Rejected</div>
             </div>
           </div>
         </div>
-        {proposals?.percentageYield || proposals?.leasingAddress &&  <div
+        {proposals?.percentageYield || proposals?.leasingAddress && <div
           className={`${proposals?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
@@ -156,7 +156,7 @@ const ProposalsPage = () => {
 
             </div>
             <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
-            Others
+              Others
             </div>
           </div>
 
@@ -176,10 +176,10 @@ const ProposalsPage = () => {
 
           </div>
         </div>}
-       
-
       </div>
-
+      <div className='pt-[32px] pb-[24px] flex'>
+        <h2 className='text-[#1E293B] text-[24px] font-bold'>Proposals</h2>
+      </div>
 
       <Suspense fallback={<Loader variant="blink" />}>
         <VoteList voteStatus={'active'} />

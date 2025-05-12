@@ -106,7 +106,7 @@ function VoteActionButton({ vote, data }: any) {
       console.log(error);
     }
   };
-console.log("data--->",data)
+  console.log("data--->", data)
   return (
     <div className="mt-4 flex items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
@@ -156,7 +156,7 @@ console.log("data--->",data)
 }
 
 export default function VoteDetailsCard({ vote, data }: any) {
-  console.log("data--parent->",data)
+
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
   const getRemainingallocation = () => {
@@ -168,8 +168,8 @@ export default function VoteDetailsCard({ vote, data }: any) {
       layout
       initial={{ borderRadius: 8 }}
       className={cn(
-        'mb-3 rounded-lg bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
-        isExpand ? 'shadow-large' : 'shadow-card hover:shadow-large',
+        'mb-3 rounded-[12px] bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
+        isExpand ? 'shadow-large' : 'border-[#E2E8F0] border',
       )}
     >
       <motion.div
@@ -179,7 +179,21 @@ export default function VoteDetailsCard({ vote, data }: any) {
           'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
         })}
       >
+       
         <div className="self-start md:col-span-2">
+           <div
+                className={`mb-[32px] flex capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
+    ${vote?.status === 'approved'
+                    ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]'
+                    : vote?.status === 'rejected'
+                      ? 'bg-red-100 text-red-800 border border-red-300'
+                      : vote?.status === 'active'
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                  }`}
+              >
+                {vote?.status}
+              </div>
           <h3
             onClick={() => setIsExpand(!isExpand)}
             className="cursor-pointer text-base font-medium leading-normal dark:text-gray-100 2xl:text-lg capitalize"
@@ -201,7 +215,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
               Vote Now
             </Button>
           ) : (
-            <VoteActionButton vote={vote} data={data}/>
+            <VoteActionButton vote={vote} data={data} />
           )}
         </div>
         {vote.status == 'active' ? (
@@ -218,19 +232,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
           >
             <h3 className="flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ends in
-              <div
-                className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
-    ${vote?.status === 'approved'
-                    ? 'bg-green-100 text-green-800 border border-green-300'
-                    : vote?.status === 'rejected'
-                      ? 'bg-red-100 text-red-800 border border-red-300'
-                      : vote?.status === 'active'
-                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                        : 'bg-gray-100 text-gray-800 border border-gray-300'
-                  }`}
-              >
-                {vote?.status}
-              </div>
+             
             </h3>
             <AuctionCountdown
               date={new Date(vote?.expirationDate.toString())}
@@ -250,8 +252,6 @@ export default function VoteDetailsCard({ vote, data }: any) {
           >
             <h3 className=" flex justify-between text-gray-400 md:text-base md:font-medium md:uppercase md:text-gray-900 dark:md:text-gray-100 2xl:text-lg">
               Voting ended
-
-
               <div
                 className={`flex capitalize h-[40px] w-[120px] items-center justify-center rounded-lg text-sm font-medium shadow-md
     ${vote?.status === 'approved'
@@ -334,7 +334,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                   {data?.votePower > 1 ? <>  <div className="mt-4">
                     Vote Weightage:{' '}
                     <span className="font-medium text-gray-900">
-                      {((data?.votePower/data?.totalSupply)*100)?.toPrecision(3) || 0}%
+                      {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
                     </span>
                   </div>
                     <div className="mt-4">
