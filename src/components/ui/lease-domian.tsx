@@ -14,7 +14,7 @@ export default function LeaseDomainCard({ item, className = '' }: any) {
         className,
       )}
     >
-      <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
+      <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg max-w-[220px] max-h-[291px]">
         <img src={item?.nft?.imageUrl} width={600} alt="no-image" />
       </div>
       {/* <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
