@@ -187,7 +187,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
       observer={true}
       navigation={true}
       dir="ltr"
-      className="w-full"
+      className="w-full pb-6"
     >
       {mergedDAOs.map((item, index) => (
         <SwiperSlide key={item.id}>

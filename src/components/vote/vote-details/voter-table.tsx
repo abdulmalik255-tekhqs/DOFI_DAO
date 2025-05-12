@@ -116,11 +116,11 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
   return (
     <motion.div
       layout
-      className="mb-6 border-b border-dashed border-gray-200 pb-6 dark:border-gray-700"
+      className="dark:border-gray-700"
     >
       <table
         {...getTableProps()}
-        className="w-full border-separate border-0 sm:pb-2"
+        className="w-full border-separate border-0 sm:pb-1"
       >
         <thead className="hidden sm:table-header-group">
           {headerGroups.map((headerGroup, idx) => (
@@ -130,7 +130,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
                   {...column.getHeaderProps()}
                   key={idx}
                   className={cn(
-                    'pb-2 font-normal text-gray-400 dark:text-gray-300',
+                    'pb-1 font-normal text-black font-[400] text-[14px] dark:text-gray-300',
                     column.id === 'status'
                       ? 'ltr:text-right rtl:text-left'
                       : 'ltr:text-left rtl:text-right',
@@ -149,7 +149,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
         >
           {data.length === 0 ? (
             <tr>
-              <td colSpan={COLUMNS.length} className="py-4 text-center text-gray-500 dark:text-gray-400">
+              <td colSpan={COLUMNS.length} className="py-4 text-center text-black font-[400] text-[14px]">
                 No records found.
               </td>
             </tr>
@@ -178,7 +178,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
         </tbody>
       </table>
 
-      <div className="flex w-full items-center justify-center text-sm xs:justify-end sm:mt-3">
+      {/* <div className="flex w-full items-center justify-center text-sm xs:justify-end sm:mt-3">
         <div className="flex items-center gap-4">
           <Button
             size="mini"
@@ -205,7 +205,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
             <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
           </Button>
         </div>
-      </div>
+      </div> */}
     </motion.div>
   );
 }

@@ -20,6 +20,9 @@ import { useFetchNftLeaseAddress, useGetProposalDomainDao } from '@/hooks/livePr
 import { FaChartLine } from "react-icons/fa";
 import { TbHomeStats } from "react-icons/tb";
 import { FaRegClock } from "react-icons/fa6";
+import ProfitIcon from '@/assets/images/dao/profit.png';
+import ClockIcon from '@/assets/images/dao/clock.png';
+import GraphIcon from '@/assets/images/dao/graph.png';
 
 
 const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
@@ -97,18 +100,18 @@ function AuctionCountdown() {
   }
 
   return (
-    <div className="flex space-x-6 text-lg font-semibold px-6">
-      <div className="flex flex-col text-white/80">
-        <span className='text-xl font-[600]'>{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className='text-[12px] text-grey font-[400]'>Hours</span>
+    <div className="flex items-center space-x-6 text-lg font-semibold px-6">
+      <div className="flex flex-col text-[#1E293B]">
+        <span className='text-[24px] font-[500]'>{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className='text-[12px] text-[#1E293B] font-[400]'>Hours</span>
       </div>
-      <div className="flex flex-col text-white/80">
-        <span className='text-xl font-[600]'>{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className='text-[12px] text-grey font-[400]'>Minutes</span>
+      <div className="flex flex-col text-[#1E293B]">
+        <span className='text-[24px] font-[500]'>{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className='text-[12px] text-[#1E293B] font-[400]'>Minutes</span>
       </div>
-      <div className="flex flex-col text-white/80">
-        <span className='text-xl font-[600]'>{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className='text-[12px] text-grey font-[400]'>Seconds</span>
+      <div className="flex flex-col text-[#1E293B]">
+        <span className='text-[24px] font-[500]'>{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className='text-[12px] text-[#1E293B] font-[400]'>Seconds</span>
       </div>
     </div>
   );
@@ -200,10 +203,10 @@ const DomainDAOPage = () => {
   console.log("leaseAddressInfo--->", leaseAddressInfo)
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between bg-white px-4 mb-4 items-center shadow-lg rounded-md py-5'>
-        <h2 className="text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] flex items-center gap-2">
+      <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>
+        <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
           {storedNft?.name}
-          <span className='text-[16px] text-base '>(Domain Dao)</span>
+          <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
         </h2>
         <div className="shrink-0">
           <Button
@@ -218,17 +221,18 @@ const DomainDAOPage = () => {
       </div>
 
       <div className="flex flex-wrap gap-4 mb-4">
+        
         <div
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 min-w-[320px]`}
+            } col-span-12 md:col-span-6 lg:col-span-3 h-[170px] sm:h-[158px] rounded-[10px] border-[#E2E8F0] border  p-[30px] space-y-[25px] bg-white`}
         >
           <div className="flex items-center gap-3">
             <div className="bg-white/80 p-[5px] rounded-full flex items-center justify-center">
-              <FaRegClock className="text-gray-700 text-[22px] text-black" />
+             <Image src={ClockIcon} alt="no-icon" />
             </div>
-            <div className="text-[18] font-bold text-white tour_Hours_tracking">
+            <div className="text-[16px] font-[400] text-[#1E293B]">
               Profit Distribution In
             </div>
           </div>
@@ -241,13 +245,13 @@ const DomainDAOPage = () => {
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-xl p-[30px] space-y-[25px] bg-white`}
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[10px] p-[30px] space-y-[25px] bg-white`}
         >
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
-              <TbHomeStats className="text-gray-700 text-[18px] text-white" />
+            <div className="flex items-center justify-center">
+              <Image src={ProfitIcon} alt="no-icon" />
             </div>
-            <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
+            <div className="text-[16px] font-[400] text-[#1E293B] tour_Hours_tracking">
               Proposals
             </div>
           </div>
@@ -282,13 +286,13 @@ const DomainDAOPage = () => {
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
             : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#14161A] border-b-4 h-[170px] sm:h-[158px] rounded-[10px] shadow-lg p-[30px] space-y-[25px] bg-white min-w-[360px]`}
+            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[10px] p-[30px] space-y-[25px] bg-white min-w-[400px]`}
         >
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-2 rounded-full flex items-center justify-center shadow-sm">
-              <FaChartLine className="text-gray-700 text-[16px] text-white" />
+            <div className="flex items-center justify-center">
+              <Image src={GraphIcon} alt="no-icon" />
             </div>
-            <div className="text-xl font-bold text-[#151515] tour_Hours_tracking">
+            <div className="text-[16px] font-[400] text-[#1E293B] tour_Hours_tracking">
               Profit
             </div>
           </div>
@@ -320,10 +324,10 @@ const DomainDAOPage = () => {
 
           </div>
         </div>}
-
-
       </div>
-      <div></div>
+       <div className='pt-[32px] pb-[24px] flex'>
+        <h2 className='text-[#1E293B] text-[24px] font-bold'>Proposals</h2>
+      </div>
       <Suspense fallback={<Loader variant="blink" />}>
         {/* <ParamTab tabMenu={tabMenuItems}>
           <TabPanel className="focus:outline-none">
