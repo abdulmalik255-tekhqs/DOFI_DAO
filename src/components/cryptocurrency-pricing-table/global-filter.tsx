@@ -70,7 +70,7 @@ export default function GlobalFilter() {
   className="gap-[38px] flex flex-col rounded-[12px] bg-contain bg-center bg-no-repeat"
   style={{ backgroundImage: `url(${Bg.src})` }}
 >        <h2 className="flex mt-[46px] shrink-0 items-center justify-center text-center text-[32px] font-[800]  text-[#0F172A]">
-          Register Your Name
+          Register Your Domain Name
         </h2>
         <label className="mb-[46px] relative hidden w-full items-center justify-center  md:flex">
           <input
