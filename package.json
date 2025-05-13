@@ -8,8 +8,7 @@
     "build": "next build",
     "build:check": "tsc --noEmit",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky"
+    "lint": "next lint"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.2",
