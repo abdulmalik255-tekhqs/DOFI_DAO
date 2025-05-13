@@ -23,6 +23,7 @@ import Shib from '@/assets/images/dao/shib.png';
 import DAO from '@/assets/images/dao/dao1.png';
 import Image from 'next/image';
 import { useCopyToClipboard } from 'react-use';
+import ToastNotification from '../ui/toast-notification';
 
 
 interface CreateIDOProps {
@@ -116,6 +117,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
   const handleCopyToClipboard = () => {
     copyToClipboard(mintedHash);
     setCopyButtonStatus('Copied!');
+    ToastNotification("success","Copied!")
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 1000);

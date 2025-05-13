@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: 'DAO Webapp',
   icons: {
     icon: {
-      url: '/favicon.ico',
+      url: '/dofifavicon.png',
     },
   },
 };

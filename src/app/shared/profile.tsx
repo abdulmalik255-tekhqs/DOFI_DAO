@@ -12,6 +12,7 @@ import { authorData } from '@/data/static/author';
 import { useAccount } from 'wagmi';
 import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
+import ToastNotification from '@/components/ui/toast-notification';
 
 const AuthorProfilePage = () => {
   const { address } = useAccount();
@@ -21,6 +22,7 @@ const AuthorProfilePage = () => {
     //@ts-ignore
     copyToClipboard(address);
     setCopyButtonStatus(true);
+     ToastNotification("success","Copied!")
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 2500);

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { useAccount } from 'wagmi';
 import { Coins, Globe, Hash, User, Wallet } from 'lucide-react';
+import ToastNotification from '../ui/toast-notification';
 
 export default function BuyTransaction({ data }: any) {
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
@@ -20,6 +21,15 @@ export default function BuyTransaction({ data }: any) {
   const handleCopyToClipboard = () => {
     copyToClipboard(buyTransactionhash?.transactionHash);
     setCopyButtonStatus('Copied!');
+    ToastNotification("success","Copied!")
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 1000);
+  };
+   const handleCopyToClipboardNFT = () => {
+    copyToClipboard(data?.contractAddress);
+    setCopyButtonStatus('Copied!');
+    ToastNotification("success","Copied!")
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 1000);
@@ -80,7 +90,7 @@ export default function BuyTransaction({ data }: any) {
               <h3 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
                 {data?.contractAddress?.slice(0, 6)}...{data?.contractAddress?.slice(-6)}
                 <span
-                  onClick={handleCopyToClipboard}
+                  onClick={handleCopyToClipboardNFT}
                   className="cursor-pointer rounded-full border border-gray-200 p-1 text-gray-600 transition hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400"
                 >
                   <Copy className="h-4 w-4" />

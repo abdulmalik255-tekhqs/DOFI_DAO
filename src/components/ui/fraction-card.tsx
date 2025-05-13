@@ -8,6 +8,7 @@ import Shib5 from '@/assets/images/dao/shib5.png';
 import Shib6 from '@/assets/images/dao/shib6.png';
 import Shib7 from '@/assets/images/dao/shib7.png';
 import Shib8 from '@/assets/images/dao/shib8.png';
+import ToastNotification from './toast-notification';
 
 type ItemType = {
   id?: string | number;
@@ -105,10 +106,11 @@ export default function FractionCard({ item, className = '' }: any) {
           Token ID : <span className='ml-2 font-bold'>{item?.tokenId}</span>
         </div>
         <div
-          className="ml-4 mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
+          className="z-[5] ml-4 mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
           title="Click to copy"
           onClick={() => {
             if (contractAddress) {
+                ToastNotification("success","Copied!")
               navigator.clipboard.writeText(contractAddress);
             }
           }}
