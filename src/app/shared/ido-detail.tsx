@@ -193,7 +193,7 @@ const IDODetailPage = () => {
                         {
                           searchResult?.data?.name}
                         <Image
-                          src={searchResult?.data?.nftID?.name?.endsWith('.eth') ? Eth : Shib}
+                          src={searchResult?.data?.nftID?.name?.endsWith('.shib') ? Shib :  Eth}
                           alt="Domain extension"
                           className="w-5 h-5"
                         />
