@@ -66,9 +66,9 @@ export default function CreateIDO({ data }: CreateIDOProps) {
   };
   return (
     <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
-        <h1 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white flex items-end  justify-end text-end w-full">
+        {/* <h1 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white flex items-end  justify-end text-end w-full">
         Step 2 / <span className="text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-white">2</span>
-      </h1>
+      </h1> */}
       <h1 className="flex shrink-0 items-center justify-center text-center text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
         DIO
       </h1>

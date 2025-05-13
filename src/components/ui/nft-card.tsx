@@ -66,7 +66,7 @@ export default function NFTGrid({
       {/* Image section (no background) */}
       {/* <div className="w-full h-[300px] flex items-center justify-center !bg-[inherit]"> */}
       <img
-         src={getImageByTokenID(tokenID)}
+         src={image}
         alt={`NFT #${tokenID}`}
         className="object-contain max-h-full max-w-full"
       />
