@@ -538,6 +538,7 @@ const CreateProposalPage = () => {
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           MOTIVATION
+          <sup className="text-red-500 ml-1">*</sup>
         </h3>
         <Textarea
           placeholder="Add the motivation here"
@@ -549,6 +550,7 @@ const CreateProposalPage = () => {
       <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           SUMMARY
+          <sup className="text-red-500 ml-1">*</sup>
         </h3>
         <Textarea
           rows={6}

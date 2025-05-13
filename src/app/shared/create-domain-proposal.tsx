@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
-import { useAccount, useWriteContract } from 'wagmi';
-import { waitForTransactionReceipt } from 'viem/actions';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { readContract, waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
-import { tetherABI } from '@/utils/abi';
+import { tetherABI, fractionDaoABI } from '@/utils/abi';
 import { config } from '@/app/shared/wagmi-config';
 import InputLabel from '@/components/ui/input-label';
 import { useRouter } from 'next/navigation';
@@ -292,6 +292,12 @@ const CreateProposalPage = () => {
   const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
 
   const { mutate: submitCreate, isError, error } = useCreatePropsals('child');
+  const { data: balanceData } = useReadContract({
+    address: process.env.NEXT_PUBLIC_FRACTIONDAO_TOKEN as `0x${string}`,
+    abi: fractionDaoABI,
+    functionName: 'balanceOf',
+    args: [address, category?.tokenId],
+  });
 
   useEffect(() => {
     const storedNftString = localStorage.getItem('nft');
@@ -309,13 +315,17 @@ const CreateProposalPage = () => {
         return;
       }
 
-      const isEmpty = !name || !leasingAddress || !percentageYield ||!motivation || !summary;
+      const isEmpty = !name || !leasingAddress || !percentageYield || !motivation || !summary;
 
-    if (isEmpty) {
-      ToastNotification('error', 'Please fill all required fields');
-      return;
-    }
-
+      if (isEmpty) {
+        ToastNotification('error', 'Please fill all required fields');
+        return;
+      }
+    
+      if (balanceData &&  Number(balanceData) < 1) {
+        ToastNotification('error', 'User does not hold the fractions');
+        return;
+      }
       dispatch(idoActions.setLoading(true));
       // Disabled Contract Call
       // const hash = await writeContractAsync({
@@ -333,22 +343,22 @@ const CreateProposalPage = () => {
       //   pollingInterval: 2000,
       // });
       // if (recipient.status === 'success') {
-        submitCreate({
-          //@ts-ignore
-          name: name,
-          summary: summary,
-          motivation: motivation,
-          amount: "50",
-          nftId: category?._id,
-          daoId: localStorage.getItem('Domain_Dao'),
-          leasingAddress: leasingAddress || '0x',
-          percentageYield: percentageYield || 1,
-          totalFractions: totalFractions || 1,
-          pricePerFraction: pricePerFraction || 1,
-          daoType: 'child',
-          // "address": "{{wallet}}",
-          expirationDate: new Date(),
-        });
+      submitCreate({
+        //@ts-ignore
+        name: name,
+        summary: summary,
+        motivation: motivation,
+        amount: "50",
+        nftId: category?._id,
+        daoId: localStorage.getItem('Domain_Dao'),
+        leasingAddress: leasingAddress || '0x',
+        percentageYield: percentageYield || 1,
+        totalFractions: totalFractions || 1,
+        pricePerFraction: pricePerFraction || 1,
+        daoType: 'child',
+        // "address": "{{wallet}}",
+        expirationDate: new Date(),
+      });
       // } else {
       //   console.log('erer');
       // }
@@ -533,7 +543,9 @@ const CreateProposalPage = () => {
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           MOTIVATION
+          <sup className="text-red-500 ml-1">*</sup>
         </h3>
+        
         <Textarea
           placeholder="Add the motivation here"
           rows={6}
@@ -544,6 +556,7 @@ const CreateProposalPage = () => {
       <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           SUMMARY
+          <sup className="text-red-500 ml-1">*</sup>
         </h3>
         <Textarea
           rows={6}

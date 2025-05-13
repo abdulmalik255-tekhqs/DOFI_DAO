@@ -6,10 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import cn from '@/utils/cn';
 import { BeatLoader } from 'react-spinners';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
-import { tetherABI } from '@/utils/abi';
+import { fractionDaoABI, tetherABI } from '@/utils/abi';
 import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
 import RevealContent from '@/components/ui/reveal-content';
@@ -31,6 +31,7 @@ import ToastNotification from '@/components/ui/toast-notification';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
+import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
 
 function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
@@ -42,6 +43,12 @@ function VoteActionButton({ vote, data }: any) {
   const { writeContractAsync } = useWriteContract();
   const { mutate: submitCreate, isError, error } = usePostVote(params);
   const { mutate: submitCreateupdated } = usePostVoteUpdated(params);
+  const { data: balanceData } = useReadContract({
+    address: process.env.NEXT_PUBLIC_FRACTIONDAO_TOKEN as `0x${string}`,
+    abi: fractionDaoABI,
+    functionName: 'balanceOf',
+    args: [address, vote?.nftId?.tokenId],
+  });
 
   // For Dofi Dao vote Cast
   const handleSubmit = async (isFavour: any) => {
@@ -87,9 +94,15 @@ function VoteActionButton({ vote, data }: any) {
   };
   // For Domain Dao vote Cast
   const handleSubmitUpdated = async (isFavour: any) => {
+
     try {
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
+        return;
+
+      }
+      if (balanceData && Number(balanceData) < 1) {
+        ToastNotification('error', 'User does not hold the fractions');
         return;
       }
       dispatch(idoActions.setLoading(true));
@@ -107,7 +120,6 @@ function VoteActionButton({ vote, data }: any) {
       console.log(error);
     }
   };
-  console.log("data--->", data)
   return (
     <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
@@ -174,10 +186,23 @@ export default function VoteDetailsCard({ vote, data }: any) {
       layout
       initial={{ borderRadius: 8 }}
       className={cn(
-        'mb-3 rounded-[12px]  bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
+        'relative mb-3 rounded-[12px]  bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
         isExpand ? 'border-[#E2E8F0] border' : 'border-[#E2E8F0] border',
       )}
     >
+      <div className="absolute top-2 right-2 text-xl cursor-pointer">
+    {isExpand ? (
+      <IoIosArrowDropup
+        className="text-[24px] text-[#475569]"
+        onClick={() => setIsExpand(false)}
+      />
+    ) : (
+      <IoIosArrowDropdown
+        className="text-[24px] text-[#475569]"
+        onClick={() => setIsExpand(true)}
+      />
+    )}
+  </div>
       <motion.div
         layout
         className={cn('flex w-full flex-col-reverse mb-[32px] justify-between', {
@@ -280,13 +305,16 @@ export default function VoteDetailsCard({ vote, data }: any) {
               {vote?.status}
             </div>
             <div>
-            <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
-            {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
-          </div>
+
+              <p className='text-[#475569] text-[16px] font-[400] mt-4'>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+              {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
+            </div>
           </div>
 
           <div className='hidden md:flex'>
-            <p className='text-[#475569] text-[16px] font-[400] '>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+
+
+            <p className='text-[#475569] text-[16px] font-[400] mt-4'>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
             {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
           </div>
           {
@@ -366,8 +394,8 @@ export default function VoteDetailsCard({ vote, data }: any) {
                     <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
                       Leasing address:{' '}
                       <span className="font-[400] text-black">
-                      {vote?.leasingAddress.slice(0, 5)}...
-                      {vote?.leasingAddress.slice(-5)}
+                        {vote?.leasingAddress.slice(0, 5)}...
+                        {vote?.leasingAddress.slice(-5)}
                       </span>
                     </div>
                     <div className="mt-4">
