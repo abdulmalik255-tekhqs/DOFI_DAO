@@ -6,10 +6,11 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/ui/button';
 import { HashLoader } from 'react-spinners';
 import { useState } from 'react';
-import { Coins, Globe, Hash, User, Wallet ,PartyPopper } from 'lucide-react';
+import { Coins, Globe, Hash, User, Wallet, PartyPopper } from 'lucide-react';
 import { useCopyToClipboard } from 'react-use';
 import routes from '@/config/routes';
 import { FaCube, FaDollarSign, FaGlobe, FaLayerGroup, FaLink } from 'react-icons/fa6';
+import ToastNotification from '../ui/toast-notification';
 
 export default function DIOTransaction({ data }: any) {
   console.log(data, "data");
@@ -22,6 +23,7 @@ export default function DIOTransaction({ data }: any) {
   const handleCopyToClipboard = () => {
     copyToClipboard(buyTransactionhash?.transactionHash);
     setCopyButtonStatus('Copied!');
+    ToastNotification("success", "Copied!")
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 1000);
@@ -29,12 +31,19 @@ export default function DIOTransaction({ data }: any) {
   const handleBuy = async () => {
     router.push(`${routes.idoDetail}/${idoDetaildata?._id}`);
   };
-
+  const handleCopyToClipboardNFT = () => {
+    copyToClipboard(data?.contractAddress);
+    setCopyButtonStatus('Copied!');
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 1000);
+  };
   return (
     <>
       <div className='w-full justify-between flex'>
         <h2 className="flex gap-2 mb-2 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
-        <PartyPopper color='green'/>  Congratulations  Domain Is Tokenized
+          <PartyPopper color='green' />  Congratulations  Domain Is Tokenized
         </h2>
       </div>
       <div className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-100 p-4 dark:bg-light-dark">
@@ -80,21 +89,21 @@ export default function DIOTransaction({ data }: any) {
                   <h3 className="font-medium text-gray-900 dark:text-white">NFT Address</h3>
                 </div>
                 <h3 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-                {data?.contractAddress?.slice(0, 6)}...{data?.contractAddress?.slice(-6)}
-                <span
-                    onClick={handleCopyToClipboard}
+                  {data?.contractAddress?.slice(0, 6)}...{data?.contractAddress?.slice(-6)}
+                  <span
+                    onClick={handleCopyToClipboardNFT}
                     className="cursor-pointer rounded-full border border-gray-200 p-1 text-gray-600 transition hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400"
                   >
                     <Copy className="h-4 w-4" />
                   </span>
                   <a
-                      href={`https://sepolia.basescan.org/address/${data?.contractAddress}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
-                    >
-                      <FaExternalLinkAlt />
-                    </a>
+                    href={`https://sepolia.basescan.org/address/${data?.contractAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
+                  >
+                    <FaExternalLinkAlt />
+                  </a>
                 </h3>
               </div>
               {/* Total Fraction */}
@@ -134,13 +143,13 @@ export default function DIOTransaction({ data }: any) {
                     <Copy className="h-4 w-4" />
                   </span>
                   <a
-                      href={`https://sepolia.basescan.org/tx/${buyTransactionhash?.transactionHash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
-                    >
-                      <FaExternalLinkAlt />
-                    </a>
+                    href={`https://sepolia.basescan.org/tx/${buyTransactionhash?.transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
+                  >
+                    <FaExternalLinkAlt />
+                  </a>
                 </h3>
               </div>
             </>
