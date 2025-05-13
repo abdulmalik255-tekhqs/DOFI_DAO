@@ -187,8 +187,8 @@ const IDODetailPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
                 <div className="rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] p-[20px] transition-all duration-300 flex justify-between flex-col">
                   <div >
-                    <div className='w-full flex justify-between items-center mb-2'>
-                      <h3 className="text-[20px] flex gap-2 items-center font-[500] mb-2 text-[#1E293B]">
+                    <div className='w-full flex flex-col md:flex-row justify-between items-center mb-2'>
+                      <h3 className="text-[14px] md:text-[20px] flex gap-2 items-center font-[500] mb-2 text-[#1E293B]">
                         <Globe className="w-5 h-5 text-black" />
                         {
                           searchResult?.data?.name}
@@ -405,37 +405,37 @@ const IDODetailPage = () => {
                   className="rounded-[10px] gap-[10px] flex flex-col border border-[#E2E8F0] bg-[#F8FAFC] p-[20px]"
                 >
                   <div className="flex justify-between">
-                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                    <h3 className="text-[12px] md:text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
                       <Image src={CoinVertical} alt="no-icon" />
                       Token Ticker
                     </h3>
-                    <p className="text-[14px] uppercase text-[#334155] font-[500]">DOFI SHARE</p>
+                    <p className="text-[10px] md:text-[14px] uppercase text-[#334155] font-[500]">DOFI SHARE</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                    <h3 className="text-[12px] md:text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
                       <Image src={TokenSale} alt="no-icon" />
                       Tokens for Sale
                     </h3>
-                    <p className="text-[14px] uppercase text-[#334155] font-[500]">{
+                    <p className="text-[10px] md:text-[14px] uppercase text-[#334155] font-[500]">{
                       searchResult?.data?.name} Fraction</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                    <h3 className="text-[12px] md:text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
                       <Image src={TotalSupply} alt="no-icon" />
                       Total Supply
                     </h3>
-                    <p className="text-[14px] uppercase text-[#334155] font-[500]">{
+                    <p className="text-[10px] md:text-[14px] uppercase text-[#334155] font-[500]">{
                       searchResult?.data?.totalSupply} DFS</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                    <h3 className="text-[12px] md:text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
                       <Image src={TokenType} alt="no-icon" /> Token Type</h3>
-                    <p className="text-[14px] uppercase text-[#334155] font-[500]">ERC1155</p>
+                    <p className="text-[10px] md:text-[14px] uppercase text-[#334155] font-[500]">ERC1155</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                    <h3 className="text-[12px] md:text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
                       <Image src={Network} alt="no-icon" /> Network</h3>
-                    <p className="text-[14px] uppercase text-[#334155] font-[500]">Base Sepolia</p>
+                    <p className="text-[10px] md:text-[14px] uppercase text-[#334155] font-[500]">Base Sepolia</p>
                   </div>
                 </motion.div>
               </div>
