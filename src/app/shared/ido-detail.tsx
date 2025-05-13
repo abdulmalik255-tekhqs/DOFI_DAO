@@ -3,7 +3,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { FaCube, FaDollarSign } from 'react-icons/fa6';
 import { TbSticker2 } from "react-icons/tb";
-import { readContract } from '@wagmi/core'; 
+import { readContract } from '@wagmi/core';
 import { GiMeshNetwork } from "react-icons/gi";
 import { FcSalesPerformance } from "react-icons/fc";
 import Confetti from 'react-confetti';
@@ -24,9 +24,16 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
 import { config } from '@/app/shared/wagmi-config';
 import Image from 'next/image';
-import ShareIcon from '@/assets/images/dao/shareicon.png';
+import Share from '@/assets/images/dao/newShare.svg';
+import CoinVertical from '@/assets/images/dao/coinvertical.svg';
+import TokenSale from '@/assets/images/dao/tokensale.svg';
+import TotalSupply from '@/assets/images/dao/totalsupply.svg';
+import TokenType from '@/assets/images/dao/tokentype.svg';
+import Network from '@/assets/images/dao/network.svg';
 import { useCopyToClipboard } from 'react-use';
 import routes from '@/config/routes';
+import Eth from '@/assets/images/dao/eth.png';
+import Shib from '@/assets/images/dao/shib.png';
 
 const IDODetailPage = () => {
   const params = useParams();
@@ -36,17 +43,13 @@ const IDODetailPage = () => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const [isExpired, setIsExpired] = useState(false);
   const { isConfetti, loading, componentLoading } = useSelector((state: any) => state.ido);
-  const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const { writeContractAsync } = useWriteContract();
   const { address } = useAccount();
   const {
     mutate: idodetail,
     data: searchResult,
-  } = useGetIDODetail();
-
-  //@ts-ignore
+  }: any = useGetIDODetail();
   const { mutate: buyShareIDO } = useBuyShareIDO();
-  //@ts-ignore
   const pricePerToken = parseFloat(searchResult?.data?.pricePerToken || '0');
 
   // Handle raw input change
@@ -57,17 +60,12 @@ const IDODetailPage = () => {
       setInputValue(raw);
     }
   };
-
   const totalPrice = (parseFloat(inputValue) || 0) * pricePerToken;
-
   useEffect(() => {
     dispatch(idoActions.setComponentloading(true))
-    //@ts-ignore
     idodetail(params.id?.toString());
-
   }, [isConfetti]);
   useEffect(() => {
-    //@ts-ignore
     const endTime = new Date(searchResult?.data?.endTime).getTime();
     const now = Date.now();
     setIsExpired(now > endTime);
@@ -82,11 +80,11 @@ const IDODetailPage = () => {
         ToastNotification('error', 'Enter Amount');
         return;
       }
-       if (Number(tokenBalance) < Number(inputValue)) {
+      if (Number(tokenBalance) < Number(inputValue)) {
         ToastNotification('error', 'You do not have enough DOFI token buy share!');
         return;
       }
-      //@ts-ignore
+
       let remaningValue = Math.floor(Number(searchResult?.data?.totalSupply) - Number(searchResult?.data?.fundsRaised));
       if (Number(inputValue) === 0) {
         ToastNotification('error', 'Cannot buy share with 0.');
@@ -96,14 +94,14 @@ const IDODetailPage = () => {
         ToastNotification('error', 'Cannot buy share greater then remaining allocation');
         return;
       }
-      //@ts-ignore
+
       if (!searchResult?.data?._id) {
         ToastNotification('error', 'IDO ID is missing');
         return;
       }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
+
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
@@ -117,8 +115,8 @@ const IDODetailPage = () => {
       });
       if (recipient.status === 'success') {
         buyShareIDO({
-          //@ts-ignore
-          id: params.id,
+
+          id: params.id as any,
           data: { amount: inputValue },
         });
       } else {
@@ -144,28 +142,27 @@ const IDODetailPage = () => {
     copyToClipboard(shareUrl);
     ToastNotification('success', 'Now you can share DIO!');
   }
-    const getTokenBalance = async (userAddress: string) => {
-      try {
-        const balance = await readContract(config, {
-          address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
-          abi: tetherABI,
-          functionName: 'balanceOf',
-          args: [userAddress],
-        });
-  
-        const formatted = formatUnits(balance as bigint, 18);
-        setTokenBalance(formatted);
-      } catch (error) {
-        console.error('Failed to fetch balance:', error);
-        ToastNotification('error', 'Failed to fetch token balance');
-      }
-    };
-     // 🔁 Call on address change
-     useEffect(() => {
-      if (address) {
-        getTokenBalance(address);
-      }
-    }, [address]);
+  const getTokenBalance = async (userAddress: string) => {
+    try {
+      const balance = await readContract(config, {
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+        abi: tetherABI,
+        functionName: 'balanceOf',
+        args: [userAddress],
+      });
+
+      const formatted = formatUnits(balance as bigint, 18);
+      setTokenBalance(formatted);
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      ToastNotification('error', 'Failed to fetch token balance');
+    }
+  };
+  useEffect(() => {
+    if (address) {
+      getTokenBalance(address);
+    }
+  }, [address]);
   return (
     <>
       {componentLoading ? (
@@ -176,76 +173,78 @@ const IDODetailPage = () => {
         </>
       ) : (
         <>
-          <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-black py-10 px-4 sm:px-6 lg:px-8">
+          <div className="min-h-screen py-6 px-4 lg:px-2">
             <div className="text-center mb-12">
-              <h3 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+              <h3 className="text-[24px] font-[700] text-[#1E293B]">
                 Domain Initial Offering
               </h3>
-              <p className="mt-2 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              <p className="mt-[12px] text-[16px] text-[#1E293B] font-[400] max-w-md mx-auto">
                 Participate in exclusive DIOs and become an early supporter of domain-backed projects.
               </p>
             </div>
 
             <div className="mx-auto w-full max-w-7xl">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
-                <div className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-6 transition-all duration-300">
-                  <div className='w-full flex justify-end items-center mb-1 cursor-pointer'
-                    onClick={handleCopyToClipboard}
-                  ><Image src={ShareIcon} alt="no-icon" /></div>
-                  <div className='w-full flex justify-between items-center mb-2'>
-                    <h3 className="text-[16px] flex gap-2 items-center font-bold mb-2 text-white">
-                      <Globe className="w-5 h-5 text-white" />
-                      {
-                        //@ts-ignore
-                        searchResult?.data?.name}
-                    </h3>
-                    <div
-                      className={`flex capitalize h-auto w-[120px] items-center justify-center rounded-full px-2 py-1 text-sm font-medium shadow-md
-                            ${
-                        //@ts-ignore
-                        searchResult?.data?.status === 'successful'
-                          ? 'bg-green-100 text-green-800 border border-green-300'
-                          //@ts-ignore
-                          : searchResult?.data?.status === 'failed'
-                            ? 'bg-red-100 text-red-800 border border-red-300'
-                            //@ts-ignore
-                            : searchResult?.data?.status === 'active'
-                              ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                              : 'bg-gray-100 text-gray-800 border border-gray-300'
-                        }`}
-                    >
-                      {
-                        //@ts-ignore
-                        searchResult?.data?.status}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                <div className="rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] p-[20px] transition-all duration-300 flex justify-between flex-col">
+                  <div >
+                    <div className='w-full flex justify-between items-center mb-2'>
+                      <h3 className="text-[20px] flex gap-2 items-center font-[500] mb-2 text-[#1E293B]">
+                        <Globe className="w-5 h-5 text-black" />
+                        {
+                          searchResult?.data?.name}
+                        <Image
+                          src={searchResult?.data?.nftID?.name?.endsWith('.eth') ? Eth : Shib}
+                          alt="Domain extension"
+                          className="w-5 h-5"
+                        />
+                      </h3>
+                      <div
+                        className={`flex capitalize h-auto  items-center justify-center rounded-full
+                            ${searchResult?.data?.status === 'successful'
+                            ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6] text-[12px] font-[400] w-[100px] px-[12px] py-[4px]'
+
+                            : searchResult?.data?.status === 'failed'
+                              ? 'bg-[#FEE2E2] text-[#F87171] border border-[#F87171] text-[12px] font-[400] w-[68px] px-[12px] py-[4px]'
+
+                              : searchResult?.data?.status === 'active'
+                                ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E] text-[12px] font-[400] w-[72px] px-[12px] py-[4px]'
+                                : 'bg-gray-100 text-gray-800 border border-gray-300'
+                          }`}
+                      >
+                        {
+                          searchResult?.data?.status}
+                      </div>
                     </div>
+                    <p className="text-[#334155] text-[14px] font-[400] tracking-[-1%]">
+                      {searchResult?.data?.description}
+                    </p>
                   </div>
 
-                  <p className="text-white">
-                    {
-                      //@ts-ignore
-                      searchResult?.data?.description}
-                  </p>
+                  <div className='text-[#0F172A] text-[16px] font-[400] w-full flex gap-2 justify-center h-[45px] bg-transparent border border-[#CBD5E1] rounded-[8px] items-center cursor-pointer'
+                    onClick={handleCopyToClipboard}
+                  >
+                    <Image src={Share} alt="no-icon" /> Share</div>
                 </div>
-
-
                 <motion.div
                   whileTap={{ scale: 0.98 }}
                   whileHover={{ scale: 1.015 }}
-                  className="rounded-xl bg-white dark:bg-gray-800 shadow-xl p-6 flex flex-col justify-between"
+                  className="rounded-[14px] bg-white p-[20px] flex flex-col justify-between border border-[#E2E8F0]"
                 >
                   {
-                    //@ts-ignore
                     searchResult?.data?.status !== 'active' ? (
                       <>
                         <div>
                           {/* Progress Bar */}
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
-                              <p>
-                                <strong>Fund Raised</strong>
-                              </p>
-                              <span>
-
+                          <div>
+                            <p className="text-[20px] font-[500] uppercase text-[#1E293B] flex justify-start items-center gap-2">
+                              <Image src={TokenType} alt="no-icon" width={30} />       Total Raised DOFI
+                            </p>
+                            {/* <p className="text-lg font-semibold text-gray-900 dark:text-white">DOFI</p> */}
+                          </div>
+                          <div className="space-y-1 mt-[36px]">
+                            <div className="flex justify-between">
+                              <span className="text-[14px] font-[500] text-[#64748B]">0%</span>
+                              <span className="text-[14px] font-[500] text-[#1E293B]">
                                 {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
                               </span>
                             </div>
@@ -254,39 +253,34 @@ const IDODetailPage = () => {
                                 className="h-full rounded-full bg-black transition-all duration-500"
                                 style={{
                                   width: progressBarValues(
-                                    //@ts-ignore
                                     Number(searchResult?.data?.fundsRaised),
-                                    //@ts-ignore
                                     Number(searchResult?.data?.totalSupply)
                                   ), // OR `${percentage * 2}%` if intentional
                                 }}
                               />
                             </div>
                           </div>
-                          <h4 className="text-lg  mt-4 font-medium text-gray-900 dark:text-white mb-2 text-center uppercase">
-                            Investors
-                          </h4>
-                          <div className="overflow-x-auto">
-                            <table className="min-w-full text-sm">
+                          <div className="overflow-x-auto mt-[24px]">
+                            <table className="min-w-full">
                               <thead>
-                                <tr className="border-b border-gray-300 dark:border-gray-600">
-                                  <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
+                                <tr className="border-b border-gray-300 dark:border-gray-600 ">
+                                  <th className="px-4 py-2 font-[400] text-[#334155] text-[14px] text-left">
                                     Amount
                                   </th>
-                                  <th className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200">
+                                  <th className="px-4 py-2 font-[400] text-[#334155] text-[14px] text-left">
                                     Wallet
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {
-                                  //@ts-ignore
+
                                   searchResult?.data?.investors?.length > 0 ? (
-                                    //@ts-ignore
+
                                     searchResult?.data?.investors.map((inv: any, idx: number) => (
-                                      <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
-                                        <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.amount}</td>
-                                        <td className="px-4 py-2 text-gray-800 dark:text-white">{inv.user?.wallet}</td>
+                                      <tr key={idx} className="border-b border-gray-200 ">
+                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{inv.amount}</td>
+                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{inv.user?.wallet}</td>
                                       </tr>
                                     ))
                                   ) : (
@@ -306,38 +300,18 @@ const IDODetailPage = () => {
                         <div className="space-y-4">
                           <div className="flex justify-between border-b border-gray-300 pb-4">
                             <div>
-                              <p className="text-sm font-medium uppercase text-gray-600 dark:text-gray-300">
-                                Total Raised
+                              <p className="text-[20px] font-[500] uppercase text-[#1E293B] flex justify-start items-center gap-2">
+                                <Image src={TokenType} alt="no-icon" width={30} />       Total Raised DOFI
                               </p>
-                              <p className="text-lg font-semibold text-gray-900 dark:text-white">DOFI</p>
+                              {/* <p className="text-lg font-semibold text-gray-900 dark:text-white">DOFI</p> */}
                             </div>
-                            <div className="flex gap-2 items-center">
-                              <input
-                                disabled={isExpired}
-                                type="number"
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                className="rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
-                                placeholder="Enter Amount"
-                              />
-                              <Button
-                                size="small"
-                                shape="rounded"
-                                onClick={() => handleBuyShare()}
-                                disabled={loading || isExpired}
-                                className="bg-black text-white hover:bg-gray-800 px-4 py-2 rounded-md"
-                              >
-                                {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
-                              </Button>
-                            </div>
+
                           </div>
                           {/* Progress Bar */}
                           <div className="space-y-1">
-                            <div className="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-300">
-                              <p>
-                                <strong>Fund Raised</strong>
-                              </p>
-                              <span>
+                            <div className="flex justify-between">
+                              <span className="text-[14px] font-[500] text-[#64748B]">0%</span>
+                              <span className="text-[14px] font-[500] text-[#1E293B]">
                                 {progressBarValues(Number(searchResult?.data?.fundsRaised), Number(searchResult?.data?.totalSupply))}
                               </span>
                             </div>
@@ -353,96 +327,115 @@ const IDODetailPage = () => {
                               />
                             </div>
                           </div>
-                          <div className="space-y-2 text-sm text-gray-700 dark:text-gray-200">
-                            <p>
-                              <strong>Participants:</strong> {
-                                //@ts-ignore
-                                searchResult?.data?.investors?.length}
-                            </p>
-                            <p>
-                              <strong>Total Allocation:</strong>{' '}
-                              {
-                                //@ts-ignore
-                                searchResult?.data?.totalSupply}
-                            </p>
-                            <p>
-                              <strong>Remaining Allocation:</strong>{' '}
-                              {
-                                //@ts-ignore
-                                getRemaniningAlloction(searchResult?.data?.fundsRaised, searchResult?.data?.pricePerToken, searchResult?.data?.totalSupply)
-                              }
-                            </p>
-                            <p>
-                              <strong>Price Per Token:</strong>{' '}
-                              {
-                                //@ts-ignore
-                                searchResult?.data?.pricePerToken}
-                              {/* {totalPrice ?? searchResult?.data?.pricePerToken} */}
-                            </p>
+                          <div className="flex flex-col gap-2 mt-[30px] w-full  border-b border-gray-300 pb-4">
+                            <div className='w-full flex justify-between '>
+                              <p className="text-[14px] font-[500] text-[#64748B]">
+                                Participants:
+                                <span className="ml-[12px] text-[14px] font-[500] text-black">
+                                  {searchResult?.data?.investors?.length}
+                                </span>
+                              </p>
+                              <p className="text-[14px] font-[500] text-[#64748B]">
+                                Total Allocation:
+                                <span className="ml-[12px] text-[14px] font-[500] text-black">{searchResult?.data?.totalSupply}</span>
+                              </p>
+                            </div>
+                            <div className='w-full flex justify-between '>
+                              <p className="text-[14px] font-[500] text-[#64748B]">
+                                Remaining Allocation:
+                                <span className="ml-[12px] text-[14px] font-[500] text-black">{
+                                  getRemaniningAlloction(searchResult?.data?.fundsRaised, searchResult?.data?.pricePerToken, searchResult?.data?.totalSupply)
+                                }</span>
+                              </p>
+                              <p className="text-[14px] font-[500] text-[#64748B]">
+                                Price Per Token:
+                                <span className="ml-[12px] text-[14px] font-[500] text-black">{
+                                  searchResult?.data?.pricePerToken}</span>
+                              </p>
+                            </div>
+
                           </div>
 
                           {!isExpired && (
                             <div>
-                              <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase mt-4">
+                              <h4 className="text-[16px] font-[400] text-[#1E293B] uppercase mt-4">
                                 DIO ends in:
                               </h4>
                               <AuctionCountdown
                                 date={new Date(
-                                  //@ts-ignore
                                   searchResult?.data?.endTime?.toString())}
                               />
                             </div>
                           )}
+
+                          <div className="flex gap-1 items-center justify-between">
+                            <input
+                              disabled={isExpired}
+                              type="number"
+                              value={inputValue}
+                              onChange={handleInputChange}
+                              className="rounded-[8px] w-[371px] h-[45px] bg-[#F8FAFC] border border-[#CBD5E1] text-[#94A3B8] px-3 py-1 text-[15px] font-[400] focus:outline-none focus:ring-2 focus:ring-gray-500"
+                              placeholder="Enter Amount"
+                            />
+                            <button
+
+                              onClick={() => handleBuyShare()}
+                              disabled={loading || isExpired}
+                              className="bg-[#0F172A] w-[114px] text-white text-white text-[14px] font-[400] h-[45px] rounded-[8px] px-4 py-3 cursor-pointer"
+                            >
+                              {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
+                            </button>
+                          </div>
                         </div>
                       </>
                     )}
                 </motion.div>
               </div>
 
-              <div className="mt-12">
-                <h2 className="text-xl font-bold text-center uppercase text-[#1E293B] mb-2">
+              <div className="mt-[42px]">
+                <h2 className="text-[24px] font-[700] text-center uppercase text-[#1E293B] mb-2">
                   Token Information
                 </h2>
-                <p className="text-[14px] font-[400] text-center text-[#1E293B] mb-6">
-                  Note : after successful DIO completion random percentage on fractions are minted<br /> for creating liquidity.
+                <p className="text-[16px] font-[400] text-center text-[#1E293B] mb-6">
+                  Note : after successful DIO completion random percentage <br />on fractions are minted for creating liquidity.
                 </p>
                 <motion.div
                   whileTap={{ scale: 0.98 }}
                   whileHover={{ scale: 1.015 }}
-                  className="rounded-xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 text-white shadow-lg p-6 cursor-pointer hover:shadow-2xl"
+                  className="rounded-[10px] gap-[10px] flex flex-col border border-[#E2E8F0] bg-[#F8FAFC] p-[20px]"
                 >
-                  <div className="flex justify-between mb-2">
-                    <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400">
-                      <TbSticker2 color='#fff' />
+                  <div className="flex justify-between">
+                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                      <Image src={CoinVertical} alt="no-icon" />
                       Token Ticker
                     </h3>
-                    <p className="text-sm uppercase text-white">DOFI SHARE</p>
+                    <p className="text-[14px] uppercase text-[#334155] font-[500]">DOFI SHARE</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400">
-                      <FcSalesPerformance className="text-gray-800" color='#fff' />
+                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                      <Image src={TokenSale} alt="no-icon" />
                       Tokens for Sale
                     </h3>
-                    <p className="text-sm uppercase text-white">{
-                      //@ts-ignore
+                    <p className="text-[14px] uppercase text-[#334155] font-[500]">{
                       searchResult?.data?.name} Fraction</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400">
-                      <FaDollarSign className="text-gray-800" color='#fff' />
+                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                      <Image src={TotalSupply} alt="no-icon" />
                       Total Supply
                     </h3>
-                    <p className="text-sm uppercase text-white">{
-                      //@ts-ignore
+                    <p className="text-[14px] uppercase text-[#334155] font-[500]">{
                       searchResult?.data?.totalSupply} DFS</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-sm flex items-center gap-2 font-semibold uppercase text-gray-400"> <FaCube color='#fff' className="text-gray-800" /> Token Type</h3>
-                    <p className="text-sm uppercase text-white">ERC1155</p>
+                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                      <Image src={TokenType} alt="no-icon" /> Token Type</h3>
+                    <p className="text-[14px] uppercase text-[#334155] font-[500]">ERC1155</p>
                   </div>
                   <div className="flex justify-between">
-                    <h3 className="text-sm font-semibold flex items-center gap-2  uppercase text-gray-400"><GiMeshNetwork color='#fff' className="text-gray-800" /> Network</h3>
-                    <p className="text-sm uppercase text-white">Base Sepolia</p>
+                    <h3 className="text-[14px] flex items-center gap-2 font-400 uppercase text-[#64748B]">
+                      <Image src={Network} alt="no-icon" /> Network</h3>
+                    <p className="text-[14px] uppercase text-[#334155] font-[500]">Base Sepolia</p>
                   </div>
                 </motion.div>
               </div>

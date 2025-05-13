@@ -37,7 +37,7 @@ export default function LeaseDomainCard({ item, className = '' }: any) {
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
         <img
-          src={getImageByTokenID(item?.nft?.tokenId)}
+          src={item?.nft?.imageUrl}
           alt={`NFT #${item?.nft?.tokenId}`}
           width={600} />
       </div>

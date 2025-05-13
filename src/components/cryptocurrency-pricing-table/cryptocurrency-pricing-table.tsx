@@ -64,7 +64,7 @@ const COLUMNS = [
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="">{row.original.nftID?.price ? `$${row.original.nftID?.price}` : "--"}</div>
+        <div className="">{row.original.nftID?.price ? `$${row.original.nftID?.price}` : "3641"}</div>
       </div>
     ),
     minWidth: 80,

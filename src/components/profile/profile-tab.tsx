@@ -34,7 +34,6 @@ const tabMenu = [
 ];
 
 export default function ProfileTab({ data ,leasingData}: any) {
-  console.log(leasingData,"leasingData");
   
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);

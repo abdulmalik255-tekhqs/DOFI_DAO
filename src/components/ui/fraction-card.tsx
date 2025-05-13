@@ -67,7 +67,7 @@ export default function FractionCard({ item, className = '' }: any) {
       )}
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg max-w-[220px] max-h-[291px]">
-        <img src={getImageByTokenID(item?.tokenId)}
+        <img src={imageUrl}
           alt={`NFT #${item?.tokenId}`} width={600} />
       </div>
       <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
@@ -79,9 +79,14 @@ export default function FractionCard({ item, className = '' }: any) {
 
           {/* Image Boxes (hover only) */}
           {amount && amount > 0 && (
-            <div className="absolute top-6 inset-x-0 bg-white rounded-[12px] w-[150px] p-2 hidden group-hover:flex items-center justify-center">
+            <div
+              className={cn(
+                "absolute top-6 inset-x-0 bg-white rounded-[12px] w-[150px] p-2 hidden group-hover:flex items-center justify-center",
+                amount > 15 && "overflow-y-auto max-h-[200px]"
+              )}
+            >
               <div className="grid grid-cols-4 gap-1 w-[150px]">
-                {Array?.from({ length: amount })?.map((_, index) => (
+                {Array.from({ length: amount }).map((_, index) => (
                   <div key={index}>
                     <img
                       src={imageUrl}

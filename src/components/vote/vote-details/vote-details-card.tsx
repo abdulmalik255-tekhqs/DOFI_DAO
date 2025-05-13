@@ -32,6 +32,10 @@ import ToastNotification from '@/components/ui/toast-notification';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
+import Yield from '@/assets/images/dao/yield.svg';
+import Vote from '@/assets/images/dao/vote.svg';
+import Criteria from '@/assets/images/dao/criteria.svg';
+import Image from 'next/image';
 
 function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
@@ -381,9 +385,10 @@ export default function VoteDetailsCard({ vote, data }: any) {
                         {vote?.percentageYield || "0"}
                       </span>
                     </div> */}
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
+                       <Image src={Criteria} alt="no-icon" />
                       Acceptacnce Criteria:{' '}
-                      <span className="font-[400] text-black">
+                      <span className="font-[400] text-black ml-[10px]">
                         {"$DOFI 100"}
                       </span>
                     </div>
@@ -397,34 +402,39 @@ export default function VoteDetailsCard({ vote, data }: any) {
                         {vote?.leasingAddress.slice(-5)}
                       </span>
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
+                      <Image src={Yield} alt="no-icon" />
                       Yield percentage:{' '}
-                      <span className="font-[400] text-black">
+                      <span className="font-[400] text-black ml-[10px]">
                         {vote?.percentageYield || 3}
                       </span>
                     </div>
-                    {data?.votePower > 1 ? <>  <div className="mt-4">
+                    {data?.votePower > 1 ? <>  
+                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
+                       <Image src={Vote} alt="no-icon" />
                       Vote Weightage:{' '}
-                      <span className="font-[400] text-black">
+                      <span className="font-[400] text-black ml-[10px]">
                         {/* {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}% */}
                         {data?.votePower}
                       </span>
                     </div>
-                      <div className="mt-4">
+                      <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
+                        <Image src={Criteria} alt="no-icon" />
                         Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
-                        <span className="font-[400] text-black">
+                        <span className="font-[400] text-black ml-[10px]">
                           {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
                           {data?.quorum}
                         </span>
                       </div>
-                      <div className="mt-4">
+                      <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
                         Total Supply:
                         <span className="font-[400] text-black">
                           {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
                           {data?.totalSupply || 0}
                         </span>
                       </div>
-                    </> : <div className="mt-4">
+                    </> : <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
+                        <Image src={Criteria} alt="no-icon" />
                       Acceptance Criteria:{' '}
                       <span className="font-[400] text-black">
                         $DOFI 100

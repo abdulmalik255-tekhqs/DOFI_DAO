@@ -18,14 +18,13 @@ import { BeatLoader } from 'react-spinners';
 import ToastNotification from '../ui/toast-notification';
 import { Globe } from 'lucide-react';
 import Image from 'next/image';
-import { readContract } from '@wagmi/core'; 
+import { readContract } from '@wagmi/core';
 import { useEffect, useState } from 'react';
 
 export default function FindName({ data }: any) {
   const { address } = useAccount();
   const [tokenBalance, setTokenBalance] = useState<string | null>(null);
-  console.log(tokenBalance,"tokenBalance");
-  
+
   const { mutate: submitBuyAsync } = useBuyQueryWizard();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
@@ -36,10 +35,14 @@ export default function FindName({ data }: any) {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
+      if (Number(tokenBalance) < Number(data?.price)) {
+        ToastNotification('error', 'You do not have enough DOFI token!');
+        return;
+      }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         //@ts-ignore
-        
+
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
@@ -81,8 +84,8 @@ export default function FindName({ data }: any) {
       ToastNotification('error', 'Failed to fetch token balance');
     }
   };
-   // 🔁 Call on address change
-   useEffect(() => {
+  // 🔁 Call on address change
+  useEffect(() => {
     if (address) {
       getTokenBalance(address);
     }
@@ -95,7 +98,7 @@ export default function FindName({ data }: any) {
         </h2>
       </div>
       <div className="mb-2 flex w-full items-start justify-between">
-       
+
         <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
           <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
           {data?.name}
@@ -107,9 +110,9 @@ export default function FindName({ data }: any) {
         </h3>
         <div>
           <h4 className="flex items-center gap-2 text-md font-medium tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
-          Balance: $DOFI {tokenBalance}
+            Balance: $DOFI {tokenBalance}
           </h4>
-          
+
         </div>
       </div>
       <div

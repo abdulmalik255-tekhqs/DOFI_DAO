@@ -23,8 +23,8 @@ type ItemType = {
   image: StaticImageData;
   imageUrl?: any;
   amount?: number;
-  tokenId?:any;
-  contractAddress?:any;
+  tokenId?: any;
+  contractAddress?: any;
   _id?: string;
   number_of_artwork: number;
   user: {
@@ -75,29 +75,31 @@ export default function CollectionCard({ item, className = '' }: any) {
     return match ? match.image.src : image;
   };
   return (
-    <div
-      className={cn(
-        'group relative overflow-hidden rounded-lg',
-        className,
-      )}
-    >
-      <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
-        <img src={getImageByTokenID(item?.tokenId)}
-          alt={`NFT #${item?.tokenId}`} width={600} />
-      </div>
-      <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
-        <div className="flex justify-end">
-          <div
-            onClick={() => goToNFTDetailPage()}
-            className='cursor-pointer'
-            // className="inline-flex h-8 shrink-0 border border-white cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-[40px]"
-          >
-           <Image src={Detail} alt="no-icon"/>
-          </div>
+    <>
+
+      <div
+        className={cn(
+          'group relative overflow-hidden rounded-lg',
+          className,
+        )}
+      >
+        <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
+          <img src={imageUrl}
+            alt={`NFT #${item?.tokenId}`} width={600} />
         </div>
-       
-      </div>
-       <div className="flex flex-col">
+        <div className="absolute left-0 top-0 z-[5] flex h-full w-full flex-col justify-between p-5 md:p-6">
+          <div className="flex justify-end">
+            <div
+              onClick={() => goToNFTDetailPage()}
+              className='cursor-pointer'
+            // className="inline-flex h-8 shrink-0 border border-white cursor-pointer items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-[40px]"
+            >
+              <Image src={Detail} alt="no-icon" />
+            </div>
+          </div>
+
+        </div>
+        <div className="flex flex-col">
           <div className="inline-flex mt-2 items-center px-4 text-[14px] font-[500] tracking-wide">
             Token ID : <span className='ml-2 font-bold'>{item?.tokenId}</span>
           </div>
@@ -112,18 +114,19 @@ export default function CollectionCard({ item, className = '' }: any) {
           >
             {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
           </div>
-
-           {amount && amount <= 1 && (
-            <>
-              <div
-                onClick={() => openModal('CREATE_IDO', item)}
-                className="flex h-[47px] justify-center cursor-pointer items-center rounded-[12px] bg-[#0F172A] px-4 text-xs font-medium uppercase tracking-wide text-white mt-[10px]"
-              >
-                create DIO
-              </div>
-            </>
-          )}
         </div>
-    </div>
+        {amount && amount <= 1 && (
+          <>
+            <div
+              onClick={(e) => openModal('CREATE_IDO', item)}
+              className="relative z-[5] flex h-[47px] justify-center cursor-pointer items-center rounded-[12px] bg-[#0F172A] px-4 text-xs font-medium uppercase tracking-wide text-white mt-[10px]"
+            >
+              create DIO
+            </div>
+          </>
+        )}
+      </div>
+
+    </>
   );
 }
