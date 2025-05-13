@@ -24,7 +24,7 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import ToastNotification from '@/components/ui/toast-notification';
 import { config } from '@/app/shared/wagmi-config';
 import Image from 'next/image';
-import Share from '@/assets/images/dao/newShare.svg';
+import Share from '@/assets/images/dao/Sharewhite.svg';
 import CoinVertical from '@/assets/images/dao/coinvertical.svg';
 import TokenSale from '@/assets/images/dao/tokensale.svg';
 import TotalSupply from '@/assets/images/dao/totalsupply.svg';
@@ -34,6 +34,9 @@ import { useCopyToClipboard } from 'react-use';
 import routes from '@/config/routes';
 import Eth from '@/assets/images/dao/eth.png';
 import Shib from '@/assets/images/dao/shib.png';
+import OrangeIcon from '@/assets/images/dao/orange.svg';
+import BlueIcon from '@/assets/images/dao/Blue.svg';
+import cn from '@/utils/cn';
 
 const IDODetailPage = () => {
   const params = useParams();
@@ -163,6 +166,18 @@ const IDODetailPage = () => {
       getTokenBalance(address);
     }
   }, [address]);
+  const isEth = searchResult?.data?.nftID?.name?.endsWith('.eth');
+  const isShib = searchResult?.data?.nftID?.name?.endsWith('.shib');
+  const buttonStyles = cn(
+    "w-[114px] h-[45px] rounded-[8px] px-4 py-3 text-[14px] font-[400] cursor-pointer transition-all duration-300",
+    {
+      // SHIB: orange-to-red gradient
+      'bg-gradient-to-br from-[#DF820E] to-[#F03132] text-white border border-transparent': isShib,
+
+      // ETH: gradient border, white background, dark text
+      'bg-white text-[#221FBB]': isEth,
+    }
+  );
   return (
     <>
       {componentLoading ? (
@@ -185,7 +200,58 @@ const IDODetailPage = () => {
 
             <div className="mx-auto w-full max-w-7xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                <div className="rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] p-[20px] transition-all duration-300 flex justify-between flex-col">
+                {/* //changing background */}
+                <div
+                  className={`rounded-2xl p-[20px] transition-all duration-300 flex flex-col justify-between bg-no-repeat bg-cover ${!isEth && !isShib ? 'border border-[#E2E8F0]' : ''
+                    }`}
+                  style={{
+                    backgroundImage: `url(${isEth ? BlueIcon.src : isShib ? OrangeIcon.src : ''})`,
+                    backgroundPosition: isEth ? '100% 100%' : 'center',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundColor: isShib
+                      ? 'linear-gradient(to bottom right, #DF820E, #F03132)' // if using gradient layer fallback
+                      : undefined,
+                  }}
+                >
+                  <div>
+                    <div className="w-full flex flex-col md:flex-row justify-between items-center mb-2">
+                      <h3 className="text-[14px] md:text-[20px] flex gap-2 items-center font-[500] mb-2 text-[#ffffff]">
+                        <Globe className="w-5 h-5 text-white" />
+                        {searchResult?.data?.name}
+                        <Image
+                          src={isShib ? Shib : Eth}
+                          alt="Domain extension"
+                          className="w-5 h-5"
+                        />
+                      </h3>
+                      <div
+                        className={`flex capitalize h-auto items-center justify-center rounded-full ${searchResult?.data?.status === 'successful'
+                          ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]  text-[12px] font-[400] w-[100px] px-[12px] py-[4px]'
+                          : searchResult?.data?.status === 'failed'
+                            ? 'bg-[#FEE2E2] text-[#F87171] border border-[#F87171] text-[12px] font-[400] w-[68px] px-[12px] py-[4px]'
+                            : searchResult?.data?.status === 'active'
+                              ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6] text-[12px] font-[400] w-[72px] px-[12px] py-[4px]'
+                              : 'bg-gray-100 text-gray-800 border border-gray-300'
+                          }`}
+                      >
+                        {searchResult?.data?.status}
+                      </div>
+                    </div>
+
+                    <p className="text-[#ffffff] text-[14px] font-[400] tracking-[-1%]">
+                      {searchResult?.data?.description}
+                    </p>
+                  </div>
+
+                  <div
+                    className="text-[#ffffff] text-[16px] font-[400] w-full flex gap-2 justify-center h-[45px] bg-transparent border border-[#FECDD3] rounded-[8px] items-center cursor-pointer"
+                    onClick={handleCopyToClipboard}
+                  >
+                    <Image src={Share} alt="no-icon" /> Share
+                  </div>
+                </div>
+                {/* <div className="rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] p-[20px] transition-all duration-300 flex justify-between flex-col">
                   <div >
                     <div className='w-full flex flex-col md:flex-row justify-between items-center mb-2'>
                       <h3 className="text-[14px] md:text-[20px] flex gap-2 items-center font-[500] mb-2 text-[#1E293B]">
@@ -224,7 +290,7 @@ const IDODetailPage = () => {
                     onClick={handleCopyToClipboard}
                   >
                     <Image src={Share} alt="no-icon" /> Share</div>
-                </div>
+                </div> */}
                 <motion.div
                   whileTap={{ scale: 0.98 }}
                   whileHover={{ scale: 1.015 }}
@@ -377,14 +443,25 @@ const IDODetailPage = () => {
                               className="rounded-[8px] w-[371px] h-[45px] bg-[#F8FAFC] border border-[#CBD5E1] text-[#94A3B8] px-3 py-1 text-[15px] font-[400] focus:outline-none focus:ring-2 focus:ring-gray-500"
                               placeholder="Enter Amount"
                             />
-                            <button
-
-                              onClick={() => handleBuyShare()}
-                              disabled={loading || isExpired}
-                              className="bg-[#0F172A] w-[114px] text-white text-white text-[14px] font-[400] h-[45px] rounded-[8px] px-4 py-3 cursor-pointer"
-                            >
-                              {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
-                            </button>
+                            {isEth ? (
+                              <div className="bg-gradient-to-br from-[#221FBB] to-[#C520DE] p-[2px] rounded-[8px]">
+                                <button
+                                  onClick={() => handleBuyShare()}
+                                  disabled={loading || isExpired}
+                                  className="w-[110px] h-[41px] rounded-[6px] bg-gradient-to-br from-[#221FBB] to-[#C520DE] text-[#ffffff] text-[14px] font-[500] flex items-center justify-center"
+                                >
+                                  {loading ? <BeatLoader color="#221FBB" size={8} /> : 'Buy Share'}
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => handleBuyShare()}
+                                disabled={loading || isExpired}
+                                className="bg-gradient-to-br from-[#DF820E] to-[#F03132] w-[114px] h-[45px] rounded-[8px] px-4 py-3 text-white text-[14px] font-[400] flex items-center justify-center"
+                              >
+                                {loading ? <BeatLoader color="#fff" size={8} /> : 'Buy Share'}
+                              </button>
+                            )}
                           </div>
                         </div>
                       </>
