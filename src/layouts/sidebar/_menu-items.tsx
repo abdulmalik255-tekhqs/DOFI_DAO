@@ -87,7 +87,7 @@ export const defaultMenuItems = [
     href: routes.swap,
   },
   {
-    name: 'Reward',
+    name: 'Revenue',
     icon: <FarmIcon />,
     href: routes.reward,
   },
