@@ -80,15 +80,16 @@ export const defaultMenuItems = [
       },
     ],
   },
-  {
-    name: 'Reward',
-    icon: <FarmIcon />,
-    href: routes.reward,
-  },
+  
   {
     name: 'Swap',
     icon: <ExchangeIcon />,
     href: routes.swap,
+  },
+  {
+    name: 'Reward',
+    icon: <FarmIcon />,
+    href: routes.reward,
   },
   // {
   //   name: 'Authentication',
