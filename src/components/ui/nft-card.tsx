@@ -81,8 +81,8 @@ export default function NFTGrid({
           }
           className="block text-[12px] font-medium text-black dark:text-white truncate"
         >
-          <div className="flex justify-between">
-            <p>{name} #{tokenID}</p> <p className='font-bold text-[14px]'>({price} USDT)</p>
+          <div className="flex flex-col ">
+            <p>{name} #{tokenID}</p> <p className='font-bold text-[14px]'>({price} DO.FI)</p>
           </div>
         </AnchorLink>
       </div>
