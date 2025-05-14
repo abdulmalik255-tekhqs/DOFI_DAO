@@ -37,6 +37,8 @@ import Shib from '@/assets/images/dao/shib.png';
 import OrangeIcon from '@/assets/images/dao/orange.svg';
 import BlueIcon from '@/assets/images/dao/Blue.svg';
 import cn from '@/utils/cn';
+import NewOrangeIcon from '@/assets/images/dao/meworange.svg';
+import NewBlueIcon from '@/assets/images/dao/newblue.svg';
 
 const IDODetailPage = () => {
   const params = useParams();
