@@ -97,13 +97,13 @@ export default function Sidebar({
             image={AuthorImage}
             name="Cameron Williamson"
             role="admin"
-            onClick={() => {
-              const newPath =
-                layout === LAYOUT_OPTIONS.MODERN
-                  ? routes.profile
-                  : `/${layout}${routes.profile}`;
-              router.push(newPath);
-            }}
+            // onClick={() => {
+            //   const newPath =
+            //     layout === LAYOUT_OPTIONS.MODERN
+            //       ? routes.profile
+            //       : `/${layout}${routes.profile}`;
+            //   router.push(newPath);
+            // }}
           />
           <div className="mt-12">
             {sideBarMenus?.map((item, index) => (

@@ -142,8 +142,6 @@ const DomainDAOPage = () => {
       }
     }
   }, []);
-
-  console.log("leaseAddressInfo--->", leaseAddressInfo?.leasingAddress)
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
       <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>

@@ -159,7 +159,6 @@ const IDODetailPage = () => {
       const formatted = formatUnits(balance as bigint, 18);
       setTokenBalance(formatted);
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
       ToastNotification('error', 'Failed to fetch token balance');
     }
   };
@@ -204,7 +203,7 @@ const IDODetailPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
                 {/* //changing background */}
                 <div
-                  className={`rounded-2xl p-[20px] transition-all duration-300 flex flex-col justify-between bg-no-repeat bg-cover ${!isEth && !isShib ? 'border border-[#E2E8F0]' : ''
+                  className={`rounded-[12px] p-[20px] transition-all duration-300 flex flex-col justify-between bg-no-repeat ${!isEth && !isShib ? 'border border-[#E2E8F0]' : ''
                     }`}
                   style={{
                     backgroundImage: `url(${isEth ? BlueIcon.src : isShib ? OrangeIcon.src : ''})`,

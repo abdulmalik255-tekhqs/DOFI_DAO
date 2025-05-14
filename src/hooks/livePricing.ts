@@ -194,7 +194,20 @@ export function useIDO() {
     refetch
   };
 }
-
+export function useReward() {
+  const { address } = useAccount();
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['reward-latest', address],
+    queryFn: () => client.reward.getLatestReward(address),
+    enabled: !!address,
+  });
+  return {
+    reward: data,
+    isLoading,
+    error,
+    refetch
+  };
+}
 
 export function useGetIDODetail() {
   const { address } = useAccount();

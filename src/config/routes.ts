@@ -13,6 +13,7 @@ const routes = {
   notification: '/notifications',
   vote: '/vote',
   proposals: '/proposals',
+  reward:"/reward",
   createProposal: '/proposals/create',
   domain:"/domain-dao",
   createDomain: '/domain-dao/create',

@@ -61,6 +61,9 @@ class client {
   ido = {
     getLatestIDO: (address: any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),
   };
+  reward = {
+    getLatestReward: (address: any) => HttpClient.get(`${API_ENDPOINTS.REWARD}?address=${address}`),
+  };
   idoDetail = {
     getSingleIDO: (idoID:string,address:any) => HttpClient.get(`${API_ENDPOINTS.SINGLE_IDO}/${idoID}?address=${address != undefined ? address :"0x753a356898A3f9aC27f31c1250BE6De1C51EC883"}`),
   };

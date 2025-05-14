@@ -31,7 +31,7 @@ type LivePriceFeedProps = {
   prices: Price[];
   noOfProposals?: number;
   index: any,
-  nft:any
+  nft: any
 };
 
 export function LivePricingFeed({
@@ -93,7 +93,8 @@ export function LivePricingFeed({
             title={name.length > 9 ? name : undefined}
           >
             {name.length > 9 ? `${name.substring(0, 10)}..` : name}
-          </h4>        </div>
+          </h4>
+        </div>
 
         <div className="mb-2 text-[24px] font-[500] tracking-tighter text-gray-900 dark:text-white lg:text-lg 2xl:text-xl 3xl:text-2xl">
           {noOfProposals}
@@ -125,7 +126,7 @@ export function LivePricingFeed({
         </div> */}
       </div>
 
-      
+
       {/* <Image src={noOfProposals === 0 ? <RedGraph /> : <GreenGraph />}  alt="green-graph" fill height={50} width={50}/> */}
 
       <div className="h-20 w-full relative">
@@ -138,7 +139,7 @@ export function LivePricingFeed({
           objectFit="contain"
         />
       </div>
-    </div> 
+    </div>
   );
 }
 

@@ -55,18 +55,18 @@ export default function AuthorCard({
             <h3 className="text-sm flex justify-between items-center font-medium uppercase tracking-wide text-gray-900 dark:text-white">
               {address?.slice(0, 6)}
               {'...'}
-              {address?.slice(address?.length - 6)} 
-               <div
-                            title="Copy Address"
-                            className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                            onClick={() => handleCopyToClipboard()}
-                          >
-                            {copyButtonStatus ? (
-                              <Check className="h-auto w-3.5 text-green-500" />
-                            ) : (
-                              <Copy className="h-auto w-3.5" />
-                            )}
-                          </div>
+              {address?.slice(address?.length - 6)}
+              <div
+                title="Copy Address"
+                className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                onClick={() => handleCopyToClipboard()}
+              >
+                {copyButtonStatus ? (
+                  <Check className="h-auto w-3.5 text-green-500" />
+                ) : (
+                  <Copy className="h-auto w-3.5" />
+                )}
+              </div>
             </h3>
             {/* <span className="mt-1 block text-xs text-gray-600 dark:text-gray-400">
           {role}

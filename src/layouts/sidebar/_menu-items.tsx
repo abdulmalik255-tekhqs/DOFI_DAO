@@ -33,7 +33,6 @@ export const defaultMenuItems = [
   //   icon: <TradingBotIcon />,
   //   href: routes.tradingBot,
   // },
-
   // {
   //   name: 'NFTs',
   //   icon: <CompassIcon />,
@@ -57,12 +56,6 @@ export const defaultMenuItems = [
   //   ],
   // },
   // {
-  //   name: 'Farm',
-  //   icon: <FarmIcon />,
-  //   href: routes.farms,
-  // },
-
-  // {
   //   name: 'Liquidity',
   //   icon: <PoolIcon />,
   //   href: routes.liquidity,
@@ -72,30 +65,11 @@ export const defaultMenuItems = [
     icon: <ProfileIcon />,
     href: routes.profile,
   },
-  // {
-  //   name: 'Domain DAO',
-  //   icon: <VoteIcon />,
-  //   href: routes.pages,
-  //   dropdownItems: [
-  //     {
-  //       name: 'Explore Domain DAO',
-  //       href: routes.domain,
-  //     },
-  //     {
-  //       name: 'Create Domain DAO',
-  //       href: routes.createDomain,
-  //     },
-  //   ],
-  // },
   {
     name: 'DOFI DAO',
     icon: <VoteIcon />,
     href: routes.vote,
     dropdownItems: [
-      // {
-      //   name: 'IDO-detail',
-      //   href: routes.idoDetail,
-      // },
       {
         name: 'Explore proposal',
         href: routes.proposals,
@@ -105,6 +79,11 @@ export const defaultMenuItems = [
         href: routes.createProposal,
       },
     ],
+  },
+  {
+    name: 'Reward',
+    icon: <FarmIcon />,
+    href: routes.reward,
   },
   {
     name: 'Swap',

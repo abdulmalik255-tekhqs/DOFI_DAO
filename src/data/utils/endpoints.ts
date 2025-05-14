@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   MARKETS: '/markets',
   PRICING: '/pricing',
   LIVE_PRICING:"/ido",
+  REWARD:"/rewards",
   FIND_NAME:"/nft/search",
   LATEST_DAO:"/daos",
   BUY:"/nft/buy",

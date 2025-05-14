@@ -35,6 +35,7 @@ import { usePathname } from 'next/navigation';
 import Yield from '@/assets/images/dao/yield.svg';
 import Vote from '@/assets/images/dao/vote.svg';
 import Criteria from '@/assets/images/dao/criteria.svg';
+import TotalSupplyIcon from '@/assets/images/dao/tsupply.svg';
 import Image from 'next/image';
 import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
 
@@ -99,7 +100,6 @@ function VoteActionButton({ vote, data }: any) {
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.log(error);
     }
   };
   // For Domain Dao vote Cast
@@ -127,7 +127,6 @@ function VoteActionButton({ vote, data }: any) {
 
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.log(error);
     }
   };
   const getTokenBalance = async (userAddress: string) => {
@@ -142,7 +141,6 @@ function VoteActionButton({ vote, data }: any) {
       const formatted = formatUnits(balance as bigint, 18);
       setTokenBalance(formatted);
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
       ToastNotification('error', 'Failed to fetch token balance');
     }
   };
@@ -153,7 +151,7 @@ function VoteActionButton({ vote, data }: any) {
     }
   }, [address]);
 
-  
+
   return (
     <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
       {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
@@ -207,8 +205,6 @@ function VoteActionButton({ vote, data }: any) {
 }
 
 export default function VoteDetailsCard({ vote, data }: any) {
-  console.log(vote, "votevote");
-
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
   const getRemainingallocation = () => {
@@ -225,18 +221,18 @@ export default function VoteDetailsCard({ vote, data }: any) {
       )}
     >
       <div className="absolute top-2 right-2 text-xl cursor-pointer">
-    {isExpand ? (
-      <IoIosArrowDropup
-        className="text-[24px] text-[#475569]"
-        onClick={() => setIsExpand(false)}
-      />
-    ) : (
-      <IoIosArrowDropdown
-        className="text-[24px] text-[#475569]"
-        onClick={() => setIsExpand(true)}
-      />
-    )}
-  </div>
+        {isExpand ? (
+          <IoIosArrowDropup
+            className="text-[24px] text-[#475569]"
+            onClick={() => setIsExpand(false)}
+          />
+        ) : (
+          <IoIosArrowDropdown
+            className="text-[24px] text-[#475569]"
+            onClick={() => setIsExpand(true)}
+          />
+        )}
+      </div>
       <motion.div
         layout
         className={cn('flex w-full flex-col-reverse mb-[32px] justify-between', {
@@ -384,97 +380,156 @@ export default function VoteDetailsCard({ vote, data }: any) {
           >
             <hr />
             <div
-              className={cn('flex flex-col md:flex-row w-full mt-[28px] mb-[28px] justify-between')}
+              className={cn('flex flex-col w-full mt-[28px] mb-[28px] justify-between')}
             >
-              <div className='md:border-r md:border-r-[#CBD5E1] w-full md:w-[48%]' >
-                <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
-                  Proposed by:{' '}
-                  <span className="font-[400] text-black">
-                    <a
-                      // href={vote.proposed_by.link}
-                      className="ml-1 inline-flex items-center gap-3 font-[400] text-black hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
-                    >
-                      {vote?.creatorAddress
-                        ? `${vote.creatorAddress.slice(0, 5)}...${vote.creatorAddress.slice(-5)}`
-                        : ''}
-                      {/* <ExportIcon className="h-auto w-3" /> */}
-                    </a>
-                  </span>
-                </div>
-
+              <div className=' w-full mb-[32px]' >
                 {vote?.parentDAO ? (
                   <>
-                    {/* <div className="mt-4 text-[#64748B] text-[14px] font-[400] ">
-                      Leasing Address:{' '}
-                      <span className="font-[400] text-black">
-                        {vote?.leasingAddress || "0x"}
-                      </span>
-                    </div>
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
-                      Percentage Yield :{' '}
-                      <span className="font-[400] text-black">
-                        {vote?.percentageYield || "0"}
-                      </span>
-                    </div> */}
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
-                       <Image src={Criteria} alt="no-icon" />
-                      Acceptacnce Criteria:{' '}
-                      <span className="font-[400] text-black ml-[10px]">
-                        {"$DOFI 100"}
-                      </span>
+                    <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
+                      <div className="text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                        Proposed by:{' '}
+                        <span className="font-[400] text-black">
+                          <a
+                            // href={vote.proposed_by.link}
+                            className="ml-1 inline-flex items-center gap-3 font-[400] text-black hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
+                          >
+                            {vote?.creatorAddress
+                              ? `${vote.creatorAddress.slice(0, 5)}...${vote.creatorAddress.slice(-5)}`
+                              : ''}
+                            {/* <ExportIcon className="h-auto w-3" /> */}
+                          </a>
+                        </span>
+                      </div>
+                      <div className="flex justify-between md:w-[48%]">
+                        <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                          <Image src={Criteria} alt="no-icon" />
+                          Acceptacnce Criteria:{' '}
+                        </div>
+                        <span className="font-[400] text-black ml-[10px]">
+                          {"$DOFI 100"}
+                        </span>
+                      </div>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
-                      Leasing address:{' '}
-                      <span className="font-[400] text-black">
-                        {vote?.leasingAddress.slice(0, 5)}...
-                        {vote?.leasingAddress.slice(-5)}
-                      </span>
-                    </div>
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
-                      <Image src={Yield} alt="no-icon" />
-                      Yield percentage:{' '}
-                      <span className="font-[400] text-black ml-[10px]">
-                        {vote?.percentageYield || 3}
-                      </span>
-                    </div>
-                    {data?.votePower > 1 ? <>  
-                    <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
-                       <Image src={Vote} alt="no-icon" />
-                      Vote Weightage:{' '}
-                      <span className="font-[400] text-black ml-[10px]">
-                        {/* {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}% */}
-                        {data?.votePower}
-                      </span>
-                    </div>
-                      <div className="mt-4 text-[#64748B] text-[14px] font-[400] flex gap-2">
-                        <Image src={Criteria} alt="no-icon" />
-                        Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
-                        <span className="font-[400] text-black ml-[10px]">
-                          {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
-                          {data?.quorum}
-                        </span>
-                      </div>
-                      <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
-                        Total Supply:
+                    <div className='w-full flex flex-col md:flex-row justify-start md:justify-between gap-10'>
+                      <div className=" text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                        Proposed by:{' '}
                         <span className="font-[400] text-black">
-                          {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
-                          {data?.totalSupply || 0}
+                          <a
+                            // href={vote.proposed_by.link}
+                            className="ml-1 inline-flex items-center gap-3 font-[400] text-black hover:underline hover:opacity-90 focus:underline focus:opacity-90 dark:text-gray-100"
+                          >
+                            {vote?.creatorAddress
+                              ? `${vote.creatorAddress.slice(0, 5)}...${vote.creatorAddress.slice(-5)}`
+                              : ''}
+                            {/* <ExportIcon className="h-auto w-3" /> */}
+                          </a>
                         </span>
                       </div>
-                    </> : <div className="mt-4 text-[#64748B] text-[14px] font-[400]">
-                        <Image src={Criteria} alt="no-icon" />
-                      Acceptance Criteria:{' '}
-                      <span className="font-[400] text-black">
-                        $DOFI 100
-                      </span>
-                    </div>}
+                      <div className=" text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                        Leasing address:{' '}
+                        <span className="font-[400] text-black text-right">
+                          {vote?.leasingAddress.slice(0, 5)}...
+                          {vote?.leasingAddress.slice(-5)}
+                        </span>
+                      </div>
+                    </div>
+                    {data?.votePower > 1 ?
+                      <>
+                        <div className='w-full flex flex-col md:flex-row justify-start md:justify-between'>
+                          <div className="mt-4 flex justify-between items-center md:w-[48%]">
+                            <div className="flex items-center gap-2 text-[#64748B] text-[14px] font-[400]">
+                              <Image src={Yield} alt="no-icon" />
+                              Yield percentage:
+                            </div>
+
+                            <span className="font-[400] text-black ml-[10px]">
+                              {vote?.percentageYield || 3}
+                            </span>
+                          </div>
+                          <div className="mt-4 flex items-center justify-between md:w-[48%] gap-4">
+                            {/* Left Label */}
+                            <div className="flex items-center gap-2 min-w-max text-[#64748B] text-[14px] font-[400]">
+                              <Image src={Vote} alt="no-icon" />
+                              Vote Weightage:
+                            </div>
+
+                            {/* Right Progress Bar */}
+                            <div className="flex-1">
+                              <div className="flex justify-between mb-1">
+                                <span className="text-[14px] font-[500] text-[#64748B]">0%</span>
+                                <span className="text-[14px] font-[500] text-[#1E293B]">
+                                  {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
+                                </span>
+                              </div>
+
+                              <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                                <div
+                                  className="h-full rounded-full bg-black transition-all duration-500"
+                                  style={{
+                                    width: `${((data?.votePower / data?.totalSupply) * 100) || 0}%`,
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
+                          <div className="mt-4  flex justify-between md:w-[48%]">
+                            <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                              <Image src={Criteria} alt="no-icon" />
+                              Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
+                            </div>
+
+                            <span className="font-[400] text-black ml-[10px]">
+                              {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
+                              {data?.quorum}
+                            </span>
+                          </div>
+                          <div className="mt-4 flex justify-between md:w-[48%]">
+                            <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                              <Image src={TotalSupplyIcon} alt="no-icon" />
+                              Total Supply:
+                            </div>
+
+                            <span className="font-[400] text-black ml-[10px]">
+                              {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
+                              {data?.totalSupply || 0}
+                            </span>
+                          </div>
+                        </div>
+                      </> :
+                      <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
+                        <div className="mt-4  flex justify-between md:w-[48%]">
+                          <div className=" text-[#64748B] text-[14px] font-[400] flex gap-2">
+                            <Image src={Yield} alt="no-icon" />
+                            Yield percentage:{' '}
+                          </div>
+
+                          <span className="font-[400] text-black ml-[10px]">
+                            {vote?.percentageYield || 3}
+                          </span>
+                        </div>
+                        <div className="mt-4  flex justify-between md:w-[48%]">
+                          <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                            <Image src={Criteria} alt="no-icon" />
+                            Acceptance Criteria:{' '}
+                          </div>
+
+                          <span className="font-[400] text-black ml-[10px]">
+                            $DOFI 100
+                          </span>
+                        </div>
+                      </div>
+                    }
                   </>
                 )}
               </div>
-              <div className=' w-full md:w-[48%] mt-4 md:mt-0'>
+              <hr />
+              <div className=' w-full  mt-[32px]'>
                 <VotePoll title={'Votes'} vote={vote} />
                 <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
               </div>
