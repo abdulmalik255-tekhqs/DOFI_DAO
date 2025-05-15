@@ -5,8 +5,6 @@ import { useCopyToClipboard } from 'react-use';
 import Image from 'next/image';
 import { useReward } from '@/hooks/livePricing';
 import ToastNotification from '../ui/toast-notification';
-import { Check } from '@/components/icons/check';
-import { Copy } from '@/components/icons/copy';
 import Share from '@/assets/images/dao/redirect.png';
 import CopyIcon from '@/assets/images/dao/copyicon.png';
 import RewardAccordionTable from './reward-accordion-table';
@@ -46,7 +44,7 @@ const COLUMNS = [
                         {row?.original?.txHash?.slice(row?.original?.txHash?.length - 5)}
                         <div
                             title="Copy Address"
-                          className="flex cursor-pointer items-center justify-center ml-[5px]"
+                            className="flex cursor-pointer items-center justify-center ml-[5px]"
                             onClick={() => handleCopyToClipboard()}
                         >
                             <Image src={CopyIcon} alt="no-icon" width={15} />
@@ -58,21 +56,21 @@ const COLUMNS = [
         },
 
     },
-    {
-        Header: () => <div className="">Domain Name</div>,
-        accessor: 'name',
-        // @ts-ignore
-        Cell: ({ row }) => (
-            <div className="flex items-start gap-2">
-                <h3 className="text-left"
-                    title={row?.original?.nft?.name?.length > 9 ? row?.original?.nft?.name : undefined}
-                >
-                    {row?.original?.nft?.name?.length > 15 ? `${row?.original?.nft?.name?.substring(0, 10)}...` : row?.original?.nft?.name}
-                </h3>
-            </div>
-        ),
+    // {
+    //     Header: () => <div className="">Domain Name</div>,
+    //     accessor: 'name',
+    //     // @ts-ignore
+    //     Cell: ({ row }) => (
+    //         <div className="flex items-start gap-2">
+    //             <h3 className="text-left"
+    //                 title={row?.original?.nft?.name?.length > 9 ? row?.original?.nft?.name : undefined}
+    //             >
+    //                 {row?.original?.nft?.name?.length > 15 ? `${row?.original?.nft?.name?.substring(0, 10)}...` : row?.original?.nft?.name}
+    //             </h3>
+    //         </div>
+    //     ),
 
-    },
+    // },
     {
         Header: () => <div className="">DAO Name</div>,
         accessor: 'dao_name',
@@ -95,7 +93,7 @@ const COLUMNS = [
         Cell: ({ row }) => (
             <div className="flex items-start gap-2">
                 <div className="flex w-auto items-start justify-start">
-                    $DO.FI {row?.original?.amount}
+                    {row?.original?.amount}
                 </div>
             </div>
         ),
@@ -105,7 +103,7 @@ const COLUMNS = [
         accessor: 'from',
         // @ts-ignore
         Cell: ({ row }) => {
-           
+
             const [_, copyToClipboard] = useCopyToClipboard();
             function handleCopyToClipboard() {
                 //@ts-ignore
@@ -126,7 +124,7 @@ const COLUMNS = [
                             className="flex cursor-pointer items-center justify-center ml-[5px]"
                             onClick={() => handleCopyToClipboard()}
                         >
-                              <Image src={CopyIcon} alt="no-icon" width={15}/>
+                            <Image src={CopyIcon} alt="no-icon" width={15} />
                         </div>
                     </div>
                 </div>
@@ -157,7 +155,7 @@ const COLUMNS = [
                             className="flex cursor-pointer items-center justify-center ml-[5px]"
                             onClick={() => handleCopyToClipboard()}
                         >
-                              <Image src={CopyIcon} alt="no-icon" width={15}/>
+                            <Image src={CopyIcon} alt="no-icon" width={15} />
                         </div>
                     </div>
                 </div>

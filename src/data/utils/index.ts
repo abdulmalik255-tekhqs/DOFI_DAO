@@ -51,12 +51,21 @@ class client {
       return response;  // Return the response directly
     },
   };
+  submitVerifyChildDAo = {
+    create: async (data:any, address: string) => {
+      const response = await HttpClient.post(`${API_ENDPOINTS.SUBMIT_VERIFY_CHILD_DAO}?address=${address}`,data);
+      return response;  // Return the response directly
+    },
+  };
   createido = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.CREATE_IDO}?address=${address}`, data),
   };
   dao = {
     getLatest: (address: any) => HttpClient.get(`${API_ENDPOINTS.LATEST_DAO}?address=${address}`),
+  };
+  revenue = {
+    getLatestRevenueRecord: (address: any) => HttpClient.get(`${API_ENDPOINTS.REVENUE_RECORD}?address=${address}`),
   };
   ido = {
     getLatestIDO: (address: any) => HttpClient.get(`${API_ENDPOINTS.LIVE_PRICING}?address=${address}`),

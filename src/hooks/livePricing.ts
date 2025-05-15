@@ -104,7 +104,7 @@ export function useBuyQueryWizard() {
     onSuccess: (data) => {
       if (data) {
         dispatch(idoActions.setLoading(false));
-        
+
         //@ts-ignore
         dispatch(idoActions.saveBuydomainNft(data?.data))
       }
@@ -116,7 +116,32 @@ export function useBuyQueryWizard() {
     },
   });
 }
-export function useCreateIDOWizard(setCurrentStepButton:any) {
+
+
+export function useVerifyChildDAO(setVerifyLoader: any) {
+  const { address } = useAccount();
+  return useMutation({
+    //@ts-ignore
+    mutationFn: (data: any) => client.submitVerifyChildDAo.create(data, address),
+    onSuccess: (data: any) => {
+      console.log(data, "child dao response");
+
+      if (data?.success === true) {
+        setVerifyLoader(false);
+        ToastNotification('success', 'Verfication successfull!');
+      }
+      else {
+        setVerifyLoader(false);
+        ToastNotification('error', 'Verfication failed!');
+      }
+    },
+    onError: (error) => {
+      setVerifyLoader(false);
+      ToastNotification('error', 'Verfication failed!');
+    },
+  });
+}
+export function useCreateIDOWizard(setCurrentStepButton: any) {
   const { address } = useAccount();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -179,6 +204,19 @@ export function useDao() {
     error,
   };
 }
+export function useRevenueRecord() {
+  const { address } = useAccount();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['revenue-latest', address],
+    queryFn: () => client.revenue.getLatestRevenueRecord(address),
+    enabled: !!address,
+  });
+  return {
+    revenue: data,
+    isLoading,
+    error,
+  };
+}
 
 export function useIDO() {
   const { address } = useAccount();
@@ -211,14 +249,14 @@ export function useReward() {
 
 export function useGetIDODetail() {
   const { address } = useAccount();
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   return useMutation({
     //@ts-ignore
     queryKey: ['get_single_dio'],
     mutationFn: (id: string) => client.idoDetail.getSingleIDO(id, address),
-    enabled:  !!address,
+    enabled: !!address,
     onSuccess: (data) => {
-      if(data){
+      if (data) {
         dispatch(idoActions.setComponentloading(false))
       }
     },
@@ -338,7 +376,7 @@ export function useCreatePropsals(path: any) {
   });
 }
 
-export function usePostVote(pathName:any) {
+export function usePostVote(pathName: any) {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -405,11 +443,11 @@ export function useFetchNFTSWAP() {
 }
 
 
-export function useFetchNftLeaseAddress(nftId:any) {
+export function useFetchNftLeaseAddress(nftId: any) {
   const { address } = useAccount();
   const { data, isLoading, error } = useQuery({
     queryKey: ['all-nft-leaseAddress-latest'],
-    queryFn: () => client.fetchNFTLeaseAddress.getNftLeaseAddress(address,nftId),
+    queryFn: () => client.fetchNFTLeaseAddress.getNftLeaseAddress(address, nftId),
   });
   return {
     leaseAddressInfo: data,
@@ -489,7 +527,7 @@ export function usePostPayToken() {
   });
 }
 
-export function usePostVoteUpdated(pathName:any) {
+export function usePostVoteUpdated(pathName: any) {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const router = useRouter();

@@ -12,6 +12,8 @@ export const API_ENDPOINTS = {
   REWARD:"/rewards",
   FIND_NAME:"/nft/search",
   LATEST_DAO:"/daos",
+  REVENUE_RECORD:"/revenue",
+  SUBMIT_VERIFY_CHILD_DAO:"/vote/zk-proof",
   BUY:"/nft/buy",
   CREATE_IDO:"/ido",
   GET_PROPOSALS:"/proposals",

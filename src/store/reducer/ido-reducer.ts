@@ -11,7 +11,8 @@ const initialState = {
   buyTransactionhash: {},
   domainNftData: {},
   componentLoading: false,
-  initialDomain: {}
+  initialDomain: {},
+  childDAOData:{}
 };
 
 const idoSlice = createSlice({
@@ -50,6 +51,9 @@ const idoSlice = createSlice({
     },
     saveInitialDomain (state, action) {
       state.initialDomain = action.payload;
+    },
+    saveChildDaoData(state, action) {
+      state.childDAOData = action.payload;
     },
   },
 });

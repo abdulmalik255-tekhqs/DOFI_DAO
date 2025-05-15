@@ -10,10 +10,13 @@ import { getVotesByStatus } from '@/data/static/vote-data';
 import { useLayout } from '@/lib/hooks/use-layout';
 import Loader from '@/components/ui/loader';
 import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
-import { useFetchNftLeaseAddress, useGetProposalDomainDao } from '@/hooks/livePricing';
+import { useFetchNftLeaseAddress, useGetProposalDomainDao, useVerifyChildDAO } from '@/hooks/livePricing';
 import ProfitIcon from '@/assets/images/dao/profit.png';
 import ClockIcon from '@/assets/images/dao/clock.png';
 import GraphIcon from '@/assets/images/dao/graph.png';
+import { useAccount } from 'wagmi';
+import ToastNotification from '@/components/ui/toast-notification';
+import { BeatLoader } from 'react-spinners';
 
 
 const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
@@ -117,11 +120,13 @@ function AuctionCountdown(address: string | any) {
 const DomainDAOPage = () => {
   const router = useRouter();
   const { layout } = useLayout();
+  const { address } = useAccount();
+  const [verifyLoader, setVerifyLoader] = useState(false);
+  const { mutate: verifyChildDAO } = useVerifyChildDAO(setVerifyLoader);
   const { totalVote: totalActiveVote } = getVotesByStatus('active');
   const [storedNft, setStoredNft] = useState<any>(null);
+  const [domainID, setDomainID] = useState<any>(null);
   const { proposalsDomainDao, isLoading }: any = useGetProposalDomainDao();
-
-
   const { leaseAddressInfo }: any = useFetchNftLeaseAddress(storedNft?._id);
 
   function goToCreateProposalPage() {
@@ -133,6 +138,8 @@ const DomainDAOPage = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedNftString = localStorage.getItem('nft');
+      const DomainDAOId = localStorage.getItem('Domain_Dao');
+      setDomainID(DomainDAOId)
       if (storedNftString) {
         try {
           setStoredNft(JSON.parse(storedNftString));
@@ -142,13 +149,50 @@ const DomainDAOPage = () => {
       }
     }
   }, []);
+
+  const handleVerify = async () => {
+    try {
+      if (!address) {
+        ToastNotification('error', 'Connect wallet first!');
+        return;
+      }
+      setVerifyLoader(true)
+      verifyChildDAO({
+        //@ts-ignore
+        childDAOId: domainID,
+
+      });
+    } catch (error) {
+      setVerifyLoader(false);
+      ToastNotification('error', 'Verfication failed!');
+    }
+  };
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[81px]'>
-        <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
-          {storedNft?.name}
-          <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
-        </h2>
+      <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[95px]'>
+        <div className='flex flex-col'>
+          <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
+            {storedNft?.name}
+            <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
+          </h2>
+          <div className='flex justify-start items-center gap-3 mt-[16px] '>
+            <h3 className='text-[#334155] text-[15px] font-[400]'>
+              ZK Proof of Escrow Ownership
+            </h3>
+            <button
+              onClick={() => handleVerify()}
+              className='bg-[#0F172A] text-[#F8FAFC] text-[12px] font-[400] rounded-[8px] h-[34px]  w-[76px] cursor-pointer'>
+              {verifyLoader ? (
+                <>
+                  <BeatLoader color="#fff" size={10}/>
+                </>
+              ) : (
+                'Verify'
+              )}
+            </button>
+          </div>
+        </div>
+
         <div className="shrink-0">
           <Button
             shape="rounded"
@@ -162,7 +206,7 @@ const DomainDAOPage = () => {
       </div>
 
       <div className="flex flex-wrap gap-4 mb-4">
-        
+
         <div
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'
@@ -171,7 +215,7 @@ const DomainDAOPage = () => {
         >
           <div className="flex items-center gap-3">
             <div className="bg-white/80 p-[5px] rounded-full flex items-center justify-center">
-             <Image src={ClockIcon} alt="no-icon" />
+              <Image src={ClockIcon} alt="no-icon" />
             </div>
             <div className="text-[16px] font-[400] text-[#1E293B]">
               Profit Distribution In
@@ -179,7 +223,7 @@ const DomainDAOPage = () => {
           </div>
 
           <div className="">
-            <AuctionCountdown address={leaseAddressInfo?.leasingAddress}/>
+            <AuctionCountdown address={leaseAddressInfo?.leasingAddress} />
           </div>
         </div>
         <div
@@ -266,7 +310,7 @@ const DomainDAOPage = () => {
           </div>
         </div>}
       </div>
-       <div className='pt-[32px] pb-[24px] flex'>
+      <div className='pt-[32px] pb-[24px] flex'>
         <h2 className='text-[#1E293B] text-[24px] font-bold'>Proposals</h2>
       </div>
       <Suspense fallback={<Loader variant="blink" />}>
