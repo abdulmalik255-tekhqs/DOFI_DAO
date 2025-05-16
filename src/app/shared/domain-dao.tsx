@@ -1,22 +1,22 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect,  useState } from 'react';
 import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
 import Button from '@/components/ui/button';
 import Image from '@/components/ui/image';
-// static data
-import { getVotesByStatus } from '@/data/static/vote-data';
-import { useLayout } from '@/lib/hooks/use-layout';
 import Loader from '@/components/ui/loader';
 import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
 import { useFetchNftLeaseAddress, useGetProposalDomainDao, useVerifyChildDAO } from '@/hooks/livePricing';
 import ProfitIcon from '@/assets/images/dao/profit.png';
 import ClockIcon from '@/assets/images/dao/clock.png';
 import GraphIcon from '@/assets/images/dao/graph.png';
+import DoubleArrowDown from '@/assets/images/dao/doublearrowdown.svg';
+import DoubleArrowUP from '@/assets/images/dao/doublearrowup.svg';
 import { useAccount } from 'wagmi';
 import ToastNotification from '@/components/ui/toast-notification';
 import { BeatLoader } from 'react-spinners';
+import { useSelector } from 'react-redux';
 
 
 const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
@@ -112,21 +112,15 @@ function AuctionCountdown(address: string | any) {
   );
 }
 
-
-
-
-
-
 const DomainDAOPage = () => {
   const router = useRouter();
-  const { layout } = useLayout();
+  const { childDAOData } = useSelector((state: any) => state.ido);
   const { address } = useAccount();
   const [verifyLoader, setVerifyLoader] = useState(false);
+  const [selectedExpand, setSelectedExpand] = useState(false);
   const { mutate: verifyChildDAO } = useVerifyChildDAO(setVerifyLoader);
-  const { totalVote: totalActiveVote } = getVotesByStatus('active');
   const [storedNft, setStoredNft] = useState<any>(null);
-  const [domainID, setDomainID] = useState<any>(null);
-  const { proposalsDomainDao, isLoading }: any = useGetProposalDomainDao();
+  const { proposalsDomainDao }: any = useGetProposalDomainDao();
   const { leaseAddressInfo }: any = useFetchNftLeaseAddress(storedNft?._id);
 
   function goToCreateProposalPage() {
@@ -138,8 +132,6 @@ const DomainDAOPage = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedNftString = localStorage.getItem('nft');
-      const DomainDAOId = localStorage.getItem('Domain_Dao');
-      setDomainID(DomainDAOId)
       if (storedNftString) {
         try {
           setStoredNft(JSON.parse(storedNftString));
@@ -159,7 +151,7 @@ const DomainDAOPage = () => {
       setVerifyLoader(true)
       verifyChildDAO({
         //@ts-ignore
-        childDAOId: domainID,
+        childDAOId: childDAOData?._id,
 
       });
     } catch (error) {
@@ -167,46 +159,74 @@ const DomainDAOPage = () => {
       ToastNotification('error', 'Verfication failed!');
     }
   };
+
+  const hanldeExpand = () => {
+    setSelectedExpand(!selectedExpand)
+  }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex justify-between border-[#E2E8F0] border bg-white px-4 mb-4 items-center rounded-[10px] h-[95px]'>
-        <div className='flex flex-col'>
-          <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
-            {storedNft?.name}
-            <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
-          </h2>
-          <div className='flex justify-start items-center gap-3 mt-[16px] '>
-            <h3 className='text-[#334155] text-[15px] font-[400]'>
-              Ownership ZK Proof
-            </h3>
-            <button
-              onClick={() => handleVerify()}
-              className='bg-[#0F172A] text-[#F8FAFC] text-[12px] font-[400] rounded-[8px] h-[34px]  w-[76px] cursor-pointer'>
-              {verifyLoader ? (
-                <>
-                  <BeatLoader color="#fff" size={10}/>
-                </>
-              ) : (
-                'Verify'
-              )}
-            </button>
+      <div className='flex flex-col border-[#E2E8F0] border bg-white px-4 py-[12px] mb-4 rounded-[10px]'>
+        <div className='flex justify-between '>
+          <div className='flex flex-col'>
+            <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
+              {storedNft?.name}
+              <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
+            </h2>
+            <div className='flex justify-start items-center gap-3 mt-[16px] '>
+              <h3 className='text-[#334155] text-[15px] font-[400]'>
+                Ownership ZK Proof
+              </h3>
+              {!childDAOData?.zkProof ? <>
+                <button
+                  onClick={() => handleVerify()}
+                  className='bg-[#0F172A] text-[#F8FAFC] text-[12px] font-[400] rounded-[8px] h-[34px]  w-[76px] cursor-pointer'>
+                  {verifyLoader ? (
+                    <>
+                      <BeatLoader color="#fff" size={10} />
+                    </>
+                  ) : (
+                    'Verify'
+                  )}
+                </button>
+              </> :
+                null
+              }
+
+            </div>
+          </div>
+
+          <div className="shrink-0">
+            <Button
+              shape="rounded"
+              fullWidth={true}
+              className="uppercase"
+              onClick={() => goToCreateProposalPage()}
+            >
+              Create Proposal
+            </Button>
           </div>
         </div>
 
-        <div className="shrink-0">
-          <Button
-            shape="rounded"
-            fullWidth={true}
-            className="uppercase"
-            onClick={() => goToCreateProposalPage()}
-          >
-            Create Proposal
-          </Button>
-        </div>
+        {/* //if zk proof exist */}
+        {childDAOData?.zkProof && <>
+          <div className='border-t border-[#CBD5E1] pb-[12px] mt-[12px] w-full'></div>
+          <div className='flex flex-col '>
+            <h1 className='flex justify-center items-center text-[#334155] text-[15px] font-[400] underline cursor-pointer flex gap-[12px] items-center'
+              onClick={() => hanldeExpand()}>
+              Show ZK proof details <span><Image src={selectedExpand ? DoubleArrowUP : DoubleArrowDown} alt="no-icon" /></span>
+            </h1>
+            {selectedExpand && <>
+              <div className="mt-3">
+                <pre className="bg-gray-100 p-4 rounded-md text-sm font-mono overflow-x-auto max-h-98">
+                  {JSON.stringify(childDAOData?.zkProof, null, 2)}
+                </pre>
+              </div>
+            </>}
+
+          </div>
+        </>}
       </div>
-
       <div className="flex flex-wrap gap-4 mb-4">
-
         <div
           className={`${proposalsDomainDao?.length > 0
             ? 'col-span-12 md:col-span-6 lg:col-span-3'

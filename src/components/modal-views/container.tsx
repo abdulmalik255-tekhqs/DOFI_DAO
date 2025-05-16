@@ -43,6 +43,9 @@ const FindNameView = dynamic(() => import('@/components/search/find-name'), {
 const CreateIDOView = dynamic(() => import('@/components/ido/create-ido'), {
   ssr: false,
 });
+const ZkProofView = dynamic(() => import('@/components/ido/zk-proof'), {
+  ssr: false,
+});
 const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
   ssr: false,
 });
@@ -89,12 +92,14 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':
       return <CreateIDOView data={data} />;
+    case "ZK_PROOF":
+      return <ZkProofView data={data} />;
     case 'OPEN_WIZARD':
       return <OpenWizardView data={data} />;
     case 'SUCCESSFULLY_BUY_DIO':
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':
-      return <PayTokenAmountView data={data}/>;
+      return <PayTokenAmountView data={data} />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

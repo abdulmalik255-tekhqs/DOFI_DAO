@@ -120,6 +120,7 @@ export function useBuyQueryWizard() {
 
 export function useVerifyChildDAO(setVerifyLoader: any) {
   const { address } = useAccount();
+  const dispatch = useDispatch()
   return useMutation({
     //@ts-ignore
     mutationFn: (data: any) => client.submitVerifyChildDAo.create(data, address),
@@ -128,6 +129,7 @@ export function useVerifyChildDAO(setVerifyLoader: any) {
 
       if (data?.success === true) {
         setVerifyLoader(false);
+           dispatch(idoActions.saveChildDaoData(data?.data))
         ToastNotification('success', 'Verfication successfull!');
       }
       else {

@@ -13,6 +13,9 @@ import routes from '@/config/routes';
 import RedGraph from '@/assets/images/red-graph.png';
 import GreenGraph from '@/assets/images/green-graph.png';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { AnyCnameRecord } from 'dns';
 type Price = {
   name: number;
   value: number;
@@ -31,7 +34,8 @@ type LivePriceFeedProps = {
   prices: Price[];
   noOfProposals?: number;
   index: any,
-  nft: any
+  nft: any,
+  data?:AnyCnameRecord
 };
 
 export function LivePricingFeed({
@@ -46,9 +50,12 @@ export function LivePricingFeed({
   isChangePositive,
   noOfProposals,
   isBorder,
-  index
+  index,
+  data
 }: LivePriceFeedProps) {
   const router = useRouter();
+  const dispatch = useDispatch()
+  
   function getInitialIcon(name: string) {
     const firstLetter = name?.charAt(0).toUpperCase() || '?';
     return (
@@ -59,6 +66,7 @@ export function LivePricingFeed({
   }
   function goToCreateProposalPage() {
     if (index > 0) {
+      dispatch(idoActions.saveChildDaoData(data))
       localStorage.setItem('nft', JSON.stringify(nft));
       localStorage.setItem("Domain_Dao", _id)
     }
@@ -191,7 +199,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
     >
       {mergedDAOs.map((item, index) => (
         <SwiperSlide key={item.id}>
-          <LivePricingFeed {...item} index={index} />
+          <LivePricingFeed {...item} index={index} data={item}/>
         </SwiperSlide>
       ))}
     </Swiper>
