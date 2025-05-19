@@ -68,7 +68,6 @@ function Upload(
   }: React.PropsWithChildren<UploadProps>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  // console.log('accept', accept);
   return (
     <div
       className={cn(

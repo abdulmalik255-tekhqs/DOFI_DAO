@@ -34,10 +34,8 @@ const SwapPage = () => {
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const [blockNFT, setBlocknft] = useState<boolean>(false);
-  const { mutate: submitCreate, data: calculationResult } = usePostCaculate();
-  const { NFTSwap } = useFetchNFTSWAP()
-
-console.log("toAmount--->",toAmount)
+  const { mutate: submitCreate, data: calculationResult }:any = usePostCaculate();
+  const { NFTSwap } :any= useFetchNFTSWAP()
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
@@ -70,9 +68,7 @@ console.log("toAmount--->",toAmount)
     return () => clearTimeout(timer);
   }, [fromAmount, selectedFromSwapCoin, selectedToSwapCoin]);
   useEffect(() => {
-    // @ts-ignore
     if (NFTSwap?.data?.userNFTs && selectedFromSwapCoin) {
-      // @ts-ignore
       const foundNFT = NFTSwap.data.userNFTs.find((nft: any) => {
         const nftId = nft?.name;
         const selectedId = selectedFromSwapCoin?.name;
@@ -98,7 +94,6 @@ console.log("toAmount--->",toAmount)
     const multiply = value * 0.05;
     return value - multiply;
   };
-  console.log("selectedNFT--->", selectedNFT)
   const handleSwap = async () => {
     try {
       if (!address) {
@@ -133,7 +128,6 @@ console.log("toAmount--->",toAmount)
       if (selectedFromSwapCoin?.tokenType === 'ERC20') {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
-          //@ts-ignore
           address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
           abi: tetherABI,
           functionName: 'transfer',
@@ -148,10 +142,7 @@ console.log("toAmount--->",toAmount)
         });
         // if (recipient.status === 'success') {
         submitSwap({
-          //@ts-ignore
-           //@ts-ignore
           nftID: selectedToSwapCoin?._id,
-          //@ts-ignore
           amountToMint: Number(calculationResult?.data?.toAmount),
         });
         // } else {
@@ -160,7 +151,6 @@ console.log("toAmount--->",toAmount)
       } else {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
-          //@ts-ignore
           address: process.env.NEXT_PUBLIC_FRACTIONDAO_TOKEN as `0x${string}`,
           abi: fractionDaoABI,
           functionName: 'safeTransferFrom',
@@ -179,13 +169,11 @@ console.log("toAmount--->",toAmount)
         // if (recipient.status === 'success') {
         if (selectedToSwapCoin.tokenType === 'ERC20') {
           submitSwap({
-            //@ts-ignore
             type: 'USDT',
             amountToMint: Number(toAmount?.data?.toAmount),
           });
         } else {
           submitSwap({
-            //@ts-ignore
             nftID: selectedToSwapCoin?._id,
             amountToMint: Number(toAmount?.data?.toAmount),
           });
@@ -236,12 +224,9 @@ console.log("toAmount--->",toAmount)
           </div>
         </div>
         <div className="flex flex-col gap-4 xs:gap-[18px]">
-          {/* <TransactionInfo label={'Min. Received'} /> */}
           <TransactionInfo label={'Rate'} />
           <TransactionInfo label={'Offered by'} />
-          {/* <TransactionInfo label={'Price Slippage'} value={'1%'} /> */}
           <TransactionInfo label={'Network Fee'} value={'0.35'} />
-          {/* <TransactionInfo label={'Criptic Fee'} /> */}
         </div>
         <div className="border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800 mt-4"></div>
         <div className="flex justify-end">

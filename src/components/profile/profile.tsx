@@ -21,8 +21,7 @@ export default function Profile() {
   const [_, copyToClipboard] = useCopyToClipboard();
   const dispatch = useDispatch();
   function handleCopyToClipboard() {
-    //@ts-ignore
-    copyToClipboard(address);
+    copyToClipboard(address as `0x${string}`);
     setCopyButtonStatus(true);
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
@@ -31,7 +30,7 @@ export default function Profile() {
   useEffect(() => {
     dispatch(idoActions.setPreviousRoute(false));
   }, []);
-  const { ownerNFT, isLoading } = useFetchOwnerAllNfts();
+  const { ownerNFT, isLoading }:any = useFetchOwnerAllNfts();
 
   return (
     <div className="flex w-full flex-col pt-4 md:flex-row md:pt-6 lg:flex-row 3xl:pt-10">
@@ -127,10 +126,8 @@ export default function Profile() {
       >
         <ProfileTab
           data={
-            //@ts-ignore
             ownerNFT?.data
-          }
-          //@ts-ignore
+          }s
           leasingData={ownerNFT?.leasedDomainNFTs}
         />
       </div>

@@ -329,7 +329,6 @@ const CreateProposalPage = () => {
       dispatch(idoActions.setLoading(true));
       // Disabled Contract Call
       // const hash = await writeContractAsync({
-      //   //@ts-ignore
       //   address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
       //   abi: tetherABI,
       //   functionName: 'transfer',
@@ -344,7 +343,6 @@ const CreateProposalPage = () => {
       // });
       // if (recipient.status === 'success') {
       submitCreate({
-        //@ts-ignore
         name: name,
         summary: summary,
         motivation: motivation,
@@ -360,11 +358,9 @@ const CreateProposalPage = () => {
         expirationDate: new Date(),
       });
       // } else {
-      //   console.log('erer');
       // }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
-      console.log(error);
     }
   };
 
@@ -388,7 +384,6 @@ const CreateProposalPage = () => {
   //     priceType,
   //     category
   //   };
-  //   console.log('Form Data:', formData);
 
   // }
   return (

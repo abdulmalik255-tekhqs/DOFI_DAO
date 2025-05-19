@@ -22,7 +22,6 @@ const COLUMNS = [
   // {
   //   Header: () => <div className="px-1"></div>,
   //   accessor: 'symbol',
-  //   // @ts-ignore
   //   Cell: ({ cell: { value } }) => (
   //     <div className="">
   //       <Star />
@@ -169,8 +168,7 @@ const COLUMNS = [
 ];
 
 export default function CryptocurrencyPricingTable() {
-  const { ido, isLoading } = useIDO();
-  //@ts-ignore
+  const { ido, isLoading }: any = useIDO();
   const data = React.useMemo(() => ido?.data ?? [], [ido?.data]);
   const columns = React.useMemo(() => COLUMNS, []);
   const isMounted = useIsMounted();

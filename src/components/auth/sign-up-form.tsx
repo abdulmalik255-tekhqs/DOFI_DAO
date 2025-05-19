@@ -15,7 +15,6 @@ export default function SignUpForm() {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    // console.log(e);
   }
 
   return (

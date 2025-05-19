@@ -14,7 +14,7 @@ import { MoonLoader } from 'react-spinners';
 export default function Search() {
   const { openDrawer } = useDrawer();
   const dispatch = useDispatch();
-  const { domainData, isLoading } = useLatestDomain();
+  const { domainData, isLoading }:any = useLatestDomain();
   
 
   useEffect(() => {
@@ -38,7 +38,6 @@ export default function Search() {
             <div className="">
               <Feeds
                 data={
-                  //@ts-ignore
                   domainData?.data
                 }
                 isLoading={isLoading}

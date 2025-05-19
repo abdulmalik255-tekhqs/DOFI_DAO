@@ -47,7 +47,6 @@ export default function Text({
 }: React.PropsWithChildren<TextProps>) {
   let Component = tag;
   if (tag === 'abbr' && title === undefined) {
-    console.warn('title attribute is missing for abbr tag.');
   }
   return (
     <Component

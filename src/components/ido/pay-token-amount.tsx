@@ -37,7 +37,6 @@ export default function PayTokenAmount({ data }: { data: any }) {
       }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
@@ -54,18 +53,15 @@ export default function PayTokenAmount({ data }: { data: any }) {
         const amountArray=[Number(tokenAmount)];
         const nftName=data ? data : ""
         submitCreate({
-          //@ts-ignore
           addresses: addressArray,
           nftName,
           amounts: amountArray,
         });
       } else {
         dispatch(idoActions.setLoading(false));
-        console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(true));
-      console.log(error);
     }
   };
   return (

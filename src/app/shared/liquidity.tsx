@@ -21,7 +21,6 @@ const LiquidityPage = () => {
               label={'From'}
               exchangeRate={0.0}
               defaultCoinIndex={0}
-              getCoinValue={(data) => console.log('From coin value:', data)}
             />
             <div className="absolute left-1/2 top-1/2 z-[1] -ml-4 -mt-4 rounded-full bg-white shadow-large dark:bg-gray-600">
               <Button
@@ -37,7 +36,6 @@ const LiquidityPage = () => {
               label={'To'}
               exchangeRate={0.0}
               defaultCoinIndex={1}
-              getCoinValue={(data) => console.log('To coin value:', data)}
             />
           </div>
         </div>

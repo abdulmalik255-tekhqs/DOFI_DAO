@@ -22,21 +22,16 @@ export default function GlobalFilter() {
     isSuccess,
     isError,
     error,
-  } = useSubmitFindNameQuery();
+  }: any = useSubmitFindNameQuery();
 
   const [inputValue, setInputValue] = useState('');
 
-  // Update external state
-
-  // Debounce the API call on input change
   useEffect(() => {
     const handler = setTimeout(() => {
       if (inputValue.trim() !== '') {
         try {
-          //@ts-ignore
           submitCreate(inputValue.trim());
         } catch (err) {
-          console.error(err);
         }
       }
     }, 500);
@@ -55,11 +50,9 @@ export default function GlobalFilter() {
     dispatch(idoActions.setLoading(false));
     dispatch(idodetailActions.saveIDOdata({}));
     dispatch(idoActions.goToStep(0));
-    //@ts-ignore
     openModal('OPEN_WIZARD', searchResult?.data)
   }
   const getValue = () => {
-    //@ts-ignore
     const name = searchResult?.data?.name;
     const extension = name.split('.')[1]; // returns 'eth'
     return `.${extension}`
@@ -81,16 +74,16 @@ export default function GlobalFilter() {
           />
           <span className="flex h-[59px] items-center justify-center text-gray-600 hover:text-gray-900 dark:text-white">
             {inputValue?.length > 0 ? (
-              // @ts-ignore
+              
               searchResult?.success === false ? (
                 <div className="flex h-[59px] w-auto cursor-not-allowed items-center gap-2 bg-red-300 p-4 text-white rounded-tr-[12px] rounded-br-[12px]">
                   NFT Not found
                 </div>
-              ) : // @ts-ignore
+              ) : 
                 searchResult?.success === true ? (
                   <div
                     className="flex h-[59px] w-auto cursor-pointer items-center gap-2 bg-green-500  p-4 text-white rounded-tr-[12px] rounded-br-[12px]"
-                    // @ts-ignore
+                    
                     onClick={() => handleModal()}
                   >
                     {!isSuccess ? 'Loading' : `${getValue()} view`}

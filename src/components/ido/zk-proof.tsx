@@ -8,9 +8,7 @@ export default function ZKProof({ data }: any) {
 
   const excludedKeys = ["curve", "protocol"];
   const handleCopy = () => {
-    //@ts-ignore
   const jsonString = JSON.stringify(data, null, 2);
-  // @ts-ignore
   copyToClipboard(jsonString);
   ToastNotification("success", "Copied!");
   }
