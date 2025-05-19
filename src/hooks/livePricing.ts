@@ -383,6 +383,7 @@ export function useLatestDomain() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['domain-latest'],
     queryFn: () => client.latestDomain.getLatestDomain(address),
+     enabled: !!address,
   });
   return {
     domainData: data,

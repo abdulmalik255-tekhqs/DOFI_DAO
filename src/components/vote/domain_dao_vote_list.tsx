@@ -4,6 +4,7 @@ import { ExportIcon } from '@/components/icons/export-icon';
 // static data
 import { getVotesByStatus } from '@/data/static/vote-data';
 import { useGetProposal, useGetProposalDomainDao } from '@/hooks/livePricing';
+import { MoonLoader } from 'react-spinners';
 
 export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }) {
   const { votes, totalVote } = getVotesByStatus(voteStatus);
@@ -11,7 +12,9 @@ export default function VoteListDomainDao({ voteStatus }: { voteStatus: string }
 
   return (
     <LayoutGroup>
-      {isLoading ? <p className="text-center">Loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
+      {isLoading ?<div className="flex w-full items-center justify-center">
+        <MoonLoader />
+      </div>  : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
         {proposalsDomainDao?.count > 0 ? (
           proposalsDomainDao?.data?.map((proposal: any) => (
             <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} data={proposalsDomainDao}/>

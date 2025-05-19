@@ -5,6 +5,7 @@ import { SearchIcon } from '@/components/icons/search';
 import { useModal } from '@/components/modal-views/context';
 import { Tether } from '../icons/tether';
 import { useFetchNFTSWAP } from '@/hooks/livePricing';
+import { MoonLoader } from 'react-spinners';
 
 interface CoinSelectViewTypes {
   onSelect: (selectedCoin: any) => void;
@@ -62,7 +63,9 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
         />
       </div>
       <ul role="listbox" className="min-h-[200px] py-3">
-        {isLoading ? <p className='text-center text-sm'>loading...</p> : coinListData.length > 0 ? (
+        {isLoading ?   <div className="flex w-full items-center justify-center py-5">
+                <MoonLoader />
+              </div> : coinListData.length > 0 ? (
           coinListData?.map((item, index) => (
             <li
               key={item.code}

@@ -90,7 +90,7 @@ function CryptocurrencyAccordionTable({
             </div>
 
             {isLoading ? (
-              <div className="flex w-full items-center justify-center">
+              <div className="flex w-full items-center justify-center py-5">
                 <MoonLoader />
               </div>
             ) : (
@@ -157,11 +157,7 @@ function CryptocurrencyAccordionTable({
                     </table>
                   </div>
                 </Scrollbar>
-              </>
-            )}
-          </div>
-
-              {data?.length > 0 ?
+                  {data?.length > 0 ?
             <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
               <div className="flex items-center gap-5 py-4">
                 <Button
@@ -198,6 +194,13 @@ function CryptocurrencyAccordionTable({
                  No Data Found
                 </h2>
               </div>}
+              </>
+            )}
+
+          
+          </div>
+
+              
         </div>
 
 
