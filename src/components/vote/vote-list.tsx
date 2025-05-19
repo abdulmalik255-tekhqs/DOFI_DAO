@@ -4,13 +4,16 @@ import { ExportIcon } from '@/components/icons/export-icon';
 // static data
 import { getVotesByStatus } from '@/data/static/vote-data';
 import { useGetProposal } from '@/hooks/livePricing';
+import { MoonLoader } from 'react-spinners';
 
 export default function VoteList({ voteStatus }: { voteStatus: string }) {
   const { votes, totalVote } = getVotesByStatus(voteStatus);
   const { proposals, isLoading }: any = useGetProposal();
   return (
     <LayoutGroup>
-      {isLoading ? <p className="text-center">Loading ...</p> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
+      {isLoading ? <div className="flex w-full items-center justify-center">
+        <MoonLoader />
+      </div> : <motion.div layout initial={{ borderRadius: 16 }} className="rounded-2xl">
         {proposals?.count > 0 ? (
           proposals?.data?.map((proposal: any) => (
             <VoteDetailsCard key={`${proposal.name}-key-${proposal._id}`} vote={proposal} data={proposals}/>

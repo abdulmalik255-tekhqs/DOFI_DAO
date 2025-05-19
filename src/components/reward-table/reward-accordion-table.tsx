@@ -34,9 +34,7 @@ function RewardAccordionTable({
     prepareRow,
   } = useTable(
     {
-      // @ts-ignore
       columns,
-      // @ts-ignore
       data,
       initialState: { pageSize: 17 },
     },
@@ -67,7 +65,7 @@ function RewardAccordionTable({
             </div>
 
             {isLoading ? (
-              <div className="flex w-full items-center justify-center">
+              <div className="flex w-full items-center justify-center py-5">
                 <MoonLoader />
               </div>
             ) : (
@@ -132,46 +130,46 @@ function RewardAccordionTable({
                     </table>
                   </div>
                 </Scrollbar>
+                {data?.length > 0 ?
+                  <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
+                    <div className="flex items-center gap-5 py-4">
+                      <Button
+                        onClick={() => previousPage()}
+                        disabled={!canPreviousPage}
+                        title="Previous"
+                        shape="circle"
+                        variant="transparent"
+                        size="small"
+                        className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
+                      >
+                        <LongArrowLeft className="h-auto w-4 rtl:rotate-180" />
+                      </Button>
+                      <div>
+                        Page{' '}
+                        <strong className="font-semibold">
+                          {pageIndex + 1} of {pageOptions.length}
+                        </strong>
+                      </div>
+                      <Button
+                        onClick={() => nextPage()}
+                        disabled={!canNextPage}
+                        title="Next"
+                        shape="circle"
+                        variant="transparent"
+                        size="small"
+                        className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
+                      >
+                        <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
+                      </Button>
+                    </div>
+                  </div> : <div className="py-4 flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
+                    <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
+                      No Data Found
+                    </h2>
+                  </div>}
               </>
             )}
           </div>
-          {data?.length > 0 ?
-            <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
-              <div className="flex items-center gap-5 py-4">
-                <Button
-                  onClick={() => previousPage()}
-                  disabled={!canPreviousPage}
-                  title="Previous"
-                  shape="circle"
-                  variant="transparent"
-                  size="small"
-                  className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
-                >
-                  <LongArrowLeft className="h-auto w-4 rtl:rotate-180" />
-                </Button>
-                <div>
-                  Page{' '}
-                  <strong className="font-semibold">
-                    {pageIndex + 1} of {pageOptions.length}
-                  </strong>
-                </div>
-                <Button
-                  onClick={() => nextPage()}
-                  disabled={!canNextPage}
-                  title="Next"
-                  shape="circle"
-                  variant="transparent"
-                  size="small"
-                  className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
-                >
-                  <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
-                </Button>
-              </div>
-            </div> : <div className="py-4 flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
-              <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
-                 No Data Found
-                </h2>
-              </div>}
         </div>
       </div>
     </div>
