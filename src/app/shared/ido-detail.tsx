@@ -126,7 +126,6 @@ const IDODetailPage = () => {
         });
       } else {
         dispatch(idoActions.setLoading(false));
-        console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useCopyToClipboard } from 'react-use';
 import Image from 'next/image';
 import { useReward } from '@/hooks/livePricing';
@@ -13,8 +13,7 @@ const COLUMNS = [
     {
         Header: '#',
         accessor: 'Token ID',
-        // @ts-ignore
-        Cell: ({ row }) => (
+        Cell: ({ row }:any) => (
             <div className="flex items-center gap-2">
                 <div className="text-left">{row.index + 1}</div>
             </div>
@@ -23,13 +22,11 @@ const COLUMNS = [
         maxWidth: 20,
     },
     {
-        Header: () => <div className="">Transaction #</div>,
+        Header: () => <div className="">Transaction Hash</div>,
         accessor: 'total_volume',
-        // @ts-ignore
-        Cell: ({ row }) => {
+        Cell: ({ row }:any) => {
             const [_, copyToClipboard] = useCopyToClipboard();
             function handleCopyToClipboard() {
-                //@ts-ignore
                 copyToClipboard(row?.original?.txHash);
                 ToastNotification("success", "Copied!")
             }
@@ -101,12 +98,9 @@ const COLUMNS = [
     {
         Header: () => <div className="">From</div>,
         accessor: 'from',
-        // @ts-ignore
-        Cell: ({ row }) => {
-
+        Cell: ({ row }:any) => {
             const [_, copyToClipboard] = useCopyToClipboard();
             function handleCopyToClipboard() {
-                //@ts-ignore
                 copyToClipboard(row?.original?.from);
                 ToastNotification("success", "Copied!")
             }
@@ -134,11 +128,9 @@ const COLUMNS = [
     {
         Header: () => <div className="">To</div>,
         accessor: 'to',
-        // @ts-ignore
-        Cell: ({ row }) => {
+        Cell: ({ row }:any) => {
             const [_, copyToClipboard] = useCopyToClipboard();
             function handleCopyToClipboard() {
-                //@ts-ignore
                 copyToClipboard(row?.original?.to);
                 ToastNotification("success", "Copied!")
             }
@@ -182,10 +174,7 @@ const COLUMNS = [
 ];
 
 export default function RewardDistributionTable() {
-    const { reward, isLoading } = useReward();
-
-
-    //@ts-ignore
+    const { reward, isLoading }: any = useReward();
     const data = React.useMemo(() => reward?.data ?? [], [reward?.data]);
     const columns = React.useMemo(() => COLUMNS, []);
 

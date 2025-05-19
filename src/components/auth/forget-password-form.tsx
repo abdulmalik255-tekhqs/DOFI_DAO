@@ -10,7 +10,6 @@ export default function ForgetPasswordForm() {
   function handleSubmit(e: any) {
     e.preventDefault();
     push(routes.resetPin);
-    // console.log(e);
   }
 
   return (

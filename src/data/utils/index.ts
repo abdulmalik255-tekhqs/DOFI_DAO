@@ -113,7 +113,7 @@ class client {
       HttpClient.post(`${API_ENDPOINTS.POST_CALC}?address=${address}`, data),
   };
   latestDomain = {
-    getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_LATEST_DOMAIN}?address=${address}`),
+    getLatestDomain: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_ALL_NFTS_DOMAIN}?address=${address}`),
   };
   fetchNFT = {
     getOwnerNFT: (address:any) => HttpClient.get(`${API_ENDPOINTS.OWNER_NFT}?address=${address}`),

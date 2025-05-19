@@ -74,7 +74,6 @@ function VoteActionButton({ vote, data }: any) {
       }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
@@ -89,14 +88,12 @@ function VoteActionButton({ vote, data }: any) {
       });
       if (recipient.status === 'success') {
         submitCreate({
-          //@ts-ignore
           inFavor: isFavour,
           amount: Number(amount),
           proposalId: vote?._id,
           address: address?.toLowerCase(),
         });
       } else {
-        console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
@@ -117,7 +114,6 @@ function VoteActionButton({ vote, data }: any) {
       }
       dispatch(idoActions.setLoading(true));
       submitCreateupdated({
-        //@ts-ignore
         inFavor: isFavour,
         proposalId: vote?._id,
         address: address?.toLowerCase(),

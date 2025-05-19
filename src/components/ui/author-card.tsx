@@ -27,8 +27,7 @@ export default function AuthorCard({
     address,
   });
   function handleCopyToClipboard() {
-    //@ts-ignore
-    copyToClipboard(address);
+    copyToClipboard(address as `0x${string}`);
     setCopyButtonStatus(true);
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);

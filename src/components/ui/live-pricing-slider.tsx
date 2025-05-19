@@ -181,8 +181,7 @@ export default function LivePricingSlider({ limits }: { limits: number }) {
   function mergeDAOs(parentDAOs: any, childDAOs: any) {
     return [...(parentDAOs || []), ...(childDAOs || [])];
   }
-  const { dao } = useDao();
-  //@ts-ignore
+  const { dao } : any= useDao();
   const mergedDAOs = mergeDAOs(dao?.data?.parentDAOs, dao?.data?.childDAOs);
 
   return (

@@ -66,7 +66,6 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
     try {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
         address: process.env.NEXT_PUBLIC_DAO_TOKEN as `0x${string}`,
         abi: daoTokenABI,
         functionName: 'transferFrom',
@@ -88,7 +87,6 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
         dispatch(idoActions.setBuytransactionHash(recipient));
         setMindedHash(recipient?.transactionHash)
         submitCreate({
-          //@ts-ignore
           nftID: data?._id,
           name: `${data?.name} DIO`,
           tokenSymbol: 'DAO NFT',

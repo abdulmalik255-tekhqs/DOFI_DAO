@@ -2,12 +2,9 @@
 
 import React, { useState } from 'react';
 import { MoonLoader } from 'react-spinners';
-import { useRouter } from 'next/navigation';
-import { ChevronDown } from '@/components/icons/chevron-down';
 import { LongArrowRight } from '@/components/icons/long-arrow-right';
 import Button from '@/components/ui/button';
 import Scrollbar from '@/components/ui/scrollbar';
-import GlobalFilter from '@/components/cryptocurrency-pricing-table/global-filter';
 import {
   useTable,
   useResizeColumns,
@@ -16,22 +13,13 @@ import {
   usePagination,
   useGlobalFilter,
 } from 'react-table';
-
 import { LongArrowLeft } from '@/components/icons/long-arrow-left';
-import CryptocurrencyDrawer from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer';
-import routes from '@/config/routes';
-import { idoActions } from '@/store/reducer/ido-reducer';
-import { useDispatch } from 'react-redux';
-import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 
 function RewardAccordionTable({
-  // @ts-ignore
   columns,
-  // @ts-ignore
   data,
-  // @ts-ignore
   isLoading,
-}) {
+}: any) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -39,7 +27,6 @@ function RewardAccordionTable({
     canNextPage,
     pageOptions,
     state,
-    setGlobalFilter,
     headerGroups,
     page,
     nextPage,
@@ -59,12 +46,10 @@ function RewardAccordionTable({
     useFlexLayout,
     usePagination,
   );
+
   const { pageIndex } = state;
-  const { globalFilter } = state;
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  
+
   return (
     <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg  lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
@@ -76,7 +61,7 @@ function RewardAccordionTable({
                   }`}
               >
                 <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
-                 Revenue Distribution
+                  Revenue Distribution
                 </h2>
               </div>
             </div>
@@ -150,51 +135,45 @@ function RewardAccordionTable({
               </>
             )}
           </div>
-
-          <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
-            <div className="flex items-center gap-5 py-4">
-              <Button
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-                title="Previous"
-                shape="circle"
-                variant="transparent"
-                size="small"
-                className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
-              >
-                <LongArrowLeft className="h-auto w-4 rtl:rotate-180" />
-              </Button>
-              <div>
-                Page{' '}
-                <strong className="font-semibold">
-                  {pageIndex + 1} of {pageOptions.length}
-                </strong>
+          {data?.length > 0 ?
+            <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
+              <div className="flex items-center gap-5 py-4">
+                <Button
+                  onClick={() => previousPage()}
+                  disabled={!canPreviousPage}
+                  title="Previous"
+                  shape="circle"
+                  variant="transparent"
+                  size="small"
+                  className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
+                >
+                  <LongArrowLeft className="h-auto w-4 rtl:rotate-180" />
+                </Button>
+                <div>
+                  Page{' '}
+                  <strong className="font-semibold">
+                    {pageIndex + 1} of {pageOptions.length}
+                  </strong>
+                </div>
+                <Button
+                  onClick={() => nextPage()}
+                  disabled={!canNextPage}
+                  title="Next"
+                  shape="circle"
+                  variant="transparent"
+                  size="small"
+                  className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
+                >
+                  <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
+                </Button>
               </div>
-              <Button
-                onClick={() => nextPage()}
-                disabled={!canNextPage}
-                title="Next"
-                shape="circle"
-                variant="transparent"
-                size="small"
-                className="text-gray-700 disabled:text-gray-400 dark:text-white disabled:dark:text-gray-400"
-              >
-                <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
-              </Button>
-            </div>
-          </div>
+            </div> : <div className="py-4 flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
+              <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
+                 No Data Found
+                </h2>
+              </div>}
         </div>
-
-
       </div>
-
-      <CryptocurrencyDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
-      {/* <div
-          className="absolute top-1/2 left-0 z-20 flex h-[60px] w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-tr-lg rounded-br-lg border border-slate-200 bg-gray-100 dark:border-brand dark:bg-brand"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <ArrowRight />
-        </div> */}
     </div>
   );
 }

@@ -29,7 +29,6 @@ export default function CreateIDO({ data }: CreateIDOProps) {
     try {
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
         address:  process.env.NEXT_PUBLIC_DAO_TOKEN as `0x${string}`,
         abi: daoTokenABI,
         functionName: 'transferFrom',
@@ -44,7 +43,6 @@ export default function CreateIDO({ data }: CreateIDOProps) {
       });
       if (recipient.status === 'success') {
         submitCreate({
-          //@ts-ignore
           nftID: data?._id,
           name: `${data?.name} DIO`,
           tokenSymbol: 'DAO NFT',
@@ -57,11 +55,9 @@ export default function CreateIDO({ data }: CreateIDOProps) {
           description: 'token',
         });
       } else {
-        console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(true));
-      console.log(error);
     }
   };
   return (

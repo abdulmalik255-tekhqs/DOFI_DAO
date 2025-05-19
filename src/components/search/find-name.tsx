@@ -41,8 +41,6 @@ export default function FindName({ data }: any) {
       }
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
-        //@ts-ignore
-
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
@@ -61,7 +59,6 @@ export default function FindName({ data }: any) {
         const result = await submitBuyAsync({ id: data?._id });
       } else {
         dispatch(idoActions.setLoading(false));
-        console.log('erer');
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
@@ -80,7 +77,6 @@ export default function FindName({ data }: any) {
       const formatted = formatUnits(balance as bigint, 18);
       setTokenBalance(formatted);
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
       ToastNotification('error', 'Failed to fetch token balance');
     }
   };

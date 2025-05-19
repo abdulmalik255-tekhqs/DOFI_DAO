@@ -67,9 +67,6 @@ export function useSubmitFindNameQuery() {
     mutationFn: (name: string) => client.findName.create(name, address),
     onSuccess: (data) => {
     },
-    onError: (error) => {
-      console.error('Submission failed:', error);
-    },
   });
 }
 
@@ -89,7 +86,6 @@ export function useBuyQuery() {
     },
     onError: (error) => {
       dispatch(idoActions.setLoading(false))
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -112,7 +108,6 @@ export function useBuyQueryWizard() {
     onError: (error) => {
       dispatch(idoActions.goToStep(0));
       dispatch(idoActions.setLoading(false))
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -125,8 +120,6 @@ export function useVerifyChildDAO(setVerifyLoader: any) {
     //@ts-ignore
     mutationFn: (data: any) => client.submitVerifyChildDAo.create(data, address),
     onSuccess: (data: any) => {
-      console.log(data, "child dao response");
-
       if (data?.success === true) {
         setVerifyLoader(false);
            dispatch(idoActions.saveChildDaoData(data?.data))
@@ -157,14 +150,11 @@ export function useCreateIDOWizard(setCurrentStepButton: any) {
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
         setCurrentStepButton(1)
-        // router.push(routes.idoDetail);
       }
     },
     onError: (error) => {
       setCurrentStepButton(0)
-      // Optionally handle error
       dispatch(idoActions.setLoading(false))
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -183,13 +173,10 @@ export function useCreateIDO() {
         dispatch(idoActions.setIsConfetti(false));
         //@ts-ignore
         router.push(`${routes.idoDetail}/${data?.data?._id}`);
-        // router.push(routes.idoDetail);
       }
     },
     onError: (error) => {
-      // Optionally handle error
       dispatch(idoActions.setLoading(false))
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -263,7 +250,7 @@ export function useGetIDODetail() {
       }
     },
     onError: (error) => {
-      console.error('Submission failed:', error);
+      ToastNotification('error', 'IDO detail not found');
     },
   });
 }
@@ -271,27 +258,23 @@ export function useGetIDODetail() {
 
 export function useBuyShareIDO() {
   const { address } = useAccount();
-  const { openModal, closeModal } = useModal();
+  const { openModal,  } = useModal();
   const queryClient = useQueryClient();
   const router = useRouter();
   const dispatch = useDispatch()
   return useMutation({
-    //@ts-ignore
-    mutationFn: ({ id, data }: { id: string; data: any }) => client.shareIDOBuy.create(id, data, address),
-    onSuccess: (data) => {
-      // closeModal(); 
+    mutationFn: ({ id, data }: { id: string; data: any }) => client.shareIDOBuy.create(id, data, address as string),
+    onSuccess: (data:any) => {
       if (data) {
         queryClient.invalidateQueries({ queryKey: ['get_single_dio'] });
         openModal('SUCCESSFULLY_BUY_DIO');
         dispatch(idoActions.setIsConfetti(true));
         dispatch(idoActions.setLoading(false));
-        //@ts-ignore
         dispatch(idodetailActions.saveIDOdata(data?.data));
       }
     },
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -353,13 +336,10 @@ export function useCreatePropsals(path: any) {
   const { address } = useAccount();
   const router = useRouter();
   const dispatch = useDispatch()
-  //  const dispatch= useDispatch();
   return useMutation({
-    //@ts-ignore
-    mutationFn: (data: any) => client.createPropsals.create(data, address),
+    mutationFn: (data: any) => client.createPropsals.create(data, address as string),
     onSuccess: (data) => {
       if (data) {
-        // dispatch(idoActions.saveIDOdetailData(data));
         if (path == "child") {
           dispatch(idoActions.setLoading(false));
           router.push(routes.domain);
@@ -372,8 +352,6 @@ export function useCreatePropsals(path: any) {
     },
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
-      // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -384,11 +362,9 @@ export function usePostVote(pathName: any) {
   const router = useRouter();
   const dispatch = useDispatch();
   return useMutation({
-    //@ts-ignore
-    mutationFn: (data: any) => client.postVote.create(data, address),
+    mutationFn: (data: any) => client.postVote.create(data, address as string),
     onSuccess: (data) => {
       if (data) {
-        // dispatch(idoActions.saveIDOdetailData(data));
         dispatch(idoActions.setLoading(false));
         queryClient.invalidateQueries({ queryKey: ['proposal-latest'] });
         queryClient.invalidateQueries({ queryKey: ['all-nft-leaseAddress-latest'] });
@@ -398,8 +374,6 @@ export function usePostVote(pathName: any) {
     },
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
-      // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -475,7 +449,6 @@ export function usePostCaculate() {
     },
     onError: (error) => {
       // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -498,7 +471,6 @@ export function useSwap() {
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
       // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -524,7 +496,6 @@ export function usePostPayToken() {
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
       // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }
@@ -550,7 +521,6 @@ export function usePostVoteUpdated(pathName: any) {
     onError: (error) => {
       dispatch(idoActions.setLoading(false));
       // Optionally handle error
-      console.error('Submission failed:', error);
     },
   });
 }

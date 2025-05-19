@@ -13,8 +13,6 @@ import { FaCube, FaDollarSign, FaGlobe, FaLayerGroup, FaLink } from 'react-icons
 import ToastNotification from '../ui/toast-notification';
 
 export default function DIOTransaction({ data }: any) {
-  console.log(data, "data");
-
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
   const { idoDetaildata } = useSelector((state: any) => state.idodeatil);
   const router = useRouter();

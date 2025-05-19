@@ -63,7 +63,6 @@ export default function ParamTab({
     if (query) {
       setSelectedTabIndex(tabMenu.findIndex((item) => query === item.path));
     }
-    // console.log('query updated');
   }, [query]);
 
   useClickAway(dropdownEl, () => {

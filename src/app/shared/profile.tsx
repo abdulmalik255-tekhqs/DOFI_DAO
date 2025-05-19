@@ -19,8 +19,7 @@ const AuthorProfilePage = () => {
   const [copyButtonStatus, setCopyButtonStatus] = useState(false);
   const [_, copyToClipboard] = useCopyToClipboard();
   function handleCopyToClipboard() {
-    //@ts-ignore
-    copyToClipboard(address);
+    copyToClipboard(address as string);
     setCopyButtonStatus(true);
      ToastNotification("success","Copied!")
     setTimeout(() => {

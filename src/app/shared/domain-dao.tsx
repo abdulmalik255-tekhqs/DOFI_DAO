@@ -136,7 +136,6 @@ const DomainDAOPage = () => {
         try {
           setStoredNft(JSON.parse(storedNftString));
         } catch (err) {
-          console.error('Failed to parse storedNft:', err);
         }
       }
     }
@@ -150,7 +149,6 @@ const DomainDAOPage = () => {
       }
       setVerifyLoader(true)
       verifyChildDAO({
-        //@ts-ignore
         childDAOId: childDAOData?._id,
 
       });
