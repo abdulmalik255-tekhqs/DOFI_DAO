@@ -20,6 +20,7 @@ import { Globe } from 'lucide-react';
 import Image from 'next/image';
 import { readContract } from '@wagmi/core';
 import { useEffect, useState } from 'react';
+import { formatNumber } from '@/utils/cn';
 
 export default function FindName({ data }: any) {
   const { address } = useAccount();
@@ -106,7 +107,7 @@ export default function FindName({ data }: any) {
         </h3>
         <div>
           <h4 className="flex items-center gap-2 text-md font-medium tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
-            Balance: $DOFI {tokenBalance}
+            Balance: $DOFI {formatNumber(tokenBalance)}
           </h4>
 
         </div>
@@ -117,7 +118,7 @@ export default function FindName({ data }: any) {
         <div className="flex w-full justify-between mb-2">
           <h3 className="text-sm font-medium">1 year registration</h3>
           <h3 className="text-sm font-medium uppercase tracking-wide">
-            $DOFI {data?.price}
+            $DOFI {formatNumber(data?.price)}
           </h3>
         </div>
 
@@ -131,7 +132,7 @@ export default function FindName({ data }: any) {
         <div className="flex w-full justify-between">
           <h3 className="text-sm font-semibold">Estimated total</h3>
           <h3 className="text-sm font-semibold uppercase tracking-wide">
-            ${data?.price + 0.48}
+            ${formatNumber(data?.price + 0.48)}
           </h3>
         </div>
       </div>
