@@ -12,6 +12,7 @@ import { useCopyToClipboard } from 'react-use';
 import { useAccount } from 'wagmi';
 import { Coins, Globe, Hash, User, Wallet } from 'lucide-react';
 import ToastNotification from '../ui/toast-notification';
+import { formatNumber } from '@/utils/cn';
 
 export default function BuyTransaction({ data }: any) {
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
@@ -111,7 +112,7 @@ export default function BuyTransaction({ data }: any) {
                 <h3>Total Fee</h3>
               </div>
               <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-                ${data?.price + 0.48}
+                ${formatNumber(data?.price + 0.48)}
               </h3>
             </div>
 

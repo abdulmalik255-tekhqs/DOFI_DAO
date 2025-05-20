@@ -36,7 +36,7 @@ import Eth from '@/assets/images/dao/eth.png';
 import Shib from '@/assets/images/dao/shib.png';
 import OrangeIcon from '@/assets/images/dao/orange.svg';
 import BlueIcon from '@/assets/images/dao/Blue.svg';
-import cn from '@/utils/cn';
+import cn, { formatNumber } from '@/utils/cn';
 import NewOrangeIcon from '@/assets/images/dao/meworange.svg';
 import NewBlueIcon from '@/assets/images/dao/newblue.svg';
 
@@ -345,8 +345,8 @@ const IDODetailPage = () => {
 
                                     searchResult?.data?.investors.map((inv: any, idx: number) => (
                                       <tr key={idx} className="border-b border-gray-200 ">
-                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{inv.amount}</td>
-                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{inv.user?.wallet}</td>
+                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{formatNumber(inv?.amount)}</td>
+                                        <td className="px-4 py-2 text-[#334155] font-[500] text-[14px]">{inv?.user?.wallet}</td>
                                       </tr>
                                     ))
                                   ) : (

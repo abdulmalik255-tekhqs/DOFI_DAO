@@ -11,6 +11,7 @@ import { useCopyToClipboard } from 'react-use';
 import routes from '@/config/routes';
 import { FaCube, FaDollarSign, FaGlobe, FaLayerGroup, FaLink } from 'react-icons/fa6';
 import ToastNotification from '../ui/toast-notification';
+import { formatNumber } from '@/utils/cn';
 
 export default function DIOTransaction({ data }: any) {
   const { loading, buyTransactionhash } = useSelector((state: any) => state.ido);
@@ -122,7 +123,7 @@ export default function DIOTransaction({ data }: any) {
                   <h3 className="font-medium text-gray-900 dark:text-white">Price Per Fraction</h3>
                 </div>
                 <h3 className="text-sm font-medium uppercase tracking-wide text-gray-900 dark:text-white">
-                  $DOFI {buyTransactionhash?.priceFraction}
+                  $DOFI {formatNumber(buyTransactionhash?.priceFraction)}
                 </h3>
               </div>
 
