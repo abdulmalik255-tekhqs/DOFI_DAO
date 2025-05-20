@@ -15,8 +15,6 @@ import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
 import RevealContent from '@/components/ui/reveal-content';
 import AuctionCountdown from '@/components/nft/auction-countdown';
-import { Switch } from '@/components/ui/switch';
-import { ExportIcon } from '@/components/icons/export-icon';
 import VotePoll from '@/components/vote/vote-details/vote-poll';
 import VoteActions from '@/components/vote/vote-details/vote-actions';
 import VoterTable from '@/components/vote/vote-details/voter-table';
@@ -38,6 +36,7 @@ import Criteria from '@/assets/images/dao/criteria.svg';
 import TotalSupplyIcon from '@/assets/images/dao/tsupply.svg';
 import Image from 'next/image';
 import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
+import ReactStars from 'react-stars'
 
 function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
@@ -237,9 +236,12 @@ function VoteActionButton({ vote, data }: any) {
 export default function VoteDetailsCard({ vote, data }: any) {
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
-  const getRemainingallocation = () => {
-    const allocationvalue = Math.floor((vote?.totalFractions) - (vote?.amountRaised / vote?.pricePerFraction));
-    return allocationvalue;
+  const getReview = () => {
+    const allocationvalue = (((data?.votePower / data?.totalSupply) * 100));
+    console.log("allocationvalue",allocationvalue);
+
+   const starValue = (allocationvalue / 100) * 5;
+  return Math.round(starValue);
   }
   return (
     <motion.div
@@ -487,8 +489,17 @@ export default function VoteDetailsCard({ vote, data }: any) {
                             </div>
 
                             {/* Right Progress Bar */}
-                            <div className="flex-1">
-                              <div className="flex justify-between mb-1">
+                            <div className="">
+                              <ReactStars
+                                count={5}
+                                value={
+                                  getReview()
+                                }
+                                size={24}
+                                color2={'#ffd700'} 
+                                edit={false}
+                                />
+                              {/* <div className="flex justify-between mb-1">
                                 <span className="text-[14px] font-[500] text-[#64748B]">0%</span>
                                 <span className="text-[14px] font-[500] text-[#1E293B]">
                                   {((data?.votePower / data?.totalSupply) * 100)?.toPrecision(3) || 0}%
@@ -502,7 +513,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                                     width: `${((data?.votePower / data?.totalSupply) * 100) || 0}%`,
                                   }}
                                 />
-                              </div>
+                              </div> */}
                             </div>
                           </div>
 
