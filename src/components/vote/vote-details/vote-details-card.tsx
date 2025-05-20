@@ -60,6 +60,7 @@ function VoteActionButton({ vote, data }: any) {
   // For Dofi Dao vote Cast
   const handleSubmit = async (isFavour: any) => {
     try {
+
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
         return;
@@ -101,8 +102,8 @@ function VoteActionButton({ vote, data }: any) {
   };
   // For Domain Dao vote Cast
   const handleSubmitUpdated = async (isFavour: any) => {
-
     try {
+
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
         return;
@@ -150,7 +151,7 @@ function VoteActionButton({ vote, data }: any) {
 
   return (
     <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      {(vote?.status == 'active' && data?.votePower < 1 && !vote?.hasVoted) && (
+      {(vote?.status == 'active' && vote?.parentDAO && !vote?.hasVoted) && (
         <div className="">
           <InputLabel title="Amount" important />
           <Input
@@ -161,41 +162,74 @@ function VoteActionButton({ vote, data }: any) {
           />
         </div>
       )}
-
-      <Button
-        shape="rounded"
-        color="success"
-        size="medium"
-        fullWidth={true}
-        className="flex-1 xs:flex-auto"
-        disabled={vote?.status != 'active' || vote?.hasVoted || loading}
-        onClick={() => {
-          if (data?.votePower > 1) {
-            handleSubmitUpdated('yes')
-          } else {
+      {vote?.parentDAO ? <>
+        <Button
+          shape="rounded"
+          color="success"
+          size="medium"
+          fullWidth={true}
+          className="flex-1 xs:flex-auto"
+          disabled={vote?.status != 'active' || vote?.hasVoted || loading}
+          onClick={() => {
             handleSubmit('yes')
-          }
-        }}
-      >
-        {loading ? (
-          <>
-            <BeatLoader color="#000" />
-          </>
-        ) : (
-          'Vote'
-        )}
-      </Button>
-      <Button
-        shape="rounded"
-        color="danger"
-        size="medium"
-        fullWidth={true}
-        className="flex-1 xs:flex-auto"
-        disabled={vote?.status != 'active' || vote?.hasVoted}
-        onClick={() => handleSubmit('no')}
-      >
-        Reject
-      </Button>
+          }}
+        >
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'Vote'
+          )}
+        </Button>
+        <Button
+          shape="rounded"
+          color="danger"
+          size="medium"
+          fullWidth={true}
+          className="flex-1 xs:flex-auto"
+          disabled={vote?.status != 'active' || vote?.hasVoted}
+          onClick={() => handleSubmit('no')}
+        >
+          Reject
+        </Button>
+
+      </> : <>
+        <Button
+          shape="rounded"
+          color="success"
+          size="medium"
+          fullWidth={true}
+          className="flex-1 xs:flex-auto"
+          disabled={vote?.status != 'active' || vote?.hasVoted || loading || data?.votePower < 1}
+          onClick={() => {
+            // if (data?.votePower < 1 && !vote?.parentDAO) {
+            handleSubmitUpdated('yes')
+            // }
+          }}
+        >
+          {loading ? (
+            <>
+              <BeatLoader color="#000" />
+            </>
+          ) : (
+            'Vote'
+          )}
+        </Button>
+        <Button
+          shape="rounded"
+          color="danger"
+          size="medium"
+          fullWidth={true}
+          className="flex-1 xs:flex-auto"
+          disabled={vote?.status != 'active' || vote?.hasVoted}
+          onClick={() => handleSubmitUpdated('no')}
+        >
+          Reject
+        </Button>
+
+      </>}
+
     </div>
   );
 }
@@ -432,7 +466,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                         </span>
                       </div>
                     </div>
-                    {data?.votePower > 1 ?
+                    {data?.totalSupply > 1 ?
                       <>
                         <div className='w-full flex flex-col md:flex-row justify-start md:justify-between'>
                           <div className="mt-4 flex justify-between items-center md:w-[48%]">

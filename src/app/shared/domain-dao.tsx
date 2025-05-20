@@ -172,7 +172,7 @@ const DomainDAOPage = () => {
             </h2>
             <div className='flex justify-start items-center gap-3 mt-[16px] '>
               <h3 className='text-[#334155] text-[15px] font-[400]'>
-                Ownership ZK Proof
+               Escrow Ownership ZK Proof
               </h3>
               {!childDAOData?.zkProof ? <>
                 <button
