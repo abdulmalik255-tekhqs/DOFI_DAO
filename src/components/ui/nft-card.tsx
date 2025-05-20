@@ -15,6 +15,7 @@ import Shib5 from '@/assets/images/dao/shib5.png';
 import Shib6 from '@/assets/images/dao/shib6.png';
 import Shib7 from '@/assets/images/dao/shib7.png';
 import Shib8 from '@/assets/images/dao/shib8.png';
+import { formatNumber } from '@/utils/cn';
 
 
 type NFTGridProps = {
@@ -82,7 +83,7 @@ export default function NFTGrid({
           className="block text-[12px] font-medium text-black dark:text-white truncate"
         >
           <div className="flex flex-col ">
-            <p>{name} #{tokenID}</p> <p className='font-bold text-[14px]'>({price} DO.FI)</p>
+            <p>{name} #{tokenID}</p> <p className='font-bold text-[14px]'>({formatNumber(price)} DO.FI)</p>
           </div>
         </AnchorLink>
       </div>

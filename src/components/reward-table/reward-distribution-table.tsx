@@ -8,6 +8,7 @@ import ToastNotification from '../ui/toast-notification';
 import Share from '@/assets/images/dao/redirect.png';
 import CopyIcon from '@/assets/images/dao/copyicon.png';
 import RewardAccordionTable from './reward-accordion-table';
+import { formatNumber } from '@/utils/cn';
 
 const COLUMNS = [
     {
@@ -90,7 +91,7 @@ const COLUMNS = [
         Cell: ({ row }) => (
             <div className="flex items-start gap-2">
                 <div className="flex w-auto items-start justify-start">
-                    {row?.original?.amount}
+                    {formatNumber(row?.original?.amount)}
                 </div>
             </div>
         ),

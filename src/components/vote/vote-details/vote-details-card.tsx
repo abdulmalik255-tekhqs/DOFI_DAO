@@ -238,8 +238,6 @@ export default function VoteDetailsCard({ vote, data }: any) {
   const { layout } = useLayout();
   const getReview = () => {
     const allocationvalue = (((data?.votePower / data?.totalSupply) * 100));
-    console.log("allocationvalue",allocationvalue);
-
    const starValue = (allocationvalue / 100) * 5;
   return Math.round(starValue);
   }
