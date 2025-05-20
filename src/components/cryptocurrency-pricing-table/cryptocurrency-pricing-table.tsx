@@ -17,6 +17,7 @@ import routes from '@/config/routes';
 import { useCopyToClipboard } from 'react-use';
 import Image from 'next/image';
 import Share from '@/assets/images/dao/share.png';
+import { formatNumber } from '@/utils/cn';
 
 const COLUMNS = [
   // {
@@ -63,7 +64,7 @@ const COLUMNS = [
     // @ts-ignore
     Cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <div className="">{row.original.nftID?.price ? `$${row.original.nftID?.price}` : "$3641"}</div>
+        <div className="">{row.original.nftID?.price ? `$${formatNumber(row.original.nftID?.price)}` : `$${formatNumber("3641")}`}</div>
       </div>
     ),
     minWidth: 80,
@@ -90,7 +91,7 @@ const COLUMNS = [
     Cell: ({ row }) => (
       <div className="flex items-center">
         <div className="flex w-auto items-center justify-center">
-          ${row.original.softCap}
+          ${formatNumber(row.original.softCap)}
         </div>
       </div>
     ),
