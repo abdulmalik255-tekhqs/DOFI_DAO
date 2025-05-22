@@ -205,7 +205,7 @@ const IDODetailPage = () => {
                   className={`rounded-[12px] p-[20px] transition-all duration-300 flex flex-col justify-between bg-no-repeat ${!isEth && !isShib ? 'border border-[#E2E8F0]' : ''
                     }`}
                   style={{
-                    backgroundImage: `url(${isEth ? BlueIcon.src : isShib ? OrangeIcon.src : ''})`,
+                    backgroundImage: `url(${isEth ? NewBlueIcon.src : isShib ? NewOrangeIcon.src : ''})`,
                     backgroundPosition: isEth ? '100% 100%' : 'center',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
@@ -245,7 +245,10 @@ const IDODetailPage = () => {
                   </div>
 
                   <div
-                    className="text-[#ffffff] text-[16px] font-[400] w-full flex gap-2 justify-center h-[45px] bg-transparent border border-[#FECDD3] rounded-[8px] items-center cursor-pointer"
+                    className={
+                      `${searchResult?.data?.status !== 'active' ? "mt-6" : "mt-0"} text-[#ffffff] text-[16px] font-[400] w-full flex gap-2 justify-center h-[45px] bg-transparent border border-[#FECDD3] rounded-[8px] items-center cursor-pointer`
+                    }
+
                     onClick={handleCopyToClipboard}
                   >
                     <Image src={Share} alt="no-icon" /> Share
@@ -292,8 +295,8 @@ const IDODetailPage = () => {
                     <Image src={Share} alt="no-icon" /> Share</div>
                 </div> */}
                 <motion.div
-                  whileTap={{ scale: 0.98 }}
-                  whileHover={{ scale: 1.015 }}
+                  // whileTap={{ scale: 0.98 }}
+                  // whileHover={{ scale: 1.015 }}
                   className="rounded-[14px] bg-white p-[20px] flex flex-col justify-between border border-[#E2E8F0]"
                 >
                   {

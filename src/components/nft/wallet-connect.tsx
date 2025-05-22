@@ -2,7 +2,6 @@
 
 import { useAppKit } from '@reown/appkit/react';
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
-import cn from '@/utils/cn';
 import Button from '@/components/ui/button';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@/components/ui/menu';
 import { Transition } from '@/components/ui/transition';
@@ -11,6 +10,13 @@ import { ChevronForward } from '@/components/icons/chevron-forward';
 import { PowerIcon } from '@/components/icons/power';
 import GreenDot from '@/assets/images/dao/greendot.png';
 import Image from 'next/image';
+import { config } from '@/app/shared/wagmi-config';
+import { readContract } from '@wagmi/core';
+import { useEffect, useState } from 'react';
+import cn, { formatNumber } from '@/utils/cn';
+import { tetherABI } from '@/utils/abi';
+import { formatUnits } from 'viem';
+import ToastNotification from '../ui/toast-notification';
 
 export default function WalletConnect({
   btnClassName,
@@ -26,7 +32,28 @@ export default function WalletConnect({
   });
   const { disconnect } = useDisconnect();
   const balance = data?.formatted;
+const [tokenBalance, setTokenBalance] = useState<string | null>(null);
+const getTokenBalance = async (userAddress: string) => {
+    try {
+      const balance = await readContract(config, {
+        address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
+        abi: tetherABI,
+        functionName: 'balanceOf',
+        args: [userAddress],
+      });
 
+      const formatted = formatUnits(balance as bigint, 18);
+      setTokenBalance(formatted);
+    } catch (error) {
+      ToastNotification('error', 'Failed to fetch token balance');
+    }
+  };
+  // 🔁 Call on address change
+  useEffect(() => {
+    if (address) {
+      getTokenBalance(address);
+    }
+  }, [address]);
   return (
     <>
       {address ? (
@@ -71,16 +98,9 @@ export default function WalletConnect({
                     <div className="border-b border-dashed border-gray-200 px-6 py-5 dark:border-gray-700">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-sm font-medium -tracking-tighter text-gray-600 dark:text-gray-400">
-                          Balance
+                          Balance:
                         </span>
-                        <span className="rounded-lg bg-gray-100 px-2 py-1 text-sm tracking-tighter dark:bg-gray-800">
-                          {address?.slice(0, 6)}
-                          {'...'}
-                          {address?.slice(address?.length - 6)}
-                        </span>
-                      </div>
-                      <div className="mt-3 font-medium uppercase tracking-wider text-gray-900 dark:text-white">
-                        {balance} ETH
+                        $DOFI {formatNumber(tokenBalance)}
                       </div>
                     </div>
                   </MenuItem>
