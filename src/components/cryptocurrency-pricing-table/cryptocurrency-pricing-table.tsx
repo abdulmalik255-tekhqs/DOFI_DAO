@@ -1,18 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { FaShareAlt } from "react-icons/fa";
-import { FcShare } from "react-icons/fc";
+import React, {  useState } from 'react';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import CryptocurrencyAccordionTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-accordion-table';
 import CryptocurrencyDrawerTable from '@/components/cryptocurrency-pricing-table/cryptocurrency-drawer-table';
-
 import { useIDO } from '@/hooks/livePricing';
-import { Globe } from 'lucide-react';
 import ToastNotification from '../ui/toast-notification';
-import { Check } from '@/components/icons/check';
-import { Copy } from '@/components/icons/copy';
 import routes from '@/config/routes';
 import { useCopyToClipboard } from 'react-use';
 import Image from 'next/image';
@@ -20,24 +14,12 @@ import Share from '@/assets/images/dao/share.png';
 import { formatNumber } from '@/utils/cn';
 
 const COLUMNS = [
-  // {
-  //   Header: () => <div className="px-1"></div>,
-  //   accessor: 'symbol',
-  //   Cell: ({ cell: { value } }) => (
-  //     <div className="">
-  //       <Star />
-  //     </div>
-  //   ),
-  //   minWidth: 40,
-  //   maxWidth: 20,
-  // },
   {
     Header: '#',
     accessor: 'Token ID',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
-        <div className="ltr:text-left rtl:text-left">{row.index + 1}</div>
+        <div className="ltr:text-left rtl:text-left">{row?.index + 1}</div>
       </div>
     ),
     minWidth: 40,
@@ -46,12 +28,10 @@ const COLUMNS = [
   {
     Header: () => <div className="">DIO Name</div>,
     accessor: 'name',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
-        {/* <Globe className="w-5 h-5 text-gray-600 dark:text-white" /> */}
         <div className="ltr:text-left rtl:text-left">
-          {row.original.name.length > 15 ? `${row.original.name.substring(0, 15)}...` : row.original.name}
+          {row?.original?.name?.length > 15 ? `${row?.original?.name.substring(0, 15)}...` : row.original.name}
         </div>
       </div>
     ),

@@ -77,7 +77,7 @@ export function LivePricingFeed({
     return (
         <div
             className={cn(
-                'm-2 w-[350px] flex border-[#E2E8F0] border cursor-pointer items-center gap-4 rounded-[12px] bg-white p-5 lg:flex-row',
+                'w-[352px] flex border-[#E2E8F0] border cursor-pointer items-center justify-between gap-1 rounded-[12px] bg-white p-[20px] lg:flex-row',
             )}
         >
             <div className="w-full flex-col">
@@ -96,7 +96,7 @@ export function LivePricingFeed({
                 </div>
             </div>
             <div className="h-20 w-full relative">
-                <div className="h-20 w-full relative flex justify-center items-center">
+                <div className="h-20 w-full relative flex justify-end items-center">
                     <DonutChart price={nft?.price} revenue={revenue} />
                 </div>
             </div>
@@ -141,7 +141,7 @@ export default function LiveRevenueSlider({ limits }: { limits: number }) {
             observer={true}
             navigation={true}
             dir="ltr"
-            className="w-full pb-6"
+            className="w-full"
         >
             {revenue?.data?.map((item: any, index: any) => (
                 <SwiperSlide key={item?.id}>

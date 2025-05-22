@@ -7,7 +7,5 @@ export default function cn(...inputs: ClassValue[]) {
 
 
 export const formatNumber = (num: number | string | null): string => {
-  console.log(num,"num");
-  
   return new Intl.NumberFormat('en-IN').format(Number(num));
 };
