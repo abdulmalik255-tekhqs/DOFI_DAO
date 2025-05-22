@@ -16,14 +16,14 @@ const COLUMNS = [
         accessor: 'Token ID',
         Cell: ({ row }:any) => (
             <div className="flex items-center gap-2">
-                <div className="text-left">{row.index + 1}</div>
+                <div className="text-left">{row?.index + 1}</div>
             </div>
         ),
         minWidth: 40,
         maxWidth: 20,
     },
     {
-        Header: () => <div className="">Transaction Hash</div>,
+        Header: () => <div className="">Transaction #</div>,
         accessor: 'total_volume',
         Cell: ({ row }:any) => {
             const [_, copyToClipboard] = useCopyToClipboard();
@@ -72,8 +72,7 @@ const COLUMNS = [
     {
         Header: () => <div className="">DAO Name</div>,
         accessor: 'dao_name',
-        // @ts-ignore
-        Cell: ({ row }) => (
+        Cell: ({ row }:any) => (
             <div className="flex items-start gap-2">
                 <h3
                     title={row?.original?.childDAO?.name?.length > 9 ? row?.original?.childDAO?.name : undefined}
@@ -87,14 +86,15 @@ const COLUMNS = [
     {
         Header: () => <div className="">$ DOFI</div>,
         accessor: 'amount',
-        // @ts-ignore
-        Cell: ({ row }) => (
+        Cell: ({ row }:any) => (
             <div className="flex items-start gap-2">
                 <div className="flex w-auto items-start justify-start">
                     {formatNumber(row?.original?.amount)}
                 </div>
             </div>
         ),
+         minWidth: 40,
+        maxWidth: 70,
     },
     {
         Header: () => <div className="">From</div>,
@@ -155,12 +155,10 @@ const COLUMNS = [
             )
         },
     },
-
     {
         Header: () => <div className=""></div>,
         accessor: 'share',
-        // @ts-ignore
-        Cell: ({ row }) => {
+        Cell: ({ row }:any) => {
             return (
                 <a href={`https://sepolia.basescan.org/tx/${row?.original?.txHash}`} target="_blank"
                     rel="noopener noreferrer"
@@ -170,7 +168,7 @@ const COLUMNS = [
                 </a>
             );
         },
-        maxWidth: 70,
+        maxWidth: 30,
     },
 ];
 

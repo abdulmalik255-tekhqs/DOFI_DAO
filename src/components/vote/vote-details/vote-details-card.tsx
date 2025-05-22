@@ -483,7 +483,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                             {/* Left Label */}
                             <div className="flex items-center gap-2 min-w-max text-[#64748B] text-[14px] font-[400]">
                               <Image src={Vote} alt="no-icon" />
-                              Vote Weightage:
+                              Vote Weightage ({data?.votePower}):
                             </div>
 
                             {/* Right Progress Bar */}

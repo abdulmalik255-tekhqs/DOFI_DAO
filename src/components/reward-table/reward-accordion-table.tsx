@@ -49,19 +49,16 @@ function RewardAccordionTable({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative z-20 mt-11 flex flex-col overflow-hidden rounded-lg  lg:flex-row">
+    <div className="relative z-20 mt-[20px] flex flex-col overflow-hidden rounded-lg  lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
         <div className="border border-[#E2E8F0] rounded-[12px] overflow-hidden">
           <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
-            <div className="bg-white pt-6 dark:bg-light-dark  md:pt-8">
-              <div
-                className={`flex md:px-3 items-center justify-between gap-4 border-b border-[#E2E8F0] pb-5 dark:border-gray-700 ${!isOpen ? 'rounded-tr-lg' : ''
-                  }`}
-              >
-                <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
+            <div className="bg-white pl-[20px] py-[16px]">
+              
+                <h2 className="shrink-0 pl-[10px] text-[20px] font-[500] uppercase text-[#0F172A] dark:text-white md:pl-0">
                   Revenue Distribution
                 </h2>
-              </div>
+            
             </div>
 
             {isLoading ? (
@@ -84,7 +81,7 @@ function RewardAccordionTable({
                               <th
                                 {...column.getHeaderProps(column.getSortByToggleProps())}
                                 key={idx}
-                                className="group  md:px-3 py-3 font-normal first:!w-7 "
+                                className="group  md:px-[20px] py-3 font-normal first:!w-7 "
                               >
                                 <div className="flex items-start text-[12px] text-[#64748B] justify-start">
                                   {column.render('Header')}
@@ -118,7 +115,7 @@ function RewardAccordionTable({
                                 <td
                                   {...cell.getCellProps()}
                                   key={idx}
-                                  className="text-[#0F172A] text-[16px] font-[400] flex h-[50px] items-center px-3 tracking-[1px] justify-start text-left"
+                                  className="text-[#0F172A] text-[16px] font-[400] flex h-[50px] items-center px-5 tracking-[1px] justify-start text-left"
                                 >
                                   {cell.render('Cell')}
                                 </td>

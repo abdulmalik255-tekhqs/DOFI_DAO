@@ -32,7 +32,7 @@ export default function Search() {
         <>
           {' '}
           <div className="">
-            <h2 className="mb-2 text-base font-bold uppercase dark:text-gray-100 xl:text-[28px] bg-white py-5 px-4 rounded-sm">
+            <h2 className="mb-2 text-[24px] font-[700] text-[#1E293B] uppercase dark:text-gray-100  bg-white py-5 px-4 rounded-[10px] border border-[#E2E8F0]">
               Explore Domains
             </h2>
             <div className="">
