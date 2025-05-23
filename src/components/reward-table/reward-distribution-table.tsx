@@ -57,7 +57,6 @@ const COLUMNS = [
     // {
     //     Header: () => <div className="">Domain Name</div>,
     //     accessor: 'name',
-    //     // @ts-ignore
     //     Cell: ({ row }) => (
     //         <div className="flex items-start gap-2">
     //             <h3 className="text-left"

@@ -388,7 +388,7 @@ const CreateProposalPage = () => {
   // }
   return (
     <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <header className="mb-6 flex flex-col gap-4 rounded-lg bg-white py-3 shadow-card dark:bg-light-dark px-4 sm:flex-row sm:items-center sm:justify-between">
+      <header className="mb-6 flex flex-col gap-4 rounded-[10px] bg-white py-3 border-[#E2E8F0] border dark:bg-light-dark px-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-4 xs:gap-3 xl:gap-4">
           <h2 className="text-lg font-semibold dark:text-white">
             Create New Proposal

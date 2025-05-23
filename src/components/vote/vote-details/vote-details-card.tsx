@@ -221,7 +221,7 @@ function VoteActionButton({ vote, data }: any) {
           size="medium"
           fullWidth={true}
           className="flex-1 xs:flex-auto"
-          disabled={vote?.status != 'active' || vote?.hasVoted}
+          disabled={vote?.status != 'active' || vote?.hasVoted  || data?.votePower < 1}
           onClick={() => handleSubmitUpdated('no')}
         >
           Reject

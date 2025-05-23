@@ -23,7 +23,9 @@ export type MODAL_VIEW =
   | 'SUCCESSFULLY_BUY_DIO'
   | 'PAY_TOKEN_AMOUNT'
   | 'OPEN_WIZARD'
-  | "ZK_PROOF"  ;
+  | "ZK_PROOF"
+  | "FRACTIONS"
+  ;
 
 interface ModalTypes {
   isOpen: boolean;

@@ -52,6 +52,9 @@ const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
+const FractionCardView = dynamic(() => import('@/components/fractions-card-modal'), {
+  ssr: false,
+});
 const PayTokenAmountView = dynamic(
   () => import('@/components/ido/pay-token-amount'),
   {
@@ -100,6 +103,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':
       return <PayTokenAmountView data={data} />;
+    case 'FRACTIONS':
+      return <FractionCardView data={data} />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (

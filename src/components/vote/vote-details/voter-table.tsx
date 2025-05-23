@@ -11,8 +11,7 @@ const COLUMNS = [
   {
     Header: 'Voter',
     accessor: 'user.wallet',
-    // @ts-ignore
-    Cell: ({ cell: { value } }) => (
+    Cell: ({ cell: { value } }:any) => (
       <div>
         {value ? `${value?.slice(0, 8)}...${value?.slice(-8)}` : ''}
       </div>
@@ -25,8 +24,7 @@ const COLUMNS = [
   {
     Header: 'Decision',
     accessor: 'inFavor',
-    // @ts-ignore
-    Cell: ({ cell: { value } }) => (
+    Cell: ({ cell: { value } }:any) => (
       <span
         className={cn(
           'text-[13px] uppercase sm:text-inherit font-medium',
@@ -54,7 +52,7 @@ interface VoterTableTypes {
 export default function VoterTable({ votes,price }: VoterTableTypes) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const data = votes || []
-  const columns = useMemo(() => [
+  const columns :any= useMemo(() => [
     {
       Header: 'Voter',
       accessor: 'user.wallet',
@@ -69,7 +67,7 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
       accessor: 'amount',
       Cell: ({ cell: { value } }: any) => (
         // <div>{price && value ? (value / price).toFixed(2) : 'N/A'}</div>
-        <div>{value.toFixed(2)}</div>
+        <div>{value?.toFixed(2)}</div>
       ),
     },
     {
@@ -102,7 +100,6 @@ export default function VoterTable({ votes,price }: VoterTableTypes) {
     prepareRow,
   } = useTable(
     {
-      // @ts-ignore
       columns,
       data,
     },
