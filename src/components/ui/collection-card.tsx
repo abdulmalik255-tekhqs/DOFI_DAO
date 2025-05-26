@@ -1,3 +1,4 @@
+'use client';
 import cn from '@/utils/cn';
 import { useModal } from '@/components/modal-views/context';
 import { useRouter } from 'next/navigation';
@@ -7,6 +8,10 @@ import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import Detail from '@/assets/images/dao/detail.png';
 import ToastNotification from './toast-notification';
+import { useCopyToClipboard } from 'react-use';
+import { useState } from 'react';
+import { Check } from '@/components/icons/check';
+import { Copy } from '@/components/icons/copy';
 
 
 export default function CollectionCard({ item, className = '' }: any) {
@@ -24,13 +29,33 @@ export default function CollectionCard({ item, className = '' }: any) {
     amount,
   } = item ?? {};
   const dispatch = useDispatch();
+  const [_, copyToClipboard] = useCopyToClipboard();
   const { openModal } = useModal();
   const router = useRouter();
+  const [copyButtonStatus, setCopyButtonStatus] = useState(false);
+  const [copyAddressStatus, setCopyAddressStatus] = useState(false);
   function goToNFTDetailPage() {
     dispatch(idoActions.setNFTDetail(item));
     router.push(routes.nftDetails);
   }
-
+  function handleCopyTokenIDToClipboard() {
+    //@ts-ignore
+    copyToClipboard(item?.tokenId);
+    setCopyButtonStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 2500);
+  }
+  function handleCopyAddressToClipboard() {
+    //@ts-ignore
+    copyToClipboard(contractAddress);
+    setCopyAddressStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyAddressStatus(copyButtonStatus);
+    }, 2500);
+  }
   return (
     <>
 
@@ -56,21 +81,50 @@ export default function CollectionCard({ item, className = '' }: any) {
           </div>
 
         </div>
-        <div className="flex flex-col">
-          <div className="inline-flex mt-2 items-center  text-[14px] font-[500] tracking-wide">
-            Token ID : <span className='ml-2 font-bold'>{item?.tokenId}</span>
+        <div className="flex flex-col z-[10]">
+          <div className='flex justify-between z-[5]' >
+            <div >
+              <span className="inline-flex mt-2 items-center  text-[14px] font-[500] tracking-wide">
+                Token ID :
+              </span>
+              <span className='ml-2 font-bold'>{item?.tokenId}</span>
+            </div>
+
+
+            <div
+              title="Copy ID"
+              className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              onClick={() => handleCopyTokenIDToClipboard()}
+            >
+              {copyButtonStatus ? (
+                <Check className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+              ) : (
+                <Copy className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+              )}
+            </div>
           </div>
           <div
-            className="z-[5] mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
-            title="Click to copy"
-            onClick={() => {
-              if (contractAddress) {
-                ToastNotification("success","Copied!")
-                navigator.clipboard.writeText(contractAddress);
-              }
-            }}
+            className="z-[5] mt-2 flex justify-between cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
+          // title="Click to copy"
+          // onClick={() => {
+          //   if (contractAddress) {
+          //     ToastNotification("success", "Copied!")
+          //     navigator.clipboard.writeText(contractAddress);
+          //   }
+          // }}
           >
             {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
+            <div
+              title="Copy Address"
+              className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              onClick={() => handleCopyAddressToClipboard()}
+            >
+              {copyAddressStatus ? (
+                <Check className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+              ) : (
+                <Copy className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+              )}
+            </div>
           </div>
         </div>
         {amount && amount <= 1 && (

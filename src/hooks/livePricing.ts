@@ -157,25 +157,26 @@ export function useCreateIDOWizard(setCurrentStepButton: any) {
       dispatch(idoActions.setLoading(false))
     },
   });
-}
-export function useCreateIDO() {
+};
+
+export function useCreateIDO(setCurrentStepButton:any) {
   const { address } = useAccount();
   const router = useRouter();
   const dispatch = useDispatch();
   return useMutation({
-    //@ts-ignore 
-    mutationFn: (data: any) => client.createido.create(data, address),
-    onSuccess: (data) => {
+    mutationFn: (data: any) => client.createido.create(data, address as string),
+    onSuccess: (data:any) => {
       if (data) {
-        //@ts-ignore
         dispatch(idodetailActions.saveIDOdata(data?.data));
         dispatch(idoActions.setLoading(false));
         dispatch(idoActions.setIsConfetti(false));
+        setCurrentStepButton(1)
         //@ts-ignore
-        router.push(`${routes.idoDetail}/${data?.data?._id}`);
+        // router.push(`${routes.idoDetail}/${data?.data?._id}`);
       }
     },
     onError: (error) => {
+      setCurrentStepButton()
       dispatch(idoActions.setLoading(false))
     },
   });

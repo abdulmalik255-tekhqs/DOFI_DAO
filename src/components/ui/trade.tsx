@@ -82,7 +82,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
       <div className="pt-8 text-sm xl:pt-10">
         <div className="flex justify-center items-center flex-col mb-[32px]">
           <h2 className="mb-2 text-[36px] font-[700] text-[#0F172A] uppercase">
-            SWAP
+            DOFI DEX
           </h2>
           <p className="mt-[12px] text-[14px] font-[400] text-[#334155] items-center flex">
             Seamlessly swap NFTs across multiple blockchain networks with real-time

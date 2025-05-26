@@ -82,7 +82,7 @@ export const defaultMenuItems = [
   },
   
   {
-    name: 'Swap',
+    name: 'DOFI DEX',
     icon: <ExchangeIcon />,
     href: routes.swap,
   },

@@ -1,6 +1,10 @@
-
+'use client';
 import ToastNotification from './toast-notification';
 import { useModal } from '../modal-views/context';
+import { useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
+import { Check } from '@/components/icons/check';
+import { Copy } from '@/components/icons/copy';
 
 
 
@@ -18,12 +22,33 @@ export default function FractionCard({ item, className = '' }: any) {
     contractAddress,
     amount,
   } = item ?? {};
-const { openModal } = useModal();
+  const { openModal } = useModal();
+  const [_, copyToClipboard] = useCopyToClipboard();
+  const [copyButtonStatus, setCopyButtonStatus] = useState(false);
+  const [copyAddressStatus, setCopyAddressStatus] = useState(false);
   const shadowColor = name.includes('eth')
     ? '#9F5EF7'
     : name.includes('.shib')
       ? '#FF6B35'
       : '#FF6B35';
+  function handleCopyTokenIDToClipboard() {
+    //@ts-ignore
+    copyToClipboard(item?.tokenId);
+    setCopyButtonStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 2500);
+  }
+  function handleCopyAddressToClipboard() {
+    //@ts-ignore
+    copyToClipboard(contractAddress);
+    setCopyAddressStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyAddressStatus(copyButtonStatus);
+    }, 2500);
+  }
   return (
     <div
       className={`relative max-w-[220px] overflow-visible rounded-lg group transition-all duration-300 cursor-pointer ${className}`}
@@ -54,7 +79,7 @@ const { openModal } = useModal();
 
       {/* Floating Overlay */}
       <div className="absolute left-0 top-0  z-[25]  flex h-full w-[220px] flex-col justify-between"
-      onClick={()=>openModal('FRACTIONS', item)}
+        onClick={() => openModal('FRACTIONS', item)}
       >
         <div className="relative group cursor-pointer">
           <div className="inline-flex h-[29px] w-full items-center rounded-2xl bg-white/40 px-4 text-[10px] font-[400]  tracking-wide text-[#0F172A]">
@@ -65,28 +90,57 @@ const { openModal } = useModal();
 
       {/* Footer */}
       <div className="flex flex-col">
-        <div className="inline-flex mt-2 items-center text-[14px] font-[500] tracking-wide">
-          Token ID: <span className="ml-2 font-bold">{tokenId}</span>
+        <div className='flex justify-between z-[100]' >
+          <div >
+            <span className="inline-flex mt-2 items-center  text-[14px] font-[500] tracking-wide">
+              Token ID :
+            </span>
+            <span className='ml-2 font-bold'>{item?.tokenId}</span>
+          </div>
+
+
+          <div
+            title="Copy ID"
+            className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+            onClick={() => handleCopyTokenIDToClipboard()}
+          >
+            {copyButtonStatus ? (
+              <Check className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+            ) : (
+              <Copy className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+            )}
+          </div>
         </div>
         <div
           role="button"
           tabIndex={0}
-          className="z-[100] mt-2 inline-flex cursor-pointer items-center text-[14px] font-[500] tracking-wide text-black"
+          className="z-[100] mt-2 flex justify-between cursor-pointer items-center text-[14px] font-[500] tracking-wide text-black"
           title="Click to copy"
-          onClick={() => {
-            if (contractAddress) {
-              ToastNotification("success", "Copied!");
-              navigator.clipboard.writeText(contractAddress);
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              navigator.clipboard.writeText(contractAddress);
-              ToastNotification("success", "Copied!");
-            }
-          }}
+        // onClick={() => {
+        //   if (contractAddress) {
+        //     ToastNotification("success", "Copied!");
+        //     navigator.clipboard.writeText(contractAddress);
+        //   }
+        // }}
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter" || e.key === " ") {
+        //     navigator.clipboard.writeText(contractAddress);
+        //     ToastNotification("success", "Copied!");
+        //   }
+        // }}
         >
           {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
+          <div
+            title="Copy Address"
+            className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+            onClick={() => handleCopyAddressToClipboard()}
+          >
+            {copyAddressStatus ? (
+              <Check className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+            ) : (
+              <Copy className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+            )}
+          </div>
         </div>
       </div>
     </div>
