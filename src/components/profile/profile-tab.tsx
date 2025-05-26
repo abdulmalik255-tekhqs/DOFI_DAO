@@ -33,8 +33,8 @@ const tabMenu = [
   },
 ];
 
-export default function ProfileTab({ data ,leasingData}: any) {
-  
+export default function ProfileTab({ data, leasingData }: any) {
+
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
@@ -65,10 +65,8 @@ export default function ProfileTab({ data ,leasingData}: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
-              layout === LAYOUT_OPTIONS.RETRO
-                ? 'md:grid-cols-2'
-                : 'md:grid-cols-1',
+              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+              // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
             )}
           >
             {domain?.length > 0 ? (
@@ -93,8 +91,8 @@ export default function ProfileTab({ data ,leasingData}: any) {
           {/* <div className="space-y-8 md:space-y-10 xl:space-y-12"> */}
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
-             
+              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+              // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
             )}
           >
             {fraction?.length > 0 ? (
@@ -147,10 +145,8 @@ export default function ProfileTab({ data ,leasingData}: any) {
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4',
-              layout === LAYOUT_OPTIONS.RETRO
-                ? 'md:grid-cols-2'
-                : 'md:grid-cols-1',
+              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+              // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
             )}
           >
             {leasingData?.length > 0 ? (

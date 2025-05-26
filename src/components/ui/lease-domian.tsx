@@ -30,11 +30,11 @@ export default function LeaseDomainCard({ item, className = '' }: any) {
          
       </div> */}
       <div className="flex flex-col">
-        <div className="inline-flex mt-2 items-center px-4 text-[14px] font-[500] tracking-wide">
+        <div className="inline-flex mt-2 items-center text-[14px] font-[500] tracking-wide">
           Token ID : <span className='ml-2 font-bold'>{item?.nft?.tokenId}</span>
         </div>
         <div
-          className="z-[5] ml-4 mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
+          className="z-[5]  mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
           title="Click to copy"
           onClick={() => {
             if (item?.nft?.contractAddress) {

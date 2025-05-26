@@ -1,3 +1,4 @@
+
 import ToastNotification from './toast-notification';
 import { useModal } from '../modal-views/context';
 
@@ -28,7 +29,7 @@ const { openModal } = useModal();
       className={`relative max-w-[220px] overflow-visible rounded-lg group transition-all duration-300 cursor-pointer ${className}`}
     >
       {/* Card Stack */}
-      <div className="relative flex aspect-[8/11] w-full justify-center items-center  max-h-[291px]">
+      <div className="relative flex w-full justify-center items-center  max-h-[291px]">
         {/* Bottom layer - hover */}
         {/* <div
           className="absolute w-full h-full  z-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out scale-[0.97] translate-x-[15px] blur-md shadow-lg"
@@ -64,13 +65,13 @@ const { openModal } = useModal();
 
       {/* Footer */}
       <div className="flex flex-col">
-        <div className="inline-flex mt-2 items-center px-4 text-[14px] font-[500] tracking-wide">
+        <div className="inline-flex mt-2 items-center text-[14px] font-[500] tracking-wide">
           Token ID: <span className="ml-2 font-bold">{tokenId}</span>
         </div>
         <div
           role="button"
           tabIndex={0}
-          className="z-[5] ml-4 mt-2 inline-flex cursor-pointer items-center text-[14px] font-[500] tracking-wide text-black"
+          className="z-[100] mt-2 inline-flex cursor-pointer items-center text-[14px] font-[500] tracking-wide text-black"
           title="Click to copy"
           onClick={() => {
             if (contractAddress) {
