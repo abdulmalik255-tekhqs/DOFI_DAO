@@ -80,11 +80,11 @@ export default function CollectionCard({ item, className = '' }: any) {
 
       <div
         className={cn(
-          'group relative overflow-hidden rounded-lg',
+          'group relative max-w-[220px] overflow-hidden rounded-lg',
           className,
         )}
       >
-        <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
+        <div className="relative  flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
           <img src={imageUrl}
             alt={`NFT #${item?.tokenId}`} width={600} />
         </div>

@@ -1,29 +1,8 @@
-import cn from '@/utils/cn';
-import { StaticImageData } from 'next/image';
 import ToastNotification from './toast-notification';
 import { useModal } from '../modal-views/context';
 
-type ItemType = {
-  id?: string | number;
-  name: string;
-  slug: string;
-  title: string;
-  imageUrl: any;
-  image?: StaticImageData;
-  amount?: number;
-  tokenId?: any;
-  contractAddress?: string;
-  number_of_artwork: number;
-  user: {
-    avatar?: StaticImageData;
-    name: string;
-    slug: string;
-  };
-};
-type CardProps = {
-  item: ItemType;
-  className?: string;
-};
+
+
 
 export default function FractionCard({ item, className = '' }: any) {
   const {
@@ -46,21 +25,21 @@ const { openModal } = useModal();
       : '#FF6B35';
   return (
     <div
-      className={`relative max-w-[220px] overflow-visible rounded-lg group transition-all duration-300 ${className}`}
+      className={`relative max-w-[220px] overflow-visible rounded-lg group transition-all duration-300 cursor-pointer ${className}`}
     >
       {/* Card Stack */}
       <div className="relative flex aspect-[8/11] w-full justify-center items-center  max-h-[291px]">
         {/* Bottom layer - hover */}
-        <div
+        {/* <div
           className="absolute w-full h-full  z-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out scale-[0.97] translate-x-[15px] blur-md shadow-lg"
           style={{ backgroundColor: shadowColor }}
-        />
+        /> */}
 
         {/* Middle layer - hover */}
-        <div
+        {/* <div
           className="absolute w-full h-full rounded-lg z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out scale-[0.985] translate-y-[10px] blur-sm shadow-md"
           style={{ backgroundColor: shadowColor }}
-        />
+        /> */}
 
         {/* Top card - image */}
         <div className="relative z-20 w-full h-full overflow-hidden rounded-lg transition-transform duration-300 ease-in-out">

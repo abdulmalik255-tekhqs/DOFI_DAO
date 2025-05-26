@@ -12,7 +12,6 @@ import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
-import Button from '@/components/ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { BeatLoader, MoonLoader } from 'react-spinners';
 import { motion } from 'framer-motion';

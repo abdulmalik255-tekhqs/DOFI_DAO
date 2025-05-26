@@ -136,7 +136,7 @@ export default function ModalContainer() {
         className="fixed inset-0 !z-[999] h-full w-full overflow-y-auto overflow-x-hidden p-4 text-center sm:p-6 lg:p-8 xl:p-10 3xl:p-12"
         onClose={closeModal}
       >
-        <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="flex min-h-full flex-col items-center justify-center">
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"

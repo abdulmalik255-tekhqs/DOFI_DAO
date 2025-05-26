@@ -1,38 +1,14 @@
 import cn from '@/utils/cn';
 import { useModal } from '@/components/modal-views/context';
-import Shib1 from '@/assets/images/dao/shib1.png';
-import Shib2 from '@/assets/images/dao/shib2.png';
-import Shib3 from '@/assets/images/dao/shib3.png';
-import Shib4 from '@/assets/images/dao/shib4.png';
-import Shib5 from '@/assets/images/dao/shib5.png';
-import Shib6 from '@/assets/images/dao/shib6.png';
-import Shib7 from '@/assets/images/dao/shib7.png';
-import Shib8 from '@/assets/images/dao/shib8.png';
 import ToastNotification from './toast-notification';
 
 
 export default function LeaseDomainCard({ item, className = '' }: any) {
-
   const { openModal } = useModal();
-  const ShibimageList = [
-    { id: 1, image: Shib1 },
-    { id: 2, image: Shib2 },
-    { id: 3, image: Shib3 },
-    { id: 4, image: Shib4 },
-    { id: 5, image: Shib5 },
-    { id: 6, image: Shib6 },
-    { id: 7, image: Shib7 },
-    { id: 8, image: Shib8 },
-  ];
-  const getImageByTokenID = (id: string) => {
-    const numericID = parseInt(id, 10);
-    const match = ShibimageList.find((item) => item.id === numericID);
-    return match ? match.image.src : item?.nft?.imageUrl;
-  };
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-lg',
+        'group relative max-w-[220px] overflow-hidden rounded-lg',
         className,
       )}
     >

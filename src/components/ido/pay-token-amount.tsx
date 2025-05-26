@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { parseUnits } from 'viem';
+import Input from '@/components/ui/forms/input';
 import { useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { tetherABI } from '@/utils/abi';
@@ -11,30 +12,35 @@ import { idoActions } from '@/store/reducer/ido-reducer';
 import { config } from '@/app/shared/wagmi-config';
 import ToastNotification from '../ui/toast-notification';
 import { usePostPayToken } from '@/hooks/livePricing';
-import { FaDollarSign } from 'react-icons/fa';
+import CoinVertical from '@/assets/images/dao/coinvertical.svg';
+import Eth from '@/assets/images/dao/eth.png';
+import Shib from '@/assets/images/dao/shib.png';
+import Image from 'next/image';
 
 export default function PayTokenAmount({ data }: { data: any }) {
-  
+
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  const { mutate: submitCreate} = usePostPayToken();
+  const { mutate: submitCreate } = usePostPayToken();
   const { loading } = useSelector((state: any) => state.ido);
   const [tokenAmount, setTokenamount] = useState('');
+  const isShib = data?.endsWith('.shib');
   const handlePay = async () => {
     try {
       if (!address) {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
-      if (Number(tokenAmount)===0) {
-        ToastNotification('error', 'Amount Cannot be 0.');
-        return;
-      }
       if (!tokenAmount) {
-        ToastNotification('error', 'Enter Amount!');
+        ToastNotification('error', 'Enter token amount!');
         return;
       }
+      if (Number(tokenAmount) === 0) {
+        ToastNotification('error', 'Token amount cannot be 0.');
+        return;
+      }
+
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
@@ -50,8 +56,8 @@ export default function PayTokenAmount({ data }: { data: any }) {
       });
       if (recipient.status === 'success') {
         const addressArray = ['0xA50673D518847dF8A5dc928B905c54c35930b949'];
-        const amountArray=[Number(tokenAmount)];
-        const nftName=data ? data : ""
+        const amountArray = [Number(tokenAmount)];
+        const nftName = data ? data : ""
         submitCreate({
           addresses: addressArray,
           nftName,
@@ -65,29 +71,36 @@ export default function PayTokenAmount({ data }: { data: any }) {
     }
   };
   return (
-    <div className="w-[700px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
-      <h1 className="flex shrink-0 items-center justify-center text-center text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
+    <div className="w-full xs:w-[500px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
+      <h1 className="flex shrink-0 items-center justify-center text-center text-[24px] font-[700] uppercase tracking-tighter text-[#1E293B] dark:text-white">
         Pay Token Amount
       </h1>
       <div className='w-full py-2'>
-        <h1 className="flex shrink-0 items-start justify-start text-start text-xl font-bold uppercase tracking-tighter text-gray-900 dark:text-white">
+        <h1 className="flex gap-2 shrink-0 items-center justify-start text-start text-[16px] font-[400] text-[#1E293B] dark:text-white">
           {data}
+          <Image
+            src={isShib ? Shib : Eth}
+            alt="Domain extension"
+            className="w-5 h-5"
+          />
         </h1>
       </div>
-      <label className="relative mb-8 hidden w-full flex-col items-start md:flex">
-        <h2 className="flex items-start justify-start text-start text-[16px] font-regular uppercase tracking-tighter text-gray-900 dark:text-white">
-      Token Amount
+      <label className="mb-4 w-full flex-col items-start md:flex">
+        <h2 className="flex items-center justify-start text-center text-[14px] font-[400] uppercase text-[#1E293B] dark:text-white">
+          <Image src={CoinVertical} alt="no-icon" />  Token Amount
         </h2>
-        <input
-          type="number"
-          value={tokenAmount || ''}
-          onChange={(e) => setTokenamount(e.target.value)}
-          className="w-full appearance-none rounded-lg bg-gray-100 py-1 text-sm font-medium tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-900 dark:border-gray-600 dark:bg-[#1E293B] dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-500 rtl:pr-10"
-          placeholder="Enter token amount"
-        />
+        <div className='w-full'>
+          <Input
+            type="number"
+            placeholder="Enter token amount"
+            value={tokenAmount || ''}
+            onChange={(e: any) => setTokenamount(e.target.value)}
+          />
+        </div>
+
       </label>
       <Button
-        size="large"
+        size="medium"
         shape="rounded"
         onClick={() => handlePay()}
         fullWidth={true}
