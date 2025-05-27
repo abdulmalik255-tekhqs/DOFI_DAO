@@ -17,6 +17,8 @@ import {
 import Loader from '@/components/ui/loader';
 import FractionCard from '../ui/fraction-card';
 import LeaseDomainCard from '../ui/lease-domian';
+import { useSelector } from 'react-redux';
+import FractionAmount from '../ui/fraction-amount';
 
 const tabMenu = [
   {
@@ -34,7 +36,7 @@ const tabMenu = [
 ];
 
 export default function ProfileTab({ data, leasingData }: any) {
-
+const { toogle } = useSelector((state: any) => state.ido);
   const { layout } = useLayout();
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
@@ -88,59 +90,35 @@ export default function ProfileTab({ data, leasingData }: any) {
           </div>
         </TabPanel>
         <TabPanel className="focus:outline-none">
-          {/* <div className="space-y-8 md:space-y-10 xl:space-y-12"> */}
-          <div
-            className={cn(
-              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
-              // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
-            )}
-          >
-            {fraction?.length > 0 ? (
-              fraction?.map((fraction: any, index: number) => (
-                <FractionCard
-                  item={fraction}
-                  key={`fraction-key-${fraction?._id}`}
-                />
-              ))
-            ) : (
-              <>
-                <div>
-                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
-                    No Fraction NFT
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-          {/* <div className="block">
-              <h3 className="text-heading-style mb-3 uppercase text-gray-900 dark:text-white">
-                Protocols
-              </h3>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-                {authorProtocols?.map((protocol) => (
-                  <ListCard
-                    item={protocol}
-                    key={`protocol-key-${protocol?.id}`}
-                    variant="large"
+          <>
+          {toogle && <>
+          <FractionAmount/>
+          </>}
+            <div
+              className={cn(
+                'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+                // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
+              )}
+            >
+              {fraction?.length > 0 ? (
+                fraction?.map((fraction: any, index: number) => (
+                  <FractionCard
+                    item={fraction}
+                    key={`fraction-key-${fraction?._id}`}
                   />
-                ))}
-              </div>
+                ))
+              ) : (
+                <>
+                  <div>
+                    <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                      No Fraction NFT
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="block">
-              <h3 className="text-heading-style mb-3 uppercase text-gray-900 dark:text-white">
-                Networks
-              </h3>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
-                {authorNetworks?.map((network) => (
-                  <ListCard
-                    item={network}
-                    key={`network-key-${network?.id}`}
-                    variant="medium"
-                  />
-                ))}
-              </div>
-            </div> */}
-          {/* </div> */}
+          </>
+
         </TabPanel>
         <TabPanel className="focus:outline-none">
           <div

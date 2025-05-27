@@ -12,7 +12,8 @@ const initialState = {
   domainNftData: {},
   componentLoading: false,
   initialDomain: {},
-  childDAOData:{}
+  childDAOData:{},
+  toogle:false
 };
 
 const idoSlice = createSlice({
@@ -54,6 +55,9 @@ const idoSlice = createSlice({
     },
     saveChildDaoData(state, action) {
       state.childDAOData = action.payload;
+    },
+    setToogle(state, action) {
+      state.toogle = action.payload;
     },
   },
 });

@@ -96,9 +96,10 @@ export default function CreateIDO({ data }: CreateIDOProps) {
           description: 'token',
         });
       } else {
+        dispatch(idoActions.setLoading(false));
       }
     } catch (error) {
-      dispatch(idoActions.setLoading(true));
+      dispatch(idoActions.setLoading(false));
     }
   };
   function goToAllProposalPage() {
