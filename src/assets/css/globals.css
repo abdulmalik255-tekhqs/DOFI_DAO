@@ -174,7 +174,10 @@ Styles for Swiper slider
   --swiper-pagination-bullet-inactive-opacity: 1;
   border-radius: 10px;
 }
-
+.swiper-button-prev, .swiper-button-next {
+  color: #1E293B !important;
+  
+}
 .dark .swiper-pagination-bullet {
   --swiper-pagination-bullet-inactive-color: #334155;
   --swiper-pagination-color: #475569;

@@ -109,11 +109,11 @@ export default function FractionAmount() {
                     </div>
                 </div>
             </div>
-            <h1 className="flex mt-[24px] shrink-0 items-center flex gap-4 justify-start text-end text-[32px] font-[500]  tracking-tighter text-[#1E293B] dark:text-white">
+            <h1 className="flex my-[18px] shrink-0 items-center flex gap-4 justify-start text-end text-[32px] font-[500]  tracking-tighter text-[#1E293B] dark:text-white">
                 <span className='text-[32px]'>{domainNftData?.amount}</span>  Fractions
             </h1>
-                <FractionAmountSlider limits={8} item={domainNftData}/>
-            <div className='border-2 border-[#E2E8F0] mb-6'>
+                <FractionAmountSlider limits={11} item={domainNftData}/>
+            <div className='border-2 border-[#E2E8F0] my-6'>
             </div>
         </>
     );

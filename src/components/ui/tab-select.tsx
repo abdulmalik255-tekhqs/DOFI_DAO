@@ -2,6 +2,8 @@ import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import cn from '@/utils/cn';
 import { ChevronDown } from '../icons/chevron-down';
 import { TabItem } from '@/components/ui/tab';
+import { idoActions } from '@/store/reducer/ido-reducer';
+import { useDispatch } from 'react-redux';
 
 interface TabMenuItem {
   title: React.ReactNode;
@@ -21,12 +23,17 @@ const TabSelect = forwardRef(
   ) => {
     const [visibleMobileMenu, setVisibleMobileMenu] = useState(false);
     const selectRef = useRef(null);
+    //@ts-ignore
     useImperativeHandle(ref, () => selectRef.current);
-
+    const dispatch = useDispatch()
     return (
       <div
         ref={selectRef}
         className="rounded-lg border-2 border-gray-200 dark:border-gray-700"
+        onClick={() => {
+          dispatch(idoActions.saveBuydomainNft({}));
+          dispatch(idoActions.setToogle(false))
+        }}
       >
         <button
           onClick={() => setVisibleMobileMenu(!visibleMobileMenu)}

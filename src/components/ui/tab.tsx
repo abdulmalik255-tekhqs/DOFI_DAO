@@ -1,3 +1,4 @@
+import { idoActions } from '@/store/reducer/ido-reducer';
 import cn from '@/utils/cn';
 import {
   TabPanel as HLTabPanel,
@@ -5,6 +6,7 @@ import {
   Tab
 } from '@headlessui/react';
 import { LayoutGroup, motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
 
 export { Tab };
 
@@ -15,9 +17,15 @@ export function TabItem({
   children,
   className,
   tabItemLayoutId = 'activeTabIndicator',
+
 }: React.PropsWithChildren<{ className?: string; tabItemLayoutId?: string }>) {
+  const dispatch = useDispatch()
   return (
     <Tab
+     onClick={() => {
+                dispatch(idoActions.saveBuydomainNft({}));
+                dispatch(idoActions.setToogle(false))
+              }}
       className={({ selected }) =>
         cn(
           'relative py-2  tracking-wider hover:text-gray-900 focus:outline-none dark:hover:text-gray-100 xs:py-2.5 sm:py-3',

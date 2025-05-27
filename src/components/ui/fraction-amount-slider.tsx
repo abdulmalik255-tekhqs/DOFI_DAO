@@ -1,21 +1,8 @@
 'use client';
-
-import { ArrowUp } from '@/components/icons/arrow-up';
-import { useRouter } from 'next/navigation';
-import { ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
-import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
+import 'swiper/css/navigation';
 import cn from '@/utils/cn';
-import { priceFeedData } from '@/data/static/price-feed';
-import { useDao } from '@/hooks/livePricing';
-import routes from '@/config/routes';
-import RedGraph from '@/assets/images/red-graph.png';
-import GreenGraph from '@/assets/images/green-graph.png';
-import Image from 'next/image';
-import { useDispatch } from 'react-redux';
-import { idoActions } from '@/store/reducer/ido-reducer';
-import { AnyCnameRecord } from 'dns';
 
 export function FractionAmountFeed({ imageUrl, index }: any) {
     return (
@@ -28,10 +15,7 @@ export function FractionAmountFeed({ imageUrl, index }: any) {
     );
 }
 export default function FractionAmountSlider({ limits, item }: any) {
-    console.log(item?.amount, typeof "items");
-
     const limit = limits ?? 10; // Show more cards per view to match design
-
     const sliderBreakPoints = {
         480: { slidesPerView: 2, spaceBetween: 12 },
         768: { slidesPerView: 4, spaceBetween: 16 },
@@ -47,9 +31,9 @@ export default function FractionAmountSlider({ limits, item }: any) {
             slidesPerView={limit}
             breakpoints={sliderBreakPoints}
             navigation={true}
-            observer={true}
-            dir="ltr"
-            className="w-full pb-6"
+            loop={false} // ← prevents infinite scrolling
+            allowTouchMove={true} // ← allows dragging
+            className="w-full flex justify-start items-start max-w-[700px] md:max-w-[1200px] xl:max-w-[800px] 2xl:max-w-[1130px] 3xl:max-w-[1400px]"
         >
             {Array.from({ length: item?.amount || 0 }).map((_, index) => (
                 <SwiperSlide key={index}>
