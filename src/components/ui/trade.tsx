@@ -18,6 +18,8 @@ import { useLayout } from '@/lib/hooks/use-layout';
 import { fadeInBottom } from '@/lib/framer-motion/fade-in-bottom';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
 import { coinList } from '@/data/static/coin-list';
+import ParamTab, { TabPanel } from '@/components/ui/param-tab';
+import ArbitragePage from './arbitrage';
 // dynamic import
 const Listbox = dynamic(() => import('@/components/ui/list-box'));
 
@@ -76,8 +78,18 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
   useEffect(() => {
     setSelectedMenuItem(tradeMenu[currentPath]);
   }, [currentPath]);
+  const tabMenu = [
+    {
+      title: 'Swap',
+      path: 'swap',
+    },
+    {
+      title: 'Arbitrage',
+      path: 'arbitrage',
+    },
+  ];
   return (
-    <div className="">
+    <div>
 
       <div className="pt-8 text-sm xl:pt-10">
         <div className="flex justify-center items-center flex-col mb-[32px]">
@@ -93,27 +105,44 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
           <p className="text-[14px] font-[400] text-[#334155] items-center flex">transactions.</p>
         </div>
         <div className="mx-auto w-full max-w-lg bg-white p-5 xs:p-6 xs:pt-5 border border-[#E2E8F0] rounded-[12px]">
-          <div className="flex justify-between items-center">
-            <h1 className="text-[20px] font-[500] mb-6">SWAP Domain Fractions</h1>
-            <div className="flex gap-[5px] items-center mb-6">
-              {coinList?.map((coin, index) => (
-                <div key={index} className="w-4 h-4">
-                  {React.cloneElement(coin.icon, { className: "w-full h-full" })}
+          <ParamTab tabMenu={tabMenu}>
+            <TabPanel className="focus:outline-none">
+              <div className="flex justify-between items-center">
+                <h1 className="text-[20px] font-[500] mb-6">SWAP Domain Fractions</h1>
+                <div className="flex gap-[5px] items-center mb-6">
+                  {coinList?.map((coin, index) => (
+                    <div key={index} className="w-4 h-4">
+                      {React.cloneElement(coin.icon, { className: "w-full h-full" })}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          <AnimatePresence mode={'wait'}>
-            <motion.div
-              initial="exit"
-              animate="enter"
-              exit="exit"
-              variants={fadeInBottom('easeIn', 0.25)}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
-
+              </div>
+              <AnimatePresence mode={'wait'}>
+                <motion.div
+                  initial="exit"
+                  animate="enter"
+                  exit="exit"
+                  variants={fadeInBottom('easeIn', 0.25)}
+                >
+                  {children}
+                </motion.div>
+              </AnimatePresence>
+            </TabPanel>
+            <TabPanel className="focus:outline-none">
+              <div className="flex justify-between items-center">
+              </div>
+              <AnimatePresence mode={'wait'}>
+                <motion.div
+                  initial="exit"
+                  animate="enter"
+                  exit="exit"
+                  variants={fadeInBottom('easeIn', 0.25)}
+                >
+                  <ArbitragePage />
+                </motion.div>
+              </AnimatePresence>
+            </TabPanel>
+          </ParamTab>
         </div>
       </div>
     </div>
