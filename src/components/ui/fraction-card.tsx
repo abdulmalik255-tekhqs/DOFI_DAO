@@ -8,17 +8,9 @@ import { Copy } from '@/components/icons/copy';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 
-
-
-
 export default function FractionCard({ item }: any) {
-  const {
-    imageUrl,
-    tokenId,
-    contractAddress,
-    amount,
-  } = item ?? {};
-  const dispatch = useDispatch()
+  const { imageUrl, tokenId, contractAddress, amount } = item ?? {};
+  const dispatch = useDispatch();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copyButtonStatus, setCopyButtonStatus] = useState(false);
   const [copyAddressStatus, setCopyAddressStatus] = useState(false);
@@ -26,7 +18,7 @@ export default function FractionCard({ item }: any) {
     //@ts-ignore
     copyToClipboard(item?.tokenId);
     setCopyButtonStatus(true);
-    ToastNotification("success", "Copied!")
+    ToastNotification('success', 'Copied!');
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 2500);
@@ -35,7 +27,7 @@ export default function FractionCard({ item }: any) {
     //@ts-ignore
     copyToClipboard(contractAddress);
     setCopyAddressStatus(true);
-    ToastNotification("success", "Copied!")
+    ToastNotification('success', 'Copied!');
     setTimeout(() => {
       setCopyAddressStatus(copyButtonStatus);
     }, 2500);
@@ -43,38 +35,45 @@ export default function FractionCard({ item }: any) {
   return (
     <>
       <div
-   
-        className={`relative max-w-[220px] overflow-visible rounded-lg group transition-all duration-300 cursor-pointer`}
+        className={`group relative max-w-[220px] cursor-pointer overflow-visible rounded-lg transition-all duration-300`}
       >
-        <div className="relative flex w-full justify-center items-center  max-h-[291px] z-[20]"
-           onClick={() => {
+        <div
+          className="relative z-[20] flex max-h-[291px] w-full items-center justify-center"
+          onClick={(e) => {
+            e.preventDefault();
             dispatch(idoActions.saveBuydomainNft(item));
-            dispatch(idoActions.setToogle(true))
+            dispatch(idoActions.setToogle(true));
           }}
         >
-          <div className="relative z-20 w-full h-full overflow-hidden rounded-lg transition-transform duration-300 ease-in-out">
+          <div className="relative z-[20] h-full w-full overflow-hidden rounded-lg transition-transform duration-300 ease-in-out">
             <img
               src={imageUrl}
               alt={`NFT #${tokenId}`}
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full w-full rounded-lg object-cover"
             />
           </div>
         </div>
-        <div className="absolute left-0 top-[33%]  z-[25]  flex h-full w-[220px] flex-col justify-between"
+        <div
+          className="absolute left-0 top-[33%] z-[25] flex h-full w-[220px] flex-col justify-between"
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(idoActions.saveBuydomainNft(item));
+            dispatch(idoActions.setToogle(true));
+          }}
         >
-          <div className="relative group cursor-pointer" >
-            <div className="flex justify-center w-full items-center text-[10px] font-[400] tracking-wide text-[#ffffff]">
+          <div className="group relative cursor-pointer">
+            <div className="flex w-full items-center justify-center text-[10px] font-[400] tracking-wide text-[#ffffff]">
               Amount: <span className="ml-1 font-[400]">{amount}</span>
             </div>
           </div>
         </div>
         <div className="flex flex-col">
-          <div className='flex justify-between z-[100]' >
-            <div >
-              <span className="inline-flex mt-2 items-center  text-[14px] font-[500] tracking-wide">
+          <div className="z-[100] flex justify-between">
+            <div>
+              <span className="mt-2 inline-flex items-center text-[14px] font-[500] tracking-wide">
                 Token ID :
               </span>
-              <span className='ml-2 font-bold'>{item?.tokenId}</span>
+              <span className="ml-2 font-bold">{item?.tokenId}</span>
             </div>
             <div
               title="Copy ID"
@@ -82,16 +81,16 @@ export default function FractionCard({ item }: any) {
               onClick={() => handleCopyTokenIDToClipboard()}
             >
               {copyButtonStatus ? (
-                <Check className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+                <Check className="z-10 mt-2 h-[15px] w-[15px] text-[#0F172A]" />
               ) : (
-                <Copy className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+                <Copy className="z-10 mt-2 h-[15px] w-[15px] text-[#0F172A]" />
               )}
             </div>
           </div>
           <div
             role="button"
             tabIndex={0}
-            className="z-[100] mt-2 flex justify-between cursor-pointer items-center text-[14px] font-[500] tracking-wide text-black"
+            className="z-[100] mt-2 flex cursor-pointer items-center justify-between text-[14px] font-[500] tracking-wide text-black"
             title="Click to copy"
             onClick={() => {
               if (contractAddress) {
@@ -100,7 +99,7 @@ export default function FractionCard({ item }: any) {
               }
             }}
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
+              if (e.key === 'Enter' || e.key === ' ') {
                 navigator.clipboard.writeText(contractAddress);
                 // ToastNotification("success", "Copied!");
               }
@@ -113,9 +112,9 @@ export default function FractionCard({ item }: any) {
               onClick={() => handleCopyAddressToClipboard()}
             >
               {copyAddressStatus ? (
-                <Check className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+                <Check className="z-10 h-[15px] w-[15px] text-[#0F172A]" />
               ) : (
-                <Copy className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+                <Copy className="z-10 h-[15px] w-[15px] text-[#0F172A]" />
               )}
             </div>
           </div>

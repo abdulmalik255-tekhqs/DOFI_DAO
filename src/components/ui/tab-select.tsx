@@ -25,17 +25,17 @@ const TabSelect = forwardRef(
     const selectRef = useRef(null);
     //@ts-ignore
     useImperativeHandle(ref, () => selectRef.current);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     return (
       <div
         ref={selectRef}
         className="rounded-lg border-2 border-gray-200 dark:border-gray-700"
-        onClick={() => {
-          dispatch(idoActions.saveBuydomainNft({}));
-          dispatch(idoActions.setToogle(false))
-        }}
       >
         <button
+          // onClick={() => {
+          //   dispatch(idoActions.saveBuydomainNft({}));
+          //   dispatch(idoActions.setToogle(false))
+          // }}
           onClick={() => setVisibleMobileMenu(!visibleMobileMenu)}
           className="flex w-full items-center justify-between px-4 py-2.5 text-gray-400 dark:text-gray-300 sm:px-5 sm:py-3.5"
         >

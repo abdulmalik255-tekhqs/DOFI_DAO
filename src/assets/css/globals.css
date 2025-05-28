@@ -314,3 +314,6 @@ input.reset-password-pin-code[type='number'] {
 .coin-list-scrollbar::-webkit-scrollbar {
   @apply hidden;
 }
+/* .custom-class{
+  top: -10px !important;
+} */
