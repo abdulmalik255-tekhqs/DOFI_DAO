@@ -37,6 +37,9 @@ const DCAStepper = dynamic(
 const CoinSelectView = dynamic(
   () => import('@/components/ui/coin-select-view'),
 );
+const ArbitrageCoinSelectView = dynamic(
+  () => import('@/components/ui/arbitrage-coin-select-view'),
+);
 const FindNameView = dynamic(() => import('@/components/search/find-name'), {
   ssr: false,
 });
@@ -52,9 +55,12 @@ const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
-const FractionCardView = dynamic(() => import('@/components/fractions-card-modal'), {
-  ssr: false,
-});
+const FractionCardView = dynamic(
+  () => import('@/components/fractions-card-modal'),
+  {
+    ssr: false,
+  },
+);
 const PayTokenAmountView = dynamic(
   () => import('@/components/ido/pay-token-amount'),
   {
@@ -95,7 +101,7 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':
       return <CreateIDOView data={data} />;
-    case "ZK_PROOF":
+    case 'ZK_PROOF':
       return <ZkProofView data={data} />;
     case 'OPEN_WIZARD':
       return <OpenWizardView data={data} />;
@@ -110,6 +116,13 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return (
         <CoinSelectView
           onSelect={(selectedCoin) => handleSelectedCoin(selectedCoin)}
+        />
+      );
+    case 'ARBITRAGE_COIN_SELECT':
+      const handleArbitrageSelectedCoin = data?.handleArbitrageSelectedCoin;
+      return (
+        <ArbitrageCoinSelectView
+          onSelect={(selectedCoin) => handleArbitrageSelectedCoin(selectedCoin)}
         />
       );
     default:

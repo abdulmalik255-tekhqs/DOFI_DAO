@@ -45,7 +45,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   return (
     <div className="w-full rounded-lg bg-white text-sm shadow-large dark:bg-dark xs:w-[400px]">
       <h2 className="p-6 text-lg font-medium uppercase text-gray-900 dark:text-white">
-        Select Token
+        Select NFT
       </h2>
       <div className="relative">
         <SearchIcon className="absolute left-6 h-full text-gray-700" />
@@ -53,7 +53,7 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
           type="search"
           autoFocus={true}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          placeholder="Search Your Coin by Name"
+          placeholder="Search Your NFT by Name"
           className="w-full border-x-0 border-y border-dashed border-gray-200 py-3.5 pl-14 pr-6 text-sm focus:border-gray-300 focus:ring-0 dark:border-gray-700 dark:bg-light-dark focus:dark:border-gray-600"
         />
       </div>
