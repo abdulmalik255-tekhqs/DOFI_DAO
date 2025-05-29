@@ -121,12 +121,19 @@ class client {
   fetchNFTSwap = {
     getOwnerNFTSwap: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_NFT_SWAP}?address=${address}`),
   };
+   fetchNFTArbitrage = {
+    getNFTArbitrgae: (address:any) => HttpClient.get(`${API_ENDPOINTS.GET_ALL_NFT_ARBITRAGE}?address=${address}`),
+  };
   fetchNFTLeaseAddress = {
     getNftLeaseAddress: (address:any,nftId:any) => HttpClient.get(`${API_ENDPOINTS.GET_LEASE_ADDRESS}?address=${address}&nftID=${nftId}`),
   };
   swapToken = {
     create: (data: any, address: string) =>
       HttpClient.post(`${API_ENDPOINTS.POST_SWAP_TOKEN}?address=${address}`, data),
+  };
+   arbitrageNft = {
+    create: (data: any, address: string) =>
+      HttpClient.post(`${API_ENDPOINTS.POST_ARBITRAGE_NFT}?address=${address}`, data),
   };
   postPaytoken = {
     create: (data: any, address: string) =>

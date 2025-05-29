@@ -3,8 +3,9 @@ import { coinList } from '@/data/static/coin-list';
 import { useClickAway } from '@/lib/hooks/use-click-away';
 import { useLockBodyScroll } from '@/lib/hooks/use-lock-body-scroll';
 import cn from '@/utils/cn';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useModal } from '../modal-views/context';
+import { useSelector } from 'react-redux';
 
 interface CoinInputTypes extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -24,10 +25,14 @@ export default function ArbitrageCoinInput({
   className,
   toAmount,
   onSelectCoin,
+  value,
   ...rest
 }: CoinInputTypes) {
   const { openModal } = useModal();
-  let [selectedCoin, setSelectedCoin] = useState(coinList[defaultCoinIndex]);
+  const { arbitrageRoutedata } = useSelector((state: any) => state.ido);
+  console.log(arbitrageRoutedata, 'arbitrageRoutedata');
+
+  let [selectedCoin, setSelectedCoin] = useState<any>();
   let [visibleCoinList, setVisibleCoinList] = useState(false);
   const modalContainerRef = useRef<HTMLDivElement>(null);
   useClickAway(modalContainerRef, () => {
@@ -40,6 +45,11 @@ export default function ArbitrageCoinInput({
     setSelectedCoin(coin);
     onSelectCoin?.(coin);
   }
+  useEffect(() => {
+    if (arbitrageRoutedata?.length === 0) {
+      setSelectedCoin(null);
+    }
+  }, [arbitrageRoutedata, selectedCoin]);
   return (
     <>
       <div
@@ -60,7 +70,7 @@ export default function ArbitrageCoinInput({
             }
             className="mt-3 flex items-center font-medium outline-none dark:text-gray-100"
           >
-            {selectedCoin?.imageUrl && (
+            {selectedCoin?.image && (
               <img
                 className="h-6 w-6 rounded-full"
                 src={
@@ -68,8 +78,10 @@ export default function ArbitrageCoinInput({
                 }
               />
             )}
-            {selectedCoin?.name ? (
-              <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span>
+            {selectedCoin?.tokenName ? (
+              <span className="ltr:ml-2 rtl:mr-2">
+                {selectedCoin?.tokenName}{' '}
+              </span>
             ) : (
               <span className="text-[16px] font-[400] text-[#334155]">
                 Select NFT

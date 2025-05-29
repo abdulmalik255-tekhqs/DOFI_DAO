@@ -13,7 +13,8 @@ const initialState = {
   componentLoading: false,
   initialDomain: {},
   childDAOData:{},
-  toogle:false
+  toogle:false,
+  arbitrageRoutedata:[]
 };
 
 const idoSlice = createSlice({
@@ -58,6 +59,9 @@ const idoSlice = createSlice({
     },
     setToogle(state, action) {
       state.toogle = action.payload;
+    },
+     setArbitrageRoute(state, action) {
+      state.arbitrageRoutedata = action.payload;
     },
   },
 });
