@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export function FractionAmountFeed({ imageUrl, index }: any) {
   return (
-    <div className={cn('flex h-[124px] w-[94px] items-start justify-start')}>
+    <div className={cn('flex h-[124px] w-[94px] items-center justify-center')}>
       <img src={imageUrl} alt={`preview-${index}`} />
     </div>
   );
@@ -22,8 +22,8 @@ export default function FractionAmountSlider({ limits, item }: any) {
     480: { slidesPerView: 3, spaceBetween: 12 },
     768: { slidesPerView: 6, spaceBetween: 16 },
     1024: { slidesPerView: 6, spaceBetween: 20 },
-    1280: { slidesPerView: 11, spaceBetween: 12 },
-    1600: { slidesPerView: limit, spaceBetween: 12 },
+    1280: { slidesPerView: limit, spaceBetween: 12 },
+    1600: { slidesPerView: limit, spaceBetween: 20 },
   };
 
   const prevRef = useRef(null);
@@ -41,7 +41,7 @@ export default function FractionAmountSlider({ limits, item }: any) {
     setIsEnd(false);
   }, [item]);
   return (
-    <div className="relative flex w-full max-w-[400px] items-start justify-start sm:max-w-[400px] md:max-w-[600px] xl:max-w-[900px] 2xl:max-w-[1050px] 3xl:max-w-[1400px]">
+    <div className="relative w-full max-w-[400px] sm:max-w-[400px] md:max-w-[600px] xl:max-w-[900px] 2xl:max-w-[1050px] 3xl:max-w-[1400px]">
       {/* Custom Navigation Buttons */}
       {/* Prev Button */}
       <button
@@ -97,7 +97,7 @@ export default function FractionAmountSlider({ limits, item }: any) {
         }}
         loop={false}
         allowTouchMove={true}
-        className="flex items-start justify-start gap-[12px]"
+        className=""
       >
         {Array.from({ length: item?.amount || 0 }).map((_, index) => (
           <SwiperSlide key={index}>
