@@ -23,7 +23,9 @@ export type MODAL_VIEW =
   | 'SUCCESSFULLY_BUY_DIO'
   | 'PAY_TOKEN_AMOUNT'
   | 'OPEN_WIZARD'
-  | "ZK_PROOF"  ;
+  | 'ZK_PROOF'
+  | 'FRACTIONS'
+  | 'ARBITRAGE_COIN_SELECT';
 
 interface ModalTypes {
   isOpen: boolean;
@@ -39,13 +41,13 @@ const modalAtom = atom<ModalTypes>({
 
 export function useModal() {
   const [state, setState] = useAtom(modalAtom);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const openModal = (view: MODAL_VIEW, data?: any) =>
     setState((prev) => ({ ...prev, isOpen: true, view, data }));
   const closeModal = () => {
-     dispatch(idoActions.setIsConfetti(false));
-    setState((prev) => ({ ...prev, isOpen: false }))
-  }
+    dispatch(idoActions.setIsConfetti(false));
+    setState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   return {
     ...state,

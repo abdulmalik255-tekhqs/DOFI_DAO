@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '@/components/modal-views/context';
 import ToastNotification from '@/components/ui/toast-notification';
 
-
 const SwapPage = () => {
   const { mutate: submitSwap, isError, error } = useSwap();
   const { loading } = useSelector((state: any) => state.ido);
@@ -34,8 +33,9 @@ const SwapPage = () => {
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const [blockNFT, setBlocknft] = useState<boolean>(false);
-  const { mutate: submitCreate, data: calculationResult }:any = usePostCaculate();
-  const { NFTSwap } :any= useFetchNFTSWAP()
+  const { mutate: submitCreate, data: calculationResult }: any =
+    usePostCaculate();
+  const { NFTSwap }: any = useFetchNFTSWAP();
   useEffect(() => {
     const timer = setTimeout(() => {
       const fromPricePerFraction = selectedFromSwapCoin?.pricePerToken || 1;
@@ -46,10 +46,9 @@ const SwapPage = () => {
         selectedToSwapCoin?._id &&
         selectedFromSwapCoin._id === selectedToSwapCoin._id
       ) {
-        ToastNotification('error', 'Same token can\'t be swapped.');
+        ToastNotification('error', "Same token can't be swapped.");
         return; // stop execution here
       }
-
 
       if (
         fromPricePerFraction &&
@@ -72,15 +71,15 @@ const SwapPage = () => {
       const foundNFT = NFTSwap.data.userNFTs.find((nft: any) => {
         const nftId = nft?.name;
         const selectedId = selectedFromSwapCoin?.name;
-        setBlocknft(false)
+        setBlocknft(false);
         return nftId === selectedId;
       });
 
       if (foundNFT) {
-        setBlocknft(false)
+        setBlocknft(false);
         setSelectedNFT(foundNFT);
       } else {
-        setBlocknft(true)
+        setBlocknft(true);
         setSelectedNFT(null);
       }
     }
@@ -102,9 +101,12 @@ const SwapPage = () => {
       }
       if (selectedNFT) {
         if (Number(selectedNFT?.amount) < Number(fromAmount?.value)) {
-          ToastNotification('error', 'Entered Amount is should be less the nft amount holding!');
+          ToastNotification(
+            'error',
+            'Entered Amount is should be less the nft amount holding!',
+          );
           return;
-        };
+        }
 
         if (blockNFT) {
           ToastNotification('error', 'You are not holding this NFT!');
@@ -117,7 +119,7 @@ const SwapPage = () => {
         selectedToSwapCoin?._id &&
         selectedFromSwapCoin._id === selectedToSwapCoin._id
       ) {
-        ToastNotification('error', 'Same token can\'t be swapped.');
+        ToastNotification('error', "Same token can't be swapped.");
         return;
       }
 
@@ -193,61 +195,62 @@ const SwapPage = () => {
   // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   return (
     <>
-      <Trade>
-        <div className="mb-6">
-          <div
-            className={cn(
-              'relative flex gap-3',
-              toggleCoin ? 'flex-col-reverse' : 'flex-col',
-            )}
-          >
-            <CoinInput
-              label={'From'}
-              exchangeRate={excangeRate(fromAmount?.value)}
-              defaultCoinIndex={20}
-              getCoinValue={(data: any) => setFromAmount(data)}
-              onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
-            />
-            <div className="absolute left-1/2 top-1/2 z-[1] transform -translate-x-1/2 -translate-y-1/2 
-                rounded-full bg-[#1E293B] p-2 flex items-center justify-center">
-              <SwapIcon className="w-4 h-4 text-white" />
-            </div>
+      <Suspense>
+        <Trade>
+          <div className="mb-6">
+            <div
+              className={cn(
+                'relative flex gap-3',
+                toggleCoin ? 'flex-col-reverse' : 'flex-col',
+              )}
+            >
+              <CoinInput
+                label={'From'}
+                exchangeRate={excangeRate(fromAmount?.value)}
+                defaultCoinIndex={20}
+                getCoinValue={(data: any) => setFromAmount(data)}
+                onSelectCoin={(coin: any) => setSelectedFromSwapCoin(coin)}
+              />
+              <div className="absolute left-1/2 top-1/2 z-[1] flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-[#1E293B] p-2">
+                <SwapIcon className="h-4 w-4 text-white" />
+              </div>
 
-            <CoinInput
-              label={'To'}
-              exchangeRate={excangeRate(toAmount?.data?.toAmount)}
-              defaultCoinIndex={20}
-              getCoinValue={(data) => console.log('To coin value:', data)}
-              onSelectCoin={(coin: any) => setSelectedToSwapCoin(coin)}
-              toAmount={toAmount}
-            />
+              <CoinInput
+                label={'To'}
+                exchangeRate={excangeRate(toAmount?.data?.toAmount)}
+                defaultCoinIndex={20}
+                getCoinValue={(data) => console.log('To coin value:', data)}
+                onSelectCoin={(coin: any) => setSelectedToSwapCoin(coin)}
+                toAmount={toAmount}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-4 xs:gap-[18px]">
-          <TransactionInfo label={'Rate'} />
-          <TransactionInfo label={'Offered by'} />
-          <TransactionInfo label={'Network Fee'} value={'0.35'} />
-        </div>
-        <div className="border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800 mt-4"></div>
-        <div className="flex justify-end">
-          <Button
-            size="medium"
-            shape="rounded"
-            fullWidth={true}
-            className="mt-6 uppercase xs:mt-8 xs:tracking-widest bg-[#0F172A]"
-            onClick={() => handleSwap()}
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <BeatLoader color="#000" />
-              </>
-            ) : (
-              'SWAP'
-            )}
-          </Button>
-        </div>
-      </Trade>
+          <div className="flex flex-col gap-4 xs:gap-[18px]">
+            <TransactionInfo label={'Rate'} />
+            <TransactionInfo label={'Offered by'} />
+            <TransactionInfo label={'Network Fee'} value={'0.35'} />
+          </div>
+          <div className="mt-4 border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
+          <div className="flex justify-end">
+            <Button
+              size="medium"
+              shape="rounded"
+              fullWidth={true}
+              className="mt-6 bg-[#0F172A] uppercase xs:mt-8 xs:tracking-widest"
+              onClick={() => handleSwap()}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <BeatLoader color="#000" />
+                </>
+              ) : (
+                'SWAP'
+              )}
+            </Button>
+          </div>
+        </Trade>
+      </Suspense>
     </>
   );
 };

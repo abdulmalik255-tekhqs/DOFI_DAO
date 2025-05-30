@@ -1,22 +1,20 @@
 'use client';
 import ToastNotification from './toast-notification';
-import { useModal } from '../modal-views/context';
 import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { Check } from '@/components/icons/check';
 import { Copy } from '@/components/icons/copy';
-import { useDispatch } from 'react-redux';
-import { idoActions } from '@/store/reducer/ido-reducer';
+import { useSelector } from 'react-redux';
+import FractionAmountSlider from './fraction-amount-slider';
 
-export default function FractionCard({ item }: any) {
-  const { imageUrl, tokenId, contractAddress, amount } = item ?? {};
-  const dispatch = useDispatch();
+export default function FractionAmount() {
+  const { domainNftData } = useSelector((state: any) => state.ido);
   const [_, copyToClipboard] = useCopyToClipboard();
   const [copyButtonStatus, setCopyButtonStatus] = useState(false);
   const [copyAddressStatus, setCopyAddressStatus] = useState(false);
   function handleCopyTokenIDToClipboard() {
     //@ts-ignore
-    copyToClipboard(item?.tokenId);
+    copyToClipboard(domainNftData?.tokenId);
     setCopyButtonStatus(true);
     ToastNotification('success', 'Copied!');
     setTimeout(() => {
@@ -25,7 +23,7 @@ export default function FractionCard({ item }: any) {
   }
   function handleCopyAddressToClipboard() {
     //@ts-ignore
-    copyToClipboard(contractAddress);
+    copyToClipboard(domainNftData?.contractAddress);
     setCopyAddressStatus(true);
     ToastNotification('success', 'Copied!');
     setTimeout(() => {
@@ -37,33 +35,20 @@ export default function FractionCard({ item }: any) {
       <div
         className={`group relative max-w-[220px] cursor-pointer overflow-visible rounded-lg transition-all duration-300`}
       >
-        <div
-          className="relative z-[20] flex max-h-[291px] w-full items-center justify-center"
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(idoActions.saveBuydomainNft(item));
-            dispatch(idoActions.setToogle(true));
-          }}
-        >
-          <div className="relative z-[20] h-full w-full overflow-hidden rounded-lg transition-transform duration-300 ease-in-out">
+        <div className="relative flex max-h-[291px] w-full items-center justify-center">
+          <div className="relative z-20 h-full w-full overflow-hidden rounded-lg transition-transform duration-300 ease-in-out">
             <img
-              src={imageUrl}
-              alt={`NFT #${tokenId}`}
+              src={domainNftData?.imageUrl}
+              alt={`NFT #${domainNftData?.tokenId}`}
               className="h-full w-full rounded-lg object-cover"
             />
           </div>
         </div>
-        <div
-          className="absolute left-0 top-[33%] z-[25] flex h-full w-[220px] flex-col justify-between"
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(idoActions.saveBuydomainNft(item));
-            dispatch(idoActions.setToogle(true));
-          }}
-        >
+        <div className="absolute left-0 top-[33%] z-[25] flex h-full w-[220px] flex-col justify-between">
           <div className="group relative cursor-pointer">
             <div className="flex w-full items-center justify-center text-[10px] font-[400] tracking-wide text-[#ffffff]">
-              Amount: <span className="ml-1 font-[400]">{amount}</span>
+              Amount:{' '}
+              <span className="ml-1 font-[400]">{domainNftData?.amount}</span>
             </div>
           </div>
         </div>
@@ -73,7 +58,7 @@ export default function FractionCard({ item }: any) {
               <span className="mt-2 inline-flex items-center text-[14px] font-[500] tracking-wide">
                 Token ID :
               </span>
-              <span className="ml-2 font-bold">{item?.tokenId}</span>
+              <span className="ml-2 font-bold">{domainNftData?.tokenId}</span>
             </div>
             <div
               title="Copy ID"
@@ -93,19 +78,20 @@ export default function FractionCard({ item }: any) {
             className="z-[100] mt-2 flex cursor-pointer items-center justify-between text-[14px] font-[500] tracking-wide text-black"
             title="Click to copy"
             onClick={() => {
-              if (contractAddress) {
-                // ToastNotification("success", "Copied!");
-                navigator.clipboard.writeText(contractAddress);
+              if (domainNftData?.contractAddress) {
+                ToastNotification('success', 'Copied!');
+                navigator.clipboard.writeText(domainNftData?.contractAddress);
               }
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
-                navigator.clipboard.writeText(contractAddress);
-                // ToastNotification("success", "Copied!");
+                navigator.clipboard.writeText(domainNftData?.contractAddress);
+                ToastNotification('success', 'Copied!');
               }
             }}
           >
-            {contractAddress?.slice(0, 6)}...{contractAddress?.slice(-6)}
+            {domainNftData?.contractAddress?.slice(0, 6)}...
+            {domainNftData?.contractAddress?.slice(-6)}
             <div
               title="Copy Address"
               className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -120,6 +106,11 @@ export default function FractionCard({ item }: any) {
           </div>
         </div>
       </div>
+      <h1 className="my-[18px] flex shrink-0 items-center justify-start gap-4 text-end text-[32px] font-[500] tracking-tighter text-[#1E293B] dark:text-white">
+        <span className="text-[32px]">{domainNftData?.amount}</span> Fractions
+      </h1>
+      <FractionAmountSlider limits={11} item={domainNftData} />
+      <div className="my-6 border-2 border-[#E2E8F0]"></div>
     </>
   );
 }

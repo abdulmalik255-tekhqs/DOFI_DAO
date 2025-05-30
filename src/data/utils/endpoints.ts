@@ -28,7 +28,9 @@ export const API_ENDPOINTS = {
   POST_VOTE_UPDATED:"/vote/childDAO",
   POST_CALC:"/nft/swap/calculate",
   GET_NFT_SWAP:"/nft/swap",
+  GET_ALL_NFT_ARBITRAGE:"/nft/dex/arbitrage",
   POST_SWAP_TOKEN:"/nft/swap",
+  POST_ARBITRAGE_NFT:"/nft/dex/arbitrage",
   GET_ALL_NFTS_DOMAIN:"/nft/available-domain",
   POST_PAY_TOKEN:"/send/usdt",
   GET_LEASE_ADDRESS:"/proposals/lease"

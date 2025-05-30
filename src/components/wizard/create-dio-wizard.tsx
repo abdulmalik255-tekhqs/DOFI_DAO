@@ -102,7 +102,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
         dispatch(idoActions.setLoading(false));
       }
     } catch (error) {
-      dispatch(idoActions.setLoading(true));
+      dispatch(idoActions.setLoading(false));
     }
   };
   function goToAllProposalPage() {

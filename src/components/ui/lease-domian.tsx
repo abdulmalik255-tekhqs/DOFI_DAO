@@ -1,38 +1,39 @@
+import { useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
+import { Check } from '@/components/icons/check';
+import { Copy } from '@/components/icons/copy';
 import cn from '@/utils/cn';
 import { useModal } from '@/components/modal-views/context';
-import Shib1 from '@/assets/images/dao/shib1.png';
-import Shib2 from '@/assets/images/dao/shib2.png';
-import Shib3 from '@/assets/images/dao/shib3.png';
-import Shib4 from '@/assets/images/dao/shib4.png';
-import Shib5 from '@/assets/images/dao/shib5.png';
-import Shib6 from '@/assets/images/dao/shib6.png';
-import Shib7 from '@/assets/images/dao/shib7.png';
-import Shib8 from '@/assets/images/dao/shib8.png';
 import ToastNotification from './toast-notification';
 
 
 export default function LeaseDomainCard({ item, className = '' }: any) {
-
   const { openModal } = useModal();
-  const ShibimageList = [
-    { id: 1, image: Shib1 },
-    { id: 2, image: Shib2 },
-    { id: 3, image: Shib3 },
-    { id: 4, image: Shib4 },
-    { id: 5, image: Shib5 },
-    { id: 6, image: Shib6 },
-    { id: 7, image: Shib7 },
-    { id: 8, image: Shib8 },
-  ];
-  const getImageByTokenID = (id: string) => {
-    const numericID = parseInt(id, 10);
-    const match = ShibimageList.find((item) => item.id === numericID);
-    return match ? match.image.src : item?.nft?.imageUrl;
-  };
+  const [_, copyToClipboard] = useCopyToClipboard();
+  const [copyButtonStatus, setCopyButtonStatus] = useState(false);
+  const [copyAddressStatus, setCopyAddressStatus] = useState(false);
+  function handleCopyTokenIDToClipboard() {
+    //@ts-ignore
+    copyToClipboard(item?.nft?.tokenId);
+    setCopyButtonStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyButtonStatus(copyButtonStatus);
+    }, 2500);
+  }
+  function handleCopyAddressToClipboard() {
+    //@ts-ignore
+    copyToClipboard(item?.nft?.contractAddress);
+    setCopyAddressStatus(true);
+    ToastNotification("success", "Copied!")
+    setTimeout(() => {
+      setCopyAddressStatus(copyButtonStatus);
+    }, 2500);
+  }
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-lg',
+        'group relative max-w-[220px] overflow-hidden rounded-lg',
         className,
       )}
     >
@@ -54,20 +55,49 @@ export default function LeaseDomainCard({ item, className = '' }: any) {
          
       </div> */}
       <div className="flex flex-col">
-        <div className="inline-flex mt-2 items-center px-4 text-[14px] font-[500] tracking-wide">
-          Token ID : <span className='ml-2 font-bold'>{item?.nft?.tokenId}</span>
+        <div className='flex justify-between z-[100]' >
+          <div >
+            <span className="inline-flex mt-2 items-center  text-[14px] font-[500] tracking-wide">
+              Token ID :
+            </span>
+            <span className='ml-2 font-bold'>{item?.nft?.tokenId}</span>
+          </div>
+
+
+          <div
+            title="Copy ID"
+            className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+            onClick={() => handleCopyTokenIDToClipboard()}
+          >
+            {copyButtonStatus ? (
+              <Check className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+            ) : (
+              <Copy className="z-10 h-[15px] mt-2 w-[15px] text-[#0F172A]" />
+            )}
+          </div>
         </div>
         <div
-          className="z-[5] ml-4 mt-2 inline-flex cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
-          title="Click to copy"
-          onClick={() => {
-            if (item?.nft?.contractAddress) {
-                  ToastNotification("success","Copied!")
-              navigator.clipboard.writeText(item?.nft?.contractAddress);
-            }
-          }}
+          className="z-[5]  mt-2 flex justify-between cursor-pointer items-center  text-[14px] font-[500] tracking-wide text-black cursor-pointer"
+          // title="Click to copy"
+          // onClick={() => {
+          //   if (item?.nft?.contractAddress) {
+          //     ToastNotification("success", "Copied!")
+          //     navigator.clipboard.writeText(item?.nft?.contractAddress);
+          //   }
+          // }}
         >
           {item?.nft?.contractAddress?.slice(0, 6)}...{item?.nft?.contractAddress?.slice(-6)}
+          <div
+            title="Copy Address"
+            className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+            onClick={() => handleCopyAddressToClipboard()}
+          >
+            {copyAddressStatus ? (
+              <Check className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+            ) : (
+              <Copy className="z-10 h-[15px]  w-[15px] text-[#0F172A]" />
+            )}
+          </div>
         </div>
       </div>
       <div className="w-full">

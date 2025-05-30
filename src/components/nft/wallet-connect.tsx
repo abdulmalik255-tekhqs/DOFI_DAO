@@ -32,8 +32,8 @@ export default function WalletConnect({
   });
   const { disconnect } = useDisconnect();
   const balance = data?.formatted;
-const [tokenBalance, setTokenBalance] = useState<string | null>(null);
-const getTokenBalance = async (userAddress: string) => {
+  const [tokenBalance, setTokenBalance] = useState<string | null>(null);
+  const getTokenBalance = async (userAddress: string) => {
     try {
       const balance = await readContract(config, {
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
@@ -59,7 +59,7 @@ const getTokenBalance = async (userAddress: string) => {
       {address ? (
         <div className="flex items-center gap-3 sm:gap-6 lg:gap-8">
           <div className='flex gap-2 items-center'>
-         <Image src={GreenDot} alt="no-icon"/>   <h2 className='text-[16px] text-[#1E293B] font-[500] '>Wallet Connected</h2>
+            <Image src={GreenDot} alt="no-icon" />   <h2 className='text-[16px] text-[#1E293B] font-[500] '>Wallet Connected</h2>
           </div>
           {/* <ActiveLink href="/create-nft" className={cn(anchorClassName)}>
             <Button
@@ -98,6 +98,18 @@ const getTokenBalance = async (userAddress: string) => {
                     <div className="border-b border-dashed border-gray-200 px-6 py-5 dark:border-gray-700">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-sm font-medium -tracking-tighter text-gray-600 dark:text-gray-400">
+                          Address:
+                        </span>
+                        {address?.slice(0, 6)}
+                        {'...'}
+                        {address?.slice(address?.length - 6)}
+                      </div>
+                    </div>
+                  </MenuItem>
+                  <MenuItem>
+                    <div className="border-b border-dashed border-gray-200 px-6 py-5 dark:border-gray-700">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm font-medium -tracking-tighter text-gray-600 dark:text-gray-400">
                           Balance:
                         </span>
                         $DOFI {formatNumber(tokenBalance)}
@@ -120,7 +132,7 @@ const getTokenBalance = async (userAddress: string) => {
             </Menu>
           </div>
 
-          
+
         </div>
       ) : (
         <Button

@@ -20,7 +20,7 @@ export default function Feeds({
     <>
       {filteredData?.length > 0 ? <div
         className={cn(
-          'flex flex-col md:flex-row md:flex-wrap gap-[12px] mt-[20px]',
+          'flex flex-col sm:flex-row sm:flex-wrap gap-[12px] mt-[20px]',
           className,
         )}
       >

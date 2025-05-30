@@ -14,17 +14,12 @@ interface CoinSelectViewTypes {
 export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
   const { closeModal } = useModal();
   let [searchKeyword, setSearchKeyword] = useState('');
-  const { NFTSwap, isLoading } = useFetchNFTSWAP()
+  const { NFTSwap, isLoading } = useFetchNFTSWAP();
 
-  const Tethercoin = {
-    icon: <Tether />,
-    code: 'USDT',
-    name: 'Tether USD',
-    price: 1.01,
-  }
   const updatedCoinList: any[] = (NFTSwap as any)?.data?.nfts || [];
 
   let coinListData = updatedCoinList;
+
   if (searchKeyword.length > 0) {
     coinListData = updatedCoinList?.filter(function (item) {
       const name = item.name;
@@ -63,9 +58,11 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
         />
       </div>
       <ul role="listbox" className="min-h-[200px] py-3">
-        {isLoading ?   <div className="flex w-full items-center justify-center py-5">
-                <MoonLoader />
-              </div> : coinListData.length > 0 ? (
+        {isLoading ? (
+          <div className="flex w-full items-center justify-center py-5">
+            <MoonLoader />
+          </div>
+        ) : coinListData?.length > 0 ? (
           coinListData?.map((item, index) => (
             <li
               key={item.code}
@@ -75,8 +72,15 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
               onKeyDown={(event) => handleSelectedCoinOnKeyDown(event, item)}
               className="flex cursor-pointer items-center gap-2 px-6 py-3 outline-none hover:bg-gray-100 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-900"
             >
-              <img className ="h-6 w-6 rounded-full" src={"https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png"} />
-              <span className="uppercase">{item.name}</span>
+              <img
+                className="h-6 w-6 rounded-full"
+                src={
+                  item?.name === 'DO.FI'
+                    ? 'https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png'
+                    : item?.imageUrl
+                }
+              />
+              <span className="uppercase">{item?.name}</span>
             </li>
           ))
         ) : (

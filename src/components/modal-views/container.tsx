@@ -37,6 +37,9 @@ const DCAStepper = dynamic(
 const CoinSelectView = dynamic(
   () => import('@/components/ui/coin-select-view'),
 );
+const ArbitrageCoinSelectView = dynamic(
+  () => import('@/components/ui/arbitrage-coin-select-view'),
+);
 const FindNameView = dynamic(() => import('@/components/search/find-name'), {
   ssr: false,
 });
@@ -52,6 +55,12 @@ const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
+const FractionCardView = dynamic(
+  () => import('@/components/fractions-card-modal'),
+  {
+    ssr: false,
+  },
+);
 const PayTokenAmountView = dynamic(
   () => import('@/components/ido/pay-token-amount'),
   {
@@ -92,7 +101,7 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ProposalAcceptView data={data} />;
     case 'CREATE_IDO':
       return <CreateIDOView data={data} />;
-    case "ZK_PROOF":
+    case 'ZK_PROOF':
       return <ZkProofView data={data} />;
     case 'OPEN_WIZARD':
       return <OpenWizardView data={data} />;
@@ -100,11 +109,20 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':
       return <PayTokenAmountView data={data} />;
+    case 'FRACTIONS':
+      return <FractionCardView data={data} />;
     case 'SWAP_COIN_SELECT':
       const handleSelectedCoin = data?.handleSelectedCoin;
       return (
         <CoinSelectView
           onSelect={(selectedCoin) => handleSelectedCoin(selectedCoin)}
+        />
+      );
+    case 'ARBITRAGE_COIN_SELECT':
+      const handleArbitrageSelectedCoin = data?.handleArbitrageSelectedCoin;
+      return (
+        <ArbitrageCoinSelectView
+          onSelect={(selectedCoin) => handleArbitrageSelectedCoin(selectedCoin)}
         />
       );
     default:
@@ -131,7 +149,7 @@ export default function ModalContainer() {
         className="fixed inset-0 !z-[999] h-full w-full overflow-y-auto overflow-x-hidden p-4 text-center sm:p-6 lg:p-8 xl:p-10 3xl:p-12"
         onClose={closeModal}
       >
-        <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="flex min-h-full flex-col items-center justify-center">
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"

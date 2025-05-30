@@ -31,7 +31,7 @@ const COLUMNS = [
     Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
         <div className="ltr:text-left rtl:text-left">
-          {row?.original?.name?.length > 15 ? `${row?.original?.name.substring(0, 15)}...` : row.original.name}
+          {row?.original?.name?.length > 15 ? `${row?.original?.name.substring(0, 15)}...` : row?.original?.name}
         </div>
       </div>
     ),
@@ -41,10 +41,9 @@ const COLUMNS = [
   {
     Header: () => <div className="">Price</div>,
     accessor: 'current_price',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
-        <div className="">{row.original.nftID?.price ? `$${formatNumber(row.original.nftID?.price)}` : `$${formatNumber("3641")}`}</div>
+        <div className="">{row?.original?.nftID?.price ? `$${formatNumber(row?.original?.nftID?.price)}` : `$${formatNumber("3641")}`}</div>
       </div>
     ),
     minWidth: 80,
@@ -53,11 +52,10 @@ const COLUMNS = [
   {
     Header: () => <div className="">Investors</div>,
     accessor: 'currentw_price',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
         <div className="flex w-auto items-center justify-center">
-          {row.original.investors?.length}
+          {row?.original?.investors?.length}
         </div>
       </div>
     ),
@@ -67,11 +65,10 @@ const COLUMNS = [
   {
     Header: () => <div className="">Soft Cap</div>,
     accessor: 'price_change_percentage_1h_in_currency',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center">
         <div className="flex w-auto items-center justify-center">
-          ${formatNumber(row.original.softCap)}
+          ${formatNumber(row?.original?.softCap)}
         </div>
       </div>
     ),
@@ -80,11 +77,10 @@ const COLUMNS = [
   {
     Header: () => <div className="">Total Supply</div>,
     accessor: 'price_change_percentage_24h_in_currency',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-center ltr:text-left rtl:text-left">
-          {row.original.totalSupply}
+          {row?.original?.totalSupply}
         </div>
       </div>
     ),
@@ -94,21 +90,20 @@ const COLUMNS = [
   {
     Header: () => <div className="">Status</div>,
     accessor: 'total_volume',
-    // @ts-ignore
-    Cell: ({ row }) => (
+    Cell: ({ row }:any) => (
       <div className="flex items-center gap-2">
         <div
           className={`flex h-auto w-[140px] capitalize items-center justify-center rounded-full px-4 py-1 text-sm font-medium shadow-md
-    ${row.original.status === 'successful'
+    ${row?.original?.status === 'successful'
               ? 'bg-green-100 text-green-800 border border-green-300'
-              : row.original.status === 'failed'
+              : row?.original?.status === 'failed'
                 ? 'bg-red-100 text-red-800 border border-red-300'
-                : row.original.status === 'active'
+                : row?.original?.status === 'active'
                   ? 'bg-blue-100 text-blue-800 border border-blue-300'
                   : 'bg-gray-100 text-gray-800 border border-gray-300'
             }`}
         >
-          {row.original.status}
+          {row?.original?.status}
         </div>
       </div>
     ),
@@ -118,13 +113,10 @@ const COLUMNS = [
   {
     Header: () => <div className="">Share</div>,
     accessor: 'share',
-    // @ts-ignore
-    Cell: ({ row }) => {
+    Cell: ({ row }:any) => {
       const [copyButtonStatus, setCopyButtonStatus] = useState(false);
       const [_, copyToClipboard] = useCopyToClipboard();
-
-      const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${row.original._id}`;
-
+      const shareUrl = `${process.env.NEXT_PUBLIC_FRONT_END_ENDPOINT}${routes.idoDetail}/${row?.original?._id}`;
       function handleCopyToClipboard(e: React.MouseEvent) {
         e.stopPropagation(); // prevent row redirect
         copyToClipboard(shareUrl);
@@ -134,7 +126,6 @@ const COLUMNS = [
           setCopyButtonStatus(false); // ✅ reset correctly
         }, 2500);
       }
-
       return (
         <div
           className="flex items-center justify-center gap-2 cursor-pointer"
