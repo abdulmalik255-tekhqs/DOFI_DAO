@@ -131,8 +131,10 @@ const ArbitragePage = () => {
           value={selectedFromSwapCoin ? updatedCoinList?.dex2Price : '--'}
         />
         <TransactionInfo
-          label={'Net Profit'}
-          value={selectedFromSwapCoin ? `$${updatedCoinList?.profit}` : '--'}
+          label={'Net Profit (DOFI)'}
+          value={
+            selectedFromSwapCoin ? `$${updatedCoinList?.profitInDofi}` : '--'
+          }
         />
       </div>
       <div className="mt-4 border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
@@ -147,7 +149,7 @@ const ArbitragePage = () => {
                 <div key={index} className="flex items-center gap-[10px]">
                   <div className="flex flex-col gap-[10px]">
                     <div
-                      className={`flex h-[150px] w-[107px] flex-col items-center justify-center gap-[12px] rounded-[10px] border ${
+                      className={`flex h-[150px] w-[107px] flex-col items-center justify-center rounded-[10px] border ${
                         isBuy
                           ? 'border-[#BBF7D0] bg-[#F0FDF4]'
                           : 'border-[#FECACA] bg-[#FEF2F2]'
@@ -156,15 +158,22 @@ const ArbitragePage = () => {
                       <img
                         src={item?.image}
                         alt={item?.tokenName}
-                        width={42}
-                        height={56}
+                        width={50}
+                        height={65}
                       />
                       <h2
-                        className={`text-[11px] font-[500] ${
+                        className={`m-0 p-0 text-[11px] font-[500] ${
                           isBuy ? 'text-[#00C10D]' : 'text-[#FF0000]'
                         }`}
                       >
                         {isBuy ? 'Buy' : 'Sell'}{' '}
+                      </h2>
+                      <h2
+                        className={`m-0 p-0 text-[11px] font-[500] ${
+                          isBuy ? 'text-[#00C10D]' : 'text-[#FF0000]'
+                        }`}
+                      >
+                        {item?.amount}{' '}
                       </h2>
                       <h2
                         title={
