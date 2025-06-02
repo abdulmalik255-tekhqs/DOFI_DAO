@@ -30,11 +30,7 @@ const ArbitragePage = () => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [selectedFromSwapCoin, setSelectedFromSwapCoin] = useState<any>(null);
-  const {
-    mutate: submitArbitrage,
-    isError,
-    error,
-  } = useArbitrage(setSelectedFromSwapCoin);
+  const { mutate: submitArbitrage } = useArbitrage(setSelectedFromSwapCoin);
   const dispatch = useDispatch();
   const { loading } = useSelector((state: any) => state.ido);
   const [fromAmount, setFromAmount] = useState<any>(null);
@@ -44,6 +40,8 @@ const ArbitragePage = () => {
   };
   const { NFTAbritrage, isLoading }: any = useFetchNFTARBITRAGE();
   const updatedCoinList: any = (NFTAbritrage as any)?.data;
+  console.log(updatedCoinList, 'NFTAbritrage');
+
   const handleSwap = async () => {
     try {
       if (!address) {
@@ -78,7 +76,7 @@ const ArbitragePage = () => {
         submitArbitrage({
           address: address,
           nftName: selectedFromSwapCoin?.tokenName,
-          profit: '1',
+          profit: updatedCoinList?.path[3]?.amount?.toString(),
         });
       }
     } catch (error) {
