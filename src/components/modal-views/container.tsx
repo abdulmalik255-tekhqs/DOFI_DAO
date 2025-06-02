@@ -52,6 +52,12 @@ const ZkProofView = dynamic(() => import('@/components/ido/zk-proof'), {
 const OpenWizardView = dynamic(() => import('@/components/wizard/wizard'), {
   ssr: false,
 });
+const OpenWizardEnhancveView = dynamic(
+  () => import('@/components/wizard-enchance/wizard-enchance'),
+  {
+    ssr: false,
+  },
+);
 const SuccessBuyView = dynamic(() => import('@/components/ido/success-buy'), {
   ssr: false,
 });
@@ -105,6 +111,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
       return <ZkProofView data={data} />;
     case 'OPEN_WIZARD':
       return <OpenWizardView data={data} />;
+    case 'OPEN_WIZARD_ENCHANCE':
+      return <OpenWizardEnhancveView data={data} />;
     case 'SUCCESSFULLY_BUY_DIO':
       return <SuccessBuyView />;
     case 'PAY_TOKEN_AMOUNT':

@@ -30,7 +30,6 @@ export default function ArbitrageCoinInput({
 }: CoinInputTypes) {
   const { openModal } = useModal();
   const { arbitrageRoutedata } = useSelector((state: any) => state.ido);
-  console.log(arbitrageRoutedata, 'arbitrageRoutedata');
 
   let [selectedCoin, setSelectedCoin] = useState<any>();
   let [visibleCoinList, setVisibleCoinList] = useState(false);
