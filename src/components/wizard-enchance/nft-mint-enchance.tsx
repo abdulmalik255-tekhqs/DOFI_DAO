@@ -46,7 +46,7 @@ export default function NFTMintEnchance({ data }: any) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits(data?.price?.toString(), 18),
         ],
       });

@@ -36,7 +36,7 @@ import Criteria from '@/assets/images/dao/criteria.svg';
 import TotalSupplyIcon from '@/assets/images/dao/tsupply.svg';
 import Image from 'next/image';
 import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
-import ReactStars from 'react-stars'
+import ReactStars from 'react-stars';
 
 function VoteActionButton({ vote, data }: any) {
   const [amount, setAmount] = useState('');
@@ -59,7 +59,6 @@ function VoteActionButton({ vote, data }: any) {
   // For Dofi Dao vote Cast
   const handleSubmit = async (isFavour: any) => {
     try {
-
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
         return;
@@ -78,7 +77,7 @@ function VoteActionButton({ vote, data }: any) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits(amount?.toString(), 18),
         ],
       });
@@ -102,11 +101,9 @@ function VoteActionButton({ vote, data }: any) {
   // For Domain Dao vote Cast
   const handleSubmitUpdated = async (isFavour: any) => {
     try {
-
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
         return;
-
       }
       if (balanceData && Number(balanceData) < 1) {
         ToastNotification('error', 'User does not hold the fractions');
@@ -118,9 +115,6 @@ function VoteActionButton({ vote, data }: any) {
         proposalId: vote?._id,
         address: address?.toLowerCase(),
       });
-
-
-
     } catch (error) {
       dispatch(idoActions.setLoading(false));
     }
@@ -147,10 +141,9 @@ function VoteActionButton({ vote, data }: any) {
     }
   }, [address]);
 
-
   return (
     <div className="mt-4 flex flex-col items-center gap-3 xs:mt-6 xs:inline-flex md:mt-10">
-      {(vote?.status == 'active' && vote?.parentDAO && !vote?.hasVoted) && (
+      {vote?.status == 'active' && vote?.parentDAO && !vote?.hasVoted && (
         <div className="">
           <InputLabel title="Amount" important />
           <Input
@@ -161,74 +154,82 @@ function VoteActionButton({ vote, data }: any) {
           />
         </div>
       )}
-      {vote?.parentDAO ? <>
-        <Button
-          shape="rounded"
-          color="success"
-          size="medium"
-          fullWidth={true}
-          className="flex-1 xs:flex-auto"
-          disabled={vote?.status != 'active' || vote?.hasVoted || loading}
-          onClick={() => {
-            handleSubmit('yes')
-          }}
-        >
-          {loading ? (
-            <>
-              <BeatLoader color="#000" />
-            </>
-          ) : (
-            'Vote'
-          )}
-        </Button>
-        <Button
-          shape="rounded"
-          color="danger"
-          size="medium"
-          fullWidth={true}
-          className="flex-1 xs:flex-auto"
-          disabled={vote?.status != 'active' || vote?.hasVoted}
-          onClick={() => handleSubmit('no')}
-        >
-          Reject
-        </Button>
-
-      </> : <>
-        <Button
-          shape="rounded"
-          color="success"
-          size="medium"
-          fullWidth={true}
-          className="flex-1 xs:flex-auto"
-          disabled={vote?.status != 'active' || vote?.hasVoted || loading || data?.votePower < 1}
-          onClick={() => {
-            // if (data?.votePower < 1 && !vote?.parentDAO) {
-            handleSubmitUpdated('yes')
-            // }
-          }}
-        >
-          {loading ? (
-            <>
-              <BeatLoader color="#000" />
-            </>
-          ) : (
-            'Vote'
-          )}
-        </Button>
-        <Button
-          shape="rounded"
-          color="danger"
-          size="medium"
-          fullWidth={true}
-          className="flex-1 xs:flex-auto"
-          disabled={vote?.status != 'active' || vote?.hasVoted  || data?.votePower < 1}
-          onClick={() => handleSubmitUpdated('no')}
-        >
-          Reject
-        </Button>
-
-      </>}
-
+      {vote?.parentDAO ? (
+        <>
+          <Button
+            shape="rounded"
+            color="success"
+            size="medium"
+            fullWidth={true}
+            className="flex-1 xs:flex-auto"
+            disabled={vote?.status != 'active' || vote?.hasVoted || loading}
+            onClick={() => {
+              handleSubmit('yes');
+            }}
+          >
+            {loading ? (
+              <>
+                <BeatLoader color="#000" />
+              </>
+            ) : (
+              'Vote'
+            )}
+          </Button>
+          <Button
+            shape="rounded"
+            color="danger"
+            size="medium"
+            fullWidth={true}
+            className="flex-1 xs:flex-auto"
+            disabled={vote?.status != 'active' || vote?.hasVoted}
+            onClick={() => handleSubmit('no')}
+          >
+            Reject
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            shape="rounded"
+            color="success"
+            size="medium"
+            fullWidth={true}
+            className="flex-1 xs:flex-auto"
+            disabled={
+              vote?.status != 'active' ||
+              vote?.hasVoted ||
+              loading ||
+              data?.votePower < 1
+            }
+            onClick={() => {
+              // if (data?.votePower < 1 && !vote?.parentDAO) {
+              handleSubmitUpdated('yes');
+              // }
+            }}
+          >
+            {loading ? (
+              <>
+                <BeatLoader color="#000" />
+              </>
+            ) : (
+              'Vote'
+            )}
+          </Button>
+          <Button
+            shape="rounded"
+            color="danger"
+            size="medium"
+            fullWidth={true}
+            className="flex-1 xs:flex-auto"
+            disabled={
+              vote?.status != 'active' || vote?.hasVoted || data?.votePower < 1
+            }
+            onClick={() => handleSubmitUpdated('no')}
+          >
+            Reject
+          </Button>
+        </>
+      )}
     </div>
   );
 }
@@ -237,20 +238,20 @@ export default function VoteDetailsCard({ vote, data }: any) {
   const [isExpand, setIsExpand] = useState(false);
   const { layout } = useLayout();
   const getReview = () => {
-    const allocationvalue = (((data?.votePower / data?.totalSupply) * 100));
-   const starValue = (allocationvalue / 100) * 5;
-  return Math.round(starValue);
-  }
+    const allocationvalue = (data?.votePower / data?.totalSupply) * 100;
+    const starValue = (allocationvalue / 100) * 5;
+    return Math.round(starValue);
+  };
   return (
     <motion.div
       layout
       initial={{ borderRadius: 8 }}
       className={cn(
-        'relative mb-3 rounded-[12px]  bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
-        isExpand ? 'border-[#E2E8F0] border' : 'border-[#E2E8F0] border',
+        'relative mb-3 rounded-[12px] bg-white p-5 transition-shadow duration-200 dark:bg-light-dark xs:p-6 xl:p-4',
+        isExpand ? 'border border-[#E2E8F0]' : 'border border-[#E2E8F0]',
       )}
     >
-      <div className="absolute top-2 right-2 text-xl cursor-pointer">
+      <div className="absolute right-2 top-2 cursor-pointer text-xl">
         {isExpand ? (
           <IoIosArrowDropup
             className="text-[24px] text-[#475569]"
@@ -265,42 +266,45 @@ export default function VoteDetailsCard({ vote, data }: any) {
       </div>
       <motion.div
         layout
-        className={cn('flex w-full flex-col-reverse mb-[32px] justify-between', {
-          'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
-          'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
-        })}
+        className={cn(
+          'mb-[32px] flex w-full flex-col-reverse justify-between',
+          {
+            'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
+            'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
+          },
+        )}
       >
-
         <div className="self-start md:col-span-2">
           <div
-            className={`hidden md:flex mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
-              ${vote?.status === 'approved'
-                ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6]'
+            className={`mb-[32px] flex hidden h-[33px] w-[120px] items-center justify-center gap-[8px] rounded-[50px] text-[16px] font-[400] capitalize md:flex ${
+              vote?.status === 'approved'
+                ? 'border border-[#3B82F6] bg-[#DBEAFE] text-[#3B82F6]'
                 : vote?.status === 'rejected'
-                  ? 'bg-[#FEE2E2] text-[#EF4444] border border-[#EF4444]'
+                  ? 'border border-[#EF4444] bg-[#FEE2E2] text-[#EF4444]'
                   : vote?.status === 'active'
-                    ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]'
-                    : 'bg-gray-100 text-gray-800 border border-gray-300'
-              }`}
+                    ? 'border border-[#22C55E] bg-[#DCFCE7] text-[#22C55E]'
+                    : 'border border-gray-300 bg-gray-100 text-gray-800'
+            }`}
           >
             <span className="h-[8px] w-[8px] rounded-full bg-current"></span>
             {vote?.status}
           </div>
-          <div className='flex items-center flex-wrap'>
+          <div className="flex flex-wrap items-center">
             <span
               onClick={() => setIsExpand(!isExpand)}
-              className="capitalize cursor-pointer text-[#000000] font-[500] leading-normal text-[16px] md:text-[20px] pr-[12px] md:pr-[16px]"
+              className="cursor-pointer pr-[12px] text-[16px] font-[500] capitalize leading-normal text-[#000000] md:pr-[16px] md:text-[20px]"
             >
               {vote?.name}
             </span>
-            <span className="border-l border-l-[#64748B] text-[14px] md:text-[16px] text-[#475569] font-[400] pl-[12px] md:pl-[16px] pr-[12px] md:pr-[16px]">
-              {" "}DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
+            <span className="border-l border-l-[#64748B] pl-[12px] pr-[12px] text-[14px] font-[400] text-[#475569] md:pl-[16px] md:pr-[16px] md:text-[16px]">
+              {' '}
+              DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
             </span>
-            <span className="border-l border-l-[#64748B] text-[14px] md:text-[16px] text-[#475569] font-[400] pl-[12px] md:pl-[16px]">
-              {" "}{vote?.nftId?.name}
+            <span className="border-l border-l-[#64748B] pl-[12px] text-[14px] font-[400] text-[#475569] md:pl-[16px] md:text-[16px]">
+              {' '}
+              {vote?.nftId?.name}
             </span>
           </div>
-
 
           {/* <p className="mt-2 text-gray-600 dark:text-gray-400">
             DAO: {vote?.parentDAO?.name || vote?.childDAO?.name}
@@ -308,13 +312,13 @@ export default function VoteDetailsCard({ vote, data }: any) {
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             {vote?.nftId?.name}
           </p> */}
-          <h3 className="mt-[20px] flex justify-start text-[#1E293B] md:text-base font-[400] 2xl:text-[16px]">
+          <h3 className="mt-[20px] flex justify-start font-[400] text-[#1E293B] md:text-base 2xl:text-[16px]">
             Time Remaining:
           </h3>
           {vote.status == 'active' ? (
             <div
               className={cn(
-                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b  before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
                 // {
                 //   'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
                 //     layout !== LAYOUT_OPTIONS.RETRO,
@@ -330,7 +334,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
           ) : (
             <div
               className={cn(
-                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b  before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
+                "before:content-[' '] relative grid h-full gap-2 before:absolute before:bottom-0 before:border-b before:border-gray-200 dark:border-gray-700 dark:before:border-gray-700 xs:gap-2.5 ltr:before:left-0 rtl:before:right-0",
                 // {
                 //   'mb-5 pb-5 before:h-[1px] before:w-full md:mb-0 md:pb-0 md:before:h-full md:before:w-[1px] ltr:md:pl-5 ltr:xl:pl-3 rtl:md:pr-5 rtl:xl:pr-3':
                 //     layout !== LAYOUT_OPTIONS.RETRO,
@@ -339,7 +343,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
                 // },
               )}
             >
-              <h3 className="mt-[8px]  flex justify-start text-[#1E293B] md:text-base md:font-[500]  2xl:text-[20px">
+              <h3 className="2xl:text-[20px mt-[8px] flex justify-start text-[#1E293B] md:text-base md:font-[500]">
                 Voting Ended
               </h3>
               {/* <AuctionCountdown date={undefined} /> */}
@@ -347,49 +351,51 @@ export default function VoteDetailsCard({ vote, data }: any) {
           )}
         </div>
 
-
-        <div className='flex flex-col justify-between items-start md:items-end mb-10 md:mb-0'>
-          <div className='flex md:hidden w-full flex justify-between'>
+        <div className="mb-10 flex flex-col items-start justify-between md:mb-0 md:items-end">
+          <div className="flex w-full justify-between md:hidden">
             <div
-              className={` mb-[32px] flex gap-[8px] capitalize h-[33px] w-[120px] items-center justify-center rounded-[50px] text-[16px] font-[400] 
-              ${vote?.status === 'approved'
-                  ? 'bg-[#DBEAFE] text-[#3B82F6] border border-[#3B82F6]'
+              className={`mb-[32px] flex h-[33px] w-[120px] items-center justify-center gap-[8px] rounded-[50px] text-[16px] font-[400] capitalize ${
+                vote?.status === 'approved'
+                  ? 'border border-[#3B82F6] bg-[#DBEAFE] text-[#3B82F6]'
                   : vote?.status === 'rejected'
-                    ? 'bg-[#FEE2E2] text-[#EF4444] border border-[#EF4444]'
+                    ? 'border border-[#EF4444] bg-[#FEE2E2] text-[#EF4444]'
                     : vote?.status === 'active'
-                      ? 'bg-[#DCFCE7] text-[#22C55E] border border-[#22C55E]'
-                      : 'bg-gray-100 text-gray-800 border border-gray-300'
-                }`}
+                      ? 'border border-[#22C55E] bg-[#DCFCE7] text-[#22C55E]'
+                      : 'border border-gray-300 bg-gray-100 text-gray-800'
+              }`}
             >
               <span className="h-[8px] w-[8px] rounded-full bg-current"></span>
               {vote?.status}
             </div>
             <div>
-
-              <p className='text-[#475569] text-[16px] font-[400] mt-4'>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+              <p className="mt-4 text-[16px] font-[400] text-[#475569]">
+                {formatDistanceToNow(new Date(vote?.creationDate), {
+                  addSuffix: true,
+                })}
+              </p>
               {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
             </div>
           </div>
 
-          <div className='hidden md:flex'>
-
-
-            <p className='text-[#475569] text-[16px] font-[400] mt-4'>{formatDistanceToNow(new Date(vote?.creationDate), { addSuffix: true })}</p>
+          <div className="hidden md:flex">
+            <p className="mt-4 text-[16px] font-[400] text-[#475569]">
+              {formatDistanceToNow(new Date(vote?.creationDate), {
+                addSuffix: true,
+              })}
+            </p>
             {/* <p className='text-[#475569] text-[16px] font-[400] '>{vote?.creationDate}</p> */}
           </div>
-          {
-            !isExpand ? (<>
-              <div className=''>
+          {!isExpand ? (
+            <>
+              <div className="">
                 <VotePoll title={''} vote={vote} />
               </div>
-
-            </>) : null
-          }
+            </>
+          ) : null}
           {!isExpand ? (
             <Button
               onClick={() => setIsExpand(!isExpand)}
-
-              className="w-full  xs:w-auto"
+              className="w-full xs:w-auto"
               shape="rounded"
             >
               Vote Now
@@ -410,13 +416,15 @@ export default function VoteDetailsCard({ vote, data }: any) {
           >
             <hr />
             <div
-              className={cn('flex flex-col w-full mt-[28px] mb-[28px] justify-between')}
+              className={cn(
+                'mb-[28px] mt-[28px] flex w-full flex-col justify-between',
+              )}
             >
-              <div className=' w-full mb-[32px]' >
+              <div className="mb-[32px] w-full">
                 {vote?.parentDAO ? (
                   <>
-                    <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
-                      <div className="text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                    <div className="flex w-full flex-col justify-start md:flex-row md:justify-between">
+                      <div className="flex justify-between text-[14px] font-[400] text-[#64748B] md:w-[48%]">
                         Proposed by:{' '}
                         <span className="font-[400] text-black">
                           <a
@@ -431,20 +439,20 @@ export default function VoteDetailsCard({ vote, data }: any) {
                         </span>
                       </div>
                       <div className="flex justify-between md:w-[48%]">
-                        <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                        <div className="flex gap-2 text-[14px] font-[400] text-[#64748B]">
                           <Image src={Criteria} alt="no-icon" />
                           Acceptacnce Criteria:{' '}
                         </div>
-                        <span className="font-[400] text-black ml-[10px]">
-                          {"$DOFI 100"}
+                        <span className="ml-[10px] font-[400] text-black">
+                          {'$DOFI 100'}
                         </span>
                       </div>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className='w-full flex flex-col md:flex-row justify-start md:justify-between gap-10'>
-                      <div className=" text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                    <div className="flex w-full flex-col justify-start gap-10 md:flex-row md:justify-between">
+                      <div className="flex justify-between text-[14px] font-[400] text-[#64748B] md:w-[48%]">
                         Proposed by:{' '}
                         <span className="font-[400] text-black">
                           <a
@@ -458,30 +466,30 @@ export default function VoteDetailsCard({ vote, data }: any) {
                           </a>
                         </span>
                       </div>
-                      <div className=" text-[#64748B] text-[14px] font-[400] flex justify-between md:w-[48%]">
+                      <div className="flex justify-between text-[14px] font-[400] text-[#64748B] md:w-[48%]">
                         Leasing address:{' '}
-                        <span className="font-[400] text-black text-right">
+                        <span className="text-right font-[400] text-black">
                           {vote?.leasingAddress.slice(0, 5)}...
                           {vote?.leasingAddress.slice(-5)}
                         </span>
                       </div>
                     </div>
-                    {data?.totalSupply > 1 ?
+                    {data?.totalSupply > 1 ? (
                       <>
-                        <div className='w-full flex flex-col md:flex-row justify-start md:justify-between'>
-                          <div className="mt-4 flex justify-between items-center md:w-[48%]">
-                            <div className="flex items-center gap-2 text-[#64748B] text-[14px] font-[400]">
+                        <div className="flex w-full flex-col justify-start md:flex-row md:justify-between">
+                          <div className="mt-4 flex items-center justify-between md:w-[48%]">
+                            <div className="flex items-center gap-2 text-[14px] font-[400] text-[#64748B]">
                               <Image src={Yield} alt="no-icon" />
                               Yield percentage:
                             </div>
 
-                            <span className="font-[400] text-black ml-[10px]">
+                            <span className="ml-[10px] font-[400] text-black">
                               {vote?.percentageYield || 3}
                             </span>
                           </div>
-                          <div className="mt-4 flex items-center justify-between md:w-[48%] gap-4">
+                          <div className="mt-4 flex items-center justify-between gap-4 md:w-[48%]">
                             {/* Left Label */}
-                            <div className="flex items-center gap-2 min-w-max text-[#64748B] text-[14px] font-[400]">
+                            <div className="flex min-w-max items-center gap-2 text-[14px] font-[400] text-[#64748B]">
                               <Image src={Vote} alt="no-icon" />
                               Vote Weightage ({data?.votePower}):
                             </div>
@@ -490,13 +498,11 @@ export default function VoteDetailsCard({ vote, data }: any) {
                             <div className="">
                               <ReactStars
                                 count={5}
-                                value={
-                                  getReview()
-                                }
+                                value={getReview()}
                                 size={24}
-                                color2={'#ffd700'} 
+                                color2={'#ffd700'}
                                 edit={false}
-                                />
+                              />
                               {/* <div className="flex justify-between mb-1">
                                 <span className="text-[14px] font-[500] text-[#64748B]">0%</span>
                                 <span className="text-[14px] font-[500] text-[#1E293B]">
@@ -514,71 +520,78 @@ export default function VoteDetailsCard({ vote, data }: any) {
                               </div> */}
                             </div>
                           </div>
-
                         </div>
-                        <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
-                          <div className="mt-4  flex justify-between md:w-[48%]">
-                            <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                        <div className="flex w-full flex-col justify-start md:flex-row md:justify-between">
+                          <div className="mt-4 flex justify-between md:w-[48%]">
+                            <div className="flex gap-2 text-[14px] font-[400] text-[#64748B]">
                               <Image src={Criteria} alt="no-icon" />
-                              Acceptance Criteria <span className='text-[12px]'>(70%)</span>:{' '}
+                              Acceptance Criteria{' '}
+                              <span className="text-[12px]">(70%)</span>:{' '}
                             </div>
 
-                            <span className="font-[400] text-black ml-[10px]">
+                            <span className="ml-[10px] font-[400] text-black">
                               {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
                               {data?.quorum}
                             </span>
                           </div>
                           <div className="mt-4 flex justify-between md:w-[48%]">
-                            <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                            <div className="flex gap-2 text-[14px] font-[400] text-[#64748B]">
                               <Image src={TotalSupplyIcon} alt="no-icon" />
                               Total Supply:
                             </div>
 
-                            <span className="font-[400] text-black ml-[10px]">
+                            <span className="ml-[10px] font-[400] text-black">
                               {/* {data?.quorum} Quorum (Total Supply {data?.totalSupply}) */}
                               {data?.totalSupply || 0}
                             </span>
                           </div>
                         </div>
-                      </> :
-                      <div className='w-full flex flex-col md:flex-row justify-start md:justify-between '>
-                        <div className="mt-4  flex justify-between md:w-[48%]">
-                          <div className=" text-[#64748B] text-[14px] font-[400] flex gap-2">
+                      </>
+                    ) : (
+                      <div className="flex w-full flex-col justify-start md:flex-row md:justify-between">
+                        <div className="mt-4 flex justify-between md:w-[48%]">
+                          <div className="flex gap-2 text-[14px] font-[400] text-[#64748B]">
                             <Image src={Yield} alt="no-icon" />
                             Yield percentage:{' '}
                           </div>
 
-                          <span className="font-[400] text-black ml-[10px]">
+                          <span className="ml-[10px] font-[400] text-black">
                             {vote?.percentageYield || 3}
                           </span>
                         </div>
-                        <div className="mt-4  flex justify-between md:w-[48%]">
-                          <div className="text-[#64748B] text-[14px] font-[400] flex gap-2">
+                        <div className="mt-4 flex justify-between md:w-[48%]">
+                          <div className="flex gap-2 text-[14px] font-[400] text-[#64748B]">
                             <Image src={Criteria} alt="no-icon" />
                             Acceptance Criteria:{' '}
                           </div>
 
-                          <span className="font-[400] text-black ml-[10px]">
+                          <span className="ml-[10px] font-[400] text-black">
                             $DOFI 100
                           </span>
                         </div>
                       </div>
-                    }
+                    )}
                   </>
                 )}
               </div>
               <hr />
-              <div className=' w-full  mt-[32px]'>
+              <div className="mt-[32px] w-full">
                 <VotePoll title={'Votes'} vote={vote} />
-                <VoterTable votes={vote?.votes || []} price={vote?.pricePerFraction} />
+                <VoterTable
+                  votes={vote?.votes || []}
+                  price={vote?.pricePerFraction}
+                />
               </div>
             </div>
             <hr />
             <div
-              className={cn('flex w-full flex-col-reverse justify-between mt-[32px]', {
-                'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
-                'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
-              })}
+              className={cn(
+                'mt-[32px] flex w-full flex-col-reverse justify-between',
+                {
+                  'md:grid md:grid-cols-3': layout !== LAYOUT_OPTIONS.RETRO,
+                  'lg:grid lg:grid-cols-3': layout === LAYOUT_OPTIONS.RETRO,
+                },
+              )}
             >
               {/* <h4 className="mb-6 uppercase dark:text-gray-100">Description</h4> */}
               {/* <div className="mb-2">
@@ -594,20 +607,22 @@ export default function VoteDetailsCard({ vote, data }: any) {
               </div> */}
               <div className="mb-2">
                 <RevealContent defaultHeight={250}>
-                  <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">
+                  <h5 className="mb-6 text-[14px] font-[400] text-[#64748B]">
                     Motivation:
                   </h5>
                   <div
-                    className="dynamic-html grid gap-2 leading-relaxed text-black text-[14px] font-[400]"
+                    className="dynamic-html grid gap-2 text-[14px] font-[400] leading-relaxed text-black"
                     dangerouslySetInnerHTML={{ __html: vote?.motivation ?? '' }}
                   />
                 </RevealContent>
               </div>
               <div className="mt-2">
                 <RevealContent defaultHeight={250}>
-                  <h5 className="mb-6 text-[#64748B] font-[400] text-[14px]">Summary:</h5>
+                  <h5 className="mb-6 text-[14px] font-[400] text-[#64748B]">
+                    Summary:
+                  </h5>
                   <div
-                    className="dynamic-html grid gap-2 leading-relaxed text-black text-[14px] font-[400]"
+                    className="dynamic-html grid gap-2 text-[14px] font-[400] leading-relaxed text-black"
                     dangerouslySetInnerHTML={{ __html: vote?.summary ?? '' }}
                   />
                 </RevealContent>

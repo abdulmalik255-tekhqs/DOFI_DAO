@@ -113,7 +113,7 @@ const IDODetailPage = () => {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits(totalPrice?.toString(), 18),
         ],
       });
@@ -480,7 +480,7 @@ const IDODetailPage = () => {
                               <button
                                 onClick={() => handleBuyShare()}
                                 disabled={loading || isExpired}
-                                className="flex h-[41px] w-[110px] items-center justify-center rounded-[6px] bg-gradient-to-br from-[#221FBB] to-[#C520DE] text-[14px] font-[500] text-[#ffffff]"
+                                className="flex h-[41px] w-[130px] items-center justify-center rounded-[6px] bg-gradient-to-br from-[#221FBB] to-[#C520DE] text-[14px] font-[500] text-[#ffffff]"
                               >
                                 {loading ? (
                                   <BeatLoader color="#221FBB" size={8} />
@@ -493,7 +493,7 @@ const IDODetailPage = () => {
                             <button
                               onClick={() => handleBuyShare()}
                               disabled={loading || isExpired}
-                              className="flex h-[45px] w-[114px] items-center justify-center rounded-[8px] bg-gradient-to-br from-[#DF820E] to-[#F03132] px-4 py-3 text-[14px] font-[400] text-white"
+                              className="flex h-[45px] w-[130px] items-center justify-center rounded-[8px] bg-gradient-to-br from-[#DF820E] to-[#F03132] px-4 py-3 text-[14px] font-[400] text-white"
                             >
                               {loading ? (
                                 <BeatLoader color="#fff" size={8} />

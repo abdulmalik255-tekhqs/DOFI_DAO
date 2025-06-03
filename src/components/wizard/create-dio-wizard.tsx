@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWriteContract } from 'wagmi';
-import { Listbox } from '@headlessui/react'
+import { Listbox } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { daoTokenABI } from '@/utils/abi';
 import Button from '@/components/ui/button';
 import { Copy } from '@/components/icons/copy';
 import { FaSackDollar } from 'react-icons/fa6';
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import { useAccount } from 'wagmi';
 import { BeatLoader } from 'react-spinners';
 import { AiOutlineGlobal } from 'react-icons/ai';
@@ -25,7 +25,6 @@ import Image from 'next/image';
 import { useCopyToClipboard } from 'react-use';
 import ToastNotification from '../ui/toast-notification';
 
-
 interface CreateIDOProps {
   data: any;
 }
@@ -35,7 +34,6 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
       icon: DAO,
       code: 'DOFI',
       name: 'DOFI',
-
     },
     {
       icon: Eth,
@@ -57,7 +55,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
   const [nextLoader, setNextLoader] = useState(false);
   const [priceFraction, setPricefraction] = useState('');
   const { mutate: submitCreate } = useCreateIDOWizard(setCurrentStepButton);
-  const [mintedHash, setMindedHash] = useState("");
+  const [mintedHash, setMindedHash] = useState('');
   const [selectedCoin, setSelectedCoin] = useState(coinListDIO[0]);
   let [copyButtonStatus, setCopyButtonStatus] = useState('Copy');
   let [_, copyToClipboard] = useCopyToClipboard();
@@ -71,7 +69,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
         functionName: 'transferFrom',
         args: [
           address,
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           data?.tokenId,
         ],
       });
@@ -85,7 +83,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
       };
       if (recipientRaw.status === 'success') {
         dispatch(idoActions.setBuytransactionHash(recipient));
-        setMindedHash(recipient?.transactionHash)
+        setMindedHash(recipient?.transactionHash);
         submitCreate({
           nftID: data?._id,
           name: `${data?.name} DIO`,
@@ -115,7 +113,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
   const handleCopyToClipboard = () => {
     copyToClipboard(mintedHash);
     setCopyButtonStatus('Copied!');
-    ToastNotification("success","Copied!")
+    ToastNotification('success', 'Copied!');
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
     }, 1000);
@@ -123,7 +121,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
 
   return (
     <>
-      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 gap-10 md:grid-cols-2 p-4">
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 p-4 md:grid-cols-2">
         {/* === DIO FORM CARD === */}
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
           <h1 className="mb-2 text-xl font-extrabold uppercase tracking-tighter text-gray-900 dark:text-white">
@@ -165,12 +163,18 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
             </label>
 
             <div className="w-full max-w-xs">
-              <label className="block text-sm font-bold text-gray-700 dark:text-white mb-1">SELECT TOKEN</label>
+              <label className="mb-1 block text-sm font-bold text-gray-700 dark:text-white">
+                SELECT TOKEN
+              </label>
               <Listbox value={selectedCoin} onChange={setSelectedCoin}>
                 <div className="relative">
                   <Listbox.Button className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                     <div className="flex items-center gap-2">
-                      <Image src={selectedCoin.icon} alt={selectedCoin.name} className='rounded-full h-6 w-6' />
+                      <Image
+                        src={selectedCoin.icon}
+                        alt={selectedCoin.name}
+                        className="h-6 w-6 rounded-full"
+                      />
                       {selectedCoin.name}
                     </div>
                   </Listbox.Button>
@@ -180,9 +184,13 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                       <Listbox.Option
                         key={coin.code}
                         value={coin}
-                        className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                        className="flex cursor-pointer items-center gap-2 px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
                       >
-                        <Image src={coin.icon} alt={coin.name} className='rounded-full h-6 w-6' />
+                        <Image
+                          src={coin.icon}
+                          alt={coin.name}
+                          className="h-6 w-6 rounded-full"
+                        />
                         {coin.name}
                       </Listbox.Option>
                     ))}
@@ -190,36 +198,47 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                 </div>
               </Listbox>
             </div>
-            <div className='flex flex-col gap-2'>
+            <div className="flex flex-col gap-2">
               {/* progress bar */}
-              <div className="w-full flex justify-between items-center py-2 gap-2">
+              <div className="flex w-full items-center justify-between gap-2 py-2">
                 {steps.map((step, index) => {
                   const isCompleted = index < currentStepButton;
                   const isActive = index === currentStepButton;
                   return (
-                    <div key={index} className="flex flex-col items-center flex-1">
-
+                    <div
+                      key={index}
+                      className="flex flex-1 flex-col items-center"
+                    >
                       {/* Progress Bar */}
                       <div
-                        className={`h-2 w-full rounded-full transition-all duration-500 ${isCompleted || isActive ? 'bg-green-500' : 'bg-gray-300'
-                          }`}
+                        className={`h-2 w-full rounded-full transition-all duration-500 ${
+                          isCompleted || isActive
+                            ? 'bg-green-500'
+                            : 'bg-gray-300'
+                        }`}
                       />
                     </div>
                   );
                 })}
               </div>
-              {currentStepButton === 0 && <>
-                <Button
-                  size="small"
-                  shape="rounded"
-                  onClick={handleBuy}
-                  fullWidth
-                  disabled={loading}
-                  className="uppercase xs:tracking-widest"
-                >
-                  {loading ? <BeatLoader color="#000" /> : 'Send NFT to escrow'}
-                </Button>
-              </>}
+              {currentStepButton === 0 && (
+                <>
+                  <Button
+                    size="small"
+                    shape="rounded"
+                    onClick={handleBuy}
+                    fullWidth
+                    disabled={loading}
+                    className="uppercase xs:tracking-widest"
+                  >
+                    {loading ? (
+                      <BeatLoader color="#000" />
+                    ) : (
+                      'Send NFT to escrow'
+                    )}
+                  </Button>
+                </>
+              )}
               <AnimatePresence mode="wait">
                 {currentStepButton === 1 && (
                   <motion.div
@@ -235,7 +254,7 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                       onClick={goToAllProposalPage}
                       fullWidth
                       disabled={nextLoader}
-                      className="uppercase xs:tracking-widest text-[1px]"
+                      className="text-[1px] uppercase xs:tracking-widest"
                     >
                       {nextLoader ? <BeatLoader color="#000" /> : 'Tokenize'}
                     </Button>
@@ -245,9 +264,12 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
               {/* Submit Button */}
             </div>
 
-
-            <p className="mt-4 text-xs leading-relaxed text-left text-gray-600 dark:text-gray-400">
-              <span className="font-semibold text-red-500">Note:</span> This action will create the Domain Initial Offering for the purchased domain. Upon successful DIO completion, a separate domain sub-DAO is created where fraction holders can participate and vote using their ERC-1155 fraction assets.
+            <p className="mt-4 text-left text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+              <span className="font-semibold text-red-500">Note:</span> This
+              action will create the Domain Initial Offering for the purchased
+              domain. Upon successful DIO completion, a separate domain sub-DAO
+              is created where fraction holders can participate and vote using
+              their ERC-1155 fraction assets.
             </p>
             <AnimatePresence>
               {mintedHash && (
@@ -257,22 +279,22 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   transition={{ duration: 0.6, ease: 'easeOut' }} // Slower & smooth
-                  className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 shadow-xl p-4"
+                  className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-4 shadow-xl"
                 >
-                  <h3 className="text-sm font-medium uppercase tracking-wide text-white flex items-center gap-2">
+                  <h3 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-white">
                     {mintedHash?.slice(0, 6)}...
                     {mintedHash?.slice(-6)}
                     <span
                       onClick={handleCopyToClipboard}
                       className="text-md flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-all hover:border-gray-400 hover:text-black dark:border-gray-700 dark:text-gray-400"
                     >
-                      <Copy className="h-4 w-4 text-white cursor-pointer" />
+                      <Copy className="h-4 w-4 cursor-pointer text-white" />
                     </span>
                     <a
                       href={`https://sepolia.basescan.org/tx/${mintedHash}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="cursor-pointer inline-flex items-center gap-1 text-blue-600 hover:underline"
+                      className="inline-flex cursor-pointer items-center gap-1 text-blue-600 hover:underline"
                     >
                       <FaExternalLinkAlt />
                     </a>
@@ -280,36 +302,35 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </div>
         </div>
         {/* === PRIVILEGES CARD === */}
-        <div className="rounded-2xl border border-transparent bg-gradient-to-br from-gray-50 to-gray-100 p-6 shadow-inner dark:from-gray-800 dark:to-gray-900 dark:border-gray-700">
-          <h2 className="mb-6 text-xl font-bold uppercase text-gray-900 dark:text-white text-center">
+        <div className="rounded-2xl border border-transparent bg-gradient-to-br from-gray-50 to-gray-100 p-6 shadow-inner dark:border-gray-700 dark:from-gray-800 dark:to-gray-900">
+          <h2 className="mb-6 text-center text-xl font-bold uppercase text-gray-900 dark:text-white">
             Domain DAO Privileges
           </h2>
           <div className="space-y-6">
             {[
               {
-                icon: <FaSackDollar className="text-yellow-400 text-lg" />,
+                icon: <FaSackDollar className="text-lg text-yellow-400" />,
                 title: 'Revenue Sharing',
-                desc: 'Earn a share of revenue generated from domain monetization, leasing, or resales.'
+                desc: 'Earn a share of revenue generated from domain monetization, leasing, or resales.',
               },
               {
-                icon: <AiOutlineGlobal className="text-blue-500 text-lg" />,
+                icon: <AiOutlineGlobal className="text-lg text-blue-500" />,
                 title: 'Domain Utility Decisions',
-                desc: 'Vote on how the ENS domain is used across dApps, marketplaces, or DAOs.'
+                desc: 'Vote on how the ENS domain is used across dApps, marketplaces, or DAOs.',
               },
               {
-                icon: <GiBrain className="text-pink-500 text-lg" />,
+                icon: <GiBrain className="text-lg text-pink-500" />,
                 title: 'Name Service Innovation',
-                desc: 'Collaborate on experiments like subdomain leasing, identity use cases, or zk integrations.'
+                desc: 'Collaborate on experiments like subdomain leasing, identity use cases, or zk integrations.',
               },
               {
-                icon: <FaLock className="text-yellow-400 text-lg" />,
+                icon: <FaLock className="text-lg text-yellow-400" />,
                 title: 'Token-Gated Access',
-                desc: 'Get exclusive access to token-holder-only tools, chats, and community calls.'
-              }
+                desc: 'Get exclusive access to token-holder-only tools, chats, and community calls.',
+              },
             ].map(({ icon, title, desc }, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="pt-1">{icon}</div>
@@ -317,7 +338,9 @@ export default function CreateIDOWizard({ data }: CreateIDOProps) {
                   <h3 className="text-md font-semibold text-gray-800 dark:text-gray-100">
                     {title}
                   </h3>
-                  <p className="text-sm text-gray-700 dark:text-gray-400">{desc}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-400">
+                    {desc}
+                  </p>
                 </div>
               </div>
             ))}

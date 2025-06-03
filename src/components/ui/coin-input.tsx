@@ -12,7 +12,7 @@ interface CoinInputTypes extends React.InputHTMLAttributes<HTMLInputElement> {
   exchangeRate?: any;
   defaultCoinIndex?: number;
   className?: string;
-  toAmount?: any,
+  toAmount?: any;
   getCoinValue?: (param: { coin: string; value: string }) => void;
   onSelectCoin?: (coin: any) => void;
 }
@@ -61,24 +61,39 @@ export default function CoinInput({
     <>
       <div
         className={cn(
-          'group flex min-h-[70px] bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] transition-colors duration-200 hover:border-gray-900',
+          'group flex min-h-[70px] rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] transition-colors duration-200 hover:border-gray-900',
           className,
         )}
       >
         <div className="min-w-[80px] border-gray-200 p-3 transition-colors duration-200 group-hover:border-gray-900 dark:border-gray-700 dark:group-hover:border-gray-600">
-          <span className="mb-[10px] text-[16px] uppercase text-[#94A3B8] text-center font-[400]">
+          <span className="mb-[10px] text-center text-[16px] font-[400] uppercase text-[#94A3B8]">
             {label}
           </span>
           <button
             onClick={() =>
               openModal('SWAP_COIN_SELECT', { handleSelectedCoin })
             }
-            className="flex mt-3 items-center font-medium outline-none dark:text-gray-100"
+            className="mt-3 flex items-center font-medium outline-none dark:text-gray-100"
           >
-            {selectedCoin?.imageUrl && <img className="h-6 w-6 rounded-full" src={"https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png"} />}
-            {selectedCoin?.name ? <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span> : <span className='text-[16px] font-[400] text-[#334155] '>Select Token</span>}
-            
-            <ChevronDown className="ltr:ml-1.5 rtl:mr-1.5 text-[#334155]" />
+            {selectedCoin?.imageUrl && (
+              <img
+                className="h-6 w-6 rounded-full"
+                src={
+                  selectedCoin?.name === 'DO.FI'
+                    ? 'https://crimson-implicit-eel-562.mypinata.cloud/ipfs/bafybeicmjwhonuqleim7ququyfjjc25mlggyrlfar4qmywn7q4vecv4zi4/01.png'
+                    : selectedCoin?.imageUrl
+                }
+              />
+            )}
+            {selectedCoin?.name ? (
+              <span className="ltr:ml-2 rtl:mr-2">{selectedCoin?.name} </span>
+            ) : (
+              <span className="text-[16px] font-[400] text-[#334155]">
+                Select Token
+              </span>
+            )}
+
+            <ChevronDown className="text-[#334155] ltr:ml-1.5 rtl:mr-1.5" />
           </button>
         </div>
         <div className="flex flex-1 flex-col text-right">
@@ -94,7 +109,7 @@ export default function CoinInput({
                 e.preventDefault();
               }
             }}
-            className="w-full bg-[#F8FAFC] rounded-br-lg rounded-tr-lg border-0 pb-0.5 text-right text-lg outline-none focus:ring-0 placeholder:text-[#334155]"
+            className="w-full rounded-br-lg rounded-tr-lg border-0 bg-[#F8FAFC] pb-0.5 text-right text-lg outline-none placeholder:text-[#334155] focus:ring-0"
             {...rest}
           />
           <span className="font-xs px-3 text-gray-400">

@@ -11,29 +11,13 @@ import InputLabel from '@/components/ui/input-label';
 import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
 import Button from '@/components/ui/button';
-import Image from '@/components/ui/image';
-import { ExportIcon } from '@/components/icons/export-icon';
-import { Close as CloseIcon } from '@/components/icons/close';
 import Input from '@/components/ui/forms/input';
 import Textarea from '@/components/ui/forms/textarea';
 import Listbox, { ListboxOption } from '@/components/ui/list-box';
 import { useLayout } from '@/lib/hooks/use-layout';
-import FileInput from '@/components/ui/file-input';
 // static data
-import votePool from '@/assets/images/vote-pool.svg';
 import { LAYOUT_OPTIONS } from '@/lib/constants';
-import { Switch } from '@/components/ui/switch';
-import PriceType from '@/components/create-nft/price-types-props';
-import cn from '@/utils/cn';
-import { AiOutlineInfoCircle } from 'react-icons/ai';
-import Avatar from '@/components/ui/avatar';
-import AuthorImage from '@/assets/images/author.jpg';
-import NFT1 from '@/assets/images/nft/nft-1.jpg';
-import {
-  useCreatePropsals,
-  useGetALLPropsalNFTS,
-  useGetNFTS,
-} from '@/hooks/livePricing';
+import { useCreatePropsals, useGetALLPropsalNFTS } from '@/hooks/livePricing';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import ToastNotification from '@/components/ui/toast-notification';
@@ -244,7 +228,7 @@ const CreateProposalPage = () => {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits((50)?.toString(), 18),
         ],
       });
@@ -433,75 +417,3 @@ const CreateProposalPage = () => {
 };
 
 export default CreateProposalPage;
-
-{
-  /* <div className="mb-8 grid grid-cols-1 gap-12 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <div className="mb-8">
-            <InputLabel title="Upload file" important />
-
-            <FileInput multiple />
-          </div>
-
-          <div className="flex items-center justify-between gap-4">
-            <InputLabel
-              title="Put on marketplace"
-              subTitle="Enter price to allow users instantly purchase your NFT"
-            />
-            <div className="shrink-0">
-              <Switch checked={publish} onChange={() => setPublish(!publish)}>
-                <div
-                  className={cn(
-                    publish
-                      ? 'bg-brand dark:!bg-white'
-                      : 'bg-gray-200 dark:bg-gray-700',
-                    'relative inline-flex h-[22px] w-10 items-center rounded-full transition-colors duration-300',
-                  )}
-                >
-                  <span
-                    className={cn(
-                      publish
-                        ? 'bg-white dark:bg-light-dark ltr:translate-x-5 rtl:-translate-x-5'
-                        : 'bg-white dark:bg-light-dark ltr:translate-x-0.5 rtl:-translate-x-0.5',
-                      'inline-block h-[18px] w-[18px] transform rounded-full bg-white transition-transform duration-200',
-                    )}
-                  />
-                </div>
-              </Switch>
-            </div>
-          </div>
-          {publish && <PriceType value={priceType} onChange={setPriceType} />}
-        </div>
-        <div className="hidden flex-col lg:flex">
-          <InputLabel title="Preview" />
-          <div className="relative flex flex-grow flex-col overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:shadow-large dark:bg-light-dark">
-            <div className="flex items-center p-4 text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-400">
-              <Avatar
-                size="sm"
-                image={AuthorImage}
-                alt="Cameronwilliamson"
-                className="border-white bg-gray-300 dark:bg-gray-400 ltr:mr-3 rtl:ml-3"
-              />
-              @Cameronwilliamson
-            </div>
-            <div className="relative block w-full">
-              <Image
-                src={NFT1}
-                placeholder="blur"
-                width={700}
-                height={700}
-                alt="Pulses of Imagination #214"
-              />
-            </div>
-            <div className="p-5">
-              <div className="text-sm font-medium text-black dark:text-white">
-                Pulses Of Imagination #214
-              </div>
-              <div className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-                0.40 ETH
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */
-}

@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
-import { parseUnits, formatEther } from 'viem';
+import { parseUnits } from 'viem';
 import { tetherABI } from '@/utils/abi';
 import { config } from '@/app/shared/wagmi-config';
 import { StaticImageData } from 'next/image';
@@ -77,7 +77,10 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
         address: process.env.NEXT_PUBLIC_USDT_TOKEN as `0x${string}`,
         abi: tetherABI,
         functionName: 'transfer',
-        args: ['0xA50673D518847dF8A5dc928B905c54c35930b949', priceInWei],
+        args: [
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
+          priceInWei,
+        ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
         hash,
@@ -125,11 +128,8 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
             <div className="block">
               <div className="flex justify-between">
                 <h2 className="text-xl font-medium leading-[1.45em] -tracking-wider text-gray-900 dark:text-white md:text-2xl xl:text-3xl">
-                  {nftDetail?.name} #{nftDetail?.tokenId}
+                  {nftDetail?.name} - Token ID: {nftDetail?.tokenId}
                 </h2>
-                {/* <div className="mt-1.5 shrink-0 xl:mt-2 ltr:ml-3 rtl:mr-3">
-                  <NftDropDown />
-                </div> */}
               </div>
               <AnchorLink
                 href=""
@@ -198,36 +198,6 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                           {nftDetail?.description}
                         </div>
                       </div>
-                      {/* <div className="block">
-                        <h3 className="text-heading-style mb-2 uppercase text-gray-900 dark:text-white">
-                          Owner
-                        </h3>
-                        <AnchorLink href={owner?.slug} className="inline-block">
-                          <ListCard
-                            item={owner}
-                            className="rounded-full p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                          />
-                        </AnchorLink>
-                      </div>
-                      <div className="block">
-                        <h3 className="text-heading-style mb-2 uppercase text-gray-900 dark:text-white">
-                          Block Chain
-                        </h3>
-                        <div className="flex flex-col gap-2">
-                          {block_chains?.map((item: any) => (
-                            <AnchorLink
-                              href="#"
-                              className="inline-flex"
-                              key={item?.id}
-                            >
-                              <ListCard
-                                item={item}
-                                className="rounded-full p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                              />
-                            </AnchorLink>
-                          ))}
-                        </div>
-                      </div> */}
                     </div>
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
@@ -268,31 +238,17 @@ export default function NftDetails({ product }: { product: NftDetailsProps }) {
                   >
                     {loading ? (
                       <>
-                        <BeatLoader color="#000" />
+                        <BeatLoader color="#fff" />
                       </>
                     ) : (
-                      'BUY'
+                      'Buy'
                     )}
                   </Button>
                 </div>
               </div>
             </>
           )}
-
-          {/* <NftFooter
-            className="hidden md:block"
-            currentBid={nftData?.bids[nftData?.bids?.length - 1]}
-            auctionTime={Date.now() + 4000000 * 10}
-            isAuction={isAuction}
-            price={price}
-          /> */}
         </div>
-        {/* <NftFooter
-          currentBid={nftData?.bids[nftData?.bids?.length - 1]}
-          auctionTime={Date.now() + 4000000 * 10}
-          isAuction={isAuction}
-          price={price}
-        /> */}
       </div>
     </div>
   );

@@ -16,13 +16,11 @@ import { useFetchNFTSWAP, usePostCaculate, useSwap } from '@/hooks/livePricing';
 import { BeatLoader } from 'react-spinners';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { useModal } from '@/components/modal-views/context';
 import ToastNotification from '@/components/ui/toast-notification';
 
 const SwapPage = () => {
   const { mutate: submitSwap, isError, error } = useSwap();
   const { loading } = useSelector((state: any) => state.ido);
-  const { openModal } = useModal();
   const { address } = useAccount();
   const dispatch = useDispatch();
   const { writeContractAsync } = useWriteContract();
@@ -134,7 +132,7 @@ const SwapPage = () => {
           abi: tetherABI,
           functionName: 'transfer',
           args: [
-            '0xA50673D518847dF8A5dc928B905c54c35930b949',
+            process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
             parseUnits(fromAmount?.value?.toString(), 18),
           ],
         });
@@ -158,7 +156,7 @@ const SwapPage = () => {
           functionName: 'safeTransferFrom',
           args: [
             address,
-            '0xA50673D518847dF8A5dc928B905c54c35930b949',
+            process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
             selectedFromSwapCoin?.tokenId,
             parseUnits(fromAmount?.value?.toString(), 0),
             '0x',
@@ -242,7 +240,7 @@ const SwapPage = () => {
             >
               {loading ? (
                 <>
-                  <BeatLoader color="#000" />
+                  <BeatLoader color="#fff" />
                 </>
               ) : (
                 'Swap'

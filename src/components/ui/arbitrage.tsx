@@ -57,7 +57,7 @@ const ArbitragePage = () => {
           functionName: 'safeTransferFrom',
           args: [
             address,
-            '0xA50673D518847dF8A5dc928B905c54c35930b949',
+            process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
             updatedCoinList?.path[0]?.tokenId,
             parseUnits(updatedCoinList?.path[0]?.amount?.toString(), 0),
             '0x',
