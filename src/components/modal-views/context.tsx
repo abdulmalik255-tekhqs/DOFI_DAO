@@ -26,7 +26,8 @@ export type MODAL_VIEW =
   | 'ZK_PROOF'
   | 'FRACTIONS'
   | 'ARBITRAGE_COIN_SELECT'
-  | 'OPEN_WIZARD_ENCHANCE';
+  | 'OPEN_WIZARD_ENCHANCE'
+  | 'CONNECT_WALLET';
 
 interface ModalTypes {
   isOpen: boolean;

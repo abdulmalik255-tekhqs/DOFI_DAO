@@ -15,11 +15,7 @@ import {
 } from 'react-table';
 import { LongArrowLeft } from '@/components/icons/long-arrow-left';
 
-function RewardAccordionTable({
-  columns,
-  data,
-  isLoading,
-}: any) {
+function RewardAccordionTable({ columns, data, isLoading }: any) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -49,16 +45,14 @@ function RewardAccordionTable({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative z-20 mt-[20px] flex flex-col overflow-hidden rounded-lg  lg:flex-row">
+    <div className="relative z-20 mt-[20px] flex flex-col overflow-hidden rounded-lg lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
-        <div className="border border-[#E2E8F0] rounded-[12px] overflow-hidden">
+        <div className="overflow-hidden rounded-[12px] border border-[#E2E8F0]">
           <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
-            <div className="bg-white pl-[20px] py-[16px]">
-              
-                <h2 className="shrink-0 pl-[10px] text-[20px] font-[500] uppercase text-[#0F172A] dark:text-white md:pl-0">
-                  Revenue Distribution
-                </h2>
-            
+            <div className="bg-white py-[16px] pl-[20px]">
+              <h2 className="shrink-0 pl-[10px] text-[20px] font-[500] uppercase text-[#0F172A] dark:text-white md:pl-0">
+                Revenue Distribution
+              </h2>
             </div>
 
             {isLoading ? (
@@ -70,26 +64,29 @@ function RewardAccordionTable({
                 <Scrollbar style={{ width: '100%' }} autoHide="never">
                   <div className="relative z-10">
                     <table {...getTableProps()} className="w-full">
-                      <thead className="pricing-table-head block bg-[#F8FAFC] text-sm text-gray-500 ">
+                      <thead className="pricing-table-head block bg-[#F8FAFC] text-sm text-gray-500">
                         {headerGroups.map((headerGroup, idx) => (
                           <tr
                             {...headerGroup.getHeaderGroupProps()}
                             key={idx}
-                            className="border-b border-[#E2E8F0]"
+                            className="border border-[#E2E8F0]"
                           >
                             {headerGroup.headers.map((column, idx) => (
                               <th
-                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                                {...column.getHeaderProps(
+                                  column.getSortByToggleProps(),
+                                )}
                                 key={idx}
-                                className="group  md:px-[20px] py-3 font-normal first:!w-7 "
+                                className="group py-3 font-normal first:!w-7 md:px-[20px]"
                               >
-                                <div className="flex items-start text-[12px] text-[#64748B] justify-start">
+                                <div className="flex items-start justify-start text-[12px] text-[#64748B]">
                                   {column.render('Header')}
                                   {column.canResize && (
                                     <div
                                       {...column.getResizerProps()}
-                                      className={`resizer ${column.isResizing ? 'isResizing' : ''
-                                        }`}
+                                      className={`resizer ${
+                                        column.isResizing ? 'isResizing' : ''
+                                      }`}
                                     />
                                   )}
                                 </div>
@@ -109,13 +106,13 @@ function RewardAccordionTable({
                             <tr
                               {...row.getRowProps()}
                               key={idx}
-                              className=" md:px-1  h-[50px] max-h-[50px] cursor-pointer items-start uppercase transition-all last:mb-0 hover:bg-[#F3F4F6] dark:bg-light-dark hover:dark:bg-gray-700 border-b border-[#E2E8F0] dark:border-gray-700"
+                              className="h-[50px] max-h-[50px] cursor-pointer items-start border-b border-[#E2E8F0] uppercase transition-all last:mb-0 hover:bg-[#F3F4F6] dark:border-gray-700 dark:bg-light-dark hover:dark:bg-gray-700 md:px-1"
                             >
                               {row.cells.map((cell, idx) => (
                                 <td
                                   {...cell.getCellProps()}
                                   key={idx}
-                                  className="text-[#0F172A] text-[16px] font-[400] flex h-[50px] items-center px-5 tracking-[1px] justify-start text-left"
+                                  className="flex h-[50px] items-center justify-start px-5 text-left text-[16px] font-[400] tracking-[1px] text-[#0F172A]"
                                 >
                                   {cell.render('Cell')}
                                 </td>
@@ -127,9 +124,9 @@ function RewardAccordionTable({
                     </table>
                   </div>
                 </Scrollbar>
-                {data?.length > 0 ?
-                  <div className="flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
-                    <div className="flex items-center gap-5 py-4">
+                {data?.length > 0 ? (
+                  <div className="flex items-center justify-center border-t border-[#E2E8F0] bg-white text-sm shadow-card dark:border-gray-700 dark:bg-light-dark">
+                    <div className="flex items-center gap-5 py-2">
                       <Button
                         onClick={() => previousPage()}
                         disabled={!canPreviousPage}
@@ -159,11 +156,14 @@ function RewardAccordionTable({
                         <LongArrowRight className="h-auto w-4 rtl:rotate-180" />
                       </Button>
                     </div>
-                  </div> : <div className="py-4 flex items-center justify-center bg-white text-sm shadow-card dark:bg-light-dark border-t border-[#E2E8F0] dark:border-gray-700">
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center border-t border-[#E2E8F0] bg-white py-4 text-sm shadow-card dark:border-gray-700 dark:bg-light-dark">
                     <h2 className="shrink-0 pl-[10px] text-lg font-medium uppercase text-black dark:text-white sm:text-xl md:pl-0 2xl:text-xl 3xl:text-2xl">
                       No Data Found
                     </h2>
-                  </div>}
+                  </div>
+                )}
               </>
             )}
           </div>

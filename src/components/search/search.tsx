@@ -14,8 +14,7 @@ import { MoonLoader } from 'react-spinners';
 export default function Search() {
   const { openDrawer } = useDrawer();
   const dispatch = useDispatch();
-  const { domainData, isLoading }:any = useLatestDomain();
-  
+  const { domainData, isLoading }: any = useLatestDomain();
 
   useEffect(() => {
     dispatch(idoActions.setPreviousRoute(true));
@@ -31,17 +30,12 @@ export default function Search() {
       ) : (
         <>
           {' '}
-          <div className="">
-            <h2 className="mb-2 text-[24px] font-[700] text-[#1E293B] uppercase dark:text-gray-100  bg-white py-5 px-4 rounded-[10px] border border-[#E2E8F0]">
+          <div className="mt-4">
+            <h2 className="mb-2 rounded-[10px] border border-[#E2E8F0] bg-white px-4 py-5 text-[24px] font-[700] uppercase text-[#1E293B] dark:text-gray-100">
               Explore Domains
             </h2>
             <div className="">
-              <Feeds
-                data={
-                  domainData?.data
-                }
-                isLoading={isLoading}
-              />
+              <Feeds data={domainData?.data} isLoading={isLoading} />
             </div>
           </div>
         </>

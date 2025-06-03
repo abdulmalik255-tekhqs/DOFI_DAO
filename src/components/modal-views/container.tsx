@@ -39,6 +39,9 @@ const CoinSelectView = dynamic(
 );
 const ArbitrageCoinSelectView = dynamic(
   () => import('@/components/ui/arbitrage-coin-select-view'),
+  {
+    ssr: false,
+  },
 );
 const FindNameView = dynamic(() => import('@/components/search/find-name'), {
   ssr: false,
@@ -76,7 +79,9 @@ const PayTokenAmountView = dynamic(
 const ProposalAcceptView = dynamic(
   () => import('@/components/proposal-accept/proposal-accept'),
 );
-
+const ConnectWalletView = dynamic(
+  () => import('@/components/connect-wallet-popup/index'),
+);
 function renderModalContent(view: MODAL_VIEW | string, data?: any) {
   switch (view) {
     case 'SEARCH_VIEW':
@@ -133,6 +138,8 @@ function renderModalContent(view: MODAL_VIEW | string, data?: any) {
           onSelect={(selectedCoin) => handleArbitrageSelectedCoin(selectedCoin)}
         />
       );
+    case 'CONNECT_WALLET':
+      return <ConnectWalletView />;
     default:
       return null;
   }

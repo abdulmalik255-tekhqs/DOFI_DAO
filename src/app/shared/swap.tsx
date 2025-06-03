@@ -236,7 +236,7 @@ const SwapPage = () => {
               size="medium"
               shape="rounded"
               fullWidth={true}
-              className="mt-6 bg-[#0F172A] uppercase xs:mt-8 xs:tracking-widest"
+              className="mt-6 bg-[#0F172A] xs:mt-8 xs:tracking-widest"
               onClick={() => handleSwap()}
               disabled={loading}
             >
@@ -245,7 +245,7 @@ const SwapPage = () => {
                   <BeatLoader color="#000" />
                 </>
               ) : (
-                'SWAP'
+                'Swap'
               )}
             </Button>
           </div>

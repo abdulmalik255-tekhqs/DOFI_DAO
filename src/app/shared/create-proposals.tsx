@@ -204,83 +204,16 @@ function CripticTokenAction({
   );
 }
 
-function ActionFields() {
-  let [actionType, setActionType] = useState(actionOptions[0]);
-  let [reserveAction, setReserveAction] = useState(reserveOptions[0]);
-  let [cripticTokenAction, setCripticTokenAction] = useState(
-    cripticTokenOptions[0],
-  );
-  return (
-    <div className="">
-      <div className="group mb-4 rounded-md bg-gray-100/90 p-5 pt-3 dark:bg-dark/60 xs:p-6 xs:pb-8">
-        <div className="-mr-2 mb-3 flex items-center justify-between">
-          <h3 className="text-base font-medium dark:text-gray-100">
-            Action #1
-          </h3>
-          <Button
-            type="button"
-            size="mini"
-            shape="circle"
-            variant="transparent"
-            className="opacity-0 group-hover:opacity-100 dark:text-gray-300"
-          >
-            <CloseIcon className="h-auto w-[11px] xs:w-3" />
-          </Button>
-        </div>
-        <>
-          <Listbox
-            className="w-full sm:w-80"
-            options={actionOptions}
-            selectedOption={actionType}
-            onChange={setActionType}
-          />
-          {actionType.value === 'custom_contact' && (
-            <Input
-              className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12"
-              useUppercaseLabel={false}
-              placeholder="Enter contact address 0x1f9840a85..."
-            />
-          )}
-          {actionType.value === 'criptic_token' && (
-            <div className="rtl:xs:mlr6 rtl:sm:mlr12 mt-4 ltr:xs:ml-6 ltr:sm:ml-12">
-              <CripticTokenAction
-                selectedOption={cripticTokenAction}
-                onChange={setCripticTokenAction}
-              />
-            </div>
-          )}
-          {actionType.value === 'reserve' && (
-            <div className="mt-4 ltr:xs:ml-6 ltr:sm:ml-12 rtl:xs:mr-6 rtl:sm:mr-12">
-              <Listbox
-                className="w-full sm:w-80"
-                options={reserveOptions}
-                selectedOption={reserveAction}
-                onChange={setReserveAction}
-              />
-            </div>
-          )}
-        </>
-      </div>
-      <Button variant="ghost" className="mt-2 dark:text-white xs:mt-3">
-        Add another action
-      </Button>
-    </div>
-  );
-}
-
 const CreateProposalPage = () => {
   const router = useRouter();
   const { loading } = useSelector((state: any) => state.ido);
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  let [publish, setPublish] = useState(true);
-  let [priceType, setPriceType] = useState('fixed');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [leasingAddress, setLeasingAddress] = useState('');
   const [percentageYield, setPercentageYield] = useState('');
-  const [domainAmount, setDomainAmount] = useState('');
   const [motivation, setMotivation] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
@@ -288,24 +221,22 @@ const CreateProposalPage = () => {
   const [pricePerFraction, setPricePerFraction] = useState();
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const [isFractionMode, setIsFractionMode] = useState(true);
-  const [showTooltip, setShowTooltip] = useState(false);
   const { layout } = useLayout();
-  const { all_Propsal_NFTS, isLoading }: any = useGetALLPropsalNFTS();
+  const { all_Propsal_NFTS }: any = useGetALLPropsalNFTS();
 
-
-  const { mutate: submitCreate, isError, error } = useCreatePropsals("parent");
+  const { mutate: submitCreate } = useCreatePropsals('parent');
   const handleSubmit = async () => {
     try {
       if (!address) {
         ToastNotification('error', 'Connect your wallet first!');
         return;
       }
-      const isEmpty = !name || !category ||!motivation || !summary;
+      const isEmpty = !name || !category || !motivation || !summary;
 
-    if (isEmpty) {
-      ToastNotification('error', 'Please fill all required fields');
-      return;
-    }
+      if (isEmpty) {
+        ToastNotification('error', 'Please fill all required fields');
+        return;
+      }
 
       dispatch(idoActions.setLoading(true));
       const hash = await writeContractAsync({
@@ -314,7 +245,7 @@ const CreateProposalPage = () => {
         functionName: 'transfer',
         args: [
           '0xA50673D518847dF8A5dc928B905c54c35930b949',
-          parseUnits(50?.toString(), 18),
+          parseUnits((50)?.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
@@ -348,36 +279,25 @@ const CreateProposalPage = () => {
     setTimeout(() => {
       router.push(
         (layout === LAYOUT_OPTIONS.MODERN ? '' : routes.home + layout) +
-        routes.proposals,
+          routes.proposals,
       );
     }, 800);
   }
   useEffect(() => {
-    const generateRandomInteger = (min:any, max:any) => {
+    const generateRandomInteger = (min: any, max: any) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     setTotalFractions(generateRandomInteger(1000, 1500));
     setPricePerFraction(generateRandomInteger(1, 5));
-    if(selectedNFT) {
-      setAmount(selectedNFT?.price)
+    if (selectedNFT) {
+      setAmount(selectedNFT?.price);
     }
   }, [selectedNFT]);
-  // function handleSubmit() {
-  //   const formData = {
-  //     name,
-  //     amount,
-  //     leasingAddress,
-  //     percentageYield,
-  //     motivation,
-  //     publish,
-  //     priceType,
-  //     category
-  //   };
-  // }
+
   return (
-    <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <header className="mb-6 flex flex-col gap-4 rounded-[10px] bg-white py-3 border-[#E2E8F0] border dark:bg-light-dark px-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="mx-auto w-full max-w-[1920px] text-sm">
+      <header className="mb-6 mt-4 flex flex-col gap-4 rounded-[10px] border border-[#E2E8F0] bg-white px-4 py-3 dark:bg-light-dark sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-4 xs:gap-3 xl:gap-4">
           <h2 className="text-lg font-semibold dark:text-white">
             Create New Proposal
@@ -396,66 +316,6 @@ const CreateProposalPage = () => {
         </div>
       </header>
 
-      <div className="mb-6 flex items-center justify-between">
-        {/* <div className="flex items-center gap-2 shadow-lg bg-white dark:bg-gray-800 px-6 py-4 rounded-[10px] relative">
-          <div className="absolute top-2 right-2">
-            <div className="group relative">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white cursor-pointer"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10A8 8 0 112 10a8 8 0 0116 0zM9 7a1 1 0 112 0 1 1 0 01-2 0zm1 3a1 1 0 00-.993.883L9 11v3a1 1 0 001.993.117L11 14v-3a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <div className="absolute right-0 mt-1 w-64 rounded-md bg-white p-3 text-xs text-gray-700 shadow-lg dark:bg-gray-800 dark:text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                This toggle switches between Yield Percentage and Fraction modes for proposal creation.
-              </div>
-            </div>
-          </div>
-
-          <span
-            className={cn(
-              'text-sm text-gray-700 dark:text-gray-300 transition-all duration-200',
-              !isFractionMode ? 'font-bold' : 'font-medium'
-            )}
-          >
-            Yield Percentage
-          </span>
-
-          <Switch checked={isFractionMode} onChange={() => setIsFractionMode(!isFractionMode)}>
-            <div
-              className={cn(
-                isFractionMode ? 'bg-brand dark:bg-white' : 'bg-gray-200 dark:bg-gray-700',
-                'relative inline-flex h-[22px] w-10 items-center rounded-full transition-colors duration-300',
-              )}
-            >
-              <span
-                className={cn(
-                  isFractionMode
-                    ? 'ltr:translate-x-5 rtl:-translate-x-5'
-                    : 'ltr:translate-x-0.5 rtl:-translate-x-0.5',
-                  'inline-block h-[18px] w-[18px] transform rounded-full bg-white transition-transform duration-200',
-                )}
-              />
-            </div>
-          </Switch>
-
-          <span
-            className={cn(
-              'text-sm text-gray-700 dark:text-gray-300 transition-all duration-200',
-              isFractionMode ? 'font-bold' : 'font-medium'
-            )}
-          >
-            Fractions
-          </span>
-        </div> */}
-      </div>
-
       <div className="mb-8">
         <InputLabel title="Name" important />
         <Input
@@ -465,7 +325,7 @@ const CreateProposalPage = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      
+
       <div className="mb-8">
         <InputLabel title="Domain" important />
         <select
@@ -493,7 +353,7 @@ const CreateProposalPage = () => {
       <div className="mb-8">
         <InputLabel title="Domain Value" important />
         <Input
-        disabled={true}
+          disabled={true}
           type="number"
           placeholder="Enter Domain Amount"
           value={amount}
@@ -502,18 +362,12 @@ const CreateProposalPage = () => {
       </div>
       <div className="mb-8">
         <InputLabel title="Proposal Creation Amount" />
-        <Input
-          type="number"
-          disabled
-          placeholder="Enter amount"
-          value={"50"}
-
-        />
+        <Input type="number" disabled placeholder="Enter amount" value={'50'} />
       </div>
       <div className="mb-8">
         <InputLabel title="Total Fractions" />
         <Input
-         disabled={true}
+          disabled={true}
           type="number"
           placeholder="Enter total fractions"
           value={totalFractions}
@@ -523,7 +377,7 @@ const CreateProposalPage = () => {
       <div className="mb-8">
         <InputLabel title="Price Per Fraction" />
         <Input
-         disabled={true}
+          disabled={true}
           type="number"
           placeholder="Enter price fraction"
           value={pricePerFraction}
@@ -534,7 +388,7 @@ const CreateProposalPage = () => {
       <div className="rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           MOTIVATION
-          <sup className="text-red-500 ml-1">*</sup>
+          <sup className="ml-1 text-red-500">*</sup>
         </h3>
         <Textarea
           placeholder="Add the motivation here"
@@ -546,7 +400,7 @@ const CreateProposalPage = () => {
       <div className="mb-6 rounded-lg dark:bg-light-dark xs:pb-8">
         <h3 className="mb-2 block text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
           SUMMARY
-          <sup className="text-red-500 ml-1">*</sup>
+          <sup className="ml-1 text-red-500">*</sup>
         </h3>
         <Textarea
           rows={6}

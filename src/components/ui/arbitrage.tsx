@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/ui/button';
 import TransactionInfo from '@/components/ui/transaction-info';
 import cn from '@/utils/cn';
@@ -9,19 +10,12 @@ import { waitForTransactionReceipt } from 'viem/actions';
 import { coinList } from '@/data/static/coin-list';
 import { BeatLoader } from 'react-spinners';
 import { parseUnits } from 'viem';
-import { fractionDaoABI, tetherABI } from '@/utils/abi';
+import { fractionDaoABI } from '@/utils/abi';
 import { useDispatch, useSelector } from 'react-redux';
 import ArbitrageCoinInput from './arbitrage-coin-input';
-import Shib1 from '@/assets/images/dao/shib1.png';
-import Shib2 from '@/assets/images/dao/shib2.png';
 import Arrow from '@/assets/images/dao/arbitragearrow.png';
 import Image from 'next/image';
-import {
-  useArbitrage,
-  useFetchNFTARBITRAGE,
-  useFetchNFTSWAP,
-  useSwap,
-} from '@/hooks/livePricing';
+import { useArbitrage, useFetchNFTARBITRAGE } from '@/hooks/livePricing';
 import { useAccount, useWriteContract } from 'wagmi';
 import ToastNotification from './toast-notification';
 import { idoActions } from '@/store/reducer/ido-reducer';
@@ -94,10 +88,24 @@ const ArbitragePage = () => {
       dispatch(idoActions.setArbitrageRoute(updatedCoinList));
     }
   }, [NFTAbritrage]);
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.3, // time between each child
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-[500]">SWAP Domain Fractions</h1>
+        <h1 className="text-[20px] font-[500]">Swap Domain Fractions</h1>
         <div className="flex items-center gap-[5px]">
           {coinList?.map((coin, index) => (
             <div key={index} className="h-4 w-4">
@@ -138,13 +146,22 @@ const ArbitragePage = () => {
       <div className="mt-4 border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
       {selectedFromSwapCoin && (
         <>
-          <div className="mt-[24px] flex justify-between gap-[10px]">
-            {updatedCoinList?.path?.map((item: any, index: any) => {
+          <motion.div
+            className="mt-[24px] flex justify-between gap-[10px]"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
+            {updatedCoinList?.path?.map((item: any, index: number) => {
               const isLast = index === updatedCoinList?.path?.length - 1;
               const isBuy = item?.buy;
 
               return (
-                <div key={index} className="flex items-center gap-[10px]">
+                <motion.div
+                  key={index}
+                  className="flex items-center gap-[10px]"
+                  variants={itemVariants}
+                >
                   <div className="flex flex-col gap-[10px]">
                     <div
                       className={`flex h-[150px] w-[107px] flex-col items-center justify-center rounded-[10px] border ${
@@ -196,14 +213,19 @@ const ArbitragePage = () => {
                   </div>
 
                   {!isLast && (
-                    <div className="flex items-center justify-center">
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (index + 1) * 0.3 }}
+                      className="flex items-center justify-center"
+                    >
                       <Image src={Arrow} alt="arrow" />
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </>
       )}
 
@@ -212,7 +234,7 @@ const ArbitragePage = () => {
           size="medium"
           shape="rounded"
           fullWidth={true}
-          className="mt-6 bg-[#0F172A] uppercase xs:mt-8 xs:tracking-widest"
+          className="mt-6 bg-[#0F172A] xs:mt-8 xs:tracking-widest"
           onClick={() => handleSwap()}
           disabled={loading}
         >
