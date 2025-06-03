@@ -167,6 +167,29 @@ const DomainDAOPage = () => {
   const hanldeExpand = () => {
     setSelectedExpand(!selectedExpand);
   };
+  const Events = [
+    {
+      id: 1,
+      date: '2025-07-03',
+      time: '3:00 PM UTC',
+      name: 'Do.Fi Protocol Governance Call',
+      desc: 'Hosted by the Do.Fi Governance Community',
+    },
+    {
+      id: 2,
+      date: '2025-07-03',
+      time: '3:00 PM UTC',
+      name: 'Do.Fi Protocol Governance Call',
+      desc: 'Hosted by the Do.Fi Governance Community',
+    },
+    {
+      id: 3,
+      date: '2025-07-03',
+      time: '3:00 PM UTC',
+      name: 'Do.Fi Protocol Governance Call',
+      desc: 'Hosted by the Do.Fi Governance Community',
+    },
+  ];
   return (
     <section className="mx-auto w-full max-w-[1920px] text-sm">
       <div className="mb-4 mt-4 flex flex-col rounded-[10px] border border-[#E2E8F0] bg-white px-4 py-[12px]">
@@ -368,12 +391,50 @@ const DomainDAOPage = () => {
           </div>
         }
       </div>
-      <div className="flex pb-[24px] pt-[32px]">
-        <h2 className="text-[24px] font-bold text-[#1E293B]">Proposals</h2>
+      <div className="flex flex-col gap-[20px] md:flex-row">
+        <div className="w-full xl:w-[65%]">
+          <div className="flex flex-col pb-[24px] pt-[32px]">
+            <h2 className="mb-[8px] text-[20px] font-[700] text-[#1E293B]">
+              Latest DIPs
+            </h2>
+            <p className="text-[15px] font-[400] text-[#334155]">
+              <span className="font-[500] text-[#0F172A]">
+                Do.Fi Improvement Proposals (DIPs)
+              </span>
+              are used to suggest and track upgrades to the Do.Fi ecosystem.
+              Browse active and past proposals, including those up for community
+              voting.
+            </p>
+          </div>
+
+          <Suspense fallback={<Loader variant="blink" />}>
+            <VoteListDomainDao voteStatus={'active'} />
+          </Suspense>
+        </div>
+
+        <div className="w-full pb-[24px] pt-[32px] xl:w-[35%]">
+          {' '}
+          <h2 className="mb-[8px] text-[20px] font-[700] text-[#1E293B]">
+            Upcoming Events
+          </h2>
+          {Events.map((item, index) => {
+            return (
+              <div className="mt-[12px] flex flex-col rounded-[12px] border border-[#CBD5E1] bg-[#FFFFFF] p-[20px]">
+                <div className="flex w-full items-center justify-between text-[14px] font-[400] text-[#64748B]">
+                  <p>{item?.date}</p>
+                  <p>{item?.time}</p>
+                </div>
+                <h2 className="text-[15px] font-[500] text-[#0F172A] xl:text-[20px]">
+                  {item?.name}
+                </h2>
+                <p className="text-[15px] font-[400] text-[#334155]">
+                  {item?.desc}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <Suspense fallback={<Loader variant="blink" />}>
-        <VoteListDomainDao voteStatus={'active'} />
-      </Suspense>
     </section>
   );
 };
