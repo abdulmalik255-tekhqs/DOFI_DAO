@@ -17,8 +17,8 @@ export default function TransactionInfo({
         className,
       )}
     >
-      <span className="font-[400] text-[20px]">{label}</span>
-      <span className="font-[400] text-[20px]">{value ? value : '_ _'}</span>
+      <span className="text-[14px] font-[400]">{label}</span>
+      <span className="text-[14px] font-[400]">{value ? value : '_ _'}</span>
     </div>
   );
 }

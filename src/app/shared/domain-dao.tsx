@@ -1,13 +1,17 @@
 'use client';
 
-import { Suspense, useEffect,  useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import routes from '@/config/routes';
 import Button from '@/components/ui/button';
 import Image from '@/components/ui/image';
 import Loader from '@/components/ui/loader';
 import VoteListDomainDao from '@/components/vote/domain_dao_vote_list';
-import { useFetchNftLeaseAddress, useGetProposalDomainDao, useVerifyChildDAO } from '@/hooks/livePricing';
+import {
+  useFetchNftLeaseAddress,
+  useGetProposalDomainDao,
+  useVerifyChildDAO,
+} from '@/hooks/livePricing';
 import ProfitIcon from '@/assets/images/dao/profit.png';
 import ClockIcon from '@/assets/images/dao/clock.png';
 import GraphIcon from '@/assets/images/dao/graph.png';
@@ -18,10 +22,8 @@ import ToastNotification from '@/components/ui/toast-notification';
 import { BeatLoader } from 'react-spinners';
 import { useSelector } from 'react-redux';
 
-
 const AUCTION_DURATION = 30 * 60 * 1000; // 30 mins in milliseconds
 const AUCTION_TIMER_KEY = 'auctionExpiryTime';
-
 
 function AuctionCountdown(address: string | any) {
   const [expiryTime, setExpiryTime] = useState<number | null>(null);
@@ -95,18 +97,24 @@ function AuctionCountdown(address: string | any) {
   }
 
   return (
-    <div className="flex items-center space-x-6 text-lg font-semibold px-6">
+    <div className="flex items-center space-x-6 px-6 text-lg font-semibold">
       <div className="flex flex-col text-[#1E293B]">
-        <span className="text-[24px] font-[500]">{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className="text-[12px] text-[#1E293B] font-[400]">Hours</span>
+        <span className="text-[24px] font-[500]">
+          {String(timeLeft.hours).padStart(2, '0')}
+        </span>
+        <span className="text-[12px] font-[400] text-[#1E293B]">Hours</span>
       </div>
       <div className="flex flex-col text-[#1E293B]">
-        <span className="text-[24px] font-[500]">{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className="text-[12px] text-[#1E293B] font-[400]">Minutes</span>
+        <span className="text-[24px] font-[500]">
+          {String(timeLeft.minutes).padStart(2, '0')}
+        </span>
+        <span className="text-[12px] font-[400] text-[#1E293B]">Minutes</span>
       </div>
       <div className="flex flex-col text-[#1E293B]">
-        <span className="text-[24px] font-[500]">{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className="text-[12px] text-[#1E293B] font-[400]">Seconds</span>
+        <span className="text-[24px] font-[500]">
+          {String(timeLeft.seconds).padStart(2, '0')}
+        </span>
+        <span className="text-[12px] font-[400] text-[#1E293B]">Seconds</span>
       </div>
     </div>
   );
@@ -135,8 +143,7 @@ const DomainDAOPage = () => {
       if (storedNftString) {
         try {
           setStoredNft(JSON.parse(storedNftString));
-        } catch (err) {
-        }
+        } catch (err) {}
       }
     }
   }, []);
@@ -147,10 +154,9 @@ const DomainDAOPage = () => {
         ToastNotification('error', 'Connect wallet first!');
         return;
       }
-      setVerifyLoader(true)
+      setVerifyLoader(true);
       verifyChildDAO({
         childDAOId: childDAOData?._id,
-
       });
     } catch (error) {
       setVerifyLoader(false);
@@ -159,37 +165,39 @@ const DomainDAOPage = () => {
   };
 
   const hanldeExpand = () => {
-    setSelectedExpand(!selectedExpand)
-  }
+    setSelectedExpand(!selectedExpand);
+  };
   return (
-    <section className="mx-auto w-full max-w-[1160px] text-sm">
-      <div className='flex flex-col border-[#E2E8F0] border bg-white px-4 py-[12px] mb-4 rounded-[10px]'>
-        <div className='flex justify-between '>
-          <div className='flex flex-col'>
-            <h2 className="text-[#1E293B] font-[700] uppercase xl:text-[24px] flex gap-2">
+    <section className="mx-auto w-full max-w-[1920px] text-sm">
+      <div className="mb-4 mt-4 flex flex-col rounded-[10px] border border-[#E2E8F0] bg-white px-4 py-[12px]">
+        <div className="flex justify-between">
+          <div className="flex flex-col">
+            <h2 className="flex gap-2 font-[700] uppercase text-[#1E293B] xl:text-[24px]">
               {storedNft?.name}
-              <span className='text-[20px] font-[400] text-[#1E293B] '>(Domain Dao)</span>
+              <span className="text-[20px] font-[400] text-[#1E293B]">
+                (Domain Dao)
+              </span>
             </h2>
-            <div className='flex justify-start items-center gap-3 mt-[16px] '>
-              <h3 className='text-[#334155] text-[15px] font-[400]'>
-               Escrow Ownership ZK Proof
+            <div className="mt-[16px] flex items-center justify-start gap-3">
+              <h3 className="text-[15px] font-[400] text-[#334155]">
+                Escrow Ownership ZK Proof
               </h3>
-              {!childDAOData?.zkProof ? <>
-                <button
-                  onClick={() => handleVerify()}
-                  className='bg-[#0F172A] text-[#F8FAFC] text-[12px] font-[400] rounded-[8px] h-[34px]  w-[76px] cursor-pointer'>
-                  {verifyLoader ? (
-                    <>
-                      <BeatLoader color="#fff" size={10} />
-                    </>
-                  ) : (
-                    'Verify'
-                  )}
-                </button>
-              </> :
-                null
-              }
-
+              {!childDAOData?.zkProof ? (
+                <>
+                  <button
+                    onClick={() => handleVerify()}
+                    className="h-[34px] w-[76px] cursor-pointer rounded-[8px] bg-[#0F172A] text-[12px] font-[400] text-[#F8FAFC]"
+                  >
+                    {verifyLoader ? (
+                      <>
+                        <BeatLoader color="#fff" size={10} />
+                      </>
+                    ) : (
+                      'Verify'
+                    )}
+                  </button>
+                </>
+              ) : null}
             </div>
           </div>
 
@@ -206,33 +214,45 @@ const DomainDAOPage = () => {
         </div>
 
         {/* //if zk proof exist */}
-        {childDAOData?.zkProof && <>
-          <div className='border-t border-[#CBD5E1] pb-[12px] mt-[12px] w-full'></div>
-          <div className='flex flex-col '>
-            <h1 className='flex justify-center items-center text-[#334155] text-[15px] font-[400] underline cursor-pointer flex gap-[12px] items-center'
-              onClick={() => hanldeExpand()}>
-              Show ZK proof details <span><Image src={selectedExpand ? DoubleArrowUP : DoubleArrowDown} alt="no-icon" /></span>
-            </h1>
-            {selectedExpand && <>
-              <div className="mt-3">
-                <pre className="bg-gray-100 p-4 rounded-md text-sm font-mono overflow-x-auto max-h-98">
-                  {JSON.stringify(childDAOData?.zkProof, null, 2)}
-                </pre>
-              </div>
-            </>}
-
-          </div>
-        </>}
+        {childDAOData?.zkProof && (
+          <>
+            <div className="mt-[12px] w-full border-t border-[#CBD5E1] pb-[12px]"></div>
+            <div className="flex flex-col">
+              <h1
+                className="flex cursor-pointer items-center justify-center gap-[12px] text-[15px] font-[400] text-[#334155] underline"
+                onClick={() => hanldeExpand()}
+              >
+                Show ZK proof details{' '}
+                <span>
+                  <Image
+                    src={selectedExpand ? DoubleArrowUP : DoubleArrowDown}
+                    alt="no-icon"
+                  />
+                </span>
+              </h1>
+              {selectedExpand && (
+                <>
+                  <div className="mt-3">
+                    <pre className="max-h-98 overflow-x-auto rounded-md bg-gray-100 p-4 font-mono text-sm">
+                      {JSON.stringify(childDAOData?.zkProof, null, 2)}
+                    </pre>
+                  </div>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="mb-4 flex flex-wrap gap-4">
         <div
-          className={`${proposalsDomainDao?.length > 0
-            ? 'col-span-12 md:col-span-6 lg:col-span-3'
-            : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 h-[170px] sm:h-[158px] rounded-[10px] border-[#E2E8F0] border  p-[30px] space-y-[25px] bg-white`}
+          className={`${
+            proposalsDomainDao?.length > 0
+              ? 'col-span-12 md:col-span-6 lg:col-span-3'
+              : 'col-span-12 md:col-span-6 lg:col-span-4'
+          } col-span-12 h-[170px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
         >
           <div className="flex items-center gap-3">
-            <div className="bg-white/80 p-[5px] rounded-full flex items-center justify-center">
+            <div className="flex items-center justify-center rounded-full bg-white/80 p-[5px]">
               <Image src={ClockIcon} alt="no-icon" />
             </div>
             <div className="text-[16px] font-[400] text-[#1E293B]">
@@ -245,91 +265,111 @@ const DomainDAOPage = () => {
           </div>
         </div>
         <div
-          className={`${proposalsDomainDao?.length > 0
-            ? 'col-span-12 md:col-span-6 lg:col-span-3'
-            : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[10px] p-[30px] space-y-[25px] bg-white`}
+          className={`${
+            proposalsDomainDao?.length > 0
+              ? 'col-span-12 md:col-span-6 lg:col-span-3'
+              : 'col-span-12 md:col-span-6 lg:col-span-4'
+          } col-span-12 h-[170px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
         >
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
               <Image src={ProfitIcon} alt="no-icon" />
             </div>
-            <div className="text-[16px] font-[400] text-[#1E293B] tour_Hours_tracking">
+            <div className="tour_Hours_tracking text-[16px] font-[400] text-[#1E293B]">
               Proposals
             </div>
           </div>
 
-          <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
+          <div className="flex flex-wrap justify-center space-x-[15px] sm:ml-[10px] sm:justify-start sm:space-x-[30px]">
             {/* Total */}
             <div className="text-center">
-              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.count || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Total</div>
+              <div className="text-xl font-[500] text-[#151515]">
+                {proposalsDomainDao?.count || '00'}
+              </div>
+              <div className="text-grey text-[12px] font-[400]">Total</div>
             </div>
 
             {/* Active */}
             <div className="text-center">
-              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.active || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Active</div>
+              <div className="text-xl font-[500] text-[#151515]">
+                {proposalsDomainDao?.active || '00'}
+              </div>
+              <div className="text-grey text-[12px] font-[400]">Active</div>
             </div>
 
             {/* Sucessfull */}
             <div className="text-center">
-              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.successful || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Sucessfull</div>
+              <div className="text-xl font-[500] text-[#151515]">
+                {proposalsDomainDao?.successful || '00'}
+              </div>
+              <div className="text-grey text-[12px] font-[400]">Sucessfull</div>
             </div>
 
             {/* Rejected */}
             <div className="text-center">
-              <div className="text-xl font-[500] text-[#151515]">{proposalsDomainDao?.rejected || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]">Rejected</div>
+              <div className="text-xl font-[500] text-[#151515]">
+                {proposalsDomainDao?.rejected || '00'}
+              </div>
+              <div className="text-grey text-[12px] font-[400]">Rejected</div>
             </div>
           </div>
         </div>
-        {<div
-          className={`${proposalsDomainDao?.length > 0
-            ? 'col-span-12 md:col-span-6 lg:col-span-3'
-            : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 md:col-span-6 lg:col-span-3 border-[#E2E8F0] border h-[170px] sm:h-[158px] rounded-[10px] p-[30px] space-y-[25px] bg-white min-w-[400px]`}
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center">
-              <Image src={GraphIcon} alt="no-icon" />
+        {
+          <div
+            className={`${
+              proposalsDomainDao?.length > 0
+                ? 'col-span-12 md:col-span-6 lg:col-span-3'
+                : 'col-span-12 md:col-span-6 lg:col-span-4'
+            } col-span-12 h-[170px] min-w-[400px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center">
+                <Image src={GraphIcon} alt="no-icon" />
+              </div>
+              <div className="tour_Hours_tracking text-[16px] font-[400] text-[#1E293B]">
+                Profit
+              </div>
             </div>
-            <div className="text-[16px] font-[400] text-[#1E293B] tour_Hours_tracking">
-              Profit
-            </div>
-          </div>
-          <div className="flex sm:justify-start justify-center sm:ml-[10px] sm:space-x-[30px] space-x-[15px] flex-wrap">
-            {/* Total */}
+            <div className="flex flex-wrap justify-center space-x-[15px] sm:ml-[10px] sm:justify-start sm:space-x-[30px]">
+              {/* Total */}
 
-            <div className="text-center text-xl font-[500] text-[#151515]">
-              {
-                leaseAddressInfo?.leasingAddress && leaseAddressInfo?.leasingAddress != "0x"
-                  ? <div className="">
+              <div className="text-center text-xl font-[500] text-[#151515]">
+                {leaseAddressInfo?.leasingAddress &&
+                leaseAddressInfo?.leasingAddress != '0x' ? (
+                  <div className="">
                     {leaseAddressInfo.leasingAddress.slice(0, 5)}...
                     {leaseAddressInfo.leasingAddress.slice(-5)}
                   </div>
-                  : leaseAddressInfo?.payments?.length > 0 && leaseAddressInfo?.payments?.[0]?.wallet
-                    ? <div className="">
-                      {leaseAddressInfo.payments[0].wallet.slice(0, 5)}...
-                      {leaseAddressInfo.payments[0].wallet.slice(-5)}
-                    </div>
-                    : "0x"
-              }
-              <div className="text-[12px] text-grey font-[400]">Current Leasing Address</div>
-            </div>
+                ) : leaseAddressInfo?.payments?.length > 0 &&
+                  leaseAddressInfo?.payments?.[0]?.wallet ? (
+                  <div className="">
+                    {leaseAddressInfo.payments[0].wallet.slice(0, 5)}...
+                    {leaseAddressInfo.payments[0].wallet.slice(-5)}
+                  </div>
+                ) : (
+                  '0x'
+                )}
+                <div className="text-grey text-[12px] font-[400]">
+                  Current Leasing Address
+                </div>
+              </div>
 
-            {/* Active */}
-            <div className="text-center mt-1">
-              <div className="text-xl font-[500] text-[#151515]">{leaseAddressInfo?.payments?.[0]?.totalAmount || "00"}</div>
-              <div className="text-[12px] text-grey font-[400]"> Total Profit</div>
+              {/* Active */}
+              <div className="mt-1 text-center">
+                <div className="text-xl font-[500] text-[#151515]">
+                  {leaseAddressInfo?.payments?.[0]?.totalAmount || '00'}
+                </div>
+                <div className="text-grey text-[12px] font-[400]">
+                  {' '}
+                  Total Profit
+                </div>
+              </div>
             </div>
-
           </div>
-        </div>}
+        }
       </div>
-      <div className='pt-[32px] pb-[24px] flex'>
-        <h2 className='text-[#1E293B] text-[24px] font-bold'>Proposals</h2>
+      <div className="flex pb-[24px] pt-[32px]">
+        <h2 className="text-[24px] font-bold text-[#1E293B]">Proposals</h2>
       </div>
       <Suspense fallback={<Loader variant="blink" />}>
         <VoteListDomainDao voteStatus={'active'} />

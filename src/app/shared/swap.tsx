@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { fractionDaoABI, tetherABI } from '@/utils/abi';
 import { config } from '@/app/shared/wagmi-config';
 import Button from '@/components/ui/button';
@@ -31,6 +32,7 @@ const SwapPage = () => {
   const [selectedToSwapCoin, setSelectedToSwapCoin] = useState<any>(null);
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
   const [blockNFT, setBlocknft] = useState<boolean>(false);
+  const [selectedExpand, setSelectedExpand] = useState(false);
   const { mutate: submitCreate, data: calculationResult }: any =
     usePostCaculate();
   const { NFTSwap }: any = useFetchNFTSWAP();
@@ -191,11 +193,14 @@ const SwapPage = () => {
   // useEffect(() => {
   //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
   // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
+  const hanldeExpand = () => {
+    setSelectedExpand(!selectedExpand);
+  };
   return (
     <>
       <Suspense>
         <Trade>
-          <div className="mb-6">
+          <div className="mb-4">
             <div
               className={cn(
                 'relative flex gap-3',
@@ -223,18 +228,13 @@ const SwapPage = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-4 xs:gap-[18px]">
-            <TransactionInfo label={'Rate'} />
-            <TransactionInfo label={'Offered by'} />
-            <TransactionInfo label={'Network Fee'} value={'0.35'} />
-          </div>
-          <div className="mt-4 border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
+          <div className="mt-[24px] border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
           <div className="flex justify-end">
             <Button
               size="medium"
               shape="rounded"
               fullWidth={true}
-              className="mt-6 bg-[#0F172A] xs:mt-8 xs:tracking-widest"
+              className="mt-[24px] bg-[#0F172A] xs:tracking-widest"
               onClick={() => handleSwap()}
               disabled={loading}
             >
@@ -247,6 +247,30 @@ const SwapPage = () => {
               )}
             </Button>
           </div>
+          <div className="mt-[24px]">
+            <h2
+              onClick={() => hanldeExpand()}
+              className="flex cursor-pointer items-center justify-between text-center text-[16px] font-[500] text-[#0F172A] dark:text-white"
+            >
+              Advance details
+              <span>
+                {selectedExpand ? (
+                  <ChevronUp className="text-text-[#0F172A] w-[20px] dark:text-white" />
+                ) : (
+                  <ChevronDown className="text-text-[#0F172A] w-[20px] dark:text-white" />
+                )}
+              </span>
+            </h2>
+          </div>
+          {selectedExpand && (
+            <>
+              <div className="mt-[10px] flex flex-col gap-4 xs:gap-[10px]">
+                <TransactionInfo label={'Rate'} />
+                <TransactionInfo label={'Offered by'} />
+                <TransactionInfo label={'Network Fee'} value={'0.35'} />
+              </div>
+            </>
+          )}
         </Trade>
       </Suspense>
     </>
