@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useAccount, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { parseUnits } from 'viem';
@@ -46,14 +45,14 @@ export default function FindName({ data }: any) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits(data?.price?.toString(), 18),
         ],
       });
       const recipient = await waitForTransactionReceipt(config.getClient(), {
         hash,
         pollingInterval: 2000,
-      })
+      });
       if (recipient.status === 'success') {
         dispatch(idoActions.setBuytransactionHash(recipient));
         dispatch(idoActions.nextStep());
@@ -89,44 +88,38 @@ export default function FindName({ data }: any) {
   }, [address]);
   return (
     <>
-      <div className='w-full justify-between flex'>
+      <div className="flex w-full justify-between">
         <h2 className="mb-6 text-lg font-medium uppercase -tracking-wide text-gray-900 dark:text-white lg:text-xl ltr:text-left rtl:text-right">
           Register Domain
         </h2>
       </div>
       <div className="mb-2 flex w-full items-start justify-between">
-
-        <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
-          <Globe className="w-5 h-5 text-gray-600 dark:text-white" />
+        <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-wide text-gray-900 drop-shadow-sm dark:text-white">
+          <Globe className="h-5 w-5 text-gray-600 dark:text-white" />
           {data?.name}
           <Image
             src={data?.name?.endsWith('.eth') ? Eth : Shib}
             alt="Domain extension"
-            className="w-5 h-5"
+            className="h-5 w-5"
           />
         </h3>
         <div>
-          <h4 className="flex items-center gap-2 text-md font-medium tracking-wide text-gray-900 dark:text-white drop-shadow-sm">
+          <h4 className="text-md flex items-center gap-2 font-medium tracking-wide text-gray-900 drop-shadow-sm dark:text-white">
             Balance: $DOFI {formatNumber(tokenBalance)}
           </h4>
-
         </div>
       </div>
-      <div
-        className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white"
-      >
-        <div className="flex w-full justify-between mb-2">
+      <div className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-gray-300 p-4 text-gray-900 shadow-md dark:bg-gray-700 dark:text-white">
+        <div className="mb-2 flex w-full justify-between">
           <h3 className="text-sm font-medium">1 year registration</h3>
           <h3 className="text-sm font-medium uppercase tracking-wide">
             $DOFI {formatNumber(data?.price)}
           </h3>
         </div>
 
-        <div className="flex w-full justify-between mb-2">
+        <div className="mb-2 flex w-full justify-between">
           <h3 className="text-sm font-medium">Est. network fee</h3>
-          <h3 className="text-sm font-medium uppercase tracking-wide">
-            $0.48
-          </h3>
+          <h3 className="text-sm font-medium uppercase tracking-wide">$0.48</h3>
         </div>
 
         <div className="flex w-full justify-between">
@@ -136,7 +129,7 @@ export default function FindName({ data }: any) {
           </h3>
         </div>
       </div>
-      <div className='mt-4'>
+      <div className="mt-4">
         <Button
           size="large"
           shape="rounded"

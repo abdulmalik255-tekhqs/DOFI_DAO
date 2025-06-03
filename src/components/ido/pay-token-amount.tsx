@@ -18,7 +18,6 @@ import Shib from '@/assets/images/dao/shib.png';
 import Image from 'next/image';
 
 export default function PayTokenAmount({ data }: { data: any }) {
-
   const dispatch = useDispatch();
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
@@ -47,7 +46,7 @@ export default function PayTokenAmount({ data }: { data: any }) {
         abi: tetherABI,
         functionName: 'transfer',
         args: [
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           parseUnits(tokenAmount?.toString(), 18),
         ],
       });
@@ -55,9 +54,11 @@ export default function PayTokenAmount({ data }: { data: any }) {
         hash,
       });
       if (recipient.status === 'success') {
-        const addressArray = ['0xA50673D518847dF8A5dc928B905c54c35930b949'];
+        const addressArray = [
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
+        ];
         const amountArray = [Number(tokenAmount)];
-        const nftName = data ? data : ""
+        const nftName = data ? data : '';
         submitCreate({
           addresses: addressArray,
           nftName,
@@ -71,25 +72,25 @@ export default function PayTokenAmount({ data }: { data: any }) {
     }
   };
   return (
-    <div className="w-full xs:w-[500px] rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark sm:px-7 sm:pb-8 sm:pt-6">
+    <div className="w-full rounded-2xl border border-gray-200 bg-white px-5 pb-7 pt-5 dark:border-gray-700 dark:bg-light-dark xs:w-[500px] sm:px-7 sm:pb-8 sm:pt-6">
       <h1 className="flex shrink-0 items-center justify-center text-center text-[24px] font-[700] uppercase tracking-tighter text-[#1E293B] dark:text-white">
         Pay Token Amount
       </h1>
-      <div className='w-full py-2'>
-        <h1 className="flex gap-2 shrink-0 items-center justify-start text-start text-[16px] font-[400] text-[#1E293B] dark:text-white">
+      <div className="w-full py-2">
+        <h1 className="flex shrink-0 items-center justify-start gap-2 text-start text-[16px] font-[400] text-[#1E293B] dark:text-white">
           {data}
           <Image
             src={isShib ? Shib : Eth}
             alt="Domain extension"
-            className="w-5 h-5"
+            className="h-5 w-5"
           />
         </h1>
       </div>
       <label className="mb-4 w-full flex-col items-start md:flex">
         <h2 className="flex items-center justify-start text-center text-[14px] font-[400] uppercase text-[#1E293B] dark:text-white">
-          <Image src={CoinVertical} alt="no-icon" />  Token Amount
+          <Image src={CoinVertical} alt="no-icon" /> Token Amount
         </h2>
-        <div className='w-full'>
+        <div className="w-full">
           <Input
             type="number"
             placeholder="Enter token amount"
@@ -97,7 +98,6 @@ export default function PayTokenAmount({ data }: { data: any }) {
             onChange={(e: any) => setTokenamount(e.target.value)}
           />
         </div>
-
       </label>
       <Button
         size="medium"

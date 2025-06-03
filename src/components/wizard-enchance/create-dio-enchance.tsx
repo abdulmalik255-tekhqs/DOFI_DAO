@@ -80,7 +80,7 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
         functionName: 'transferFrom',
         args: [
           address,
-          '0xA50673D518847dF8A5dc928B905c54c35930b949',
+          process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
           data?.tokenId,
         ],
       });
@@ -183,13 +183,16 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
               <Listbox value={selectedCoin} onChange={setSelectedCoin}>
                 <div className="relative w-full">
                   <Listbox.Button className="h-[62px] w-full rounded-[8px] border border-[#E2E8F0] bg-[#FBFCFE] px-4 py-2 text-[20px] font-[400] text-[#0F172A] focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={selectedCoin.icon}
-                        alt={selectedCoin.name}
-                        className="h-6 w-6 rounded-full"
-                      />
-                      {selectedCoin.name}
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={selectedCoin.icon}
+                          alt={selectedCoin.name}
+                          className="h-6 w-6 rounded-full"
+                        />
+                        {selectedCoin.name}
+                      </div>
+                      <ChevronDown className="text-text-[#0F172A] w-[20px] dark:text-white" />
                     </div>
                   </Listbox.Button>
 
@@ -307,23 +310,25 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
                     transition={{ duration: 0.6, ease: 'easeOut' }} // Slower & smooth
                     className="rounded-2xl bg-gradient-to-b from-gray-600 via-gray-600 to-gray-500 p-4 shadow-xl"
                   >
-                    <h3 className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-white">
+                    <h3 className="flex items-center justify-between text-sm font-medium uppercase tracking-wide text-white">
                       {mintedHash?.slice(0, 6)}...
                       {mintedHash?.slice(-6)}
-                      <span
-                        onClick={handleCopyToClipboard}
-                        className="text-md flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-all hover:border-gray-400 hover:text-black dark:border-gray-700 dark:text-gray-400"
-                      >
-                        <Copy className="h-4 w-4 cursor-pointer text-white" />
-                      </span>
-                      <a
-                        href={`https://sepolia.basescan.org/tx/${mintedHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex cursor-pointer items-center gap-1 text-blue-600 hover:underline"
-                      >
-                        <FaExternalLinkAlt />
-                      </a>
+                      <div className="flex gap-2">
+                        <span
+                          onClick={handleCopyToClipboard}
+                          className="text-md flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition-all hover:border-gray-400 hover:text-black dark:border-gray-700 dark:text-gray-400"
+                        >
+                          <Copy className="h-4 w-4 cursor-pointer text-white" />
+                        </span>
+                        <a
+                          href={`https://sepolia.basescan.org/tx/${mintedHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex cursor-pointer items-center gap-1 text-blue-600 hover:underline"
+                        >
+                          <FaExternalLinkAlt color="#fff" />
+                        </a>
+                      </div>
                     </h3>
                   </motion.div>
                 )}
@@ -332,10 +337,10 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
           </div>
         </div>
         {/* === PRIVILEGES CARD === */}
-        <div className="rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-6 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900">
+        <div className="rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900">
           <h2
             onClick={() => hanldeExpand()}
-            className="flex cursor-pointer justify-between text-center text-[32px] font-[700] text-[#0F172A] dark:text-white"
+            className="flex cursor-pointer items-center justify-between text-center text-[32px] font-[700] text-[#0F172A] dark:text-white"
           >
             Domain DAO Privileges{' '}
             <span>
@@ -348,7 +353,7 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
           </h2>
           {selectedExpand && (
             <>
-              <div className="mt-[32px] space-y-6">
+              <div className="space-y-6">
                 {[
                   {
                     icon: RevenueSharing,

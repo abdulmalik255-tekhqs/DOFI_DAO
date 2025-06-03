@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import Button from '@/components/ui/button';
 import TransactionInfo from '@/components/ui/transaction-info';
 import cn from '@/utils/cn';
@@ -28,13 +29,13 @@ const ArbitragePage = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state: any) => state.ido);
   const [fromAmount, setFromAmount] = useState<any>(null);
+  const [selectedExpand, setSelectedExpand] = useState(false);
   const excangeRate = (value: any) => {
     const multiply = value * 0.05;
     return value - multiply;
   };
   const { NFTAbritrage, isLoading }: any = useFetchNFTARBITRAGE();
   const updatedCoinList: any = (NFTAbritrage as any)?.data;
-  console.log(updatedCoinList, 'NFTAbritrage');
 
   const handleSwap = async () => {
     try {
@@ -57,7 +58,7 @@ const ArbitragePage = () => {
           functionName: 'safeTransferFrom',
           args: [
             address,
-            '0xA50673D518847dF8A5dc928B905c54c35930b949',
+            process.env.NEXT_PUBLIC_MASTER_WALLET as `0x${string}`,
             updatedCoinList?.path[0]?.tokenId,
             parseUnits(updatedCoinList?.path[0]?.amount?.toString(), 0),
             '0x',
@@ -102,6 +103,9 @@ const ArbitragePage = () => {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
+  const hanldeExpand = () => {
+    setSelectedExpand(!selectedExpand);
+  };
   return (
     <>
       <div className="flex items-center justify-between">
@@ -114,8 +118,8 @@ const ArbitragePage = () => {
           ))}
         </div>
       </div>
-      <div className="mt-[24px] border border-[#CBD5E1]"></div>
-      <div className="mb-6 mt-[24px]">
+      <div className="mt-[24px] border-b border-[#CBD5E1]"></div>
+      <div className="mt-[24px]">
         <div className={cn('relative flex flex-col gap-3')}>
           <ArbitrageCoinInput
             label={'From'}
@@ -127,23 +131,7 @@ const ArbitragePage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-4 xs:gap-[18px]">
-        <TransactionInfo
-          label={'Dex 1 Rate'}
-          value={selectedFromSwapCoin ? updatedCoinList?.dex1Price : '--'}
-        />
-        <TransactionInfo
-          label={'Dex 2 Rate'}
-          value={selectedFromSwapCoin ? updatedCoinList?.dex2Price : '--'}
-        />
-        <TransactionInfo
-          label={'Net Profit (DOFI)'}
-          value={
-            selectedFromSwapCoin ? `$${updatedCoinList?.profitInDofi}` : '--'
-          }
-        />
-      </div>
-      <div className="mt-4 border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
+      <div className="mt-[24px] border-b border-[#E2E8F0] border-gray-200 dark:border-gray-800"></div>
       {selectedFromSwapCoin && (
         <>
           <motion.div
@@ -234,7 +222,7 @@ const ArbitragePage = () => {
           size="medium"
           shape="rounded"
           fullWidth={true}
-          className="mt-6 bg-[#0F172A] xs:mt-8 xs:tracking-widest"
+          className="mt-[24px] bg-[#0F172A] xs:tracking-widest"
           onClick={() => handleSwap()}
           disabled={loading}
         >
@@ -243,10 +231,47 @@ const ArbitragePage = () => {
               <BeatLoader color="#fff" />
             </>
           ) : (
-            'Swap'
+            'Approve'
           )}
         </Button>
       </div>
+      <div className="mt-[24px]">
+        <h2
+          onClick={() => hanldeExpand()}
+          className="flex cursor-pointer items-center justify-between text-center text-[16px] font-[500] text-[#0F172A] dark:text-white"
+        >
+          Advance details
+          <span>
+            {selectedExpand ? (
+              <ChevronUp className="text-text-[#0F172A] w-[20px] dark:text-white" />
+            ) : (
+              <ChevronDown className="text-text-[#0F172A] w-[20px] dark:text-white" />
+            )}
+          </span>
+        </h2>
+      </div>
+      {selectedExpand && (
+        <>
+          <div className="mt-[10px] flex flex-col gap-4 xs:gap-[10px]">
+            <TransactionInfo
+              label={'Dex 1 Rate'}
+              value={selectedFromSwapCoin ? updatedCoinList?.dex1Price : '--'}
+            />
+            <TransactionInfo
+              label={'Dex 2 Rate'}
+              value={selectedFromSwapCoin ? updatedCoinList?.dex2Price : '--'}
+            />
+            <TransactionInfo
+              label={'Net Profit (DOFI)'}
+              value={
+                selectedFromSwapCoin
+                  ? `$${updatedCoinList?.profitInDofi}`
+                  : '--'
+              }
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };

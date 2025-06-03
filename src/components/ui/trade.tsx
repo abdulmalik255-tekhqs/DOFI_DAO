@@ -112,10 +112,10 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
           <ParamTab tabMenu={tabMenu}>
             <TabPanel className="focus:outline-none">
               <div className="flex items-center justify-between">
-                <h1 className="mb-6 text-[20px] font-[500]">
+                <h1 className="text-[20px] font-[500]">
                   Swap Domain Fractions
                 </h1>
-                <div className="mb-6 flex items-center gap-[5px]">
+                <div className="flex items-center gap-[5px]">
                   {coinList?.map((coin, index) => (
                     <div key={index} className="h-4 w-4">
                       {React.cloneElement(coin.icon, {
@@ -125,6 +125,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
                   ))}
                 </div>
               </div>
+              <div className="my-[24px] border-b border-[#CBD5E1]"></div>
               <AnimatePresence mode={'wait'}>
                 <motion.div
                   initial="exit"
