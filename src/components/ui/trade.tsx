@@ -113,7 +113,7 @@ export default function Trade({ children }: React.PropsWithChildren<{}>) {
             <TabPanel className="focus:outline-none">
               <div className="flex items-center justify-between">
                 <h1 className="mb-6 text-[20px] font-[500]">
-                  SWAP Domain Fractions
+                  Swap Domain Fractions
                 </h1>
                 <div className="mb-6 flex items-center gap-[5px]">
                   {coinList?.map((coin, index) => (

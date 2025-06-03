@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
-import { SearchIcon } from '@/components/icons/search';
 import { useModal } from '@/components/modal-views/context';
 import { useSubmitFindNameQuery } from '@/hooks/livePricing';
 import { FaLongArrowAltRight } from 'react-icons/fa';
-import { IoMdArrowDropdown } from 'react-icons/io';
 import { useAccount } from 'wagmi';
 import ToastNotification from '../ui/toast-notification';
 import { useDispatch } from 'react-redux';
 import { idoActions } from '@/store/reducer/ido-reducer';
 import { idodetailActions } from '@/store/reducer/dio-detail.reducer';
 import Bg from '@/assets/images/dao/BG-REGISTER.png';
-import Image from 'next/image';
 
 export default function GlobalFilter() {
   const { openModal } = useModal();
