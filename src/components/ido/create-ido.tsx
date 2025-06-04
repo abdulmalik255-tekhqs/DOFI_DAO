@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import { Listbox } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
 import { useWriteContract } from 'wagmi';
@@ -168,13 +169,16 @@ export default function CreateIDO({ data }: CreateIDOProps) {
               <Listbox value={selectedCoin} onChange={setSelectedCoin}>
                 <div className="relative">
                   <Listbox.Button className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={selectedCoin.icon}
-                        alt={selectedCoin.name}
-                        className="h-6 w-6 rounded-full"
-                      />
-                      {selectedCoin.name}
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={selectedCoin.icon}
+                          alt={selectedCoin.name}
+                          className="h-6 w-6 rounded-full"
+                        />
+                        {selectedCoin.name}
+                      </div>
+                      <ChevronDown className="text-text-[#0F172A] w-[20px] dark:text-white" />
                     </div>
                   </Listbox.Button>
 
@@ -295,7 +299,7 @@ export default function CreateIDO({ data }: CreateIDOProps) {
                       rel="noopener noreferrer"
                       className="inline-flex cursor-pointer items-center gap-1 text-blue-600 hover:underline"
                     >
-                      <FaExternalLinkAlt />
+                      <FaExternalLinkAlt color="#fff" />
                     </a>
                   </h3>
                 </motion.div>
