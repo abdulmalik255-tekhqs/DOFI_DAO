@@ -54,7 +54,7 @@ export default function FractionCard({ item }: any) {
           </div>
         </div>
         <div
-          className="absolute left-0 top-[33%] z-[25] flex h-full w-[220px] flex-col justify-between"
+          className="absolute left-0 top-[40%] z-[25] flex h-full w-[220px] flex-col justify-between"
           onClick={(e) => {
             e.preventDefault();
             dispatch(idoActions.saveBuydomainNft(item));

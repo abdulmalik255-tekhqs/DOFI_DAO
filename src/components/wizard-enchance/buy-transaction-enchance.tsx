@@ -47,7 +47,7 @@ export default function BuyTransactionEnchance({ data }: any) {
   return (
     <>
       <div className="flex w-full items-center justify-center">
-        <h2 className="mb-6 text-[32px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white ltr:text-left rtl:text-right">
+        <h2 className="mb-6 text-[24px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white md:text-[32px] ltr:text-left rtl:text-right">
           Mint Domain
         </h2>
       </div>

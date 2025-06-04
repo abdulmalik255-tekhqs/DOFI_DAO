@@ -1,14 +1,10 @@
 'use client';
 import Image from '@/components/ui/image';
-import Avatar from '@/components/ui/avatar';
 import Profile from '@/components/profile/profile';
-import { CgProfile } from 'react-icons/cg';
 import { Check } from '@/components/icons/check';
 import { Copy } from '@/components/icons/copy';
 import CleanShortIcon from '@/assets/images/dao/cleanshort.png';
 import Bg from '@/assets/images/dao/BG.png';
-// static data
-import { authorData } from '@/data/static/author';
 import { useAccount } from 'wagmi';
 import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';

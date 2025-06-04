@@ -42,7 +42,6 @@ function RewardAccordionTable({ columns, data, isLoading }: any) {
   );
 
   const { pageIndex } = state;
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="relative z-20 mt-[20px] flex flex-col overflow-hidden rounded-lg lg:flex-row">
@@ -54,7 +53,6 @@ function RewardAccordionTable({ columns, data, isLoading }: any) {
                 Revenue Distribution
               </h2>
             </div>
-
             {isLoading ? (
               <div className="flex w-full items-center justify-center py-5">
                 <MoonLoader />

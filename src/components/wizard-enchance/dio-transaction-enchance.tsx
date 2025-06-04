@@ -62,7 +62,7 @@ export default function DIOTransactionEnchance({ data }: any) {
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center">
-        <h2 className="text-[32px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white ltr:text-left rtl:text-right">
+        <h2 className="text-[24px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white md:text-[32px] ltr:text-left rtl:text-right">
           Congratulations!
         </h2>
         <p className="text-[16px] font-[400] tracking-[-0.5px] text-[#64748B]">

@@ -12,7 +12,6 @@ import RightArrow from '@/assets/images/dao/towardsright.svg';
 import Image from 'next/image';
 
 type NFTGridProps = {
-  author: string;
   image: any;
   name: string;
   tokenID: string;
@@ -21,7 +20,6 @@ type NFTGridProps = {
 };
 
 export default function NFTGrid({
-  author,
   image,
   name,
   price,

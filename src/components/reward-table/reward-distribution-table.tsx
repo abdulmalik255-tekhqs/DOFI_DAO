@@ -24,7 +24,7 @@ const COLUMNS = [
   },
   {
     Header: () => <div className="">Transaction #</div>,
-    accessor: 'total_volume',
+    accessor: 'transaction',
     Cell: ({ row }: any) => {
       const [_, copyToClipboard] = useCopyToClipboard();
       function handleCopyToClipboard() {
@@ -54,20 +54,6 @@ const COLUMNS = [
       );
     },
   },
-  // {
-  //     Header: () => <div className="">Domain Name</div>,
-  //     accessor: 'name',
-  //     Cell: ({ row }) => (
-  //         <div className="flex items-start gap-2">
-  //             <h3 className="text-left"
-  //                 title={row?.original?.nft?.name?.length > 9 ? row?.original?.nft?.name : undefined}
-  //             >
-  //                 {row?.original?.nft?.name?.length > 15 ? `${row?.original?.nft?.name?.substring(0, 10)}...` : row?.original?.nft?.name}
-  //             </h3>
-  //         </div>
-  //     ),
-
-  // },
   {
     Header: () => <div className="">DAO Name</div>,
     accessor: 'dao_name',

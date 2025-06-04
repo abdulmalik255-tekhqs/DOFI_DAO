@@ -20,12 +20,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ToastNotification from '@/components/ui/toast-notification';
 
 const SwapPage = () => {
-  const { mutate: submitSwap, isError, error } = useSwap();
+  const { mutate: submitSwap } = useSwap();
   const { loading } = useSelector((state: any) => state.ido);
   const { address } = useAccount();
   const dispatch = useDispatch();
   const { writeContractAsync } = useWriteContract();
-  let [toggleCoin, setToggleCoin] = useState(false);
   const [fromAmount, setFromAmount] = useState<any>(null);
   const [toAmount, setToAmount] = useState<any>(null);
   const [selectedFromSwapCoin, setSelectedFromSwapCoin] = useState<any>(null);
@@ -47,7 +46,7 @@ const SwapPage = () => {
         selectedFromSwapCoin._id === selectedToSwapCoin._id
       ) {
         ToastNotification('error', "Same token can't be swapped.");
-        return; // stop execution here
+        return;
       }
 
       if (
@@ -142,14 +141,10 @@ const SwapPage = () => {
           hash,
           pollingInterval: 2000,
         });
-        // if (recipient.status === 'success') {
         submitSwap({
           nftID: selectedToSwapCoin?._id,
           amountToMint: Number(calculationResult?.data?.toAmount),
         });
-        // } else {
-        //   dispatch(idoActions.setLoading(false));
-        // }
       } else {
         dispatch(idoActions.setLoading(true));
         const hash = await writeContractAsync({
@@ -180,19 +175,11 @@ const SwapPage = () => {
             amountToMint: Number(toAmount?.data?.toAmount),
           });
         }
-        // } else {
-        //   dispatch(idoActions.setLoading(false));
-        // }
       }
     } catch (error) {
       dispatch(idoActions.setLoading(false));
     }
   };
-  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   setIsButtonDisabled(Number(selectedFromSwapCoin?.tokenId) === Number(selectedToSwapCoin?.tokenId) || loading);
-  // }, [selectedFromSwapCoin, selectedToSwapCoin, loading]);
   const hanldeExpand = () => {
     setSelectedExpand(!selectedExpand);
   };
@@ -201,12 +188,7 @@ const SwapPage = () => {
       <Suspense>
         <Trade>
           <div className="mb-4">
-            <div
-              className={cn(
-                'relative flex gap-3',
-                toggleCoin ? 'flex-col-reverse' : 'flex-col',
-              )}
-            >
+            <div className={cn('relative flex flex-col gap-3')}>
               <CoinInput
                 label={'From'}
                 exchangeRate={excangeRate(fromAmount?.value)}

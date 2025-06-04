@@ -1,19 +1,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import cn from '@/utils/cn';
-import ListCard from '@/components/ui/list-card';
 import ParamTab, { TabPanel } from '@/components/ui/param-tab';
-import TransactionSearchForm from '@/components/author/transaction-search-form';
-import TransactionHistory from '@/components/author/transaction-history';
 import CollectionCard from '@/components/ui/collection-card';
-import { useLayout } from '@/lib/hooks/use-layout';
-import { LAYOUT_OPTIONS } from '@/lib/constants';
-// static data
-import { collections } from '@/data/static/collections';
-import {
-  authorWallets,
-  authorNetworks,
-  authorProtocols,
-} from '@/data/static/author-profile';
 import Loader from '@/components/ui/loader';
 import FractionCard from '../ui/fraction-card';
 import LeaseDomainCard from '../ui/lease-domian';
@@ -36,8 +24,7 @@ const tabMenu = [
 ];
 
 export default function ProfileTab({ data, leasingData }: any) {
-const { toogle } = useSelector((state: any) => state.ido);
-  const { layout } = useLayout();
+  const { toogle } = useSelector((state: any) => state.ido);
   const [domain, setDomain] = useState([]);
   const [fraction, setFraction] = useState([]);
   const [leasedDomainNFTs, setLeasedDomainNFTs] = useState([]);
@@ -58,7 +45,7 @@ const { toogle } = useSelector((state: any) => state.ido);
       setDomain(domainArr);
       setFraction(fractionArr);
     }
-    setLeasedDomainNFTs(leasingData)
+    setLeasedDomainNFTs(leasingData);
   }, [data]);
 
   return (
@@ -67,7 +54,7 @@ const { toogle } = useSelector((state: any) => state.ido);
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+              'flex flex-col gap-[12px] sm:flex-row sm:flex-wrap',
               // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
             )}
           >
@@ -82,7 +69,7 @@ const { toogle } = useSelector((state: any) => state.ido);
               <>
                 <div>
                   <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
-                    No Domain NFT
+                    No Domain NFT Found
                   </p>
                 </div>
               </>
@@ -91,12 +78,14 @@ const { toogle } = useSelector((state: any) => state.ido);
         </TabPanel>
         <TabPanel className="focus:outline-none">
           <>
-          {toogle && <>
-          <FractionAmount/>
-          </>}
+            {toogle && (
+              <>
+                <FractionAmount />
+              </>
+            )}
             <div
               className={cn(
-                'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+                'flex flex-col gap-[12px] sm:flex-row sm:flex-wrap',
                 // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
               )}
             >
@@ -111,19 +100,18 @@ const { toogle } = useSelector((state: any) => state.ido);
                 <>
                   <div>
                     <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
-                      No Fraction NFT
+                      No Fraction NFT Found
                     </p>
                   </div>
                 </>
               )}
             </div>
           </>
-
         </TabPanel>
         <TabPanel className="focus:outline-none">
           <div
             className={cn(
-              'flex flex-col sm:flex-row sm:flex-wrap gap-[12px]',
+              'flex flex-col gap-[12px] sm:flex-row sm:flex-wrap',
               // grid gap-4 xs:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-4 3xl:grid-cols-4 4xl:grid-cols-4
             )}
           >
@@ -138,7 +126,7 @@ const { toogle } = useSelector((state: any) => state.ido);
               <>
                 <div>
                   <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
-                    No Lease Domain NFT
+                    No Lease Domain NFT Found
                   </p>
                 </div>
               </>
