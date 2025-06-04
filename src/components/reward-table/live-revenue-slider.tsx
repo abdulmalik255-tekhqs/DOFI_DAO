@@ -70,7 +70,7 @@ export function LivePricingFeed({ name, nft, revenue }: LivePriceFeedProps) {
   return (
     <div
       className={cn(
-        'flex w-[352px] cursor-pointer items-center justify-between gap-1 rounded-[12px] border border-[#E2E8F0] bg-white p-[20px] lg:flex-row',
+        'flex w-[352px] cursor-pointer items-center justify-between gap-1 rounded-[12px] border border-[#CBD5E1] bg-white p-[20px] lg:flex-row',
       )}
     >
       <div className="w-full flex-col">

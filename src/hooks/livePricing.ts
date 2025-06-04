@@ -255,7 +255,24 @@ export function useGetIDODetail() {
     },
   });
 }
-
+export function useGetSingleNFTDetail() {
+  const { address } = useAccount();
+  const dispatch = useDispatch();
+  return useMutation({
+    //@ts-ignore
+    queryKey: ['get_single_nft'],
+    mutationFn: (id: string) => client.nftDetail.getSingleNFT(id, address),
+    enabled: !!address,
+    onSuccess: (data) => {
+      if (data) {
+        dispatch(idoActions.setComponentloading(false));
+      }
+    },
+    onError: (error) => {
+      ToastNotification('error', 'NFT detail not found');
+    },
+  });
+}
 export function useBuyShareIDO() {
   const { address } = useAccount();
   const { openModal } = useModal();

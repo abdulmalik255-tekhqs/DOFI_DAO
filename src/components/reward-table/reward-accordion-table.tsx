@@ -47,7 +47,7 @@ function RewardAccordionTable({ columns, data, isLoading }: any) {
   return (
     <div className="relative z-20 mt-[20px] flex flex-col overflow-hidden rounded-lg lg:flex-row">
       <div className="w-full transform transition duration-300 ease-in">
-        <div className="overflow-hidden rounded-[12px] border border-[#E2E8F0]">
+        <div className="overflow-hidden rounded-[12px] border border-[#CBD5E1]">
           <div className="-mx-0.5 shadow-card dark:[&_.os-scrollbar_.os-scrollbar-track_.os-scrollbar-handle:before]:!bg-white/50">
             <div className="bg-white py-[16px] pl-[20px]">
               <h2 className="shrink-0 pl-[10px] text-[20px] font-[500] uppercase text-[#0F172A] dark:text-white md:pl-0">

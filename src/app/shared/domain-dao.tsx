@@ -292,7 +292,7 @@ const DomainDAOPage = () => {
             proposalsDomainDao?.length > 0
               ? 'col-span-12 md:col-span-6 lg:col-span-3'
               : 'col-span-12 md:col-span-6 lg:col-span-4'
-          } flex h-[170px] w-[32%] flex-col justify-between rounded-[10px] border border-[#CBD5E1] bg-white p-[25px] sm:h-[158px]`}
+          } flex h-[170px] w-[32%] flex-col justify-between space-y-[3px] rounded-[10px] border border-[#CBD5E1] bg-white p-[25px] sm:h-[158px]`}
         >
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
@@ -303,7 +303,7 @@ const DomainDAOPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center justify-between space-x-[15px] sm:ml-[10px]">
+          <div className="mt-2 flex flex-wrap justify-center justify-between">
             {/* Total */}
             <div className="text-center">
               <div className="text-xl font-[500] text-[#151515]">
