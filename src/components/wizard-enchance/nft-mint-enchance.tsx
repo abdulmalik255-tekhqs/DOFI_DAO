@@ -90,12 +90,12 @@ export default function NFTMintEnchance({ data }: any) {
   return (
     <>
       <div className="flex w-full items-center justify-center">
-        <h2 className="mb-6 text-[32px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white ltr:text-left rtl:text-right">
+        <h2 className="mb-6 text-[24px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white md:text-[32px] ltr:text-left rtl:text-right">
           Register Domain
         </h2>
       </div>
-      <div className="mb-[24px] flex w-full items-start justify-between">
-        <h3 className="flex items-center gap-2 text-[24px] font-[500] tracking-[-0.5px] text-[#0F172A] drop-shadow-sm dark:text-white">
+      <div className="mb-[24px] flex w-full flex-col items-start justify-between md:flex-row">
+        <h3 className="flex items-center gap-2 text-[18px] font-[500] tracking-[-0.5px] text-[#0F172A] drop-shadow-sm dark:text-white md:text-[24px]">
           <Globe className="text-text-[#0F172A] h-5 w-5 dark:text-white" />
           {data?.name}
           <Image
@@ -105,7 +105,7 @@ export default function NFTMintEnchance({ data }: any) {
           />
         </h3>
         <div>
-          <h4 className="flex items-center gap-2 text-[24px] font-[500] tracking-[-0.5px] text-[#0F172A] drop-shadow-sm dark:text-white">
+          <h4 className="flex items-center gap-2 text-[18px] font-[500] tracking-[-0.5px] text-[#0F172A] drop-shadow-sm dark:text-white md:text-[24px]">
             Balance: $DOFI {formatNumber(tokenBalance)}
           </h4>
         </div>

@@ -138,7 +138,7 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
         {/* === DIO FORM CARD === */}
         <div className="p-2">
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-[32px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white ltr:text-left rtl:text-right">
+            <h2 className="text-[24px] font-[700] tracking-[-0.5px] text-[#0F172A] dark:text-white md:text-[32px] ltr:text-left rtl:text-right">
               Fractionalize Domain
             </h2>
             <h3 className="mt-[8px] text-[16px] font-[400] text-[#64748B] dark:text-gray-400">
@@ -146,7 +146,7 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
             </h3>
           </div>
 
-          <div className="flex gap-2 py-[24px]">
+          <div className="gap-2 py-[24px] md:flex">
             {/* Total Fraction */}
             <label className="block">
               <span className="text-[20px] font-[500] text-[#0F172A] dark:text-gray-300">
@@ -340,7 +340,7 @@ export default function CreateIDOWizardEnhance({ data }: CreateIDOProps) {
         <div className="rounded-[12px] border border-[#E2E8F0] bg-[#F8FAFC] p-4 dark:border-gray-700 dark:from-gray-800 dark:to-gray-900">
           <h2
             onClick={() => hanldeExpand()}
-            className="flex cursor-pointer items-center justify-between text-center text-[32px] font-[700] text-[#0F172A] dark:text-white"
+            className="flex cursor-pointer items-center justify-between text-center text-[18px] font-[700] text-[#0F172A] dark:text-white md:text-[32px]"
           >
             Domain DAO Privileges{' '}
             <span>

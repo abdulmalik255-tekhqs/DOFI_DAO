@@ -191,7 +191,7 @@ const IDODetailPage = () => {
         <>
           <div className="min-h-screen px-4 py-6 lg:px-2">
             <div className="mb-12 text-center">
-              <h3 className="text-[24px] font-[700] text-[#1E293B]">
+              <h3 className="text-[18px] font-[700] text-[#1E293B] md:text-[24px]">
                 Domain Initial Offering
               </h3>
               <p className="mx-auto mt-[12px] max-w-md text-[16px] font-[400] text-[#1E293B]">
@@ -218,7 +218,7 @@ const IDODetailPage = () => {
                   }}
                 >
                   <div>
-                    <div className="mb-2 flex w-full flex-col items-center justify-between md:flex-row">
+                    <div className="mb-2 flex w-full flex-col items-center justify-between sm:flex-row">
                       <h3 className="mb-2 flex items-center gap-2 text-[14px] font-[500] text-[#ffffff] md:text-[20px]">
                         <Globe className="h-5 w-5 text-white" />
                         {searchResult?.data?.name}

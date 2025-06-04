@@ -149,7 +149,7 @@ const ProposalsPage = () => {
             </div>
           ))}
       </div>
-      <div className="flex pb-[24px] pt-[32px]">
+      <div className="flex pb-[24px] pt-[12px]">
         <h2 className="text-[24px] font-bold text-[#1E293B]">Proposals</h2>
       </div>
 
