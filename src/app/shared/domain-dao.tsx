@@ -97,7 +97,7 @@ function AuctionCountdown(address: string | any) {
   }
 
   return (
-    <div className="flex items-center space-x-6 px-6 text-lg font-semibold">
+    <div className="flex items-center justify-between text-lg font-semibold">
       <div className="flex flex-col text-[#1E293B]">
         <span className="text-[24px] font-[500]">
           {String(timeLeft.hours).padStart(2, '0')}
@@ -177,23 +177,23 @@ const DomainDAOPage = () => {
     },
     {
       id: 2,
-      date: '2025-07-03',
-      time: '3:00 PM UTC',
+      date: '2026-07-03',
+      time: '4:00 PM UTC',
       name: 'Do.Fi Protocol Governance Call',
       desc: 'Hosted by the Do.Fi Governance Community',
     },
     {
       id: 3,
-      date: '2025-07-03',
-      time: '3:00 PM UTC',
+      date: '2027-07-03',
+      time: '5:00 PM UTC',
       name: 'Do.Fi Protocol Governance Call',
       desc: 'Hosted by the Do.Fi Governance Community',
     },
   ];
   return (
     <section className="mx-auto w-full max-w-[1920px] text-sm">
-      <div className="mb-4 mt-4 flex flex-col rounded-[10px] border border-[#E2E8F0] bg-white px-4 py-[12px]">
-        <div className="flex justify-between">
+      <div className="mb-4 mt-4 flex flex-col rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-[12px]">
+        <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <h2 className="flex gap-2 font-[700] uppercase text-[#1E293B] xl:text-[24px]">
               {storedNft?.name}
@@ -272,7 +272,7 @@ const DomainDAOPage = () => {
             proposalsDomainDao?.length > 0
               ? 'col-span-12 md:col-span-6 lg:col-span-3'
               : 'col-span-12 md:col-span-6 lg:col-span-4'
-          } col-span-12 h-[170px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
+          } h-[170px] w-[32%] space-y-[25px] rounded-[10px] border border-[#CBD5E1] bg-white p-[25px] sm:ml-[10px] sm:h-[158px]`}
         >
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center rounded-full bg-white/80 p-[5px]">
@@ -292,7 +292,7 @@ const DomainDAOPage = () => {
             proposalsDomainDao?.length > 0
               ? 'col-span-12 md:col-span-6 lg:col-span-3'
               : 'col-span-12 md:col-span-6 lg:col-span-4'
-          } col-span-12 h-[170px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
+          } flex h-[170px] w-[32%] flex-col justify-between rounded-[10px] border border-[#CBD5E1] bg-white p-[25px] sm:h-[158px]`}
         >
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
@@ -303,7 +303,7 @@ const DomainDAOPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center space-x-[15px] sm:ml-[10px] sm:justify-start sm:space-x-[30px]">
+          <div className="flex flex-wrap justify-center justify-between space-x-[15px] sm:ml-[10px]">
             {/* Total */}
             <div className="text-center">
               <div className="text-xl font-[500] text-[#151515]">
@@ -343,7 +343,7 @@ const DomainDAOPage = () => {
               proposalsDomainDao?.length > 0
                 ? 'col-span-12 md:col-span-6 lg:col-span-3'
                 : 'col-span-12 md:col-span-6 lg:col-span-4'
-            } col-span-12 h-[170px] min-w-[400px] space-y-[25px] rounded-[10px] border border-[#E2E8F0] bg-white p-[30px] sm:h-[158px] md:col-span-6 lg:col-span-3`}
+            } h-[170px] w-[32%] space-y-[25px] rounded-[10px] border border-[#CBD5E1] bg-white p-[25px] sm:h-[158px]`}
           >
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center">
@@ -353,7 +353,7 @@ const DomainDAOPage = () => {
                 Profit
               </div>
             </div>
-            <div className="flex flex-wrap justify-center space-x-[15px] sm:ml-[10px] sm:justify-start sm:space-x-[30px]">
+            <div className="flex flex-wrap justify-center justify-between space-x-[15px] sm:ml-[10px]">
               {/* Total */}
 
               <div className="text-center text-xl font-[500] text-[#151515]">
