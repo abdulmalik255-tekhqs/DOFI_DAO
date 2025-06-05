@@ -68,7 +68,7 @@ export default function ProfileTab({ data, leasingData }: any) {
             ) : (
               <>
                 <div>
-                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium tracking-tighter text-gray-900 dark:text-white md:pl-0">
                     No Domain NFT Found
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function ProfileTab({ data, leasingData }: any) {
               ) : (
                 <>
                   <div>
-                    <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                    <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium tracking-tighter text-gray-900 dark:text-white md:pl-0">
                       No Fraction NFT Found
                     </p>
                   </div>
@@ -125,7 +125,7 @@ export default function ProfileTab({ data, leasingData }: any) {
             ) : (
               <>
                 <div>
-                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium uppercase tracking-tighter text-gray-900 dark:text-white md:pl-0">
+                  <p className="flex shrink-0 items-start justify-start text-start text-[20px] font-medium tracking-tighter text-gray-900 dark:text-white md:pl-0">
                     No Lease Domain NFT Found
                   </p>
                 </div>
