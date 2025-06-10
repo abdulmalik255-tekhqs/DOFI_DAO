@@ -32,7 +32,7 @@ function RewardAccordionTable({ columns, data, isLoading }: any) {
     {
       columns,
       data,
-      initialState: { pageSize: 17 },
+      initialState: { pageSize: 10 },
     },
     useGlobalFilter,
     useSortBy,
