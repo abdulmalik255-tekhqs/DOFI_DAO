@@ -62,7 +62,9 @@ export default function CoinSelectView({ onSelect }: CoinSelectViewTypes) {
               ))
             ) : (
               <li className="px-6 text-center">
-                <h3 className="text-[#0F172A">Ops! not found</h3>
+                <h3 className="text-[#0F172A">
+                  No NFT available for arbitrage
+                </h3>
               </li>
             )}
           </ul>
