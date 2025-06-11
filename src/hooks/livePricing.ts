@@ -277,7 +277,6 @@ export function useBuyShareIDO() {
   const { address } = useAccount();
   const { openModal } = useModal();
   const queryClient = useQueryClient();
-  const router = useRouter();
   const dispatch = useDispatch();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
@@ -316,6 +315,7 @@ export function useGetProposalDomainDao() {
     queryKey: ['proposal-domaindao-latest'],
     queryFn: () =>
       client.proposalsDomainDao.getLatestProposalsDomainDao(address),
+    enabled: !!address,
   });
   return {
     proposalsDomainDao: data,
