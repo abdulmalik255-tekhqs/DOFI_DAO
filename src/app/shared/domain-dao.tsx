@@ -399,7 +399,7 @@ const DomainDAOPage = () => {
             </h2>
             <p className="text-[15px] font-[400] text-[#334155]">
               <span className="font-[500] text-[#0F172A]">
-                Do.Fi Improvement Proposals (DIPs)
+                Do.Fi Improvement Proposals (DIPs){' '}
               </span>
               are used to suggest and track upgrades to the Do.Fi ecosystem.
               Browse active and past proposals, including those up for community
@@ -424,7 +424,7 @@ const DomainDAOPage = () => {
                   <p>{item?.date}</p>
                   <p>{item?.time}</p>
                 </div>
-                <h2 className="text-[15px] font-[500] text-[#0F172A] xl:text-[20px]">
+                <h2 className="text-[15px] font-[500] text-[#0F172A] xl:text-[18px]">
                   {item?.name}
                 </h2>
                 <p className="text-[15px] font-[400] text-[#334155]">

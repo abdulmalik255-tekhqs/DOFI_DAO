@@ -292,7 +292,7 @@ export default function VoteDetailsCard({ vote, data }: any) {
           <div className="flex flex-wrap items-center">
             <span
               onClick={() => setIsExpand(!isExpand)}
-              className="cursor-pointer pr-[12px] text-[16px] font-[500] capitalize leading-normal text-[#000000] md:pr-[16px] md:text-[20px]"
+              className="cursor-pointer pr-[12px] text-[16px] font-[500] capitalize leading-normal text-[#000000] md:pr-[16px] md:text-[18px]"
             >
               {vote?.name}
             </span>
