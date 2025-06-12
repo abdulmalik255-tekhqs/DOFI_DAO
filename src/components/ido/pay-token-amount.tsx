@@ -68,7 +68,7 @@ export default function PayTokenAmount({ data }: { data: any }) {
         dispatch(idoActions.setLoading(false));
       }
     } catch (error) {
-      dispatch(idoActions.setLoading(true));
+      dispatch(idoActions.setLoading(false));
     }
   };
   return (
